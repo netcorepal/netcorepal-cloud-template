@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <Import Project="$(MSBuildThisFileDirectory)\eng\versions.props" />
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>ABC.Template</PackageId>
