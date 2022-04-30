@@ -12,4 +12,9 @@ dotnet new --install <PACKAGE_ID>::<VERSION>
 
 //卸载模板
 dotnet new --uninstall ABC.Template
+
+
+//创建项目
+
+dotnet new dddweb -n My.Project.Name -o my-project-folder-name
 ```

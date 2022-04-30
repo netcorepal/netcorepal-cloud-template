@@ -1,10 +1,10 @@
 <Project>
 	<Import Project="$(MSBuildThisFileDirectory)\eng\versions.props" />
 	<PropertyGroup>
-		<Authors>ABC</Authors>
-		<Product>ABC</Product>
-		<owners>ABC</owners>
-		<PackagePrefix>ABC</PackagePrefix>
+		<Authors>ABC.Template</Authors>
+		<Product>ABC.Template</Product>
+		<owners>ABC.Template</owners>
+		<PackagePrefix>ABC.Template</PackagePrefix>
 		<PackageIconUrl></PackageIconUrl>
 		<PackageProjectUrl></PackageProjectUrl>
 		<PackageLicenseUrl></PackageLicenseUrl>
