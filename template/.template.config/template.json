@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Travis Chau",
+  "classifications": ["Web"],
+  "identity": "DDD.Web",
+  "name": "DDD Web Application",
+  "shortName": "dddweb",
+  "sourceName": "ABC.Template"
+}

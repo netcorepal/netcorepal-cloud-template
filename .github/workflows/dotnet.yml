@@ -1,0 +1,30 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.104
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Pack NuGet
+      run: dotnet pack -c Release --version-suffix alpha`date +%y%m%d%H%M` -o ./
+    - name: Push NuGet
+      run: dotnet nuget push '*.nupkg' -s https://www.myget.org/F/netcorepal/api/v3/index.json -k ${{ secrets.MYGET_API_KEY }} -n true --skip-duplicate
+      
