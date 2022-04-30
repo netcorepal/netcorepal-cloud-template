@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageVersion>1.0</PackageVersion>
     <PackageId>ABC.Template</PackageId>
     <Title>ABC DDD Templates</Title>
     <Authors>NetCorePal</Authors>
