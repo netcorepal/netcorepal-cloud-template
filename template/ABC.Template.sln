@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32421.90
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Web", "src\ABC.Template.Web\ABC.Template.Web.csproj", "{654F99A0-E0E5-4B4D-8FBF-3412C8C1B659}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Web", "src\ABC.Template.Web\ABC.Template.Web.csproj", "{654F99A0-E0E5-4B4D-8FBF-3412C8C1B659}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Domain", "src\ABC.Template.Domain\ABC.Template.Domain.csproj", "{0AD006F0-DC03-431A-A83D-707C27923D13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Domain", "src\ABC.Template.Domain\ABC.Template.Domain.csproj", "{0AD006F0-DC03-431A-A83D-707C27923D13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Infrastructure", "src\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj", "{85845ACB-3D0E-436B-8FE1-4EA3263886DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Infrastructure", "src\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj", "{85845ACB-3D0E-436B-8FE1-4EA3263886DF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EAA07EA8-9E41-4B8F-AFC5-6C5D23801307}"
 	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
 		NuGet.config = NuGet.config
+		eng\versions.props = eng\versions.props
 	EndProjectSection
 EndProject
 Global

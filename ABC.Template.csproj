@@ -19,4 +19,8 @@
     <Compile Remove="**\*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="template\Directory.Build.props" />
+  </ItemGroup>
+
 </Project>
