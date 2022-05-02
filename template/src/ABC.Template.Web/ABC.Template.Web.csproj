@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -10,8 +10,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ABC.Extensions.Primitives" Version="1.0.0-alpha2205011603" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Commands\" />
+    <Folder Include="Application\DomainEventHandlers\" />
+    <Folder Include="Application\Queries\" />
+    <Folder Include="Application\Validators\" />
+    <Folder Include="Application\IntegrationEvents\" />
+    <Folder Include="Application\Jobs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ABC.Template.Domain\ABC.Template.Domain.csproj" />
+    <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
