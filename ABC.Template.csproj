@@ -15,12 +15,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="template\**\*" Exclude="template\**\bin\**;templates\**\obj\**;templates\.vs\**" />
+    <Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\.vs\**" />
     <Compile Remove="**\*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="template\Directory.Build.props" />
   </ItemGroup>
 
 </Project>
