@@ -1,9 +1,9 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "Travis Chau",
+  "author": "NetCorePal",
   "classifications": ["Web"],
-  "identity": "DDD.Web",
-  "name": "DDD Web Application",
-  "shortName": "dddweb",
+  "identity": "ABC.Web",
+  "name": "ABC Web Application",
+  "shortName": "abcweb",
   "sourceName": "ABC.Template"
 }
