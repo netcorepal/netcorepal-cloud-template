@@ -16,7 +16,17 @@
 
   <ItemGroup>
     <Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\.vs\**" />
+	<Content Include="template\.dockerignore" Exclude="template\**\bin\**;template\**\obj\**;template\.vs\**" />
     <Compile Remove="**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="template\.gitattributes">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="template\.gitignore">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
