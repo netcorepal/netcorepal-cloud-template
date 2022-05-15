@@ -1,5 +1,20 @@
 # ABC.Template
 
+## 开发环境
+
+docker 环境
+
+``` shell
+//安装 mysql
+docker run --name mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -p 33060:33060 -d mysql:8.0
+
+//安装 redis
+docker run --name redis -p 6379:6379 -d redis:7.0
+
+//安装 rabbitmq
+docker run -d --hostname my-rabbit --name rabbitmq -e RABBITMQ_DEFAULT_USER=root -e RABBITMQ_DEFAULT_PASS=root -p 4369:4369 -p 5671-5672:5671-5672 -p 15671:15671 -p 15691-15692:15691-15692 -p 15672:15672 -p 25672:25672  rabbitmq:3-management
+```
+
 ## 关于监控
 
 这里使用了`prometheus-net`作为与基础设施prometheus集成的监控方案，默认通过地址 `/metrics` 输出监控指标。

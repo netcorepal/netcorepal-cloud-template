@@ -5,7 +5,7 @@ namespace ABC.Template.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrdersController : ControllerBase
+    public class DemoController : ControllerBase
     {
     }
 }
