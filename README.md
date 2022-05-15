@@ -26,24 +26,23 @@ dotnet new abcweb -n My.Project.Name -o my-project-folder-name
     - [x] 本地文件
     - [ ] 阿里云对象存储
 + 配置管理
-    - [x] 文件配置（json、ini、yaml）
+    - [ ] 文件配置（json、ini、yaml）
     - [x] Kubernetes ConfigMap
     - [ ] Nacos
     - [ ] Apollo
 + 数据库
     - [x] InMemory
-    - [x] SqlServer
+    - [ ] SqlServer
     - [x] MySql
     - [ ] PostgreSql
     - [ ] Sqlite
 + 消息队列
     - [x] RabbitMQ
-    - [x] Kafka
+    - [ ] Kafka
     - [ ] RocketMQ
     - [ ] RedisStreams
     - [ ] AzureServiceBus
     - [ ] AmazonSQS
-    - [ ] NATS
     - [ ] Pulsar
 + 服务注册发现
     - [x] Kubernetes
@@ -53,12 +52,12 @@ dotnet new abcweb -n My.Project.Name -o my-project-folder-name
 + API工具链
     - [x] Swagger
 + 远程调用
-    - [x] gRPC
+    - [ ] gRPC
     - [x] HttpClient
 + 实时通讯
     - [x] SignalR
     - [ ] WebSocket
 + 缓存中间件
-    - [x] Redis
+    - [ ] Redis
 + 熔断限流
     - [ ] Polly
