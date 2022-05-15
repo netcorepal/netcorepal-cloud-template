@@ -22,9 +22,6 @@ dotnet new abcweb -n My.Project.Name -o my-project-folder-name
 
 ## 支持特性
 
-
-
-
 + 文件存储
     - [x] 本地文件
     - [ ] 阿里云对象存储
@@ -61,3 +58,7 @@ dotnet new abcweb -n My.Project.Name -o my-project-folder-name
 + 实时通讯
     - [x] SignalR
     - [ ] WebSocket
++ 缓存中间件
+    - [x] Redis
++ 熔断限流
+    - [ ] Polly
