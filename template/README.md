@@ -2,7 +2,7 @@
 
 ## 开发环境
 
-docker 环境
+docker开发环境推荐使用Rancher Desktop，支持docker和kubernetes环境的快速搭建，一键安装: [https://github.com/rancher-sandbox/rancher-desktop](https://github.com/rancher-sandbox/rancher-desktop)
 
 ``` shell
 //安装 mysql
