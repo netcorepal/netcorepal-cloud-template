@@ -18,3 +18,46 @@ dotnet new --uninstall ABC.Template
 
 dotnet new abcweb -n My.Project.Name -o my-project-folder-name
 ```
+
+
+## 支持特性
+
+
+
+
++ 文件存储
+    - [x] 本地文件
+    - [ ] 阿里云对象存储
++ 配置管理
+    - [x] 文件配置（json、ini、yaml）
+    - [x] Kubernetes ConfigMap
+    - [ ] Nacos
+    - [ ] Apollo
++ 数据库
+    - [x] InMemory
+    - [x] SqlServer
+    - [x] MySql
+    - [ ] PostgreSql
+    - [ ] Sqlite
++ 消息队列
+    - [x] RabbitMQ
+    - [x] Kafka
+    - [ ] RocketMQ
+    - [ ] RedisStreams
+    - [ ] AzureServiceBus
+    - [ ] AmazonSQS
+    - [ ] NATS
+    - [ ] Pulsar
++ 服务注册发现
+    - [x] Kubernetes
+    - [ ] Consul
+    - [ ] Nacos
+    - [ ] Eureka
++ API工具链
+    - [x] Swagger
++ 远程调用
+    - [x] gRPC
+    - [x] HttpClient
++ 实时通讯
+    - [x] SignalR
+    - [ ] WebSocket
