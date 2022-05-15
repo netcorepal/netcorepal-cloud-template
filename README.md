@@ -46,9 +46,11 @@ dotnet new abcweb -n My.Project.Name -o my-project-folder-name
     - [ ] Pulsar
 + 服务注册发现
     - [x] Kubernetes
+    - [ ] Etcd
     - [ ] Consul
-    - [ ] Nacos
+    - [ ] Zookeeper
     - [ ] Eureka
+    - [ ] Nacos
 + API工具链
     - [x] Swagger
 + 远程调用
