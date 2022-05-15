@@ -2,10 +2,17 @@ using ABC.Extensions.Primitives;
 using ABC.Template.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Prometheus;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Prometheus监控
+builder.Services.AddHealthChecks().ForwardToPrometheus();
+builder.Services.AddHttpClient(Options.DefaultName)
+        .UseHttpClientMetrics();
+#endregion
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -37,9 +44,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseHttpMetrics();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapMetrics();   // 通过   /metrics  访问指标
+});
 
 app.Run();
