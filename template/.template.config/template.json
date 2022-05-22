@@ -3,7 +3,7 @@
     "author": "NetCorePal",
     "classifications": [ "Web" ],
     "identity": "NetCorePal.Web",
-    "name": "ABC Web Application",
+    "name": "NetCorePal Cloud Web Application",
     "shortName": "netcorepal-web",
     "sourceName": "ABC.Template"
 }
