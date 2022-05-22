@@ -1,4 +1,4 @@
-﻿using ABC.Extensions.Repository.EntityframeworkCore;
+﻿using NetCorePal.Extensions.Repository.EntityframeworkCore;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.EntityConfigurations;
 using MediatR;

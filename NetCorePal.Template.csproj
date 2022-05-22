@@ -2,10 +2,10 @@
   <Import Project="$(MSBuildThisFileDirectory)\eng\versions.props" />
   <PropertyGroup>
     <PackageType>Template</PackageType>
-    <PackageId>ABC.Template</PackageId>
-    <Title>ABC DDD Templates</Title>
+    <PackageId>NetCorePal.Template</PackageId>
+    <Title>NetCorePal DDD Templates</Title>
     <Authors>NetCorePal</Authors>
-    <Description>ABC DDD Framework Templates</Description>
+    <Description>NetCorePal Cloud Framework Templates</Description>
     <PackageTags>dotnet-new;templates;contoso</PackageTags>
     <TargetFramework>net6.0</TargetFramework>
 

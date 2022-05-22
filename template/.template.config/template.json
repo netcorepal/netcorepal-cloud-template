@@ -1,9 +1,9 @@
 {
-  "$schema": "http://json.schemastore.org/template",
-  "author": "NetCorePal",
-  "classifications": ["Web"],
-  "identity": "ABC.Web",
-  "name": "ABC Web Application",
-  "shortName": "abcweb",
-  "sourceName": "ABC.Template"
+    "$schema": "http://json.schemastore.org/template",
+    "author": "NetCorePal",
+    "classifications": [ "Web" ],
+    "identity": "NetCorePal.Web",
+    "name": "ABC Web Application",
+    "shortName": "netcorepal-web",
+    "sourceName": "ABC.Template"
 }

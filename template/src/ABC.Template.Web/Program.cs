@@ -1,4 +1,4 @@
-using ABC.Extensions.Primitives;
+using NetCorePal.Extensions.Primitives;
 using ABC.Template.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

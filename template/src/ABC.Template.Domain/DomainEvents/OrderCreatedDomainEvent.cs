@@ -1,4 +1,4 @@
-﻿using ABC.Extensions.Domain;
+﻿using NetCorePal.Extensions.Domain;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 
 namespace ABC.Template.Domain.DomainEvents

@@ -2,7 +2,7 @@
 
 ``` bat
 //安装模板
-dotnet new -i  ABC.Template  --nuget-source https://www.myget.org/F/netcorepal/api/v3/index.json
+dotnet new -i  NetCorePal.Template  --nuget-source https://www.myget.org/F/netcorepal/api/v3/index.json
 
 //更新模板
 dotnet new --update-check 
@@ -11,12 +11,12 @@ dotnet new --update-apply
 dotnet new --install <PACKAGE_ID>::<VERSION>
 
 //卸载模板
-dotnet new --uninstall ABC.Template
+dotnet new --uninstall NetCorePal.Template
 
 
 //创建项目
 
-dotnet new abcweb -n My.Project.Name -o my-project-folder-name
+dotnet new netcorepal-web -n My.Project.Name -o my-project-folder-name
 ```
 
 

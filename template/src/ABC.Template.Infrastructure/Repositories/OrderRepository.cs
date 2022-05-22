@@ -1,4 +1,4 @@
-﻿using ABC.Extensions.Repository.EntityframeworkCore;
+﻿using NetCorePal.Extensions.Repository.EntityframeworkCore;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using System;
 using System.Collections.Generic;
