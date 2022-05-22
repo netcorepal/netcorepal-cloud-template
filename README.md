@@ -30,6 +30,7 @@ dotnet new netcorepal-web -n My.Project.Name -o my-project-folder-name
     - [x] Kubernetes ConfigMap
     - [ ] Nacos
     - [ ] Apollo
+    - [ ] AgileConfig
 + 数据库
     - [x] InMemory
     - [ ] SqlServer
