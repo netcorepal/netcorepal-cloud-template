@@ -18,13 +18,13 @@ jobs:
       with:
         dotnet-version: 6.0.104
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore NetCorePal.Template.csproj
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore NetCorePal.Template.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --verbosity normal NetCorePal.Template.csproj
     - name: Pack NuGet
-      run: dotnet pack -c Release --version-suffix alpha`date +%y%m%d%H%M` -o ./
+      run: dotnet pack -c Release --version-suffix alpha`date +%y%m%d%H%M`  NetCorePal.Template.csproj 
     - name: Push NuGet
       run: dotnet nuget push '*.nupkg' -s https://www.myget.org/F/netcorepal/api/v3/index.json -k ${{ secrets.MYGET_API_KEY }} -n true --skip-duplicate
       
