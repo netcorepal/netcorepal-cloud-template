@@ -7,6 +7,7 @@ using Prometheus;
 using System.Reflection;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,7 +43,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IClock, SystemClock>();
-builder.Services.AddMediatR(typeof(Program).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 
@@ -57,6 +58,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 #endif
 
 });
+
+builder.Services.AddCap(x =>
+{
+    x.UseEntityFramework<ApplicationDbContext>();
+    x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
