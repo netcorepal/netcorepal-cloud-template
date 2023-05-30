@@ -15,21 +15,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 #endregion
 
-#region Prometheus¼à¿Ø
+#region Prometheusç›‘æ§
 builder.Services.AddHealthChecks().ForwardToPrometheus();
 builder.Services.AddHttpClient(Options.DefaultName)
         .UseHttpClientMetrics();
 #endregion
 // Add services to the container.
 
-#region  ÎÄ¼şÏµÍ³
-//TODO: ×¢²áÎÄ¼ş·şÎñÎªfileprovider£¬Èç°¢ÀïÔÆ¶ÔÏó´æ´¢
+#region  æ–‡ä»¶ç³»ç»Ÿ
+//TODO: æ³¨å†Œæ–‡ä»¶æœåŠ¡ä¸ºfileproviderï¼Œå¦‚é˜¿é‡Œäº‘å¯¹è±¡å­˜å‚¨
 
 #endregion
 
 
 
-#region Éí·İÈÏÖ¤
+#region èº«ä»½è®¤è¯
 var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis"));
 builder.Services.AddSingleton<IConnectionMultiplexer>(p => redis);
 builder.Services.AddDataProtection()
@@ -86,7 +86,7 @@ app.MapHub<ABC.Template.Web.Application.Hubs.ChatHub>("/chat");
 app.UseHttpMetrics();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapMetrics();   // Í¨¹ı   /metrics  ·ÃÎÊÖ¸±ê
+    endpoints.MapMetrics();   // é€šè¿‡   /metrics  è®¿é—®æŒ‡æ ‡
 });
 
 app.Run();
