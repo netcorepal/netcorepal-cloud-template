@@ -8,10 +8,13 @@ using System.Reflection;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using System;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 #region SignalR
+builder.Services.AddMvc();
 builder.Services.AddSignalR();
 #endregion
 
@@ -44,6 +47,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IClock, SystemClock>();
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 
