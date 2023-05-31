@@ -6,7 +6,7 @@ namespace ABC.Template.Web.Application.Commands
     {
         public DemoCreateCommandValidator()
         {
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(10);
             RuleFor(x => x.Age).InclusiveBetween(18, 60);
         }
     }
