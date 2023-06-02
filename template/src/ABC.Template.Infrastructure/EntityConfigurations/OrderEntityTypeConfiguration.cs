@@ -8,7 +8,9 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+            builder.ToTable("order");
             builder.Property(b => b.Title);
+            builder.Ignore(b => b.DomainEvents);
         }
     }
 }

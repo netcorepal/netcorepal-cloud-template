@@ -1,4 +1,5 @@
-﻿using NetCorePal.Extensions.Domain;
+﻿using ABC.Template.Domain.DomainEvents;
+using NetCorePal.Extensions.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 {
@@ -7,6 +8,13 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
     /// </summary>
     public class Order : Entity<long>, IAggregateRoot
     {
-        public string Title { get; private set; } = string.Empty;
+        public Order(string title)
+        {
+            this.Title = title;
+            this.AddDomainEvent(new OrderCreatedDomainEvent(this));
+        }
+
+
+        public string Title { get; private set; }
     }
 }
