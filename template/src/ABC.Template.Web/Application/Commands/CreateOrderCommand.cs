@@ -3,7 +3,7 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.Commands
 {
-    public record DemoCreateCommand(string Name, int Age) : ICommand
+    public record CreateOrderCommand(string Name, int Age) : ICommand
     {
     }
 }

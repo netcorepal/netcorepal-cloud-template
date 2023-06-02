@@ -10,6 +10,8 @@ using StackExchange.Redis;
 using System;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using NetCorePal.Extensions.Domain.Json;
+using ABC.Template.Web.Application.Queries;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +31,6 @@ builder.Services.AddHttpClient(Options.DefaultName)
 //TODO: 注册文件服务为fileprovider，如阿里云对象存储
 
 #endregion
-
-
-
 #region 身份认证
 var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis"));
 builder.Services.AddSingleton<IConnectionMultiplexer>(p => redis);
@@ -41,14 +40,29 @@ builder.Services.AddDataProtection()
 #endregion
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverter());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IClock, SystemClock>();
+
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+
+#region 模型验证器
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+#endregion
+
+
+builder.Services.AddScoped<OrderQuery>();
+
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
 

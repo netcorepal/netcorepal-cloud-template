@@ -10,7 +10,7 @@ namespace ABC.Template.Infrastructure
     {
         public ApplicationDbContext(DbContextOptions options, IMediator mediator, IServiceProvider provider) : base(options, mediator, provider)
         {
-
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -19,7 +19,6 @@ namespace ABC.Template.Infrastructure
             {
                 throw new System.ArgumentNullException(nameof(modelBuilder));
             }
-
             modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
         }
 

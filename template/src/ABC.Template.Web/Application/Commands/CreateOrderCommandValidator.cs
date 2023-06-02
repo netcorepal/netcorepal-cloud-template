@@ -2,9 +2,9 @@
 
 namespace ABC.Template.Web.Application.Commands
 {
-    public class DemoCreateCommandValidator : AbstractValidator<DemoCreateCommand>
+    public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
     {
-        public DemoCreateCommandValidator()
+        public CreateOrderCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(10);
             RuleFor(x => x.Age).InclusiveBetween(18, 60);
