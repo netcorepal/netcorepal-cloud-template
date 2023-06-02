@@ -12,7 +12,9 @@ namespace ABC.Template.Web.Application.DomainEventHandlers
     {
         public Task Handle(OrderCreatedDomainEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+
+            //throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

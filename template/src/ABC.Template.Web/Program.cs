@@ -12,6 +12,9 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
+using ABC.Template.Web.Application.IntegrationEventHandlers;
+using NetCorePal.Extensions.Repository.EntityframeworkCore.Extensions;
+using NetCorePal.Extensions.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +52,15 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IClock, SystemClock>();
 
+#region 仓储
+builder.Services.AddRepositories();
+#endregion
+
+
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+
+builder.Services.AddTransient<OrderPaidIntegrationEventHandler>();
 
 
 #region 模型验证器
@@ -77,6 +87,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 #endif
 
 });
+builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<ApplicationDbContext>());
 
 builder.Services.AddCap(x =>
 {

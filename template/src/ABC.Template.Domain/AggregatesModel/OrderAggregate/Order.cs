@@ -10,13 +10,25 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
     /// </summary>
     public class Order : Entity<long>, IAggregateRoot
     {
-        public Order(string title)
+        public Order(string name, int count)
         {
-            this.Title = title;
+            this.Name = name;
+            this.Count = count;
             this.AddDomainEvent(new OrderCreatedDomainEvent(this));
         }
 
 
-        public string Title { get; private set; }
+
+        public bool Paid { get; private set; } = false;
+
+        public string Name { get; private set; }
+
+        public int Count { get; private set; }
+
+
+        public void OrderPaid()
+        {
+            this.Paid = true;
+        }
     }
 }

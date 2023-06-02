@@ -14,7 +14,7 @@ namespace ABC.Template.Web.Application.Queries
 
         public async Task<Order?> QueryOrder(long orderId, CancellationToken cancellationToken)
         {
-            return await _applicationDbContext.Orders.FindAsync(orderId, cancellationToken);
+            return await _applicationDbContext.Orders.FindAsync(new object[] { orderId }, cancellationToken);
         }
     }
 }
