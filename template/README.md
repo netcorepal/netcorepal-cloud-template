@@ -12,6 +12,19 @@ docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:63
 ```
 
 
+## 框架与组件
+
++ `ASP.NET Core` https://github.com/dotnet/aspnetcore
++ `EFCore` https://github.com/dotnet/efcore
++ `CAP`  https://github.com/dotnetcore/CAP
++ `MediatR`  https://github.com/jbogard/MediatR
++ `FluentValidation`  https://docs.fluentvalidation.net/en/latest/
++ `Swashbuckle.AspNetCore.Swagger`  https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+
+
+
+
+
 
 ## 关于监控
 

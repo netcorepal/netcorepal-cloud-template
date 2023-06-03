@@ -42,7 +42,7 @@ builder.Services.AddDataProtection()
 //.PersistKeysToFileSystem(new System.IO.DirectoryInfo("d://DataProtection-Keys"));
 #endregion
 
-
+#region Controller
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverter());
@@ -50,18 +50,18 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IClock, SystemClock>();
+#endregion
 
-#region 仓储
-builder.Services.AddRepositories();
+#region 公共服务
+builder.Services.AddSingleton<IClock, SystemClock>();
 #endregion
 
 
 
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
 
+#region 集成事件
 builder.Services.AddTransient<OrderPaidIntegrationEventHandler>();
-
+#endregion
 
 #region 模型验证器
 builder.Services.AddFluentValidationAutoValidation();
@@ -69,32 +69,30 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 #endregion
 
 
+#region Query
 builder.Services.AddScoped<OrderQuery>();
+#endregion
 
 
-
+#region 基础设施
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+builder.Services.AddRepositories();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-
-#if DEBUG
-    options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
     //options.UseInMemoryDatabase("ApplicationDbContext");
+    options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
+    
     options.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors();
-
-
-#endif
-
 });
 builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<ApplicationDbContext>());
-
 builder.Services.AddCap(x =>
 {
     x.UseEntityFramework<ApplicationDbContext>();
     x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
 });
-
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
