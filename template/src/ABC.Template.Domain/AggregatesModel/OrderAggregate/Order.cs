@@ -10,6 +10,11 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
     /// </summary>
     public class Order : Entity<long>, IAggregateRoot
     {
+        /// <summary>
+        /// 受保护的默认构造函数，用以作为EF Core的反射入口
+        /// </summary>
+        protected Order() { }
+
         public Order(string name, int count)
         {
             this.Name = name;
@@ -21,7 +26,7 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 
         public bool Paid { get; private set; } = false;
 
-        public string Name { get; private set; }
+        public string Name { get; private set; } = string.Empty;
 
         public int Count { get; private set; }
 
