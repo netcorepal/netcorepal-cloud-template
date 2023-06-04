@@ -69,6 +69,10 @@ builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 #endregion
 
 
+#region Mapper Provider
+builder.Services.AddMapperPrivider(Assembly.GetExecutingAssembly());
+#endregion
+
 #region Query
 builder.Services.AddScoped<OrderQuery>();
 #endregion
