@@ -1,4 +1,5 @@
-﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+﻿using ABC.Template.Domain;
+using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.Commands;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Application.Queries;
@@ -7,6 +8,9 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetCorePal.Extensions.Domain;
+using System.Collections.Concurrent;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace ABC.Template.Web.Controllers
 {
@@ -43,9 +47,10 @@ namespace ABC.Template.Web.Controllers
 
         [HttpGet]
         [Route("/get/{id}")]
-        public async Task<Entity?> GetById([FromRoute] long id)
+        public async Task<Order?> GetById([FromRoute] OrderId id)
         {
-            return await _orderQuery.QueryOrder(id, HttpContext.RequestAborted);
+            var order = await _orderQuery.QueryOrder(id, HttpContext.RequestAborted);
+            return order;
         }
 
 
@@ -58,6 +63,9 @@ namespace ABC.Template.Web.Controllers
         {
             await _capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent { OrderId = id });
         }
+
+
+        
 
     }
 }

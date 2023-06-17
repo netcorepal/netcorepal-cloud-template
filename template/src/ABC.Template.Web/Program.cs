@@ -15,9 +15,12 @@ using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using NetCorePal.Extensions.Repository.EntityframeworkCore.Extensions;
 using NetCorePal.Extensions.Repository;
+using NetCorePal.Extensions.Domain;
+using Microsoft.OpenApi.Models;
+using ABC.Template.Domain;
+using ABC.Template.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-
 #region SignalR
 builder.Services.AddMvc();
 builder.Services.AddSignalR();
@@ -45,11 +48,11 @@ builder.Services.AddDataProtection()
 #region Controller
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    options.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverter());
+    options.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverterFactory());
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => c.AddEntityIdSchemaMap()); //强类型id swagger schema 映射
 #endregion
 
 #region 公共服务
@@ -85,7 +88,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     //options.UseInMemoryDatabase("ApplicationDbContext");
     options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
-    
+
     options.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors();

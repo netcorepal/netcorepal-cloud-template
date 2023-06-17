@@ -17,8 +17,8 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.1.0-preview.1.2306040430" />
-    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.1.0-preview.1.2306040430" />
+    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.1.0-preview.1.2306170313" />
+    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.1.0-preview.1.2306170313" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="6.0.0" />
