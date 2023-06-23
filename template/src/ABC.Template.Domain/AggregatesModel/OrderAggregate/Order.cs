@@ -10,7 +10,7 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
     /// <summary>
     /// 聚合根
     /// </summary>
-    public class Order : Entity<OrderId>, IAggregateRoot
+    public partial class Order : Entity<OrderId>, IAggregateRoot
     {
         /// <summary>
         /// 受保护的默认构造函数，用以作为EF Core的反射入口
@@ -30,10 +30,20 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 
         public int Count { get; private set; }
 
+        public partial void ABC();
 
         public void OrderPaid()
         {
             this.Paid = true;
+        }
+    }
+
+
+    public partial class Order
+    {
+        public partial void ABC()
+        { 
+
         }
     }
 }

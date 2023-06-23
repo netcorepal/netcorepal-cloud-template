@@ -5,8 +5,7 @@
 dotnet new -i  NetCorePal.Template  --nuget-source https://www.myget.org/F/netcorepal/api/v3/index.json
 
 //更新模板
-dotnet new --update-check 
-dotnet new --update-apply 
+dotnet new update
 // or 
 dotnet new --install <PACKAGE_ID>::<VERSION>
 
