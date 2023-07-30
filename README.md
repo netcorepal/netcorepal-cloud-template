@@ -2,7 +2,7 @@
 
 ``` bat
 //安装模板
-dotnet new -i  NetCorePal.Template  --nuget-source https://www.myget.org/F/netcorepal/api/v3/index.json
+dotnet new -i  NetCorePal.Template
 
 //更新模板
 dotnet new update
