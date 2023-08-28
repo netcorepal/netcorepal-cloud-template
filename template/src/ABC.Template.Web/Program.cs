@@ -1,5 +1,4 @@
 using NetCorePal.Extensions.Primitives;
-using ABC.Template.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -13,15 +12,13 @@ using FluentValidation;
 using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
-using NetCorePal.Extensions.Repository.EntityframeworkCore.Extensions;
 using NetCorePal.Extensions.Repository;
-using NetCorePal.Extensions.Domain;
-using Microsoft.OpenApi.Models;
-using ABC.Template.Domain;
 using ABC.Template.Web.Extensions;
+using NetCorePal.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 #region SignalR
+builder.Services.AddHealthChecks();
 builder.Services.AddMvc();
 builder.Services.AddSignalR();
 #endregion
@@ -38,7 +35,7 @@ builder.Services.AddHttpClient(Options.DefaultName)
 
 #endregion
 #region 身份认证
-var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis"));
+var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!);
 builder.Services.AddSingleton<IConnectionMultiplexer>(p => redis);
 builder.Services.AddDataProtection()
     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
@@ -83,17 +80,20 @@ builder.Services.AddScoped<OrderQuery>();
 
 #region 基础设施
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-builder.Services.AddRepositories();
+builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     //options.UseInMemoryDatabase("ApplicationDbContext");
-    options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
 
+    // options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
     options.LogTo(Console.WriteLine, LogLevel.Information)
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors();
 });
 builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<ApplicationDbContext>());
+builder.Services.AddPostgreSqlTransactionHandler();
 builder.Services.AddCap(x =>
 {
     x.UseEntityFramework<ApplicationDbContext>();
@@ -121,7 +121,12 @@ app.MapHub<ABC.Template.Web.Application.Hubs.ChatHub>("/chat");
 app.UseHttpMetrics();
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapHealthChecks("/health");
     endpoints.MapMetrics();   // 通过   /metrics  访问指标
 });
 
 app.Run();
+
+
+
+public partial class Program { }
