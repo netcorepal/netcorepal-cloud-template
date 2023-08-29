@@ -79,7 +79,7 @@ builder.Services.AddScoped<OrderQuery>();
 
 
 #region 基础设施
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()).AddUnitOfWorkBehaviors());
 builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -92,7 +92,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors();
 });
-builder.Services.AddScoped<IUnitOfWork>(p => p.GetRequiredService<ApplicationDbContext>());
+builder.Services.AddUnitOfWork<ApplicationDbContext>();
 builder.Services.AddPostgreSqlTransactionHandler();
 builder.Services.AddCap(x =>
 {

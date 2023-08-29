@@ -38,10 +38,10 @@ namespace ABC.Template.Web.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> Post([FromBody] CreateOrderCommand command)
+        public async Task<OrderId> Post([FromBody] CreateOrderCommand command)
         {
             var id = await _mediator.Send(command);
-            return Ok(id);
+            return id;
         }
 
 
@@ -65,7 +65,7 @@ namespace ABC.Template.Web.Controllers
         }
 
 
-        
+
 
     }
 }

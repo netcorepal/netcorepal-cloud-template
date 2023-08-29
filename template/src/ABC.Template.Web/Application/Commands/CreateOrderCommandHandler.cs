@@ -7,7 +7,7 @@ using NetCorePal.Extensions.Repository;
 
 namespace ABC.Template.Web.Application.Commands
 {
-    public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, long>
+    public class CreateOrderCommandHandler : ICommandHandler<CreateOrderCommand, OrderId>
     {
         readonly IOrderRepository _orderRepository;
         readonly ILogger _logger;
@@ -25,11 +25,10 @@ namespace ABC.Template.Web.Application.Commands
 
 
 
-        public async Task<long> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderId> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = request.MapTo<Order>(_mapperProvider);
             order = await _orderRepository.AddAsync(order, cancellationToken);
-            await _unitOfWork.SaveEntitiesAsync();
             return order.Id;
         }
     }
