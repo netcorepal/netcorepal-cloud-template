@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ABC.Template.Domain;
+using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure
 {
@@ -22,16 +23,12 @@ namespace ABC.Template.Infrastructure
                 throw new System.ArgumentNullException(nameof(modelBuilder));
             }
             modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-        }
-
-
-        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
-        {
-            configurationBuilder.Properties<OrderId>().HaveConversion<OrderIdValueConverter>();
-            base.ConfigureConventions(configurationBuilder);
+            modelBuilder.ApplyConfiguration(new DeliverRecordConfiguration());
         }
 
         public DbSet<Order> Orders => Set<Order>();
+
+        public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
 
     }
 }

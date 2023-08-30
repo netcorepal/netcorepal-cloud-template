@@ -1,4 +1,5 @@
 ﻿using ABC.Template.Domain;
+using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -11,16 +12,14 @@ using System.Reflection.Emit;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations
 {
-    internal class OrderEntityTypeConfiguration : IEntityTypeConfiguration<Order>
+    internal class DeliverRecordConfiguration : IEntityTypeConfiguration<DeliverRecord>
     {
-        public void Configure(EntityTypeBuilder<Order> builder)
+        public void Configure(EntityTypeBuilder<DeliverRecord> builder)
         {
-            builder.ToTable("order");
+            builder.ToTable("deliverrecord");
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id).ValueGeneratedOnAdd().UseSnowFlakeValueGenerator().HasConversion(new OrderIdValueConverter());
-            builder.Property(b => b.Name).HasMaxLength(100);
-            builder.Property(b => b.Count);
-            builder.Property(b => b.Paid);
+            builder.Property(t => t.Id).ValueGeneratedOnAdd().UseSnowFlakeValueGenerator().HasConversion(new DeliverRecordIdValueConverter());
+            builder.Property(t => t.OrderId).HasConversion(new OrderIdValueConverter());
         }
     }
 
