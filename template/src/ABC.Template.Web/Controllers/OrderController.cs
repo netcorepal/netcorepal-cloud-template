@@ -59,9 +59,9 @@ namespace ABC.Template.Web.Controllers
 
         [HttpGet]
         [Route("/sendEvent")]
-        public async Task SendEvent(long id)
+        public async Task SendEvent(OrderId id)
         {
-            await _capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent { OrderId = id });
+            await _capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent(id));
         }
 
 

@@ -15,9 +15,9 @@
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.0-preview.7.23375.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-preview.7.23375.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
-    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.1.0-preview.1.2308301610" />
-    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.1.0-preview.1.2308301610" />
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore.PostgreSql" Version="0.1.0-preview.1.2308301610" />
+    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.1.0-preview.1.2308311432" />
+    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.1.0-preview.1.2308311432" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore.PostgreSql" Version="0.1.0-preview.1.2308311432" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-preview.7" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="6.0.0" />
