@@ -18,7 +18,7 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
         {
             builder.ToTable("deliverrecord");
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id).ValueGeneratedOnAdd().UseSnowFlakeValueGenerator().HasConversion(new DeliverRecordIdValueConverter());
+            builder.Property(t => t.Id).ValueGeneratedOnAdd().UseSnowFlakeValueGenerator();
             builder.Property(t => t.OrderId).HasConversion(new OrderIdValueConverter());
         }
     }

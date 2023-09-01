@@ -26,6 +26,14 @@ namespace ABC.Template.Infrastructure
             modelBuilder.ApplyConfiguration(new DeliverRecordConfiguration());
         }
 
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<OrderId>().HaveConversion<OrderIdValueConverter>();
+            configurationBuilder.Properties<DeliverRecordId>().HaveConversion<DeliverRecordIdValueConverter>();
+            base.ConfigureConventions(configurationBuilder);
+        }
+
         public DbSet<Order> Orders => Set<Order>();
 
         public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
