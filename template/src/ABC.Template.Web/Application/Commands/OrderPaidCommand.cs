@@ -2,9 +2,5 @@
 
 namespace ABC.Template.Web.Application.Commands
 {
-    public record class OrderPaidCommand(long OrderId) : ICommand
-    {
-    }
-
-    
+    public record class OrderPaidCommand(long OrderId) : ICommand;
 }

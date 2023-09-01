@@ -15,8 +15,8 @@
     <AdditionalFiles Include="docs\mermaid.md.example" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" Version="0.1.0-preview.1.2308311432" />
-    <PackageReference Include="NetCorePal.Extensions.Domain.CodeGenerators" Version="0.1.0-preview.1.2308311432" />
+    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" Version="0.1.0-preview.1.2309011612" />
+    <PackageReference Include="NetCorePal.Extensions.Domain.CodeGenerators" Version="0.1.0-preview.1.2309011612" />
   </ItemGroup>
 
 </Project>

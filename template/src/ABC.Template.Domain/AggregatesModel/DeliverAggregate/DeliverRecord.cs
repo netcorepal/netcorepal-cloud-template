@@ -1,26 +1,9 @@
-﻿using NetCorePal.Extensions.Domain;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+using NetCorePal.Extensions.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.DeliverAggregate
 {
-
-    [TypeConverter(typeof(EntityIdTypeConverter))]
-    public record DeliverRecordId(long Id) : IEntityId
-    {
-        public static implicit operator long(DeliverRecordId id) => id.Id;
-        public static implicit operator DeliverRecordId(long id) => new DeliverRecordId(id);
-
-
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
-    }
+    public partial record DeliverRecordId : IInt64StronglyTypedId;
 
     public class DeliverRecord : Entity<DeliverRecordId>, IAggregateRoot
     {

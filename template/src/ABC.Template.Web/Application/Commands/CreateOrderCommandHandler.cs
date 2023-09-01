@@ -11,14 +11,12 @@ namespace ABC.Template.Web.Application.Commands
     {
         readonly IOrderRepository _orderRepository;
         readonly ILogger _logger;
-        readonly IUnitOfWork _unitOfWork;
         readonly IMapperProvider _mapperProvider;
 
-        public CreateOrderCommandHandler(IOrderRepository orderRepository, IUnitOfWork unitOfWork, IMapperProvider mapperProvider, ILogger<OrderPaidIntegrationEventHandler> logger)
+        public CreateOrderCommandHandler(IOrderRepository orderRepository, IMapperProvider mapperProvider, ILogger<OrderPaidIntegrationEventHandler> logger)
         {
             _orderRepository = orderRepository;
             _logger = logger;
-            _unitOfWork = unitOfWork;
             _mapperProvider = mapperProvider;
         }
 
@@ -29,6 +27,7 @@ namespace ABC.Template.Web.Application.Commands
         {
             var order = request.MapTo<Order>(_mapperProvider);
             order = await _orderRepository.AddAsync(order, cancellationToken);
+            _logger.LogInformation($"order created, id:{order.Id}");
             return order.Id;
         }
     }

@@ -6,7 +6,7 @@ namespace ABC.Template.Web.Application.Commands
 {
     public class DeliverGoodsCommandHandler : ICommandHandler<DeliverGoodsCommand, DeliverRecordId>
     {
-        IDeliverRecordRepository _deliverRecordRepository;
+        readonly IDeliverRecordRepository _deliverRecordRepository;
         public DeliverGoodsCommandHandler(IDeliverRecordRepository deliverRecordRepository)
         {
             _deliverRecordRepository = deliverRecordRepository;

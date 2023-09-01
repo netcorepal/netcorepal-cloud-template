@@ -5,7 +5,7 @@ namespace ABC.Template.Web.Application.Commands
 {
     public class OrderPaidCommandHandler : ICommandHandler<OrderPaidCommand>
     {
-        IOrderRepository _orderRepository;
+        readonly IOrderRepository _orderRepository;
         public OrderPaidCommandHandler(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
