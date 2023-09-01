@@ -9,7 +9,7 @@ using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure
 {
-    public class ApplicationDbContext : EFContext
+    public partial class ApplicationDbContext : EFContext
     {
         public ApplicationDbContext(DbContextOptions options, IMediator mediator, IServiceProvider provider) : base(options, mediator, provider)
         {
@@ -29,8 +29,7 @@ namespace ABC.Template.Infrastructure
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
-            configurationBuilder.Properties<OrderId>().HaveConversion<OrderIdValueConverter>();
-            configurationBuilder.Properties<DeliverRecordId>().HaveConversion<DeliverRecordIdValueConverter>();
+            ConfigureStronglyTypedIdValueConverter(configurationBuilder);
             base.ConfigureConventions(configurationBuilder);
         }
 
