@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore" Version="0.1.0-preview.1.2309020610" />
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore.CodeGenerators" Version="0.1.0-preview.1.2309020610" />
-    <PackageReference Include="NetCorePal.Extensions.Snowflake.EntityFrameworkCore" Version="0.1.0-preview.1.2309020610" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore" Version="0.1.0-preview.1.2309021309" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore.CodeGenerators" Version="0.1.0-preview.1.2309021309" />
+    <PackageReference Include="NetCorePal.Extensions.Snowflake.EntityFrameworkCore" Version="0.1.0-preview.1.2309021309" />
   </ItemGroup>
 
   <ItemGroup>
