@@ -3,8 +3,6 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.EntityConfigurations;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ABC.Template.Domain;
 using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure
@@ -20,7 +18,7 @@ namespace ABC.Template.Infrastructure
         {
             if (modelBuilder is null)
             {
-                throw new System.ArgumentNullException(nameof(modelBuilder));
+                throw new ArgumentNullException(nameof(modelBuilder));
             }
             modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DeliverRecordConfiguration());
@@ -34,7 +32,6 @@ namespace ABC.Template.Infrastructure
         }
 
         public DbSet<Order> Orders => Set<Order>();
-
         public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
 
     }
