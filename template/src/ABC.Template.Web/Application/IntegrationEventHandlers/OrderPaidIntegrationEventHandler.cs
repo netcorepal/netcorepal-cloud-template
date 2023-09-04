@@ -1,10 +1,12 @@
 ﻿using ABC.Template.Web.Application.Commands;
 using DotNetCore.CAP;
 using MediatR;
+using NetCorePal.Extensions.DistributedTransactions;
+using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.IntegrationEventHandlers
 {
-    public class OrderPaidIntegrationEventHandler : ICapSubscribe
+    public class OrderPaidIntegrationEventHandler : IIntegrationEventHandler<OrderPaidIntegrationEvent>
     {
         readonly ILogger _logger;
         readonly IMediator _mediator;
@@ -14,14 +16,11 @@ namespace ABC.Template.Web.Application.IntegrationEventHandlers
             _logger = logger;
         }
 
-
-        [CapSubscribe("OrderPaidIntegrationEvent")]
-        public async Task HandlerAsync(OrderPaidIntegrationEvent integrationEvent)
+        public Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
         {
-            var cmd = new OrderPaidCommand(integrationEvent.OrderId);
-            await _mediator.Send(cmd);
+            var cmd = new OrderPaidCommand(eventData.OrderId);
+            return _mediator.Send(cmd);
         }
-
 
     }
 }

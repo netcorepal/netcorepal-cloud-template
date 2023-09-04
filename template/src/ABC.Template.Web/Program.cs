@@ -13,6 +13,7 @@ using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
+using DotNetCore.CAP;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -121,12 +122,12 @@ try
     });
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
     builder.Services.AddPostgreSqlTransactionHandler();
+    builder.Services.AddAllCAPEventHanders(typeof(Program));
     builder.Services.AddCap(x =>
     {
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
     });
-
     #endregion
 
     var app = builder.Build();
