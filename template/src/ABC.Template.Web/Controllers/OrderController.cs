@@ -3,10 +3,12 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.Commands;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Application.Queries;
+using ABC.Template.Web.Application.Sagas;
 using DotNetCore.CAP;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NetCorePal.Extensions.DistributedTransactions.Sagas;
 using NetCorePal.Extensions.Domain;
 using System.Collections.Concurrent;
 using System.ComponentModel;
@@ -64,6 +66,13 @@ namespace ABC.Template.Web.Controllers
             await _capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent(id));
         }
 
+
+        [HttpGet]
+        [Route("/saga")]
+        public async Task Saga([FromServices] ISagaManager sagaManager)
+        {
+            await sagaManager.SendAsync<DemoSaga, DemoSagaData>(new DemoSagaData { SagaId = Guid.NewGuid() }, HttpContext.RequestAborted);
+        }
 
 
 
