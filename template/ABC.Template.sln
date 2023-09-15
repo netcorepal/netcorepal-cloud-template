@@ -20,11 +20,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5C6B3693-7A37-4ABF-A217-8EDA0B51F742}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Domain.Tests", "test\ABC.Template.Domain.Tests\ABC.Template.Domain.Tests.csproj", "{7D7959A4-5875-44E3-81FB-B4C6E5FE59DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Domain.Tests", "test\ABC.Template.Domain.Tests\ABC.Template.Domain.Tests.csproj", "{7D7959A4-5875-44E3-81FB-B4C6E5FE59DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Infrastructure.Tests", "test\ABC.Template.Infrastructure.Tests\ABC.Template.Infrastructure.Tests.csproj", "{0AB6D561-D07F-4833-BB91-D87EFC8485C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Infrastructure.Tests", "test\ABC.Template.Infrastructure.Tests\ABC.Template.Infrastructure.Tests.csproj", "{0AB6D561-D07F-4833-BB91-D87EFC8485C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ABC.Template.Web.Tests", "test\ABC.Template.Web.Tests\ABC.Template.Web.Tests.csproj", "{64AD4028-B7DA-4858-964D-26977C1A5EA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Web.Tests", "test\ABC.Template.Web.Tests\ABC.Template.Web.Tests.csproj", "{64AD4028-B7DA-4858-964D-26977C1A5EA9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D8FA34CE-25DA-4E6F-AD50-1EAD1F33F9F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{654F99A0-E0E5-4B4D-8FBF-3412C8C1B659} = {D8FA34CE-25DA-4E6F-AD50-1EAD1F33F9F1}
+		{0AD006F0-DC03-431A-A83D-707C27923D13} = {D8FA34CE-25DA-4E6F-AD50-1EAD1F33F9F1}
+		{85845ACB-3D0E-436B-8FE1-4EA3263886DF} = {D8FA34CE-25DA-4E6F-AD50-1EAD1F33F9F1}
 		{7D7959A4-5875-44E3-81FB-B4C6E5FE59DA} = {5C6B3693-7A37-4ABF-A217-8EDA0B51F742}
 		{0AB6D561-D07F-4833-BB91-D87EFC8485C4} = {5C6B3693-7A37-4ABF-A217-8EDA0B51F742}
 		{64AD4028-B7DA-4858-964D-26977C1A5EA9} = {5C6B3693-7A37-4ABF-A217-8EDA0B51F742}
