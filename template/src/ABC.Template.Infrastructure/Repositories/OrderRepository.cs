@@ -1,12 +1,6 @@
-﻿using NetCorePal.Extensions.Repository.EntityframeworkCore;
+﻿using NetCorePal.Extensions.Repository.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NetCorePal.Extensions.Repository;
-using ABC.Template.Domain;
 
 namespace ABC.Template.Infrastructure.Repositories
 {

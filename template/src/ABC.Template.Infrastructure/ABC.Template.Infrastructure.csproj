@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityframeworkCore" Version="0.1.0-preview.1.2309151241" />
-    <PackageReference Include="NetCorePal.Extensions.Snowflake.EntityFrameworkCore" Version="0.1.0-preview.1.2309151241" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="0.1.0-preview.1.2309160710" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="0.1.0-preview.1.2309160710" />
   </ItemGroup>
 
   <ItemGroup>

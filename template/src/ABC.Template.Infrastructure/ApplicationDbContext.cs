@@ -1,4 +1,4 @@
-﻿using NetCorePal.Extensions.Repository.EntityframeworkCore;
+﻿using NetCorePal.Extensions.Repository.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.EntityConfigurations;
 using MediatR;
@@ -7,9 +7,10 @@ using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure
 {
-    public partial class ApplicationDbContext : EFContext
+    public partial class ApplicationDbContext : AppDbContextBase
     {
-        public ApplicationDbContext(DbContextOptions options, IMediator mediator, IServiceProvider provider) : base(options, mediator, provider)
+        public ApplicationDbContext(DbContextOptions options, IMediator mediator, IServiceProvider provider) : base(
+            options, mediator, provider)
         {
             Database.EnsureCreated();
         }
@@ -20,6 +21,7 @@ namespace ABC.Template.Infrastructure
             {
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
+
             modelBuilder.ApplyConfiguration(new OrderEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new DeliverRecordConfiguration());
         }
@@ -33,6 +35,5 @@ namespace ABC.Template.Infrastructure
 
         public DbSet<Order> Orders => Set<Order>();
         public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
-
     }
 }
