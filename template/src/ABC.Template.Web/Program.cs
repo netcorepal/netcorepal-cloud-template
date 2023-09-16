@@ -15,6 +15,7 @@ using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
 using DotNetCore.CAP;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -158,12 +159,8 @@ try
     #endregion
 
     app.UseHttpMetrics();
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapHealthChecks("/health");
-        endpoints.MapMetrics(); // 通过   /metrics  访问指标
-    });
-
+    app.UseHealthChecks(path: "/health");
+    app.MapMetrics(pattern: "/metrics"); // 通过   /metrics  访问指标
     app.Run();
 }
 catch (Exception ex)
