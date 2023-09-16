@@ -11,7 +11,6 @@ docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:63
 
 ```
 
-
 ## 框架与组件
 
 + `ASP.NET Core` https://github.com/dotnet/aspnetcore
@@ -21,10 +20,18 @@ docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:63
 + `FluentValidation`  https://docs.fluentvalidation.net/en/latest/
 + `Swashbuckle.AspNetCore.Swagger`  https://github.com/domaindrivendev/Swashbuckle.AspNetCore
 
+## 数据库迁移
 
+```shell
+# 安装工具  SEE： https://learn.microsoft.com/zh-cn/ef/core/cli/dotnet#installing-the-tools
+dotnet tool install --global dotnet-ef --version 8.0.0-preview.7.23375.4
 
+# 强制更新数据库
+dotnet ef database update -p src/ABC.Template.Web 
 
-
+# 创建迁移 SEE：https://learn.microsoft.com/zh-cn/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli
+dotnet ef migrations add InitialCreate -p src/ABC.Template.Web 
+```
 
 ## 关于监控
 

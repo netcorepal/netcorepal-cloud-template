@@ -10,6 +10,7 @@ using FluentValidation;
 using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
+using ABC.Template.Web.Application.Sagas;
 using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -115,7 +116,8 @@ try
         //options.UseInMemoryDatabase("ApplicationDbContext");
 
         // options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+            b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
         options.LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
@@ -128,6 +130,9 @@ try
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
     });
+    builder.Services.AddCAPSagaEventPublisher();
+    builder.Services.AddSagas<ApplicationDbContext>(typeof(Program));
+
     #endregion
 
     var app = builder.Build();
