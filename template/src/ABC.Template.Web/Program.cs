@@ -146,12 +146,8 @@ try
     #endregion
 
     app.UseHttpMetrics();
-    app.UseEndpoints(endpoints =>
-    {
-        endpoints.MapHealthChecks("/health");
-        endpoints.MapMetrics(); // 通过   /metrics  访问指标
-    });
-
+    app.MapHealthChecks("/health");
+    app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
     app.Run();
 }
 catch (Exception ex)

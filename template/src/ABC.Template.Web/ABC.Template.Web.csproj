@@ -39,4 +39,8 @@
     <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
