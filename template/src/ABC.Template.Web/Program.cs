@@ -10,11 +10,9 @@ using FluentValidation;
 using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
-using ABC.Template.Web.Application.Sagas;
 using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
-using DotNetCore.CAP;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -43,19 +41,12 @@ try
 
     // Add services to the container.
 
-    #region 文件系统
-
-    //TODO: 注册文件服务为fileprovider，如阿里云对象存储
-
-    #endregion
-
     #region 身份认证
 
     var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!);
-    builder.Services.AddSingleton<IConnectionMultiplexer>(p => redis);
+    builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
     builder.Services.AddDataProtection()
         .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
-    //.PersistKeysToFileSystem(new System.IO.DirectoryInfo("d://DataProtection-Keys"));
 
     #endregion
 
@@ -113,9 +104,6 @@ try
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        //options.UseInMemoryDatabase("ApplicationDbContext");
-
-        // options.UseMySql(builder.Configuration.GetConnectionString("MySql"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySql")));
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
             b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
         options.LogTo(Console.WriteLine, LogLevel.Information)
@@ -175,6 +163,8 @@ finally
     Log.CloseAndFlush();
 }
 
+#pragma warning disable S1118
 public partial class Program
+#pragma warning restore S1118
 {
 }
