@@ -22,9 +22,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0-rc.1.23419.6" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSql" Version="0.1.0" />
-    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.1.0" />
-    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.1.0" />
+    <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="0.2.0-preview.1.2309241430" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSql" Version="0.2.0-preview.1.2309241430" />
+    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="0.2.0-preview.1.2309241430" />
+    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="0.2.0-preview.1.2309241430" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0-rc.1" />
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.1" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.0.1" />

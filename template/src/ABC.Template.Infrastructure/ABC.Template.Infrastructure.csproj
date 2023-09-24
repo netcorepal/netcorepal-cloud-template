@@ -11,8 +11,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>-->
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="0.1.0" />
-    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="0.1.0" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="0.2.0-preview.1.2309241430" />
+    <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="0.2.0-preview.1.2309241430" />
     <PackageReference Update="SonarAnalyzer.CSharp" Version="9.10.0.77988">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

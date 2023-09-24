@@ -70,7 +70,6 @@ try
 
     #endregion
 
-
     #region 集成事件
 
     builder.Services.AddTransient<OrderPaidIntegrationEventHandler>();
@@ -83,7 +82,6 @@ try
     builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
     #endregion
-
 
     #region Mapper Provider
 
@@ -134,7 +132,7 @@ try
     #endregion
 
     var app = builder.Build();
-
+    app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
