@@ -13,6 +13,8 @@ using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
+using Hangfire;
+using Hangfire.Redis.StackExchange;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -117,10 +119,18 @@ try
     {
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
+        x.UseDashboard();   //CAP Dashboard  path：  /cap
     });
     builder.Services.AddCAPSagaEventPublisher();
     builder.Services.AddSagas<ApplicationDbContext>(typeof(Program));
+    #endregion
 
+    #region  Jobs
+    builder.Services.AddHangfire(x =>
+    {
+        x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis"));
+    });
+    builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
     #endregion
 
     var app = builder.Build();
@@ -148,6 +158,7 @@ try
     app.UseHttpMetrics();
     app.MapHealthChecks("/health");
     app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
+    app.UseHangfireDashboard();
     app.Run();
 }
 catch (Exception ex)
