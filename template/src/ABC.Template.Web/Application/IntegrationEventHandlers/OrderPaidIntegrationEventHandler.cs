@@ -6,21 +6,14 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.IntegrationEventHandlers
 {
-    public class OrderPaidIntegrationEventHandler : IIntegrationEventHandler<OrderPaidIntegrationEvent>
+    public class OrderPaidIntegrationEventHandler(IMediator mediator,
+        ILogger<OrderPaidIntegrationEventHandler> logger) :
+        IIntegrationEventHandler<OrderPaidIntegrationEvent>
     {
-        readonly ILogger _logger;
-        readonly IMediator _mediator;
-        public OrderPaidIntegrationEventHandler(IMediator mediator, ILogger<OrderPaidIntegrationEventHandler> logger)
-        {
-            _mediator = mediator;
-            _logger = logger;
-        }
-
         public Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
         {
             var cmd = new OrderPaidCommand(eventData.OrderId);
-            return _mediator.Send(cmd);
+            return mediator.Send(cmd, cancellationToken);
         }
-
     }
 }

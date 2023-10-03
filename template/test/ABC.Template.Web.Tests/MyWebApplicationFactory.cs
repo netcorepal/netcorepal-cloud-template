@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
+using Testcontainers.MySql;
 using Testcontainers.Redis;
 using Testcontainers.RabbitMq;
 using Testcontainers.PostgreSql;
@@ -14,14 +15,17 @@ namespace ABC.Template.Web.Tests
         private readonly RabbitMqContainer rabbitMqContainer = new RabbitMqBuilder().WithHostname("rabbitmqhost")
             .WithUsername("guest").WithPassword("guest").Build();
 
-        private readonly PostgreSqlContainer postgreSqlContainer = new PostgreSqlBuilder()
-            .WithHostname("postgresqlhost").WithUsername("postgres").WithPassword("123456")
+        // private readonly PostgreSqlContainer postgreSqlContainer = new PostgreSqlBuilder()
+        //     .WithHostname("postgresqlhost").WithUsername("postgres").WithPassword("123456")
+        //     .WithDatabase("demo").Build();
+        
+        private readonly MySqlContainer mySqlContainer = new MySqlBuilder()
+            .WithHostname("mysqlhost").WithUsername("root").WithPassword("123456")
             .WithDatabase("demo").Build();
-
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseSetting("ConnectionStrings:PostgreSQL", postgreSqlContainer.GetConnectionString());
+            //builder.UseSetting("ConnectionStrings:PostgreSQL", postgreSqlContainer.GetConnectionString());
             builder.UseSetting("ConnectionStrings:Redis", redisContainer.GetConnectionString());
             builder.UseSetting("RabbitMQ:Port", rabbitMqContainer.GetMappedPublicPort(5672).ToString());
             builder.UseEnvironment("Development");
@@ -32,14 +36,14 @@ namespace ABC.Template.Web.Tests
         {
             return Task.WhenAll(redisContainer.StartAsync(),
                 rabbitMqContainer.StartAsync(),
-                postgreSqlContainer.StartAsync());
+                mySqlContainer.StartAsync());
         }
 
         public new Task DisposeAsync()
         {
             return Task.WhenAll(redisContainer.StopAsync(),
                 rabbitMqContainer.StopAsync(),
-                postgreSqlContainer.StopAsync());
+                mySqlContainer.StopAsync());
         }
     }
 }

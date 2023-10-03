@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Prometheus;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
@@ -104,14 +105,17 @@ try
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+        options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
+            new  MySqlServerVersion(new Version(8, 0, 34)),
             b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
+        // options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
+        //     b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
         options.LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
-    builder.Services.AddPostgreSqlTransactionHandler();
+    builder.Services.AddMySqlTransactionHandler();
     builder.Services.AddAllCAPEventHanders(typeof(Program));
     builder.Services.AddCap(x =>
     {
