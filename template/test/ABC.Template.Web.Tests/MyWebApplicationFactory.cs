@@ -27,6 +27,7 @@ namespace ABC.Template.Web.Tests
         {
             //builder.UseSetting("ConnectionStrings:PostgreSQL", postgreSqlContainer.GetConnectionString());
             builder.UseSetting("ConnectionStrings:Redis", redisContainer.GetConnectionString());
+            builder.UseSetting("ConnectionStrings:MySql", mySqlContainer.GetConnectionString());
             builder.UseSetting("RabbitMQ:Port", rabbitMqContainer.GetMappedPublicPort(5672).ToString());
             builder.UseEnvironment("Development");
             base.ConfigureWebHost(builder);

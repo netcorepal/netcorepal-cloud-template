@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -15,22 +15,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="7.2.1" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0-preview.7.23375.9" />
-    <PackageReference Include="Testcontainers" Version="3.5.0" />
-    <PackageReference Include="Testcontainers.MySql" Version="3.5.0" />
-    <PackageReference Include="Testcontainers.PostgreSql" Version="3.5.0" />
-    <PackageReference Include="Testcontainers.RabbitMq" Version="3.4.0" />
-    <PackageReference Include="Testcontainers.Redis" Version="3.4.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0-preview-23371-04" />
-    <PackageReference Include="xunit" Version="2.4.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Testcontainers" />
+    <PackageReference Include="Testcontainers.MySql" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
+    <PackageReference Include="Testcontainers.RabbitMq" />
+    <PackageReference Include="Testcontainers.Redis"  />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
+    <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
