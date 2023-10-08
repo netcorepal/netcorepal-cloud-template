@@ -8,23 +8,11 @@ namespace ABC.Template.Web.Application.Sagas
     }
 
 
-    public class DemoEvent : ISagaEvent
+    public record DemoEvent(Guid SagaId) : ISagaEvent;
+
+
+    public class DemoSaga(ISagaContext<DemoSagaData> context) : Saga<DemoSagaData>(context), ISagaEventHandler<DemoEvent>
     {
-        public DemoEvent(Guid sagaId)
-        {
-            SagaId = sagaId;
-        }
-
-        public Guid SagaId { get; set; }
-    }
-
-
-    public class DemoSaga : Saga<DemoSagaData>, ISagaEventHandler<DemoEvent>
-    {
-        public DemoSaga(ISagaContext<DemoSagaData> context) : base(context)
-        {
-        }
-
         public Task HandleAsync(DemoEvent eventData, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();

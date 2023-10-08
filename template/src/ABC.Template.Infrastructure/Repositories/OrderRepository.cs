@@ -11,10 +11,7 @@ namespace ABC.Template.Infrastructure.Repositories
     }
 
 
-    public class OrderRepository : RepositoryBase<Order, OrderId, ApplicationDbContext>, IOrderRepository
+    public class OrderRepository(ApplicationDbContext context) : RepositoryBase<Order, OrderId, ApplicationDbContext>(context), IOrderRepository
     {
-        public OrderRepository(ApplicationDbContext context) : base(context)
-        {
-        }
     }
 }

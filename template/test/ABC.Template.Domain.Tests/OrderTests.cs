@@ -6,7 +6,7 @@ namespace ABC.Template.Domain.Tests
         [Fact]
         public void OrderPaid_Test()
         {
-            Order order = new Order("test", 1);
+            Order order = new("test", 1);
             Assert.False(order.Paid);
             order.OrderPaid();
             Assert.True(order.Paid);

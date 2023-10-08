@@ -6,9 +6,7 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.IntegrationEventHandlers
 {
-    public class OrderPaidIntegrationEventHandler(IMediator mediator,
-        ILogger<OrderPaidIntegrationEventHandler> logger) :
-        IIntegrationEventHandler<OrderPaidIntegrationEvent>
+    public class OrderPaidIntegrationEventHandler(IMediator mediator) : IIntegrationEventHandler<OrderPaidIntegrationEvent>
     {
         public Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
         {

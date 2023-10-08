@@ -12,7 +12,7 @@ namespace ABC.Template.Web.Extensions
             {
                 foreach (var type in assembly.GetTypes())
                 {
-                    if (type.IsClass && type.GetInterfaces().Any(p => p == typeof(IEntityId)))
+                    if (type.IsClass && Array.Exists(type.GetInterfaces(), p => p == typeof(IEntityId)))
                     {
                         swaggerGenOptions.MapType(type, () => new OpenApiSchema { Type = typeof(string).Name.ToLower() });
                     }

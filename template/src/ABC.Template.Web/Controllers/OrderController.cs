@@ -12,18 +12,8 @@ namespace ABC.Template.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController(IMediator mediator, OrderQuery orderQuery, ICapPublisher capPublisher) : ControllerBase
     {
-        readonly IMediator _mediator;
-        readonly OrderQuery _orderQuery;
-        readonly ICapPublisher _capPublisher;
-        public OrderController(IMediator mediator, OrderQuery orderQuery, ICapPublisher capPublisher)
-        {
-            _mediator = mediator;
-            _orderQuery = orderQuery;
-            _capPublisher = capPublisher;
-        }
-
         [HttpGet]
         public IActionResult Get()
         {
@@ -36,7 +26,7 @@ namespace ABC.Template.Web.Controllers
 
         public async Task<OrderId> Post([FromBody] CreateOrderCommand command)
         {
-            var id = await _mediator.Send(command);
+            var id = await mediator.Send(command);
             return id;
         }
 
@@ -45,7 +35,7 @@ namespace ABC.Template.Web.Controllers
         [Route("/get/{id}")]
         public async Task<ResponseData<Order?>> GetById([FromRoute] OrderId id)
         {
-            var order = await _orderQuery.QueryOrder(id, HttpContext.RequestAborted).AsResponseData();
+            var order = await orderQuery.QueryOrder(id, HttpContext.RequestAborted).AsResponseData();
             return order;
         }
 
@@ -57,7 +47,7 @@ namespace ABC.Template.Web.Controllers
         [Route("/sendEvent")]
         public async Task SendEvent(OrderId id)
         {
-            await _capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent(id));
+            await capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent(id));
         }
 
 
