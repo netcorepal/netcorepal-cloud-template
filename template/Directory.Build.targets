@@ -1,9 +1,10 @@
 <Project>
   <PropertyGroup>
-    <NetCorePalVersion>1.0.0-preview.1.2310081352</NetCorePalVersion>
+    <NetCorePalVersion>1.0.0-preview.1.*</NetCorePalVersion>
     <FrameworkVersion>8.0.0-rc.2.*</FrameworkVersion>
     <ExtensionsVersion>8.0.0-rc.2.*</ExtensionsVersion>
     <EntityFrameworkVersion>8.0.0-rc.2.*</EntityFrameworkVersion>
+    <TestcontainersVersion>3.5.0</TestcontainersVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -26,7 +27,7 @@
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)"/>
     <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)" PrivateAssets="All"/>
     <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EntityFrameworkVersion)" />
-    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2.ci.20231014172607" />
+    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2.*" />
     
     <!--other package  -->
     <PackageReference Update="DotNetCore.CAP.RabbitMQ" Version="7.2.0" />
@@ -62,11 +63,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Update="Testcontainers.K3s" Version="3.5.0" />
-    <PackageReference Update="Testcontainers" Version="3.5.0" />
-    <PackageReference Update="Testcontainers.PostgreSql" Version="3.5.0" />
-    <PackageReference Update="Testcontainers.MySql" Version="3.5.0" />
-    <PackageReference Update="Testcontainers.RabbitMq" Version="3.5.0" />
-    <PackageReference Update="Testcontainers.Redis" Version="3.5.0" />
+    <PackageReference Update="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageReference Update="Testcontainers.K3s" Version="$(TestcontainersVersion)" />
+    <PackageReference Update="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageReference Update="Testcontainers.MySql" Version="$(TestcontainersVersion)" />
+    <PackageReference Update="Testcontainers.RabbitMq" Version="$(TestcontainersVersion)" />
+    <PackageReference Update="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
   </ItemGroup>
 </Project>
