@@ -1,9 +1,9 @@
 <Project>
   <PropertyGroup>
     <NetCorePalVersion>1.0.0-preview.1.2310081352</NetCorePalVersion>
-    <FrameworkVersion>8.0.0-rc.*</FrameworkVersion>
-    <ExtensionsVersion>8.0.0-rc.*</ExtensionsVersion>
-    <EntityFrameworkVersion>8.0.0-rc.*</EntityFrameworkVersion>
+    <FrameworkVersion>8.0.0-rc.2.*</FrameworkVersion>
+    <ExtensionsVersion>8.0.0-rc.2.*</ExtensionsVersion>
+    <EntityFrameworkVersion>8.0.0-rc.2.*</EntityFrameworkVersion>
   </PropertyGroup>
   
   <ItemGroup>
@@ -26,7 +26,7 @@
     <PackageReference Update="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)"/>
     <PackageReference Update="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)" PrivateAssets="All"/>
     <PackageReference Update="Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(EntityFrameworkVersion)" />
-    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.1" />
+    <PackageReference Update="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2.ci.20231014172607" />
     
     <!--other package  -->
     <PackageReference Update="DotNetCore.CAP.RabbitMQ" Version="7.2.0" />
