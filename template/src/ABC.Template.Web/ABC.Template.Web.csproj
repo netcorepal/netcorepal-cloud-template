@@ -9,28 +9,28 @@
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP.Dashboard" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" />
-    <PackageReference Include="FluentValidation.AspNetCore" />
-    <PackageReference Include="Hangfire.AspNetCore" />
-    <PackageReference Include="Hangfire.Redis.StackExchange" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="7.2.0" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="7.2.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.5"/>
+    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.0" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="$(FrameworkVersion)"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
-    <PackageReference Include="NetCorePal.Extensions.AspNetCore" />
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" />
-    <PackageReference Include="NetCorePal.Extensions.Mappers" />
-    <PackageReference Include="NetCorePal.Extensions.Primitives" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
-    <PackageReference Include="prometheus-net.AspNetCore" />
-    <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" />
-    <PackageReference Include="Serilog.AspNetCore" />
-    <PackageReference Include="Serilog.Enrichers.ClientInfo" />
-    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)"/>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
+    <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2.*"/>
+    <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.0.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Serilog.Enrichers.ClientInfo" Version="2.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>

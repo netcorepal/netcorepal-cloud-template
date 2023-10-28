@@ -15,7 +15,7 @@
     <AdditionalFiles Include="docs\mermaid.md.example" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" />
+    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)"/>
   </ItemGroup>
 
 </Project>
