@@ -7,11 +7,11 @@
     <Authors>NetCorePal</Authors>
     <Description>NetCorePal Cloud Framework Templates</Description>
     <PackageTags>dotnet-new;templates;contoso</PackageTags>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
-	<NoDefaultExcludes>true</NoDefaultExcludes>
+	  <NoDefaultExcludes>true</NoDefaultExcludes>
   </PropertyGroup>
 
   <ItemGroup>

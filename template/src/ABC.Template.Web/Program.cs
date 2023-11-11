@@ -135,6 +135,7 @@ try
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
     #endregion
 
+    builder.Services.AddTransient<IValidatorInterceptor, UseCustomErrorModelInterceptor>();
     var app = builder.Build();
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.

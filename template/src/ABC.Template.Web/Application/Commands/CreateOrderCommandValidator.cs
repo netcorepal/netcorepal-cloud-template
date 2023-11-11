@@ -6,8 +6,8 @@ namespace ABC.Template.Web.Application.Commands
     {
         public CreateOrderCommandValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(10);
-            RuleFor(x => x.Price).InclusiveBetween(18, 60);
+            RuleFor(x => x.Name).NotEmpty().MaximumLength(10).WithErrorCode("name error code");
+            RuleFor(x => x.Price).InclusiveBetween(18, 60).WithErrorCode("price error code");
         }
     }
 }
