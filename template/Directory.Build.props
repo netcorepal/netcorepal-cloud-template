@@ -1,7 +1,6 @@
 <Project>
     <Import Project="$(MSBuildThisFileDirectory)\eng\versions.props"/>
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
         <Authors>ABC.Template</Authors>
         <Product>ABC.Template</Product>
         <owners>ABC.Template</owners>
