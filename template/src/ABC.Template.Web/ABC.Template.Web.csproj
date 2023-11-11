@@ -21,9 +21,14 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)"/>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5"/>
+    <PackageReference Include="NetCorePal.Context.AspNetCore" Version="$(NetCorePalVersion)"/>
+    <PackageReference Include="NetCorePal.Context.CAP" Version="$(NetCorePalVersion)"/>
+    <PackageReference Include="NetCorePal.Context.Shared" Version="$(NetCorePalVersion)"/>
     <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Mappers" Version="$(NetCorePalVersion)" />
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv" Version="1.0.0-preview.1.2311111141" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2.*"/>
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.0.1" />

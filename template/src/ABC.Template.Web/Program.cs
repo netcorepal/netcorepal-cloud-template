@@ -16,6 +16,7 @@ using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
+using NetCorePal.Extensions.AspNetCore.Json;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -29,7 +30,10 @@ try
     #region SignalR
 
     builder.Services.AddHealthChecks();
-    builder.Services.AddMvc();
+    builder.Services.AddMvc().AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.Converters.Add(new NewtonsoftEntityIdJsonConverter());
+    });
     builder.Services.AddSignalR();
 
     #endregion
@@ -81,6 +85,7 @@ try
 
     builder.Services.AddFluentValidationAutoValidation();
     builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+    builder.Services.AddKnownExceptionErrorModelInterceptor();
 
     #endregion
 
@@ -100,13 +105,15 @@ try
     #region 基础设施
 
     builder.Services.AddMediatR(cfg =>
-        cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()).AddUnitOfWorkBehaviors());
+        cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
+            .AddKnownExceptionValidationBehavior()
+            .AddUnitOfWorkBehaviors());
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
-            new  MySqlServerVersion(new Version(8, 0, 34)),
+            new MySqlServerVersion(new Version(8, 0, 34)),
             b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
         // options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"),
         //     b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
@@ -116,23 +123,29 @@ try
     });
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
     builder.Services.AddMySqlTransactionHandler();
-    builder.Services.AddAllCAPEventHanders(typeof(Program));
+    builder.Services.AddRedisLocks();
+    builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
+    builder.Services.AddNetCorePalServiceDiscoveryClient();
+    builder.Services.AddIntegrationEventServices(typeof(Program))
+        .UseCap(typeof(Program))
+        .AddContextIntegrationFilters()
+        .AddEnvIntegrationFilters();
     builder.Services.AddCap(x =>
     {
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
-        x.UseDashboard();   //CAP Dashboard  path：  /cap
+        x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
     builder.Services.AddCAPSagaEventPublisher();
     builder.Services.AddSagas<ApplicationDbContext>(typeof(Program));
+
     #endregion
 
-    #region  Jobs
-    builder.Services.AddHangfire(x =>
-    {
-        x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis"));
-    });
+    #region Jobs
+
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
+
     #endregion
 
     builder.Services.AddTransient<IValidatorInterceptor, UseCustomErrorModelInterceptor>();

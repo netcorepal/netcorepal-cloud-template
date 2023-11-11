@@ -1,12 +1,13 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using NetCorePal.Extensions.AspNetCore.Json;
 using Xunit;
 
 namespace ABC.Template.Web.Tests
 {
+    [Collection("web")]
     public class ProgramTests : IClassFixture<MyWebApplicationFactory>
     {
-
         private readonly MyWebApplicationFactory _factory;
 
         public ProgramTests(MyWebApplicationFactory factory)
