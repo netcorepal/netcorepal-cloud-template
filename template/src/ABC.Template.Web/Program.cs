@@ -136,8 +136,6 @@ try
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
         x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
-    builder.Services.AddCAPSagaEventPublisher();
-    builder.Services.AddSagas<ApplicationDbContext>(typeof(Program));
 
     #endregion
 
