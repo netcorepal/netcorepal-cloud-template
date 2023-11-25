@@ -6,6 +6,7 @@ using DotNetCore.CAP;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetCorePal.Extensions.DistributedTransactions.Sagas;
+using NetCorePal.Extensions.Domain;
 
 namespace ABC.Template.Web.Controllers
 {
@@ -43,4 +44,5 @@ namespace ABC.Template.Web.Controllers
             await capPublisher.PublishAsync("OrderPaidIntegrationEvent", new OrderPaidIntegrationEvent(id));
         }
     }
+    
 }

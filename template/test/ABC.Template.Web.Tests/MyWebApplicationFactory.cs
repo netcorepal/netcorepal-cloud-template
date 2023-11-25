@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
 using NetCorePal.Extensions.AspNetCore.Json;
-using Testcontainers.MySql;
-using Testcontainers.Redis;
-using Testcontainers.RabbitMq;
-using Testcontainers.PostgreSql;
 
 namespace ABC.Template.Web.Tests
 {

@@ -94,6 +94,7 @@ namespace ABC.Template.Web.Controllers
         }
     }
 
+    public partial record My2Id : IInt64StronglyTypedId;
     public partial record MyId : IInt64StronglyTypedId;
 
     public record JsonRequest(MyId Id, string Name, DateTime Time);

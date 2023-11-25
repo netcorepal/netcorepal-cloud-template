@@ -24,7 +24,7 @@ docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:63
 
 ```shell
 # 安装工具  SEE： https://learn.microsoft.com/zh-cn/ef/core/cli/dotnet#installing-the-tools
-dotnet tool install --global dotnet-ef --version 8.0.0-preview.7.23375.4
+dotnet tool install --global dotnet-ef --version 8.0.0
 
 # 强制更新数据库
 dotnet ef database update -p src/ABC.Template.Web 
