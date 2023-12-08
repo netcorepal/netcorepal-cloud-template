@@ -5,7 +5,6 @@ using Xunit;
 
 namespace ABC.Template.Web.Tests
 {
-    [Collection("web")]
     public class ProgramTests : IClassFixture<MyWebApplicationFactory>
     {
         private readonly MyWebApplicationFactory _factory;

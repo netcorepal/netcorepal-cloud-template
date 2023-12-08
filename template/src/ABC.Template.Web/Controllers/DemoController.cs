@@ -50,25 +50,23 @@ namespace ABC.Template.Web.Controllers
 
         [HttpGet]
         [Route("lock")]
-        public async Task<ResponseData<bool>> Lock([FromServices] IDistributedDisLock distributedDisLock)
+        public async Task<ResponseData<bool>> Lock([FromServices] IDistributedLock distributedDisLock)
         {
             if (IsRunning)
             {
                 return true.AsResponseData();
             }
 
-            using (var handle = await distributedDisLock.AcquireAsync("lock"))
+            using var handle = await distributedDisLock.AcquireAsync("lock");
+            if (IsRunning)
             {
-                if (IsRunning)
-                {
-                    return true.AsResponseData();
-                }
-
-                IsRunning = true;
-                await Task.Delay(1000);
-                IsRunning = false;
-                return false.AsResponseData();
+                return true.AsResponseData();
             }
+
+            IsRunning = true;
+            await Task.Delay(1000);
+            IsRunning = false;
+            return false.AsResponseData();
         }
     }
 
@@ -95,6 +93,7 @@ namespace ABC.Template.Web.Controllers
     }
 
     public partial record My2Id : IInt64StronglyTypedId;
+
     public partial record MyId : IInt64StronglyTypedId;
 
     public record JsonRequest(MyId Id, string Name, DateTime Time);

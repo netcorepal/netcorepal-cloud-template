@@ -4,8 +4,10 @@ using NetCorePal.Extensions.AspNetCore.Json;
 
 namespace ABC.Template.Web.Tests
 {
-    public class MyWebApplicationFactory(TestContainerFixture containers) : WebApplicationFactory<Program>
+    public class MyWebApplicationFactory : WebApplicationFactory<Program>
     {
+        private TestContainerFixture _containers = new TestContainerFixture();
+
         static MyWebApplicationFactory()
         {
             NewtonsoftJsonDefaults.DefaultOptions.Converters.Add(new NewtonsoftEntityIdJsonConverter());
@@ -14,13 +16,13 @@ namespace ABC.Template.Web.Tests
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
             //builder.UseSetting("ConnectionStrings:PostgreSQL", postgreSqlContainer.GetConnectionString());
-            builder.UseSetting("ConnectionStrings:Redis", containers.RedisContainer.GetConnectionString());
-            builder.UseSetting("ConnectionStrings:MySql", containers.MySqlContainer.GetConnectionString());
-            builder.UseSetting("RabbitMQ:Port", containers.RabbitMqContainer.GetMappedPublicPort(5672).ToString());
+            builder.UseSetting("ConnectionStrings:Redis", _containers.RedisContainer.GetConnectionString());
+            builder.UseSetting("ConnectionStrings:MySql", _containers.MySqlContainer.GetConnectionString());
+            builder.UseSetting("RabbitMQ:Port", _containers.RabbitMqContainer.GetMappedPublicPort(5672).ToString());
             builder.UseSetting("RabbitMQ:UserName", "guest");
             builder.UseSetting("RabbitMQ:Password", "guest");
             builder.UseSetting("RabbitMQ:VirtualHost", "/");
-            builder.UseSetting("RabbitMQ:HostName", containers.RabbitMqContainer.Hostname);
+            builder.UseSetting("RabbitMQ:HostName", _containers.RabbitMqContainer.Hostname);
             builder.UseEnvironment("Development");
             base.ConfigureWebHost(builder);
         }
