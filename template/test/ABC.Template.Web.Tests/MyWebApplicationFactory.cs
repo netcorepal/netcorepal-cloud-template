@@ -26,5 +26,26 @@ namespace ABC.Template.Web.Tests
             builder.UseEnvironment("Development");
             base.ConfigureWebHost(builder);
         }
+
+        public override async ValueTask DisposeAsync()
+        {
+            try
+            {
+                await base.DisposeAsync();
+            }
+            catch
+            {
+                // ignored
+            }
+
+            try
+            {
+                _containers.Dispose();
+            }
+            catch
+            {
+                // ignored
+            }
+        }
     }
 }

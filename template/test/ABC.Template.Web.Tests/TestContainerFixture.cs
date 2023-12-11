@@ -31,8 +31,3 @@ public class TestContainerFixture : IDisposable
             MySqlContainer.StopAsync()).Wait();
     }
 }
-
-[CollectionDefinition("web")]
-public class TestContainerFixtureCollection : ICollectionFixture<TestContainerFixture>
-{
-}
