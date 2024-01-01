@@ -18,7 +18,7 @@
 
 ## 如何使用
 
-安装模板:
+安装模板
 
 ``` shell
 dotnet new -i  NetCorePal.Template
@@ -48,7 +48,7 @@ dotnet build
 dotnet test
 ```
 
-其它命令：
+## 其它命令
 
 更新模板
 
