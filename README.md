@@ -18,36 +18,53 @@
 
 ## 如何使用
 
-安装模版与创建工程
+安装模板:
 
-``` bash
-//安装模板
+``` shell
 dotnet new -i  NetCorePal.Template
+```
 
-//创建项目
+创建项目
+
+```shell
 dotnet new netcorepal-web -n My.Project.Name
+```
 
-//进入项目目录
+进入项目目录
+
+```shell
 cd My.Project.Name
+```
 
-//构建项目
+构建项目
+
+```shell
 dotnet build
+```
 
-//运行测试
+运行测试
+
+```shell
 dotnet test
 ```
 
-
-
 其它命令：
 
-``` bash
-//更新模板
-dotnet new update
-// or 
-dotnet new --install <PACKAGE_ID>::<VERSION>
+更新模板
 
-//卸载模板
+``` shell
+dotnet new update
+```
+
+or
+
+```shell
+dotnet new --install NetCorePal.Template::<VERSION>
+```
+
+卸载模板
+
+```shell
 dotnet new --uninstall NetCorePal.Template
 ```
 
