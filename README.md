@@ -6,7 +6,6 @@
 [![MyGet Preview](https://img.shields.io/myget/netcorepal/vpre/NetCorePal.Template?label=preview)](https://www.myget.org/feed/netcorepal/package/nuget/NetCorePal.Template)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/netcorepal/netcorepal-cloud-template/blob/main/LICENSE)
 
-
 ## 简介
 
 本项目是一个基于dotnet new的模板项目，用于快速创建一个基于 [netcorepal-cloud-framework](https://github.com/netcorepal/netcorepal-cloud-framework) 的项目。
