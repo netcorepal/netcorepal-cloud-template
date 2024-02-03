@@ -30,20 +30,9 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 
         public int Count { get; private set; }
 
-        public partial void ABC();
-
         public void OrderPaid()
         {
             this.Paid = true;
-        }
-    }
-
-
-    public partial class Order
-    {
-        public partial void ABC()
-        { 
-
         }
     }
 }
