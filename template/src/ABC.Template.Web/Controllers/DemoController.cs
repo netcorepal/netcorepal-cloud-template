@@ -46,26 +46,26 @@ namespace ABC.Template.Web.Controllers
             return (tenanContext == null ? "" : tenanContext.TenantId).AsResponseData();
         }
 
-        private static bool IsRunning = false;
+        private static bool _isRunning = false;
 
         [HttpGet]
         [Route("lock")]
         public async Task<ResponseData<bool>> Lock([FromServices] IDistributedLock distributedDisLock)
         {
-            if (IsRunning)
+            if (_isRunning)
             {
                 return true.AsResponseData();
             }
 
-            using var handle = await distributedDisLock.AcquireAsync("lock");
-            if (IsRunning)
+            await using var handle = await distributedDisLock.AcquireAsync("lock");
+            if (_isRunning)
             {
                 return true.AsResponseData();
             }
 
-            IsRunning = true;
+            _isRunning = true;
             await Task.Delay(1000);
-            IsRunning = false;
+            _isRunning = false;
             return false.AsResponseData();
         }
     }
