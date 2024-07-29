@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Prometheus;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
@@ -11,12 +10,16 @@ using FluentValidation;
 using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
+using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
 using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
 using NetCorePal.Extensions.AspNetCore.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using Refit;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -101,6 +104,7 @@ try
 
     #endregion
 
+    
 
     #region 基础设施
 
@@ -136,6 +140,22 @@ try
     });
 
     #endregion
+    
+    #region 远程服务客户端配置
+
+    var ser = new NewtonsoftJsonContentSerializer(new JsonSerializerSettings
+    {
+        ContractResolver = new CamelCasePropertyNamesContractResolver(),
+        NullValueHandling = NullValueHandling.Ignore,
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+    });
+    var settings = new RefitSettings(ser);
+    builder.Services.AddRefitClient<IUserServiceClient>(settings)
+        .ConfigureHttpClient(client =>
+            client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UserService:BaseUrl")!))
+        .AddStandardResilienceHandler(); //添加标准的重试策略
+
+    #endregion
 
     #region Jobs
 
@@ -143,7 +163,7 @@ try
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
 
     #endregion
-    
+
     var app = builder.Build();
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
