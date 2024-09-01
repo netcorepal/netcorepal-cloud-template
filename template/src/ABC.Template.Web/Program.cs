@@ -105,7 +105,7 @@ try
 
     #endregion
 
-    
+
 
     #region 基础设施
 
@@ -128,7 +128,7 @@ try
     builder.Services.AddMySqlTransactionHandler();
     builder.Services.AddRedisLocks();
     //配置多环境Options
-    builder.Services.Configure<EnvOptions>(envOptions => builder.Configuration.GetSection("Env").Bind(envOptions)); 
+    builder.Services.Configure<EnvOptions>(envOptions => builder.Configuration.GetSection("Env").Bind(envOptions));
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEventServices(typeof(Program))
@@ -143,7 +143,7 @@ try
     });
 
     #endregion
-    
+
     #region 远程服务客户端配置
 
     var ser = new NewtonsoftJsonContentSerializer(new JsonSerializerSettings
@@ -168,6 +168,13 @@ try
     #endregion
 
     var app = builder.Build();
+    if (app.Environment.IsDevelopment())
+    {
+        using var scope = app.Services.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.EnsureCreated();
+    }
+
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
