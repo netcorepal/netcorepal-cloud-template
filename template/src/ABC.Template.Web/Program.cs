@@ -17,6 +17,7 @@ using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
 using NetCorePal.Extensions.AspNetCore.Json;
+using NetCorePal.Extensions.MultiEnv;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
@@ -126,6 +127,8 @@ try
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
     builder.Services.AddMySqlTransactionHandler();
     builder.Services.AddRedisLocks();
+    //配置多环境Options
+    builder.Services.Configure<EnvOptions>(envOptions => builder.Configuration.GetSection("Env").Bind(envOptions)); 
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEventServices(typeof(Program))
