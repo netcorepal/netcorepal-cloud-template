@@ -108,11 +108,6 @@ try
 
 
     #region 基础设施
-
-    builder.Services.AddMediatR(cfg =>
-        cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
-            .AddKnownExceptionValidationBehavior()
-            .AddUnitOfWorkBehaviors());
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -132,6 +127,7 @@ try
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEventServices(typeof(Program))
+        .AddIIntegrationEventConverter(typeof(Program))
         .UseCap(typeof(Program))
         .AddContextIntegrationFilters()
         .AddEnvIntegrationFilters();
@@ -143,6 +139,11 @@ try
     });
 
     #endregion
+    
+    builder.Services.AddMediatR(cfg =>
+        cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
+            .AddKnownExceptionValidationBehavior()
+            .AddUnitOfWorkBehaviors());
 
     #region 远程服务客户端配置
 

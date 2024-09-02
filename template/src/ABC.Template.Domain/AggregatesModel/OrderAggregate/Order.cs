@@ -2,6 +2,7 @@
 using NetCorePal.Extensions.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 {
@@ -32,7 +33,15 @@ namespace ABC.Template.Domain.AggregatesModel.OrderAggregate
 
         public void OrderPaid()
         {
-            this.Paid = true;
+            if (Paid)
+            {
+                throw new KnownException("Order has been paid");
+            }
+            else
+            {
+                this.Paid = true;
+                this.AddDomainEvent(new OrderPaidDomainEvent(this));
+            }
         }
     }
 }
