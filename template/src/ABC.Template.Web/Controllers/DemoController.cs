@@ -1,4 +1,5 @@
-﻿using ABC.Template.Web.Application.IntegrationEventHandlers;
+﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+using ABC.Template.Web.Application.IntegrationEventHandlers;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace ABC.Template.Web.Controllers
         [Route("event")]
         public async Task<ResponseData<long>> Event([FromServices] IIntegrationEventPublisher publisher)
         {
-            await publisher.PublishAsync(new OrderPaidIntegrationEvent(55));
+            await publisher.PublishAsync(new OrderPaidIntegrationEvent(new OrderId(55)));
             return 55L.AsResponseData();
         }
 

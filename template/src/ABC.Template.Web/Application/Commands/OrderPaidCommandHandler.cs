@@ -1,4 +1,5 @@
-﻿using ABC.Template.Infrastructure.Repositories;
+﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+using ABC.Template.Infrastructure.Repositories;
 using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.Commands

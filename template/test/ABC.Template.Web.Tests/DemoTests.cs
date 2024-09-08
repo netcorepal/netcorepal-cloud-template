@@ -73,7 +73,7 @@ namespace ABC.Template.Web.Tests
             Assert.NotNull(responseData);
             Assert.Equal(DateTime.Parse("2021-08-31 15:00:00"), responseData.Data.Time);
             Assert.Equal("myName", responseData.Data.Name);
-            Assert.Equal(5, responseData.Data.Id);
+            Assert.Equal(5, responseData.Data.Id.Id);
         }
 
         [Fact]
