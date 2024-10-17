@@ -133,6 +133,7 @@ try
         .AddEnvIntegrationFilters();
     builder.Services.AddCap(x =>
     {
+        x.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverterFactory());
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
         x.UseDashboard(); //CAP Dashboard  path：  /cap
