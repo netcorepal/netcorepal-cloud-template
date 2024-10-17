@@ -10,17 +10,20 @@ namespace ABC.Template.Web.Tests
     {
         private readonly MyWebApplicationFactory _factory;
 
+        private readonly HttpClient _client;
+
         public ProgramTests(MyWebApplicationFactory factory)
         {
             _factory = factory;
+            _client = factory.CreateClient();
         }
 
 
         [Fact]
-        public void HealthCheckTest()
+        public async Task HealthCheckTest()
         {
             var client = _factory.CreateClient();
-            var response = client.GetAsync("/health").Result;
+            var response = await client.GetAsync("/health");
             Assert.True(response.IsSuccessStatusCode);
         }
     }
