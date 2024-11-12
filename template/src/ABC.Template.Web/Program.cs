@@ -130,7 +130,7 @@ try
         .AddIIntegrationEventConverter(typeof(Program))
         .UseCap(typeof(Program))
         .AddContextIntegrationFilters()
-        .AddEnvIntegrationFilters();
+        .AddEnvIntegrationFilters(envOption => envOption.ServiceName = "Abc.Template");
     builder.Services.AddCap(x =>
     {
         x.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverterFactory());
@@ -140,7 +140,7 @@ try
     });
 
     #endregion
-    
+
     builder.Services.AddMediatR(cfg =>
         cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
             .AddKnownExceptionValidationBehavior()
