@@ -1,6 +1,5 @@
 using System.Net.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
-using NetCorePal.Extensions.AspNetCore.Json;
 using Xunit;
 
 namespace ABC.Template.Web.Tests
