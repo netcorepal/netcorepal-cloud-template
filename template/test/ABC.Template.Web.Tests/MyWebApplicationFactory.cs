@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
-using NetCorePal.Extensions.AspNetCore.Json;
 
 namespace ABC.Template.Web.Tests
 {

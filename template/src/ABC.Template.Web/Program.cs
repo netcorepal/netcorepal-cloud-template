@@ -16,8 +16,7 @@ using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
-using NetCorePal.Extensions.AspNetCore.Json;
-using NetCorePal.Extensions.MultiEnv;
+using NetCorePal.Extensions.NewtonsoftJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
@@ -106,8 +105,8 @@ try
     #endregion
 
 
-
     #region 基础设施
+
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -123,14 +122,15 @@ try
     builder.Services.AddMySqlTransactionHandler();
     builder.Services.AddRedisLocks();
     //配置多环境Options
-    builder.Services.Configure<EnvOptions>(envOptions => builder.Configuration.GetSection("Env").Bind(envOptions));
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEventServices(typeof(Program))
         .AddIIntegrationEventConverter(typeof(Program))
         .UseCap(typeof(Program))
-        .AddContextIntegrationFilters()
-        .AddEnvIntegrationFilters();
+        .AddContextIntegrationFilters();
+    builder.Services.AddMultiEnv(builder.Configuration.GetSection("Env"))
+        .AddEnvIntegrationFilters()
+        .AddEnvServiceSelector();
     builder.Services.AddCap(x =>
     {
         x.UseEntityFramework<ApplicationDbContext>();
@@ -139,7 +139,7 @@ try
     });
 
     #endregion
-    
+
     builder.Services.AddMediatR(cfg =>
         cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
             .AddKnownExceptionValidationBehavior()

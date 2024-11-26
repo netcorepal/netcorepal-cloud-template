@@ -7,6 +7,7 @@ using NetCorePal.Context;
 using NetCorePal.Extensions.DistributedLocks;
 using NetCorePal.Extensions.DistributedTransactions;
 using NetCorePal.Extensions.Domain;
+using NetCorePal.Extensions.Dto;
 using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Controllers
