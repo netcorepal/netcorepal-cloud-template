@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -16,8 +16,14 @@
     <AdditionalFiles Include="docs\mermaid.md.example" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)"/>
+    <PackageReference Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.3.0.106239">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
