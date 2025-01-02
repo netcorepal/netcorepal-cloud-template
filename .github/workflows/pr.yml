@@ -1,0 +1,23 @@
+name: .NET
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        global-json-file: global.json
+    - name: Restore dependencies
+      run: dotnet restore NetCorePal.Template.csproj
+    - name: Build
+      run: dotnet build --no-restore NetCorePal.Template.csproj
+    - name: Test
+      run: dotnet test --verbosity normal template/ABC.Template.sln
