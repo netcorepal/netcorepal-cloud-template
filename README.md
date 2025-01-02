@@ -14,7 +14,7 @@
 
 ## 前提条件
 
-1. 安装`.NET 8.0 SDK`或更高版本。
+1. 安装`.NET 9.0 SDK`或更高版本。
 
     SDK下载地址： <https://dot.net/download>
 
