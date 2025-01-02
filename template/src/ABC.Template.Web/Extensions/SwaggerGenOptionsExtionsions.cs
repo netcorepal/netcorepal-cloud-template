@@ -1,6 +1,7 @@
 ﻿using Microsoft.OpenApi.Models;
 using NetCorePal.Extensions.Domain;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 namespace ABC.Template.Web.Extensions
 {
@@ -8,14 +9,13 @@ namespace ABC.Template.Web.Extensions
     {
         public static SwaggerGenOptions AddEntityIdSchemaMap(this SwaggerGenOptions swaggerGenOptions)
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            // 加载domain程序集
+            Assembly domainAssembly = Assembly.Load("ABC.Template.Domain");
+            foreach (var type in domainAssembly.GetTypes())
             {
-                foreach (var type in assembly.GetTypes())
+                if (type.IsClass && Array.Exists(type.GetInterfaces(), p => p == typeof(IEntityId)))
                 {
-                    if (type.IsClass && Array.Exists(type.GetInterfaces(), p => p == typeof(IEntityId)))
-                    {
-                        swaggerGenOptions.MapType(type, () => new OpenApiSchema { Type = typeof(string).Name.ToLower() });
-                    }
+                    swaggerGenOptions.MapType(type, () => new OpenApiSchema { Type = typeof(string).Name.ToLower() });
                 }
             }
             return swaggerGenOptions;
