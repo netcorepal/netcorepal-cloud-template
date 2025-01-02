@@ -10,7 +10,7 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
         {
             builder.ToTable("order");
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id).ValueGeneratedOnAdd().UseSnowFlakeValueGenerator();
+            builder.Property(t => t.Id).UseSnowFlakeValueGenerator();
             builder.Property(b => b.Name).HasMaxLength(100);
             builder.Property(b => b.Count);
             builder.Property(b => b.Paid);
