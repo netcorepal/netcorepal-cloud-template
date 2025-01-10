@@ -9,15 +9,19 @@ namespace ABC.Template.Web.Extensions
     {
         public static SwaggerGenOptions AddEntityIdSchemaMap(this SwaggerGenOptions swaggerGenOptions)
         {
-            // 加载domain程序集
-            Assembly domainAssembly = Assembly.Load("ABC.Template.Domain");
-            foreach (var type in domainAssembly.GetTypes())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies()
+                         .Where(p => p.FullName != null && p.FullName.Contains("ABC.Template")))
             {
-                if (type.IsClass && Array.Exists(type.GetInterfaces(), p => p == typeof(IEntityId)))
+                foreach (var type in assembly.GetTypes())
                 {
-                    swaggerGenOptions.MapType(type, () => new OpenApiSchema { Type = typeof(string).Name.ToLower() });
+                    if (type.IsClass && Array.Exists(type.GetInterfaces(), p => p == typeof(IEntityId)))
+                    {
+                        swaggerGenOptions.MapType(type,
+                            () => new OpenApiSchema { Type = typeof(string).Name.ToLower() });
+                    }
                 }
             }
+
             return swaggerGenOptions;
         }
     }
