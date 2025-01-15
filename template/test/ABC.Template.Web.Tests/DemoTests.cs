@@ -30,9 +30,9 @@ namespace ABC.Template.Web.Tests
 
 
         [Fact]
-        public void HealthCheckTest()
+        public async Task HealthCheckTest()
         {
-            var response = _client.GetAsync("/health").Result;
+            var response = await _client.GetAsync("/health");
             Assert.True(response.IsSuccessStatusCode);
         }
 
