@@ -124,11 +124,11 @@ namespace ABC.Template.Web.Tests
         {
             var task1 = _client.GetAsync("/demo/lock");
             var task2 = _client.GetAsync("/demo/lock");
-            await Task.WhenAll(task1, task2);
-            Assert.True(task1.Result.IsSuccessStatusCode);
-            Assert.True(task2.Result.IsSuccessStatusCode);
-            var result1 = await task1.Result.Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
-            var result2 = await task2.Result.Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
+            var results = await Task.WhenAll(task1, task2);
+            Assert.True(results[0].IsSuccessStatusCode);
+            Assert.True(results[1].IsSuccessStatusCode);
+            var result1 = await results[0].Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
+            var result2 = await results[1].Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
             Assert.NotNull(result1);
             Assert.NotNull(result2);
             Assert.False(result1.Data);

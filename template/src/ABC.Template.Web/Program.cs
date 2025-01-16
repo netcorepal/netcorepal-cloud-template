@@ -89,12 +89,6 @@ try
 
     #endregion
 
-    #region Mapper Provider
-
-    builder.Services.AddMapperPrivider(Assembly.GetExecutingAssembly());
-
-    #endregion
-
     #region Query
 
     builder.Services.AddScoped<OrderQuery>();

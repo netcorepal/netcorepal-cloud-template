@@ -7,7 +7,6 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <UserSecretsId>668ac7fd-2ad0-4516-903a-21027c77bd2c</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
@@ -32,7 +31,6 @@
     <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.Mappers" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.2.efcore.9.0.0" />
@@ -51,15 +49,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Update="SonarAnalyzer.CSharp" Version="10.3.0.106239">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

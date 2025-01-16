@@ -2,7 +2,6 @@
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using FluentValidation;
-using NetCorePal.Extensions.Mappers;
 using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.Commands;
@@ -18,12 +17,12 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
     }
 }
 
-public class CreateOrderCommandHandler(IOrderRepository orderRepository, IMapperProvider mapperProvider, ILogger<OrderPaidIntegrationEventHandler> logger) : ICommandHandler<CreateOrderCommand, OrderId>
+public class CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger<OrderPaidIntegrationEventHandler> logger) : ICommandHandler<CreateOrderCommand, OrderId>
 {
 
     public async Task<OrderId> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = request.MapTo<Order>(mapperProvider);
+        var order = new Order(request.Name, request.Count);
         order = await orderRepository.AddAsync(order, cancellationToken);
         logger.LogInformation("order created, id:{orderId}", order.Id);
         return order.Id;
