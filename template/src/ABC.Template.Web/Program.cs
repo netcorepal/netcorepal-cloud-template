@@ -58,6 +58,16 @@ try
     builder.Services.AddDataProtection()
         .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 
+    builder.Services.AddAuthentication().AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters.ValidAudience = "netcorepal";
+        options.TokenValidationParameters.ValidateAudience = true;
+        options.TokenValidationParameters.ValidIssuer = "netcorepal";
+        options.TokenValidationParameters.ValidateIssuer = true;
+    });
+    builder.Services.AddNetCorePalJwt().AddRedisStore();
+
     #endregion
 
     #region Controller
@@ -96,8 +106,8 @@ try
     #endregion
 
 
-
     #region 基础设施
+
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -133,6 +143,7 @@ try
 
     builder.Services.AddMediatR(cfg =>
         cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
+            .AddCommandLockBehavior()
             .AddKnownExceptionValidationBehavior()
             .AddUnitOfWorkBehaviors());
 
@@ -164,7 +175,7 @@ try
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        dbContext.Database.EnsureCreated();
+        await dbContext.Database.EnsureCreatedAsync();
     }
 
     app.UseKnownExceptionHandler();
@@ -192,7 +203,7 @@ try
     app.MapHealthChecks("/health");
     app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
     app.UseHangfireDashboard();
-    app.Run();
+    await app.RunAsync();
 }
 catch (Exception ex)
 {
@@ -200,7 +211,7 @@ catch (Exception ex)
 }
 finally
 {
-    Log.CloseAndFlush();
+   await Log.CloseAndFlushAsync();
 }
 
 #pragma warning disable S1118

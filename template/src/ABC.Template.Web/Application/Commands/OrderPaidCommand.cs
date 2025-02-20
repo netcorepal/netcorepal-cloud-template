@@ -6,6 +6,15 @@ namespace ABC.Template.Web.Application.Commands;
 
 public record class OrderPaidCommand(OrderId OrderId) : ICommand;
 
+public class OrderPaidCommandLock : ICommandLock<OrderPaidCommand>
+{
+    public Task<CommandLockSettings> GetLockKeysAsync(OrderPaidCommand command,
+        CancellationToken cancellationToken = new CancellationToken())
+    {
+        return Task.FromResult(command.OrderId.ToCommandLockSettings());
+    }
+}
+
 public class OrderPaidCommandHandler(IOrderRepository orderRepository) : ICommandHandler<OrderPaidCommand>
 {
     public async Task Handle(OrderPaidCommand request, CancellationToken cancellationToken)
