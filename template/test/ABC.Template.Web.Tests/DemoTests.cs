@@ -1,10 +1,8 @@
+using System.Net.Http.Headers;
 using ABC.Template.Infrastructure;
 using ABC.Template.Web.Controllers;
-using ABC.Template.Web.Tests.Extensions;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using NetCorePal.Context;
-using NetCorePal.Extensions.AspNetCore;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Tests
@@ -133,6 +131,23 @@ namespace ABC.Template.Web.Tests
             Assert.NotNull(result2);
             Assert.False(result1.Data);
             Assert.False(result2.Data);
+        }
+
+
+        [Fact]
+        public async Task JwtTest()
+        {
+            string userName = "testname";
+            string password = "testpassword";
+            var response = await _client.PostAsync($"/user/login?username={userName}&password={password}", null);
+            Assert.True(response.IsSuccessStatusCode);
+            var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ResponseData<string>>();
+            Assert.NotNull(responseData);
+            Assert.NotNull(responseData.Data);
+            
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseData.Data);
+            var jwtResponse = await _client.GetAsync("/user/auth");
+            Assert.True(jwtResponse.IsSuccessStatusCode);
         }
     }
 }
