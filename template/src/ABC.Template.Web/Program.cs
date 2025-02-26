@@ -16,7 +16,6 @@ using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
-using NetCorePal.Extensions.NewtonsoftJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
@@ -33,10 +32,8 @@ try
     #region SignalR
 
     builder.Services.AddHealthChecks();
-    builder.Services.AddMvc().AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.Converters.Add(new NewtonsoftEntityIdJsonConverter());
-    });
+    builder.Services.AddMvc()
+        .AddNewtonsoftJson(options => { options.SerializerSettings.AddNetCorePalJsonConverters(); });
     builder.Services.AddSignalR();
 
     #endregion
@@ -53,7 +50,7 @@ try
 
     #region 身份认证
 
-    var redis = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis")!);
+    var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
     builder.Services.AddDataProtection()
         .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
@@ -128,9 +125,8 @@ try
         .AddIIntegrationEventConverter(typeof(Program))
         .UseCap(typeof(Program))
         .AddContextIntegrationFilters();
-    builder.Services.AddMultiEnv(envOption => envOption.ServiceName = "Abc.Template")
-        .AddEnvIntegrationFilters()
-        .AddEnvServiceSelector();
+
+
     builder.Services.AddCap(x =>
     {
         x.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverterFactory());
@@ -147,18 +143,30 @@ try
             .AddKnownExceptionValidationBehavior()
             .AddUnitOfWorkBehaviors());
 
+    #region 多环境支持与服务注册发现
+
+    builder.Services.AddMultiEnv(envOption => envOption.ServiceName = "Abc.Template")
+        .UseMicrosoftServiceDiscovery();
+    builder.Services.AddConfigurationServiceEndpointProvider();
+    builder.Services.AddEnvFixedConnectionChannelPool();
+
+    #endregion
+
     #region 远程服务客户端配置
 
-    var ser = new NewtonsoftJsonContentSerializer(new JsonSerializerSettings
+    var jsonSerializerSettings = new JsonSerializerSettings
     {
         ContractResolver = new CamelCasePropertyNamesContractResolver(),
         NullValueHandling = NullValueHandling.Ignore,
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-    });
+    };
+    jsonSerializerSettings.AddNetCorePalJsonConverters();
+    var ser = new NewtonsoftJsonContentSerializer(jsonSerializerSettings);
     var settings = new RefitSettings(ser);
     builder.Services.AddRefitClient<IUserServiceClient>(settings)
         .ConfigureHttpClient(client =>
-            client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("UserService:BaseUrl")!))
+            client.BaseAddress = new Uri(builder.Configuration.GetValue<string>("https+http://user:8080")!))
+        .AddMultiEnvMicrosoftServiceDiscovery() //多环境服务发现支持
         .AddStandardResilienceHandler(); //添加标准的重试策略
 
     #endregion
@@ -169,6 +177,7 @@ try
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
 
     #endregion
+
 
     var app = builder.Build();
     if (app.Environment.IsDevelopment())
@@ -211,7 +220,7 @@ catch (Exception ex)
 }
 finally
 {
-   await Log.CloseAndFlushAsync();
+    await Log.CloseAndFlushAsync();
 }
 
 #pragma warning disable S1118
