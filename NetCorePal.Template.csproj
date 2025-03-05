@@ -11,12 +11,18 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
-	  <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/netcorepal/netcorepal-cloud-template</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/netcorepal/netcorepal-cloud-template/blob/main/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/netcorepal/netcorepal-cloud-template.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Content Include="template\**\*" Exclude="template\**\bin\**;template\**\obj\**;template\.vs\**" />
     <Compile Remove="**\*" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
-
 </Project>
