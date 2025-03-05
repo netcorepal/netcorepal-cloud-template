@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0-preview.3.efcore.9.0.0" />
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
   </ItemGroup>
@@ -20,6 +24,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20250305084524_InitialCreate.Designer.cs" />
   </ItemGroup>
 
 </Project>
