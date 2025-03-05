@@ -20,7 +20,6 @@
     <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.2.efcore.9.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
     <PackageReference Include="Refit.Newtonsoft.Json" Version="8.0.0" />
     <PackageReference Include="Testcontainers" Version="$(TestcontainersVersion)" />
