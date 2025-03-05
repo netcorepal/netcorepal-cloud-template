@@ -24,13 +24,13 @@ docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:63
 
 ```shell
 # 安装工具  SEE： https://learn.microsoft.com/zh-cn/ef/core/cli/dotnet#installing-the-tools
-dotnet tool install --global dotnet-ef --version 8.0.0
+dotnet tool install --global dotnet-ef --version 9.0.0
 
 # 强制更新数据库
-dotnet ef database update -p src/ABC.Template.Web 
+dotnet ef database update -p src/ABC.Template.Infrastructure 
 
 # 创建迁移 SEE：https://learn.microsoft.com/zh-cn/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli
-dotnet ef migrations add InitialCreate -p src/ABC.Template.Web 
+dotnet ef migrations add InitialCreate -p src/ABC.Template.Infrastructure 
 ```
 
 ## 关于监控

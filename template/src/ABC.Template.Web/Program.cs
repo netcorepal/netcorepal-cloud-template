@@ -110,8 +110,7 @@ try
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
-            new MySqlServerVersion(new Version(8, 0, 34)),
-            b => b.MigrationsAssembly(typeof(Program).Assembly.FullName));
+            new MySqlServerVersion(new Version(8, 0, 34)));
         options.LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
