@@ -116,14 +116,16 @@ try
             .EnableDetailedErrors();
     });
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
-    builder.Services.AddMySqlTransactionHandler();
     builder.Services.AddRedisLocks();
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
-    builder.Services.AddIntegrationEventServices(typeof(Program))
-        .AddIIntegrationEventConverter(typeof(Program))
-        .UseCap(typeof(Program))
-        .AddContextIntegrationFilters();
+    builder.Services.AddIntegrationEvents(typeof(Program))
+        .UseCap(b =>
+        {
+            b.RegisterServicesFromAssemblies(typeof(Program));
+            b.AddContextIntegrationFilters();
+            b.UseMySql();
+        });
 
 
     builder.Services.AddCap(x =>
