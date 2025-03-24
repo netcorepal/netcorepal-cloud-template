@@ -120,7 +120,7 @@ try
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEvents(typeof(Program))
-        .UseCap(b =>
+        .UseCap<ApplicationDbContext>(b =>
         {
             b.RegisterServicesFromAssemblies(typeof(Program));
             b.AddContextIntegrationFilters();
