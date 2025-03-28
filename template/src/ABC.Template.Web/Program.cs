@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Prometheus;
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
 using FluentValidation;
-using NetCorePal.Extensions.Domain.Json;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
@@ -130,7 +130,7 @@ try
 
     builder.Services.AddCap(x =>
     {
-        x.JsonSerializerOptions.Converters.Add(new EntityIdJsonConverterFactory());
+        x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.UseEntityFramework<ApplicationDbContext>();
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
         x.UseDashboard(); //CAP Dashboard  path：  /cap
