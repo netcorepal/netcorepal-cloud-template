@@ -7,10 +7,9 @@ using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure
 {
-    public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator, IServiceProvider provider)
-        : AppDbContextBase(options, mediator, provider)
+    public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator)
+        : AppDbContextBase(options, mediator)
     {
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             if (modelBuilder is null)
