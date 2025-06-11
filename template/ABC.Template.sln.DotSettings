@@ -147,7 +147,7 @@ public class $name$CommandHandler : ICommandHandler&lt;$name$Command&gt;
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Reformat/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Shortcut/@EntryValue">ncpdeh</s:String>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Text/@EntryValue">public class $name$DomanEventHandler(IMediator mediator) 
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Text/@EntryValue">public class $name$DomainEventHandler(IMediator mediator) 
     : IDomainEventHandler&lt;$name$DomainEvent&gt;
 {
     public async Task Handle($name$DomainEvent notification, 
