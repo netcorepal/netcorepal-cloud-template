@@ -3,3 +3,7 @@ global using NetCorePal.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection;
 global using ABC.Template.Domain;
 global using ABC.Template.Infrastructure;
+global using FluentValidation;
+global using NetCorePal.Extensions.Primitives
+global using MediatR;
+global using NetCorePal.Extensions.Domain;
