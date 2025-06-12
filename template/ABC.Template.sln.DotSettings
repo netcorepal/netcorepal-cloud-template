@@ -1,0 +1,186 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Description/@EntryValue">创建聚合根</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Shortcut/@EntryValue">ncpar</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Text/@EntryValue">public partial record $name$Id : IInt64StronglyTypedId;
+
+public class $name$ : Entity&lt;$name$Id&gt;, IAggregateRoot
+{
+    protected $name$() { }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Field/=name/Expression/@EntryValue">constant("My")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=0081E04BF2CEF541AD7767E8FC3F3540/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Description/@EntryValue">创建命令(含返回值)</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Shortcut/@EntryValue">ncpcmdres</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Text/@EntryValue">public record $name$Command() : ICommand&lt;$name$CommandResponse&gt;;
+
+public record $name$CommandResponse();
+
+public class $name$CommandValidator : AbstractValidator&lt;$name$Command&gt;
+{
+    public $name$CommandValidator()
+    {
+        // 添加验证规则示例：
+        // RuleFor(x =&gt; x.Property).NotEmpty();
+    }
+}
+
+public class $name$CommandHandler : ICommandHandler&lt;$name$Command, $name$CommandResponse&gt;
+{
+    public async Task&lt;$name$CommandResponse&gt; Handle(
+        $name$Command request,
+        CancellationToken cancellationToken)
+    {
+        // 实现业务逻辑
+        throw new NotImplementedException();
+    }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Field/=name/Expression/@EntryValue">constant("My")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=3F82E2CF440B224888600A858E521AA3/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Description/@EntryValue">创建集成事件与事件处理器</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Shortcut/@EntryValue">ncpie</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Text/@EntryValue">public record $name$IntegrationEvent();
+
+public class $name$IntegrationEventHandler(IMediator mediator) : IIntegrationEventHandler&lt;$name$IntegrationEvent&gt;
+{
+    public Task HandleAsync($name$IntegrationEvent eventData, CancellationToken cancellationToken = default)
+    {
+        // var cmd = new $name$Command(eventData.Id);
+        // return mediator.Send(cmd, cancellationToken);
+        throw new NotImplementedException();
+    }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Field/=name/Expression/@EntryValue">constant("XxxCreated")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=41D10FCA95EE3A4E8842867D89088871/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Description/@EntryValue">创建仓储</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Shortcut/@EntryValue">ncprepo</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Text/@EntryValue">public interface I$name$Repository : IRepository&lt;$name$, $name$Id&gt;;
+
+public class $name$Repository(ApplicationDbContext context) 
+    : RepositoryBase&lt;$name$, $name$Id, ApplicationDbContext&gt;(context), 
+      I$name$Repository
+{
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Field/=name/Expression/@EntryValue">constant("My")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4D640788E0911842BD873F1EDDC22DE8/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Description/@EntryValue">创建命令</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Shortcut/@EntryValue">ncpcmd</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Text/@EntryValue">public record $name$Command() : ICommand;
+
+public class $name$CommandValidator : AbstractValidator&lt;$name$Command&gt;
+{
+    public $name$CommandValidator()
+    {
+        // 添加验证规则示例：
+        // RuleFor(x =&gt; x.Property).NotEmpty();
+    }
+}
+
+public class $name$CommandHandler : ICommandHandler&lt;$name$Command&gt;
+{
+    public async Task Handle(
+        $name$Command request, 
+        CancellationToken cancellationToken)
+    {
+        // 实现业务逻辑
+        throw new NotImplementedException();
+    }
+}
+</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Field/=name/Expression/@EntryValue">constant("My")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=4E6DA7714DC0D944814ABEFF40B4878A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Description/@EntryValue">创建领域事件</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Shortcut/@EntryValue">ncpde</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Text/@EntryValue">public record $name$DomainEvent() : IDomainEvent;</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Field/=name/Expression/@EntryValue">constant("XxxCreated")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=98509441D2C578449504D7835EE7708A/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Description/@EntryValue">创建领域事件处理器</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Shortcut/@EntryValue">ncpdeh</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Text/@EntryValue">public class $name$DomainEventHandler(IMediator mediator) 
+    : IDomainEventHandler&lt;$name$DomainEvent&gt;
+{
+    public async Task Handle($name$DomainEvent notification, 
+        CancellationToken cancellationToken)
+    {
+        // 实现业务逻辑
+        throw new NotImplementedException();
+    }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Field/=name/Expression/@EntryValue">constant("XxxCreated")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B478CFC81027024680CDE6AAB4397E0D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Description/@EntryValue">创建集成事件转换器</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Shortcut/@EntryValue">ncpiec</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Text/@EntryValue">public class $name$IntegrationEventConverter
+    : IIntegrationEventConverter&lt;$name$DomainEvent, $name$IntegrationEvent&gt;
+{
+    public $name$IntegrationEvent Convert($name$DomainEvent domainEvent)
+    {
+        // return new $name$IntegrationEvent(domainEvent.Id);
+        throw new NotImplementedException();
+    }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Field/=name/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Field/=name/Expression/@EntryValue">constant("XxxCreated")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Field/=name/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=B50E4DA2CF93D34AAD5007AB50B8B00D/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String></wpf:ResourceDictionary>
