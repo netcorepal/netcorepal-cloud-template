@@ -12,10 +12,12 @@ using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
+using FastEndpoints;
 using Serilog;
 using Serilog.Formatting.Json;
 using Hangfire;
 using Hangfire.Redis.StackExchange;
+using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
@@ -73,6 +75,14 @@ try
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen(c => c.AddEntityIdSchemaMap()); //强类型id swagger schema 映射
+
+    #endregion
+
+    #region FastEndpoints
+
+    builder.Services.AddFastEndpoints();
+    builder.Services.Configure<JsonOptions>(o =>
+        o.SerializerOptions.AddNetCorePalJsonConverters());
 
     #endregion
 
@@ -202,6 +212,7 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+    app.UseFastEndpoints();
 
     #region SignalR
 

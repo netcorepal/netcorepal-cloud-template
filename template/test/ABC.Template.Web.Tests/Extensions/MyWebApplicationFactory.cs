@@ -5,10 +5,7 @@ namespace ABC.Template.Web.Tests.Extensions;
 
 public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private static readonly TestContainerFixture Containers = new TestContainerFixture();
-    private static int _index = 0;
-    private static int _portIndex = 8080;
-    private readonly int InstanceIndex;
+    private readonly TestContainerFixture Containers = new TestContainerFixture();
 
     static MyWebApplicationFactory()
     {
@@ -17,31 +14,26 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 
     public MyWebApplicationFactory()
     {
-        InstanceIndex = _index++;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseSetting("ConnectionStrings:Redis",
-            Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=" + InstanceIndex);
+            Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
         builder.UseSetting("ConnectionStrings:MySql",
-            Containers.MySqlContainer.GetConnectionString().Replace("mysql", "mysql" + InstanceIndex));
+            Containers.MySqlContainer.GetConnectionString().Replace("mysql", "mysql"));
         builder.UseSetting("RabbitMQ:Port", Containers.RabbitMqContainer.GetMappedPublicPort(5672).ToString());
         builder.UseSetting("RabbitMQ:UserName", "guest");
         builder.UseSetting("RabbitMQ:Password", "guest");
-        builder.UseSetting("RabbitMQ:VirtualHost", "v" + InstanceIndex);
+        builder.UseSetting("RabbitMQ:VirtualHost", "/");
         builder.UseSetting("RabbitMQ:HostName", Containers.RabbitMqContainer.Hostname);
-        var port = _portIndex++;
-        var url = $"http://*:{port}";
-        builder.UseSetting("Urls", url);
-        this.ClientOptions.BaseAddress = new Uri($"http://localhost:{port}");
         builder.UseEnvironment("Development");
         base.ConfigureWebHost(builder);
     }
 
     public async Task InitializeAsync()
     {
-        await Containers.CreateVisualHostAsync("v" + InstanceIndex);
+        await Containers.CreateVisualHostAsync("/");
     }
 
     public new async Task DisposeAsync()

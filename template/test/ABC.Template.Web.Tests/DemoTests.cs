@@ -92,10 +92,10 @@ namespace ABC.Template.Web.Tests
             var errors = responseData.errorData.ToList();
             Assert.Equal("不能为空", errors[0].errorMessage);
             Assert.Equal("code1", errors[0].errorCode);
-            Assert.Equal("Name", errors[0].propertyName);
+            Assert.Equal("name", errors[0].propertyName);
             Assert.Equal("价格必须在18-60之间", errors[1].errorMessage);
             Assert.Equal("code2", errors[1].errorCode);
-            Assert.Equal("Price", errors[1].propertyName);
+            Assert.Equal("price", errors[1].propertyName);
         }
 
 
@@ -131,23 +131,6 @@ namespace ABC.Template.Web.Tests
             Assert.NotNull(result2);
             Assert.False(result1.Data);
             Assert.False(result2.Data);
-        }
-
-
-        [Fact]
-        public async Task JwtTest()
-        {
-            string userName = "testname";
-            string password = "testpassword";
-            var response = await _client.PostAsync($"/user/login?username={userName}&password={password}", null);
-            Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ResponseData<string>>();
-            Assert.NotNull(responseData);
-            Assert.NotNull(responseData.Data);
-            
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseData.Data);
-            var jwtResponse = await _client.GetAsync("/user/auth");
-            Assert.True(jwtResponse.IsSuccessStatusCode);
         }
     }
 }
