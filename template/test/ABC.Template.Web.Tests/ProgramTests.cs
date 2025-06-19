@@ -1,5 +1,7 @@
 using System.Net.Http.Json;
+using ABC.Template.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace ABC.Template.Web.Tests
@@ -13,6 +15,12 @@ namespace ABC.Template.Web.Tests
 
         public ProgramTests(MyWebApplicationFactory factory)
         {
+            using (var scope = factory.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                db.Database.Migrate();
+            }
+            
             _factory = factory;
             _client = factory.CreateClient();
         }
