@@ -1,0 +1,1227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  
+  <!-- Post Processor Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>PostProcessor Class</Title>
+      <Shortcut>postproc</Shortcut>
+      <Description>post-processor</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the processor class</ToolTip>
+          <Default>MyProcessor</Default>
+        </Literal>
+        <Literal>
+          <ID>dto</ID>
+          <ToolTip>Name of the DTO prefix</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : IPostProcessor<$dto$Request, $dto$Response>
+{
+    public Task PostProcessAsync($dto$Request req, $dto$Response res, HttpContext ctx, IReadOnlyCollection<ValidationFailure> fails, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Test Class Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Test Class</Title>
+      <Shortcut>tstclass</Shortcut>
+      <Description>test class</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the test class</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>fixture</ID>
+          <ToolTip>Name of the fixture</ToolTip>
+          <Default>App</Default>
+        </Literal>
+        <Literal>
+          <ID>test_name</ID>
+          <ToolTip>Name of the test method</ToolTip>
+          <Default>Name_Of_The_Test</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[namespace Tests;
+
+public class $name$Tests : TestClass<$fixture$Fixture>
+{
+    public $name$Tests($fixture$Fixture f, ITestOutputHelper o) : base(f, o) { }
+
+    [Fact]
+    public async Task $test_name$()
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint with Request Only -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint with Request Only</Title>
+      <Shortcut>epreq</Shortcut>
+      <Description>endpoint with request only</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Post</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route-pattern</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Request
+{
+
+}
+
+sealed class $epName$Endpoint : Endpoint<$epName$Request>
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync($epName$Request r, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Command Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Command</Title>
+      <Shortcut>ncpcmd</Shortcut>
+      <Description>create command</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the command</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public record $name$Command() : ICommand;
+
+public class $name$CommandValidator : AbstractValidator<$name$Command>
+{
+    public $name$CommandValidator()
+    {
+        // Add validation rules example:
+        // RuleFor(x => x.Property).NotEmpty();
+    }
+}
+
+public class $name$CommandHandler : ICommandHandler<$name$Command>
+{
+    public async Task Handle(
+        $name$Command request, 
+        CancellationToken cancellationToken)
+    {
+        // Implement business logic
+        throw new NotImplementedException();
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Command with Response Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Command with Response</Title>
+      <Shortcut>ncpcmdres</Shortcut>
+      <Description>create command with response</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the command</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public record $name$Command() : ICommand<$name$CommandResponse>;
+
+public record $name$CommandResponse();
+
+public class $name$CommandValidator : AbstractValidator<$name$Command>
+{
+    public $name$CommandValidator()
+    {
+        // Add validation rules example:
+        // RuleFor(x => x.Property).NotEmpty();
+    }
+}
+
+public class $name$CommandHandler : ICommandHandler<$name$Command, $name$CommandResponse>
+{
+    public async Task<$name$CommandResponse> Handle(
+        $name$Command request,
+        CancellationToken cancellationToken)
+    {
+        // Implement business logic
+        throw new NotImplementedException();
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Request & Response DTOs -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Request and Response DTOs</Title>
+      <Shortcut>epdto</Shortcut>
+      <Description>endpoint request and response dtos</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name prefix</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$Request
+{
+    $end$
+}
+
+sealed class $name$Response
+{
+
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Aggregate Root -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Aggregate Root</Title>
+      <Shortcut>ncpar</Shortcut>
+      <Description>create aggregate root</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the aggregate</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public partial record $name$Id : IInt64StronglyTypedId;
+
+public class $name$ : Entity<$name$Id>, IAggregateRoot
+{
+    protected $name$() { }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Test Fixture -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Test Fixture</Title>
+      <Shortcut>tstfixture</Shortcut>
+      <Description>test fixture</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the fixture</ToolTip>
+          <Default>App</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[namespace Tests;
+
+public class $name$Fixture : TestFixture<Program>
+{
+    public $name$Fixture(IMessageSink s) : base(s) { }
+
+    protected override Task SetupAsync()
+    {
+        $end$
+    }
+
+    protected override void ConfigureServices(IServiceCollection s)
+    {
+
+    }
+
+    protected override Task TearDownAsync()
+    {
+
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Event Handler Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Event Handler</Title>
+      <Shortcut>evnt</Shortcut>
+      <Description>event handler</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the event</ToolTip>
+          <Default>MyEvent</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : IEvent
+{
+
+}
+
+sealed class $name$Handler : IEventHandler<$name$>
+{
+    public Task HandleAsync($name$ e, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Repository -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Repository</Title>
+      <Shortcut>ncprepo</Shortcut>
+      <Description>create repository</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the entity</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public interface I$name$Repository : IRepository<$name$, $name$Id>;
+
+public class $name$Repository(ApplicationDbContext context) 
+    : RepositoryBase<$name$, $name$Id, ApplicationDbContext>(context), 
+      I$name$Repository
+{
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- FastEndpoint NCP Style -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>FastEndpoint NCP Style</Title>
+      <Shortcut>epp</Shortcut>
+      <Description>endpoint vertical slice - NCP</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Post</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route-pattern</Default>
+        </Literal>
+        <Literal>
+          <ID>summaryText</ID>
+          <ToolTip>Summary text</ToolTip>
+          <Default>Summary text goes here...</Default>
+        </Literal>
+        <Literal>
+          <ID>descriptionText</ID>
+          <ToolTip>Description text</ToolTip>
+          <Default>Description text goes here...</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Endpoint(IMediator mediator) : Endpoint<$epName$Request, ResponseData<$epName$Response>>
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync($epName$Request r, CancellationToken c)
+    {
+        var cmd = new $epName$Command(r.Property1, r.Property2);
+        var result = await mediator.Send(cmd, c);
+        var res = new $epName$Response();
+        await SendOkAsync(res.AsResponseData(), c);
+        $end$
+    }
+}
+
+sealed record $epName$Request();
+
+sealed record $epName$Response();
+
+sealed class $epName$Validator : Validator<$epName$Request>
+{
+    public $epName$Validator()
+    {
+        // RuleFor(x => x.Property).NotEmpty();
+    }
+}
+
+sealed class $epName$Summary : Summary<$epName$Endpoint, $epName$Request>
+{
+    public $epName$Summary()
+    {
+        Summary = "$summaryText$";
+        Description = "$descriptionText$";
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Integration Event Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Integration Event</Title>
+      <Shortcut>ncpie</Shortcut>
+      <Description>integration event</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the integration event</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public record $name$IntegrationEvent() : IntegrationEvent;
+
+public class $name$IntegrationEventHandler : IIntegrationEventHandler<$name$IntegrationEvent>
+{
+    public async Task HandleAsync($name$IntegrationEvent integrationEvent, CancellationToken cancellationToken)
+    {
+        // Implement integration event handling logic
+        throw new NotImplementedException();
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Domain Event Handler Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Domain Event Handler</Title>
+      <Shortcut>ncpdeh</Shortcut>
+      <Description>domain event handler</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the domain event</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public class $name$DomainEventHandler : IDomainEventHandler<$name$DomainEvent>
+{
+    public async Task HandleAsync($name$DomainEvent domainEvent, CancellationToken cancellationToken)
+    {
+        // Implement domain event handling logic
+        throw new NotImplementedException();
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Integration Event Converter Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Integration Event Converter</Title>
+      <Shortcut>ncpiec</Shortcut>
+      <Description>integration event converter</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>domainEventName</ID>
+          <ToolTip>Name of the domain event</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>integrationEventName</ID>
+          <ToolTip>Name of the integration event</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public class $domainEventName$To$integrationEventName$Converter : IIntegrationEventConverter<$domainEventName$DomainEvent, $integrationEventName$IntegrationEvent>
+{
+    public $integrationEventName$IntegrationEvent Convert($domainEventName$DomainEvent domainEvent)
+    {
+        return new $integrationEventName$IntegrationEvent(
+            // Map domain event properties to integration event
+        );
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NetCorePal Domain Event Template -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Domain Event</Title>
+      <Shortcut>ncpde</Shortcut>
+      <Description>domain event</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the domain event</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public record $name$DomainEvent() : IDomainEvent
+{
+    $end$
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint with Response Only -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint with Response Only</Title>
+      <Shortcut>epres</Shortcut>
+      <Description>endpoint with response only</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Get</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route-pattern</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Response
+{
+
+}
+
+sealed class $epName$Endpoint : EndpointWithoutRequest<$epName$Response>
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Validator -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Validator</Title>
+      <Shortcut>epval</Shortcut>
+      <Description>endpoint validator</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Validator : Validator<$epName$Request>
+{
+    public $epName$Validator()
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Mapper -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Mapper</Title>
+      <Shortcut>epmap</Shortcut>
+      <Description>endpoint mapper</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>entity</ID>
+          <ToolTip>Entity name</ToolTip>
+          <Default>YourEntity</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Mapper : Mapper<$epName$Request, $epName$Response, $entity$>
+{
+    public override $entity$ ToEntity($epName$Request r) => new()
+    {
+        $end$
+    };
+
+    public override $epName$Response FromEntity($entity$ e) => new()
+    {
+        
+    };
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- FastEndpoint Full Vertical Slice -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>FastEndpoint Full Vertical Slice</Title>
+      <Shortcut>epfull</Shortcut>
+      <Description>endpoint vertical slice</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Post</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route-pattern</Default>
+        </Literal>
+        <Literal>
+          <ID>entity</ID>
+          <ToolTip>Entity name</ToolTip>
+          <Default>YourEntity</Default>
+        </Literal>
+        <Literal>
+          <ID>summaryText</ID>
+          <ToolTip>Summary text</ToolTip>
+          <Default>Summary text goes here...</Default>
+        </Literal>
+        <Literal>
+          <ID>descriptionText</ID>
+          <ToolTip>Description text</ToolTip>
+          <Default>Description text goes here...</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Endpoint : Endpoint<$epName$Request, $epName$Response, $epName$Mapper>
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync($epName$Request r, CancellationToken c)
+    {
+        $end$
+    }
+}
+
+sealed class $epName$Request
+{
+
+}
+
+sealed class $epName$Response
+{
+
+}
+
+sealed class $epName$Validator : Validator<$epName$Request>
+{
+    public $epName$Validator()
+    {
+
+    }
+}
+
+sealed class $epName$Mapper: Mapper<$epName$Request, $epName$Response, $entity$>
+{
+    public override $entity$ ToEntity($epName$Request r) => new()
+    {
+
+    };
+
+    public override $epName$Response FromEntity($entity$ e) => new()
+    {
+
+    };
+}
+
+sealed class $epName$Summary : Summary<$epName$Endpoint, $epName$Request>
+{
+    public $epName$Summary()
+    {
+        Summary = "$summaryText$";
+        Description = "$descriptionText$";
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Summary -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Summary</Title>
+      <Shortcut>epsum</Shortcut>
+      <Description>endpoint summary</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>summaryText</ID>
+          <ToolTip>Summary text</ToolTip>
+          <Default>Summary text goes here...</Default>
+        </Literal>
+        <Literal>
+          <ID>descriptionText</ID>
+          <ToolTip>Description text</ToolTip>
+          <Default>Description text goes here...</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Summary : Summary<$epName$Endpoint, $epName$Request>
+{
+    public $epName$Summary()
+    {
+        Summary = "$summaryText$";
+        Description = "$descriptionText$";
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Without Request -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Without Request</Title>
+      <Shortcut>epnoreq</Shortcut>
+      <Description>endpoint without request</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Get</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Endpoint : EndpointWithoutRequest
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync(CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint with Request & Response -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint with Request and Response</Title>
+      <Shortcut>epreqres</Shortcut>
+      <Description>endpoint with request and response</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the endpoint</ToolTip>
+          <Default>My</Default>
+        </Literal>
+        <Literal>
+          <ID>verb</ID>
+          <ToolTip>HTTP verb</ToolTip>
+          <Default>Post</Default>
+        </Literal>
+        <Literal>
+          <ID>route</ID>
+          <ToolTip>Route pattern</ToolTip>
+          <Default>route-pattern</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $epName$Request
+{
+
+}
+
+sealed class $epName$Response
+{
+
+}
+
+sealed class $epName$Endpoint : Endpoint<$epName$Request, $epName$Response>
+{
+    public override void Configure()
+    {
+        $verb$("$route$");
+        AllowAnonymous();
+    }
+
+    public override async Task HandleAsync($epName$Request r, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Endpoint Data -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Endpoint Data</Title>
+      <Shortcut>epdat</Shortcut>
+      <Description>endpoint data</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>epName</ID>
+          <ToolTip>Name of the data class</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[static class $epName$Data
+{
+    $end$
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Command Handler with Result -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Command Handler with Result</Title>
+      <Shortcut>cmdres</Shortcut>
+      <Description>command handler with result</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the command</ToolTip>
+          <Default>MyCommand</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : ICommand<$name$Result>
+{
+
+}
+
+sealed class $name$Result
+{
+
+}
+
+sealed class $name$Handler : ICommandHandler<$name$, $name$Result>
+{
+    public Task<$name$Result> ExecuteAsync($name$ cmd, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Command Handler -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Command Handler</Title>
+      <Shortcut>cmd</Shortcut>
+      <Description>command handler</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the command</ToolTip>
+          <Default>MyCommand</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : ICommand
+{
+
+}
+
+sealed class $name$Handler : ICommandHandler<$name$>
+{
+    public Task ExecuteAsync($name$ cmd, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Global Pre-processor -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Global Pre-processor</Title>
+      <Shortcut>preproc_g</Shortcut>
+      <Description>global pre-processor</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the processor</ToolTip>
+          <Default>MyProcessor</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : IGlobalPreProcessor
+{
+    public Task PreProcessAsync(object r, HttpContext ctx, List<ValidationFailure> fails, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Pre-processor -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Pre-processor</Title>
+      <Shortcut>preproc</Shortcut>
+      <Description>pre-processor</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the processor</ToolTip>
+          <Default>MyProcessor</Default>
+        </Literal>
+        <Literal>
+          <ID>dto</ID>
+          <ToolTip>Name of the DTO</ToolTip>
+          <Default>My</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : IPreProcessor<$dto$Request>
+{
+    public Task PreProcessAsync($dto$Request r, HttpContext ctx, List<ValidationFailure> fails, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Global Post-processor -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Global Post-processor</Title>
+      <Shortcut>postproc_g</Shortcut>
+      <Description>global post-processor</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>name</ID>
+          <ToolTip>Name of the processor</ToolTip>
+          <Default>MyProcessor</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[sealed class $name$ : IGlobalPostProcessor
+{
+    public Task PostProcessAsync(object req, object? res, HttpContext ctx, IReadOnlyCollection<ValidationFailure> fails, CancellationToken c)
+    {
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Test Method -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Test Method</Title>
+      <Shortcut>tstmethod</Shortcut>
+      <Description>test method</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>testName</ID>
+          <ToolTip>Name of the test method</ToolTip>
+          <Default>Name_Of_The_Test</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[    [Fact]
+    public async Task $testName$()
+    {
+        $end$
+    }]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+</CodeSnippets>
