@@ -85,6 +85,8 @@ dotnet new uninstall NetCorePal.Template
 
 本模板提供了丰富的代码片段，帮助您快速生成常用的代码结构。
 
+![代码片段演示](docs/snippets.gif)
+
 ### Visual Studio 配置
 
 运行以下 PowerShell 命令自动安装代码片段：
@@ -111,6 +113,7 @@ Rider 用户可以直接使用 `ABC.Template.sln.DotSettings` 文件中的 Live 
 ### 可用的代码片段
 
 #### NetCorePal (ncp) 快捷键
+
 | 快捷键 | 描述 | 生成内容 |
 |--------|------|----------|
 | `ncpcmd` | NetCorePal 命令 | ICommand 实现(含验证器和处理器) |
@@ -123,6 +126,7 @@ Rider 用户可以直接使用 `ABC.Template.sln.DotSettings` 文件中的 Live 
 | `ncpde` | 域事件 | IDomainEvent 记录 |
 
 #### Endpoint (ep) 快捷键
+
 | 快捷键 | 描述 | 生成内容 |
 |--------|------|----------|
 | `epp` | FastEndpoint(NCP风格) | 完整的垂直切片实现 |
@@ -136,8 +140,6 @@ Rider 用户可以直接使用 `ABC.Template.sln.DotSettings` 文件中的 Live 
 | `epnoreq` | 无请求端点 | EndpointWithoutRequest |
 | `epreqres` | 请求响应端点 | Endpoint&lt;Request, Response&gt; |
 | `epdat` | 端点数据 | 静态数据类 |
-
-更多详细配置请参考：[vs-snippets/README.md](vs-snippets/README.md)
 
 ## 支持特性（WIP）
 
