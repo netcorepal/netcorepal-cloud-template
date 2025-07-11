@@ -1,0 +1,603 @@
+{
+  "PostProcessor Class": {
+    "prefix": "postproc",
+    "body": [
+      "sealed class ${1:MyProcessor} : IPostProcessor<${2:My}Request, ${2:My}Response>",
+      "{",
+      "    public Task PostProcessAsync(${2:My}Request req, ${2:My}Response res, HttpContext ctx, IReadOnlyCollection<ValidationFailure> fails, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "post-processor"
+  },
+  
+  "Test Class": {
+    "prefix": "tstclass",
+    "body": [
+      "namespace Tests;",
+      "",
+      "public class ${1:My}Tests : TestClass<${2:App}Fixture>",
+      "{",
+      "    public ${1:My}Tests(${2:App}Fixture f, ITestOutputHelper o) : base(f, o) { }",
+      "",
+      "    [Fact]",
+      "    public async Task ${3:Name_Of_The_Test}()",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "test class"
+  },
+  
+  "Endpoint with Request Only": {
+    "prefix": "epreq",
+    "body": [
+      "sealed class ${1:My}Request",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Endpoint : Endpoint<${1:My}Request>",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Post}(\"${3:route-pattern}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(${1:My}Request r, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint with request only"
+  },
+  
+  "NetCorePal Command": {
+    "prefix": "ncpcmd",
+    "body": [
+      "public record ${1:My}Command() : ICommand;",
+      "",
+      "public class ${1:My}CommandValidator : AbstractValidator<${1:My}Command>",
+      "{",
+      "    public ${1:My}CommandValidator()",
+      "    {",
+      "        // 添加验证规则示例：",
+      "        // RuleFor(x => x.Property).NotEmpty();",
+      "    }",
+      "}",
+      "",
+      "public class ${1:My}CommandHandler : ICommandHandler<${1:My}Command>",
+      "{",
+      "    public async Task Handle(",
+      "        ${1:My}Command request, ",
+      "        CancellationToken cancellationToken)",
+      "    {",
+      "        // 实现业务逻辑",
+      "        throw new NotImplementedException();",
+      "    }",
+      "}"
+    ],
+    "description": "创建命令"
+  },
+  
+  "NetCorePal Command with Response": {
+    "prefix": "ncpcmdres",
+    "body": [
+      "public record ${1:My}Command() : ICommand<${1:My}CommandResponse>;",
+      "",
+      "public record ${1:My}CommandResponse();",
+      "",
+      "public class ${1:My}CommandValidator : AbstractValidator<${1:My}Command>",
+      "{",
+      "    public ${1:My}CommandValidator()",
+      "    {",
+      "        // 添加验证规则示例：",
+      "        // RuleFor(x => x.Property).NotEmpty();",
+      "    }",
+      "}",
+      "",
+      "public class ${1:My}CommandHandler : ICommandHandler<${1:My}Command, ${1:My}CommandResponse>",
+      "{",
+      "    public async Task<${1:My}CommandResponse> Handle(",
+      "        ${1:My}Command request,",
+      "        CancellationToken cancellationToken)",
+      "    {",
+      "        // 实现业务逻辑",
+      "        throw new NotImplementedException();",
+      "    }",
+      "}"
+    ],
+    "description": "创建命令(含返回值)"
+  },
+  
+  "Endpoint Request & Response DTOs": {
+    "prefix": "epdto",
+    "body": [
+      "sealed class ${1:My}Request",
+      "{",
+      "    $0",
+      "}",
+      "",
+      "sealed class ${1:My}Response",
+      "{",
+      "",
+      "}"
+    ],
+    "description": "endpoint request & response dtos"
+  },
+  
+  "NetCorePal Aggregate Root": {
+    "prefix": "ncpar",
+    "body": [
+      "public partial record ${1:My}Id : IInt64StronglyTypedId;",
+      "",
+      "public class ${1:My} : Entity<${1:My}Id>, IAggregateRoot",
+      "{",
+      "    protected ${1:My}() { }",
+      "}"
+    ],
+    "description": "创建聚合根"
+  },
+  
+  "Test Fixture": {
+    "prefix": "tstfixture",
+    "body": [
+      "namespace Tests;",
+      "",
+      "public class ${1:App}Fixture : TestFixture<Program>",
+      "{",
+      "    public ${1:App}Fixture(IMessageSink s) : base(s) { }",
+      "",
+      "    protected override Task SetupAsync()",
+      "    {",
+      "        $0",
+      "    }",
+      "",
+      "    protected override void ConfigureServices(IServiceCollection s)",
+      "    {",
+      "",
+      "    }",
+      "",
+      "    protected override Task TearDownAsync()",
+      "    {",
+      "",
+      "    }",
+      "}"
+    ],
+    "description": "test fixture"
+  },
+  
+  "Event Handler": {
+    "prefix": "evnt",
+    "body": [
+      "sealed class ${1:MyEvent} : IEvent",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:MyEvent}Handler : IEventHandler<${1:MyEvent}>",
+      "{",
+      "    public Task HandleAsync(${1:MyEvent} e, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "event handler"
+  },
+  
+  "NetCorePal Repository": {
+    "prefix": "ncprepo",
+    "body": [
+      "public interface I${1:My}Repository : IRepository<${1:My}, ${1:My}Id>;",
+      "",
+      "public class ${1:My}Repository(ApplicationDbContext context) ",
+      "    : RepositoryBase<${1:My}, ${1:My}Id, ApplicationDbContext>(context), ",
+      "      I${1:My}Repository",
+      "{",
+      "}"
+    ],
+    "description": "创建仓储"
+  },
+  
+  "Endpoint Data": {
+    "prefix": "epdat",
+    "body": [
+      "static class ${1:My}Data",
+      "{",
+      "    $0",
+      "}"
+    ],
+    "description": "endpoint data"
+  },
+  
+  "Command Handler with Result": {
+    "prefix": "cmdres",
+    "body": [
+      "sealed class ${1:MyCommand} : ICommand<${1:MyCommand}Result>",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:MyCommand}Result",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:MyCommand}Handler : ICommandHandler<${1:MyCommand}, ${1:MyCommand}Result>",
+      "{",
+      "    public Task<${1:MyCommand}Result> ExecuteAsync(${1:MyCommand} cmd, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "command handler with result"
+  },
+  
+  "Command Handler": {
+    "prefix": "cmd",
+    "body": [
+      "sealed class ${1:MyCommand} : ICommand",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:MyCommand}Handler : ICommandHandler<${1:MyCommand}>",
+      "{",
+      "    public Task ExecuteAsync(${1:MyCommand} cmd, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "command handler"
+  },
+  
+  "Endpoint Validator": {
+    "prefix": "epval",
+    "body": [
+      "sealed class ${1:My}Validator : Validator<${1:My}Request>",
+      "{",
+      "    public ${1:My}Validator()",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint validator"
+  },
+  
+  "Global Pre-processor": {
+    "prefix": "preproc_g",
+    "body": [
+      "sealed class ${1:MyProcessor} : IGlobalPreProcessor",
+      "{",
+      "    public Task PreProcessAsync(object r, HttpContext ctx, List<ValidationFailure> fails, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "global pre-processor"
+  },
+  
+  "Endpoint with Response Only": {
+    "prefix": "epres",
+    "body": [
+      "sealed class ${1:My}Response",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Endpoint : EndpointWithoutRequest<${1:My}Response>",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Get}(\"${3:route-pattern}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint with response only"
+  },
+  
+  "NetCorePal Integration Event": {
+    "prefix": "ncpie",
+    "body": [
+      "public record ${1:MyCreated}IntegrationEvent();",
+      "",
+      "public class ${1:MyCreated}IntegrationEventHandler(IMediator mediator) : IIntegrationEventHandler<${1:MyCreated}IntegrationEvent>",
+      "{",
+      "    public Task HandleAsync(${1:MyCreated}IntegrationEvent eventData, CancellationToken cancellationToken = default)",
+      "    {",
+      "        // var cmd = new ${1:MyCreated}Command(eventData.Id);",
+      "        // return mediator.Send(cmd, cancellationToken);",
+      "        throw new NotImplementedException();",
+      "    }",
+      "}"
+    ],
+    "description": "创建集成事件与事件处理器"
+  },
+  
+  "NetCorePal Domain Event Handler": {
+    "prefix": "ncpdeh",
+    "body": [
+      "public class ${1:MyCreated}DomainEventHandler(IMediator mediator) ",
+      "    : IDomainEventHandler<${1:MyCreated}DomainEvent>",
+      "{",
+      "    public async Task Handle(${1:MyCreated}DomainEvent notification, ",
+      "        CancellationToken cancellationToken)",
+      "    {",
+      "        // 实现业务逻辑",
+      "        throw new NotImplementedException();",
+      "    }",
+      "}"
+    ],
+    "description": "创建领域事件处理器"
+  },
+  
+  "FastEndpoint - NCP Style": {
+    "prefix": "epp",
+    "body": [
+      "sealed class ${1:My}Endpoint(IMediator mediator) : Endpoint<${1:My}Request, ResponseData<${1:My}Response>>",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Post}(\"${3:route-pattern}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(${1:My}Request r, CancellationToken c)",
+      "    {",
+      "        var cmd = new ${1:My}Command(r.Property1, r.Property2);",
+      "        var result = await mediator.Send(cmd, c);",
+      "        var res = new ${1:My}Response();",
+      "        await SendOkAsync(res.AsResponseData(), c);",
+      "        $0",
+      "    }",
+      "}",
+      "",
+      "sealed record ${1:My}Request();",
+      "",
+      "sealed record ${1:My}Response();",
+      "",
+      "sealed class ${1:My}Validator : Validator<${1:My}Request>",
+      "{",
+      "    public ${1:My}Validator()",
+      "    {",
+      "        // RuleFor(x => x.Property).NotEmpty();",
+      "    }",
+      "}",
+      "",
+      "sealed class ${1:My}Summary : Summary<${1:My}Endpoint, ${1:My}Request>",
+      "{",
+      "    public ${1:My}Summary()",
+      "    {",
+      "        Summary = \"${4:Summary text goes here...}\";",
+      "        Description = \"${5:Description text goes here...}\";",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint vertical slice - NCP"
+  },
+  
+  "Pre-processor": {
+    "prefix": "preproc",
+    "body": [
+      "sealed class ${1:MyProcessor} : IPreProcessor<${2:My}Request>",
+      "{",
+      "    public Task PreProcessAsync(${2:My}Request r, HttpContext ctx, List<ValidationFailure> fails, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "pre-processor"
+  },
+  
+  "NetCorePal Integration Event Converter": {
+    "prefix": "ncpiec",
+    "body": [
+      "public class ${1:MyCreated}IntegrationEventConverter",
+      "    : IIntegrationEventConverter<${1:MyCreated}DomainEvent, ${1:MyCreated}IntegrationEvent>",
+      "{",
+      "    public ${1:MyCreated}IntegrationEvent Convert(${1:MyCreated}DomainEvent domainEvent)",
+      "    {",
+      "        // return new ${1:MyCreated}IntegrationEvent(domainEvent.Id);",
+      "        throw new NotImplementedException();",
+      "    }",
+      "}"
+    ],
+    "description": "创建集成事件转换器"
+  },
+  
+  "Endpoint Mapper": {
+    "prefix": "epmap",
+    "body": [
+      "sealed class ${1:My}Mapper : Mapper<${1:My}Request, ${1:My}Response, ${2:YourEntity}>",
+      "{",
+      "    public override ${2:YourEntity} ToEntity(${1:My}Request r) => new()",
+      "    {",
+      "        $0",
+      "    };",
+      "",
+      "    public override ${1:My}Response FromEntity(${2:YourEntity} e) => new()",
+      "    {",
+      "        ",
+      "    };",
+      "}"
+    ],
+    "description": "endpoint mapper"
+  },
+  
+  "FastEndpoint Full Vertical Slice": {
+    "prefix": "epfull",
+    "body": [
+      "sealed class ${1:My}Endpoint : Endpoint<${1:My}Request, ${1:My}Response, ${1:My}Mapper>",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Post}(\"${3:route-pattern}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(${1:My}Request r, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}",
+      "",
+      "sealed class ${1:My}Request",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Response",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Validator : Validator<${1:My}Request>",
+      "{",
+      "    public ${1:My}Validator()",
+      "    {",
+      "",
+      "    }",
+      "}",
+      "",
+      "sealed class ${1:My}Mapper: Mapper<${1:My}Request, ${1:My}Response, ${4:YourEntity}>",
+      "{",
+      "    public override ${4:YourEntity} ToEntity(${1:My}Request r) => new()",
+      "    {",
+      "",
+      "    };",
+      "",
+      "    public override ${1:My}Response FromEntity(${4:YourEntity} e) => new()",
+      "    {",
+      "",
+      "    };",
+      "}",
+      "",
+      "sealed class ${1:My}Summary : Summary<${1:My}Endpoint, ${1:My}Request>",
+      "{",
+      "    public ${1:My}Summary()",
+      "    {",
+      "        Summary = \"${5:Summary text goes here...}\";",
+      "        Description = \"${6:Description text goes here...}\";",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint vertical slice"
+  },
+  
+  "Global Post-processor": {
+    "prefix": "postproc_g",
+    "body": [
+      "sealed class ${1:MyProcessor} : IGlobalPostProcessor",
+      "{",
+      "    public Task PostProcessAsync(object req, object? res, HttpContext ctx, IReadOnlyCollection<ValidationFailure> fails, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "global post-processor"
+  },
+  
+  "Test Method": {
+    "prefix": "tstmethod",
+    "body": [
+      "    [Fact]",
+      "    public async Task ${1:Name_Of_The_Test}()",
+      "    {",
+      "        $0",
+      "    }"
+    ],
+    "description": "test method"
+  },
+  
+  "NetCorePal Domain Event": {
+    "prefix": "ncpde",
+    "body": [
+      "public record ${1:MyCreated}DomainEvent() : IDomainEvent;"
+    ],
+    "description": "创建领域事件"
+  },
+  
+  "Endpoint Summary": {
+    "prefix": "epsum",
+    "body": [
+      "sealed class ${1:My}Summary : Summary<${1:My}Endpoint, ${1:My}Request>",
+      "{",
+      "    public ${1:My}Summary()",
+      "    {",
+      "        Summary = \"${2:Summary text goes here...}\";",
+      "        Description = \"${3:Description text goes here...}\";",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint summary"
+  },
+  
+  "Endpoint Without Request": {
+    "prefix": "epnoreq",
+    "body": [
+      "sealed class ${1:My}Endpoint : EndpointWithoutRequest",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Get}(\"${3:route}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint without request"
+  },
+  
+  "Endpoint with Request & Response": {
+    "prefix": "epreqres",
+    "body": [
+      "sealed class ${1:My}Request",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Response",
+      "{",
+      "",
+      "}",
+      "",
+      "sealed class ${1:My}Endpoint : Endpoint<${1:My}Request, ${1:My}Response>",
+      "{",
+      "    public override void Configure()",
+      "    {",
+      "        ${2:Post}(\"${3:route-pattern}\");",
+      "        AllowAnonymous();",
+      "    }",
+      "",
+      "    public override async Task HandleAsync(${1:My}Request r, CancellationToken c)",
+      "    {",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "endpoint with request & response"
+  }
+}
