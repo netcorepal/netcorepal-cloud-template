@@ -19,6 +19,6 @@ public class LoginEndpoint(IJwtProvider jwtProvider) : Endpoint<LoginRequest, Re
             new JwtData("netcorepal", "netcorepal",
                 [new Claim("name", req.Username)],
                 DateTime.Now, DateTime.Now.AddDays(1)));
-        await SendAsync(jwt.AsResponseData(), cancellation: ct);
+        await Send.OkAsync(jwt.AsResponseData(), cancellation: ct);
     }
 }

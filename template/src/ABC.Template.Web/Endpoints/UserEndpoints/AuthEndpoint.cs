@@ -11,6 +11,6 @@ public class AuthEndpoint : EndpointWithoutRequest<ResponseData<bool>>
 {
     public override Task HandleAsync(CancellationToken ct)
     {
-        return SendAsync(true.AsResponseData(), cancellation: ct);
+        return Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
