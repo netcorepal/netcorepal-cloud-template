@@ -40,6 +40,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 ```
 
+## 常见错误排查
+
+### 实体配置基类错误
+**错误**: `未能找到类型或命名空间名"EntityTypeBuilder<>"`
+**错误**: `不实现接口成员"IEntityTypeConfiguration<T>.Configure(EntityTypeBuilder<T>)"`
+**原因**: 缺少必要的 using 引用
+**解决**: 添加以下 using 引用：
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+```
+
+### 值生成器配置错误
+**错误**: ID 未自动生成
+**原因**: 值生成器配置错误或缺失
+**解决**: 根据强类型ID类型配置正确的值生成器：
+- `IInt64StronglyTypedId` → `UseSnowFlakeValueGenerator()`
+- `IGuidStronglyTypedId` → `UseGuidVersion7ValueGenerator()`
+
 ## 代码示例
 
 **文件**: `src/ABC.Template.Infrastructure/EntityConfigurations/UserEntityTypeConfiguration.cs`

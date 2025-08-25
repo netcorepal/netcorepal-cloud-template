@@ -182,6 +182,27 @@ public record UserListItemDto(
 - 避免使用 `.Value` 属性访问内部值
 - 依赖框架的隐式转换处理类型转换
 
+## 常见错误排查
+
+### Entity Framework 扩展方法错误
+**错误**: `IQueryable<T>"未包含"CountAsync"的定义`
+**错误**: `IQueryable<T>"未包含"ToListAsync"的定义`
+**错误**: `IQueryable<T>"未包含"FirstOrDefaultAsync"的定义`
+**原因**: 缺少 Entity Framework Core 的 using 引用
+**解决**: 在查询文件中添加 `using Microsoft.EntityFrameworkCore;`
+
+### DbContext 访问错误
+**错误**: 在查询处理器中使用仓储方法
+**原因**: 职责混淆，查询应直接使用 DbContext
+**解决**: 
+- 查询处理器直接注入 `ApplicationDbContext`
+- 使用 `context.EntitySetName` 直接访问数据
+- 避免调用仓储方法
+
+### 投影和性能优化
+**建议**: 使用 `Select()` 投影避免查询不需要的字段
+**建议**: 合理使用 `Where()`、`Take()`、`Skip()` 进行过滤和分页
+
 ## 框架特性
 
 查询处理器享有以下框架特性：

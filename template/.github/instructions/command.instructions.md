@@ -49,7 +49,11 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 - `global using MediatR;` - 用于命令处理器接口
 - `global using NetCorePal.Extensions.Primitives;` - 用于KnownException等
 
-因此在命令文件中无需重复添加这些using语句。
+命令处理器中常需手动添加的引用：
+- `using ABC.Template.Domain.AggregatesModel.{Aggregate};` - 聚合根引用
+- `using ABC.Template.Infrastructure.Repositories;` - 仓储接口引用
+
+因此在命令文件中无需重复添加GlobalUsings中已定义的using语句。
 
 ## 代码示例
 

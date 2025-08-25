@@ -130,3 +130,38 @@ public override async Task HandleAsync(UpdateUserRequestDto req, CancellationTok
     await Send.NoContentAsync(ct);
 }
 ```
+
+## 常见错误排查
+
+### FastEndpoints 基类选择错误
+**错误**: `非泛型 类型"Endpoint"不能与类型参数一起使用`
+**原因**: 缺少 `using FastEndpoints;` 引用
+**解决**: 添加必要的 using 引用
+
+### 响应方法不存在错误
+**错误**: `当前上下文中不存在名称"Send"`
+**原因**: 基类选择错误或缺少 using 引用
+**解决**: 
+- 检查基类是否正确
+- 有请求有响应：`Endpoint<TRequest, TResponse>`
+- 有请求无响应：`Endpoint<TRequest, EmptyResponse>`
+- 无请求有响应：`EndpointWithoutRequest<TResponse>`
+
+### 属性配置错误
+**错误**: `未能找到类型或命名空间名"HttpPostAttribute"`
+**原因**: 缺少 `using Microsoft.AspNetCore.Authorization;` 引用
+**解决**: 添加 `using Microsoft.AspNetCore.Authorization;`
+
+## 配置方式
+
+端点使用属性模式配置，不使用 `Configure()` 方法：
+
+```csharp
+[Tags("ModuleName")]
+[HttpPost("/api/resource")]
+[AllowAnonymous]
+public class CreateResourceEndpoint : Endpoint<CreateRequest, ResponseData<CreateResponse>>
+{
+    // 实现
+}
+```

@@ -10,6 +10,11 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 
 ## 重要设计原则
 
+**仓储接口定义位置：**
+- 仓储接口和实现都应该定义在 Infrastructure 层
+- 不要在 Domain 层定义仓储接口
+- 使用 `AddRepositories()` 自动注册，无需手动注册
+
 **仓储 vs 查询的职责分离：**
 - **仓储方法**：只用于命令处理器中需要获取聚合进行业务操作的场景
 - **查询(Query)**：用于纯粹的数据读取，应该直接使用Query模式访问DbContext
@@ -29,12 +34,29 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 ## 开发规则
 
 仓储的定义应遵循以下规则：
-- 接口必须继承 `IRepository<TEntity, TKey>`
-- 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`
-- 接口和实现定义在同一文件中
+- 接口和实现都定义在 Infrastructure 层的同一文件中
+- 接口必须继承 `IRepository<TEntity, TKey>`（如果需要继承基接口）
+- 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`（如果需要继承基类）
+- 或者直接定义接口，用构造函数注入 `ApplicationDbContext`
 - 方法名反映业务意图，使用异步方法
 - 每个聚合根对应一个仓储
 - 框架自动注册仓储实现
+
+## 常见错误排查
+
+### 依赖注入错误
+**错误**: `未能找到类型或命名空间名"IDiaryRepository"`
+**原因**: 在 Domain 层定义了仓储接口，或缺少引用
+**解决**: 
+- 将仓储接口定义在 Infrastructure 层
+- 在使用仓储的地方添加 `using ABC.Template.Infrastructure.Repositories;`
+
+### 自动注册相关
+**错误**: 仓储未注册到 DI 容器
+**原因**: 期望手动注册仓储
+**解决**: 
+- Infrastructure 层的 `AddRepositories()` 已自动注册所有仓储
+- 无需在 Program.cs 中手动注册仓储
 
 ## 必要的using引用
 
@@ -58,7 +80,8 @@ using ABC.Template.Domain.AggregatesModel.UserAggregate;
 
 namespace ABC.Template.Infrastructure.Repositories;
 
-public interface IUserRepository : IRepository<User, UserId>
+// 接口和实现定义在同一文件中
+public interface IUserRepository
 {
     /// <summary>
     /// 根据邮箱获取用户
@@ -69,24 +92,22 @@ public interface IUserRepository : IRepository<User, UserId>
     Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
     
     /// <summary>
-    /// 检查邮箱是否已存在
+    /// 添加用户
     /// </summary>
-    /// <param name="email">邮箱地址</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>是否存在</returns>
-    Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
+    /// <param name="user">用户实体</param>
+    Task AddAsync(User user);
 }
 
-public class UserRepository(ApplicationDbContext context) : RepositoryBase<User, UserId, ApplicationDbContext>(context), IUserRepository
+public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
         return await context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
     
-    public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
+    public async Task AddAsync(User user)
     {
-        return await context.Users.AnyAsync(x => x.Email == email, cancellationToken);
+        await context.Users.AddAsync(user);
     }
 }
 ```
