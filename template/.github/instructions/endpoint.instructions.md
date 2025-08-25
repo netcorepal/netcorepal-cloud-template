@@ -28,6 +28,17 @@ FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Contr
 - 使用 `Send.OkAsync()` 发送成功响应
 - 使用 `.AsResponseData()` 扩展方法创建响应数据
 
+## FastEndpoints响应方法
+
+### 常用响应方法
+- `Send.OkAsync()` - 发送200 OK响应
+- `Send.CreatedAsync()` - 发送201 Created响应  
+- `Send.NoContentAsync()` - 发送204 No Content响应
+
+### 响应数据包装
+- 使用`ResponseData<T>`包装响应数据
+- 使用`.AsResponseData()`扩展方法创建包装
+
 ## 必要的using引用
 
 端点文件中的必要引用：
@@ -81,5 +92,41 @@ public class CreateUserEndpoint : Endpoint<CreateUserRequestDto, ResponseData<Cr
         
         await Send.OkAsync(new CreateUserResponseDto(userId).AsResponseData(), ct);
     }
+}
+```
+
+## 端点响应示例
+
+### ✅ 创建资源的端点
+```csharp
+public override async Task HandleAsync(CreateUserRequestDto req, CancellationToken ct)
+{
+    var command = new CreateUserCommand(req.Name, req.Email);
+    var userId = await mediator.Send(command, ct);
+    
+    var response = new CreateUserResponseDto(userId);
+    await Send.CreatedAsync(response.AsResponseData(), ct);
+}
+```
+
+### ✅ 查询资源的端点  
+```csharp
+public override async Task HandleAsync(GetUserRequestDto req, CancellationToken ct)
+{
+    var query = new GetUserQuery(req.UserId);
+    var user = await mediator.Send(query, ct);
+    
+    await Send.OkAsync(user.AsResponseData(), ct);
+}
+```
+
+### ✅ 更新资源的端点
+```csharp
+public override async Task HandleAsync(UpdateUserRequestDto req, CancellationToken ct)
+{
+    var command = new UpdateUserCommand(req.UserId, req.Name, req.Email);
+    await mediator.Send(command, ct);
+    
+    await Send.NoContentAsync(ct);
 }
 ```

@@ -42,6 +42,15 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 - 使用 `IInt64StronglyTypedId` 或 `IGuidStronglyTypedId` 接口
 - 使用 `partial record` 声明，让框架生成具体实现
 - 必须是public类型
+## 强类型ID生成规则
+
+强类型ID的生成应遵循以下规则：
+- **Domain层**: 聚合根构造函数中不应手动设置ID值
+- **Infrastructure层**: 通过EF Core值生成器自动生成ID
+- **测试环境**: 可以使用构造函数手动创建ID用于测试
+- 使用 `IInt64StronglyTypedId` 或 `IGuidStronglyTypedId` 接口
+- 使用 `partial record` 声明，让框架生成具体实现
+- 必须是public类型
 - 与聚合根在同一个文件中定义
 - 命名格式为 `{EntityName}Id`
 
@@ -72,7 +81,7 @@ public class User : Entity<UserId>, IAggregateRoot
     
     public User(string name, string email)
     {
-        Id = UserId.New();
+        // 不手动设置ID，由EF Core值生成器自动生成
         Name = name;
         Email = email;
         this.AddDomainEvent(new UserCreatedDomainEvent(this));
@@ -143,7 +152,36 @@ public void Test_CreateUser()
     var userId = new UserId(123);
     var user = new User("test", "test@example.com");
     
-    Assert.Equal(userId, user.Id);
+    // 注意：在Domain层测试中，ID由值生成器生成
+    // 测试应该专注于业务逻辑而非ID生成
+    Assert.NotNull(user);
+    Assert.Equal("test", user.Name);
+}
+```
+
+## 强类型ID生成示例
+
+### ❌ 错误示例
+```csharp
+// 错误：在聚合根中手动生成ID
+public User(string name, string email)
+{
+    Id = UserId.New(); // 此方法不存在
+    Id = new UserId(Guid.NewGuid()); // 不应在Domain层手动生成
+    Name = name;
+    Email = email;
+}
+```
+
+### ✅ 正确示例
+```csharp
+// 正确：让值生成器自动生成ID
+public User(string name, string email)
+{
+    // 不设置ID，由EF Core值生成器生成
+    Name = name;
+    Email = email;
+    this.AddDomainEvent(new UserCreatedDomainEvent(this));
 }
 ```
 

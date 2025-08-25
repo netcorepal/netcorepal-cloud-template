@@ -32,12 +32,22 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 - IInt64StronglyTypedId 使用 UseSnowFlakeValueGenerator()
 - IGuidStronglyTypedId 使用 UseGuidVersion7ValueGenerator()
 
+## 必要的using引用
+
+实体配置文件中必须包含以下using语句：
+```csharp
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+```
+
 ## 代码示例
 
 **文件**: `src/ABC.Template.Infrastructure/EntityConfigurations/UserEntityTypeConfiguration.cs`
 
 ```csharp
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations;
 

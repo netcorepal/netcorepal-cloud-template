@@ -25,6 +25,23 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 - 使用 `record` 类型定义命令
 - 框架自动注册命令处理器
 
+## 命令处理器最佳实践
+
+### 事务管理
+- **不要手动调用SaveChanges**: 框架会自动在命令处理完成后调用SaveChanges
+- **依赖UnitOfWork模式**: 让框架管理事务边界
+
+### 仓储方法使用
+- **仅用于业务操作**: 仓储方法只在需要获取聚合根进行业务操作时使用
+- **优先使用异步方法**: 所有仓储操作都应使用异步版本
+- **正确的取消令牌传递**: 将CancellationToken传递给所有异步操作
+- **体现业务意图**: 仓储方法名应该反映业务场景，而不是通用数据访问
+
+### 数据访问原则
+- 命令处理器使用仓储获取聚合根进行业务操作
+- 如果只是为了检查数据存在性，考虑是否需要完整的聚合根
+- 避免在命令处理器中进行复杂的查询操作
+
 ## 必要的using引用
 
 命令文件中的必要引用已在GlobalUsings.cs中定义：
@@ -80,5 +97,33 @@ public class CreateUserCommandHandler(IUserRepository userRepository)
         await userRepository.AddAsync(user, cancellationToken);
         return user.Id;
     }
+}
+```
+
+## 命令处理器示例对比
+
+### ❌ 错误的做法
+```csharp
+public async Task<UserId> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+{
+    var user = new User(request.Name, request.Email);
+    
+    userRepository.Add(user); // 应该使用异步方法
+    await userRepository.UnitOfWork.SaveChangesAsync(cancellationToken); // 不应手动调用
+    
+    return user.Id;
+}
+```
+
+### ✅ 正确的做法
+```csharp
+public async Task<UserId> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+{
+    var user = new User(request.Name, request.Email);
+    
+    await userRepository.AddAsync(user, cancellationToken); // 使用异步方法
+    // 框架会自动调用SaveChanges
+    
+    return user.Id;
 }
 ```
