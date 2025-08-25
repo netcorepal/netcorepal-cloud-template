@@ -61,6 +61,13 @@ ABC.Template.sln
 - ✅ 遵循分层架构依赖关系 (Web → Infrastructure → Domain)
 - ✅ 使用KnownException处理已知业务异常
 
+### 关键技术要求
+- **验证器**: 必须继承 `AbstractValidator<T>` 而不是 `Validator<T>`
+- **领域事件处理器**: 实现 `Handle()` 方法而不是 `HandleAsync()`
+- **FastEndpoints**: 使用构造函数注入 `IMediator`，使用 `Send.OkAsync()` 和 `.AsResponseData()`
+- **强类型ID**: 直接使用类型，避免 `.Value` 属性，依赖隐式转换
+- **仓储**: 通过构造函数参数访问 `ApplicationDbContext`
+
 ## 异常处理原则
 
 ### KnownException使用规范
@@ -79,11 +86,12 @@ public void OrderPaid()
 }
 
 // 在命令处理器中
-public async Task Handle(OrderPaidCommand request, CancellationToken cancellationToken)
+public async Task<OrderId> Handle(OrderPaidCommand request, CancellationToken cancellationToken)
 {
     var order = await orderRepository.GetAsync(request.OrderId, cancellationToken) ??
                 throw new KnownException($"未找到订单，OrderId = {request.OrderId}");
     order.OrderPaid();
+    return order.Id;
 }
 ```
 
@@ -91,3 +99,27 @@ public async Task Handle(OrderPaidCommand request, CancellationToken cancellatio
 - `KnownException` 会被框架自动转换为合适的HTTP状态码
 - 异常消息会直接返回给客户端
 - 支持本地化和错误码定制
+
+## 常见using引用指南
+
+### GlobalUsings.cs配置
+各层的常用引用已在GlobalUsings.cs中全局定义：
+
+**Web层** (`src/ABC.Template.Web/GlobalUsings.cs`):
+- `global using FluentValidation;` - 验证器
+- `global using MediatR;` - 命令处理器  
+- `global using NetCorePal.Extensions.Primitives;` - KnownException等
+- `global using FastEndpoints;` - API端点
+- `global using NetCorePal.Extensions.Dto;` - ResponseData
+- `global using NetCorePal.Extensions.Domain;` - 领域事件处理器
+
+**Infrastructure层** (`src/ABC.Template.Infrastructure/GlobalUsings.cs`):
+- `global using Microsoft.EntityFrameworkCore;` - EF Core
+- `global using NetCorePal.Extensions.Primitives;` - 基础类型
+
+**Domain层** (`src/ABC.Template.Domain/GlobalUsings.cs`):
+- `global using NetCorePal.Extensions.Domain;` - 领域基础类型
+- `global using NetCorePal.Extensions.Primitives;` - 强类型ID等
+
+**Tests层** (`test/*/GlobalUsings.cs`):
+- `global using NetCorePal.Extensions.Primitives;` - 测试中的异常处理

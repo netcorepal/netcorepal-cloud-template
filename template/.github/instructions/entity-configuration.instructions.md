@@ -37,8 +37,6 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 **文件**: `src/ABC.Template.Infrastructure/EntityConfigurations/UserEntityTypeConfiguration.cs`
 
 ```csharp
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations;

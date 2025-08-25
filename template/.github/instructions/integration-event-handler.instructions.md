@@ -31,10 +31,8 @@ applyTo: "src/ABC.Template.Web/Application/IntegrationEventHandlers/*.cs"
 **文件**: `src/ABC.Template.Web/Application/IntegrationEventHandlers/UserCreatedIntegrationEventHandlerForSendNotifyEmail.cs`
 
 ```csharp
-using NetCorePal.Extensions.Domain;
 using ABC.Template.Web.Application.IntegrationEvents;
 using ABC.Template.Web.Application.Commands;
-using MediatR;
 
 namespace ABC.Template.Web.Application.IntegrationEventHandlers;
 

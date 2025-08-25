@@ -19,6 +19,7 @@ applyTo: "src/ABC.Template.Web/Application/DomainEventHandlers/*.cs"
 
 领域事件处理器的定义应遵循以下规则：
 - 必须实现 `IDomainEventHandler<T>` 接口
+- 实现 `Handle(TEvent domainEvent, CancellationToken cancellationToken)` 方法
 - 每个领域事件可以对应多个处理器，每个处理器对应特定的业务目的
 - 在事务边界内执行，确保数据一致性
 - 主要用于跨聚合协调和副作用处理
@@ -26,12 +27,19 @@ applyTo: "src/ABC.Template.Web/Application/DomainEventHandlers/*.cs"
 - 使用依赖注入获取所需服务
 - 框架自动注册事件处理器
 
+## 必要的using引用
+
+领域事件处理器文件中的必要引用已在GlobalUsings.cs中定义：
+- `global using NetCorePal.Extensions.Domain;` - 用于IDomainEventHandler接口
+- `global using MediatR;` - 用于发送其他命令
+
+因此在领域事件处理器文件中无需重复添加这些using语句。
+
 ## 代码示例
 
 **文件**: `src/ABC.Template.Web/Application/DomainEventHandlers/UserCreatedDomainEventHandlerForCreateScoreAccount.cs`
 
 ```csharp
-using NetCorePal.Extensions.Domain;
 using ABC.Template.Domain.DomainEvents;
 using ABC.Template.Web.Application.Commands;
 
@@ -42,7 +50,7 @@ public class UserCreatedDomainEventHandlerForCreateScoreAccount(
     IMediator mediator)
     : IDomainEventHandler<UserCreatedDomainEvent>
 {
-    public async Task HandleAsync(UserCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
+    public async Task Handle(UserCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
         var user = domainEvent.User;
         logger.LogInformation("为新用户创建积分账户：{UserId}", user.Id);

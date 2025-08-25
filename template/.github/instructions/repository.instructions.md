@@ -25,6 +25,19 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 - 每个聚合根对应一个仓储
 - 框架自动注册仓储实现
 
+## 必要的using引用
+
+仓储文件中的必要引用已在GlobalUsings.cs中定义：
+- `global using Microsoft.EntityFrameworkCore;` - 用于EF Core扩展方法
+
+因此在仓储文件中无需重复添加这些using语句。
+
+## DbContext访问说明
+
+- 通过构造函数参数访问 `ApplicationDbContext`
+- 使用 `context.EntitySetName` 访问具体的DbSet
+- 基类没有提供公开的 `DbSet` 或 `Context` 属性
+
 ## 代码示例
 
 **文件**: `src/ABC.Template.Infrastructure/Repositories/UserRepository.cs`
@@ -36,16 +49,33 @@ namespace ABC.Template.Infrastructure.Repositories;
 
 public interface IUserRepository : IRepository<User, UserId>
 {
-    #region 添加额外需要的方法
-    Task<User?> GetByEmailAsync(string email);
-    #endregion
+    /// <summary>
+    /// 根据邮箱获取用户
+    /// </summary>
+    /// <param name="email">邮箱地址</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>用户实体，如果不存在则返回null</returns>
+    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    
+    /// <summary>
+    /// 检查邮箱是否已存在
+    /// </summary>
+    /// <param name="email">邮箱地址</param>
+    /// <param name="cancellationToken">取消令牌</param>
+    /// <returns>是否存在</returns>
+    Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default);
 }
 
-public class UserRepository(ApplicationDbContext dbContext) : Repository<User, UserId, ApplicationDbContext>, IUserRepository
+public class UserRepository(ApplicationDbContext context) : RepositoryBase<User, UserId, ApplicationDbContext>(context), IUserRepository
 {
-    public async Task<User?> GetByEmailAsync(string email)
+    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
+        return await context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+    }
+    
+    public async Task<bool> EmailExistsAsync(string email, CancellationToken cancellationToken = default)
+    {
+        return await context.Users.AnyAsync(x => x.Email == email, cancellationToken);
     }
 }
 ```
