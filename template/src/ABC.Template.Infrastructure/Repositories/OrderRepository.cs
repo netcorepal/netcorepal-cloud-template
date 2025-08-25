@@ -2,16 +2,13 @@
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using NetCorePal.Extensions.Repository;
 
-namespace ABC.Template.Infrastructure.Repositories
+namespace ABC.Template.Infrastructure.Repositories;
+
+public interface IOrderRepository : IRepository<Order, OrderId>
 {
-
-    public interface IOrderRepository : IRepository<Order, OrderId>
-    {
-
-    }
-
-
-    public class OrderRepository(ApplicationDbContext context) : RepositoryBase<Order, OrderId, ApplicationDbContext>(context), IOrderRepository
-    {
-    }
 }
+
+public class OrderRepository(ApplicationDbContext context) : RepositoryBase<Order, OrderId, ApplicationDbContext>(context), IOrderRepository
+{
+}
+

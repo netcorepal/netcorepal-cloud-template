@@ -1,20 +1,19 @@
 ﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using NetCorePal.Extensions.Domain;
 
-namespace ABC.Template.Domain.AggregatesModel.DeliverAggregate
+namespace ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+
+public partial record DeliverRecordId : IInt64StronglyTypedId;
+
+public class DeliverRecord : Entity<DeliverRecordId>, IAggregateRoot
 {
-    public partial record DeliverRecordId : IInt64StronglyTypedId;
+    protected DeliverRecord() { }
 
-    public class DeliverRecord : Entity<DeliverRecordId>, IAggregateRoot
+
+    public DeliverRecord(OrderId orderId)
     {
-        protected DeliverRecord() { }
-
-
-        public DeliverRecord(OrderId orderId)
-        {
-            this.OrderId = orderId;
-        }
-
-        public OrderId OrderId { get; private set; } = default!;
+        this.OrderId = orderId;
     }
+
+    public OrderId OrderId { get; private set; } = default!;
 }
+
