@@ -3,11 +3,11 @@
 applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 ---
 
-# 聚合开发指南
+# 聚合与强类型ID开发指南
 
 ## 概述
 
-聚合根是 DDD 中的核心概念，代表一组相关对象的根实体，负责维护业务规则和数据一致性。在本模板中，所有聚合根都继承自 `Entity<TId>` 并实现 `IAggregateRoot` 接口。
+聚合根是 DDD 中的核心概念，代表一组相关对象的根实体，负责维护业务规则和数据一致性。在本模板中，所有聚合根都继承自 `Entity<TId>` 并实现 `IAggregateRoot` 接口。同时，本模板使用强类型ID提供类型安全，避免了不同实体ID之间的混淆。
 
 ## 文件与目录
 
@@ -18,7 +18,7 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 - 聚合根类名与文件名一致
 - 强类型ID与聚合根定义在同一文件中
 
-## 开发规则
+## 聚合根开发规则
 
 聚合根的定义应遵循以下规则：
 - 聚合内必须有一个且只有一个聚合根
@@ -36,13 +36,34 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 - 必须继承自 `Entity<TId>`，并实现 `IEntity` 接口
 - 聚合内允许多个子实体
 
+## 强类型ID开发规则
+
+强类型ID的定义应遵循以下规则：
+- 使用 `IInt64StronglyTypedId` 或 `IGuidStronglyTypedId` 接口
+- 使用 `partial record` 声明，让框架生成具体实现
+- 必须是public类型
+- 与聚合根在同一个文件中定义
+- 命名格式为 `{EntityName}Id`
+
+## 强类型ID使用规则
+
+在代码中使用强类型ID时应遵循：
+- 在API DTO中直接使用强类型ID类型
+- 避免访问 `.Value` 属性获取内部值
+- 依赖框架的隐式转换进行类型转换
+- 在测试中使用构造函数创建实例：`new UserId(123)`
+- 在查询和比较时直接使用强类型ID
+
 ## 代码示例
 
-**文件**: `src/ABC.Template.Domain/AggregatesModel/UserAggregate/User.cs`
+**基本聚合根定义**
+
+文件: `src/ABC.Template.Domain/AggregatesModel/UserAggregate/User.cs`
 
 ```csharp
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
 
+// 强类型ID定义 - 与聚合根在同一文件中
 public partial record UserId : IGuidStronglyTypedId;
 
 public class User : Entity<UserId>, IAggregateRoot
@@ -75,3 +96,86 @@ public class User : Entity<UserId>, IAggregateRoot
     #endregion
 }
 ```
+
+**不同类型的强类型ID示例**
+
+```csharp
+// 使用Int64作为内部类型
+public partial record UserId : IInt64StronglyTypedId;
+
+// 使用Guid作为内部类型
+public partial record ProductId : IGuidStronglyTypedId;
+```
+
+**在API中使用强类型ID**
+
+```csharp
+// DTO定义 - 直接使用强类型ID
+public record CreateUserResponseDto(UserId UserId);
+public record GetUserRequestDto(UserId UserId);
+
+// 端点实现
+public override async Task HandleAsync(GetUserRequestDto req, CancellationToken ct)
+{
+    // 直接使用强类型ID，无需转换
+    var user = await _userRepository.GetAsync(req.UserId, ct);
+    // ...
+}
+```
+
+**在仓储中使用强类型ID**
+
+```csharp
+public async Task<User?> GetByIdAsync(UserId userId, CancellationToken cancellationToken = default)
+{
+    // 直接用于查询，框架会自动处理转换
+    return await context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+}
+```
+
+**在测试中使用强类型ID**
+
+```csharp
+[Fact]
+public void Test_CreateUser()
+{
+    // 在测试中使用构造函数创建
+    var userId = new UserId(123);
+    var user = new User("test", "test@example.com");
+    
+    Assert.Equal(userId, user.Id);
+}
+```
+
+## 常见错误
+
+以下是使用强类型ID时应该避免的错误：
+
+```csharp
+// ❌ 错误：尝试访问Value属性
+var longValue = userId.Value; // 编译错误
+
+// ❌ 错误：手动创建嵌套构造函数
+var userId = new UserId(new UserId(123)); // 不需要嵌套
+
+// ❌ 错误：在DTO中使用原始类型
+public record GetUserRequestDto(long UserId); // 应该使用UserId类型
+
+// ✅ 正确：直接使用强类型ID
+public record GetUserRequestDto(UserId UserId);
+
+// ✅ 正确：在测试中创建
+var userId = new UserId(123);
+
+// ✅ 正确：直接比较和查询
+if (user.Id == userId) { ... }
+```
+
+## 框架特性
+
+NetCorePal强类型ID框架提供了以下特性：
+- 自动的JSON序列化/反序列化
+- EF Core值转换器自动配置
+- 隐式类型转换支持
+- 类型安全的比较操作
+- 自动生成ToString()、GetHashCode()等方法
