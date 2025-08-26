@@ -10,37 +10,13 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 
 ## 重要设计原则
 
-**仓储接口定义位置：**
-- 仓储接口和实现都应该定义在 Infrastructure 层
-- 不要在 Domain 层定义仓储接口
-- 使用 `AddRepositories()` 自动注册，无需手动注册
-
-**仓储 vs 查询的职责分离：**
-- **仓储方法**：只用于命令处理器中需要获取聚合进行业务操作的场景
-- **查询(Query)**：用于纯粹的数据读取，应该直接使用Query模式访问DbContext
-
-**设计决策指导：**
-- 如果需要获取聚合根来执行业务逻辑 → 使用仓储方法
-- 如果只是为了展示数据或统计信息 → 使用Query直接访问DbContext
-- 仓储方法应该体现业务意图，而不是通用的数据访问
-
-## 文件与目录
-
-类文件命名应遵循以下规则：
-- 仓储接口和实现应放置在 `src/ABC.Template.Infrastructure/Repositories/` 目录下
-- 文件名格式为 `{EntityName}Repository.cs`
-- 接口和实现定义在同一个文件中
-
-## 开发规则
-
-仓储的定义应遵循以下规则：
-- 接口和实现都定义在 Infrastructure 层的同一文件中
-- 接口必须继承 `IRepository<TEntity, TKey>`（如果需要继承基接口）
-- 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`（如果需要继承基类）
-- 或者直接定义接口，用构造函数注入 `ApplicationDbContext`
-- 方法名反映业务意图，使用异步方法
 - 每个聚合根对应一个仓储
-- 框架自动注册仓储实现
+- 仓储接口和实现应放置在 `src/ABC.Template.Infrastructure/Repositories/` 目录下
+- 接口和实现定义在同一个文件中，文件名格式为 `{AggregateName}Repository.cs`
+- 接口必须继承 `IRepository<TEntity, TKey>`
+- 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`
+- 仓储类会被自动注册到依赖注入容器中，无需手动注册
+- 默认基类已经实现了一组常用方法，如无必要，尽量不要定义新的仓储方法
 
 ## 常见错误排查
 
@@ -90,12 +66,6 @@ public interface IUserRepository
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>用户实体，如果不存在则返回null</returns>
     Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
-    
-    /// <summary>
-    /// 添加用户
-    /// </summary>
-    /// <param name="user">用户实体</param>
-    Task AddAsync(User user);
 }
 
 public class UserRepository(ApplicationDbContext context) : IUserRepository
@@ -104,18 +74,10 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     {
         return await context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
     }
-    
-    public async Task AddAsync(User user)
-    {
-        await context.Users.AddAsync(user);
-    }
 }
 ```
 
-
-## 框架功能
-
-框架默认实现了下列方法，无需额外实现
+## 框架默认实现了下列方法，无需额外实现
 ```csharp
 /// <summary>
 /// 仓储接口

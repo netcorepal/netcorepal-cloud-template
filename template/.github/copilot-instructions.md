@@ -1,15 +1,22 @@
-# Copilot 编程助手指南
+你的任务是按照 *.instructions.md 描述的规范完成功能开发任务。
 
-## 仓库概述
+## 重要规则
 
-这是一个基于 NetCorePal Cloud Framework 的 **领域驱动设计 (DDD) 模板**，用于构建 ASP.NET Core 应用程序。该仓库实现了严格的 DDD 战术模式，提供了完整的开发工作流指导。
+- 优先遵循instructions文档描述的规范
 
-**核心技术栈：**
-- .NET 9.0 SDK 
-- ASP.NET Core Web API
-- Entity Framework Core + MySQL/Pomelo
-- MediatR (CQRS 模式)
-- FastEndpoints (最小化 API)
+## 根据需要按照下列顺序完成工作
+
+- 定义聚合、实体
+- 定义领域事件
+- 创建仓储接口与仓储实现
+- 配置实体映射
+- 定义命令与命令处理器
+- 定义查询与查询处理器
+- 定义Endpoints
+- 定义领域事件处理器
+- 定义集成事件
+- 定义集成事件转换器
+- 定义集成事件处理器
 
 ## 项目结构
 
@@ -17,7 +24,7 @@
 ABC.Template.sln
 ├── src/
 │   ├── ABC.Template.Domain/         # 领域层 - 聚合根、实体、领域事件
-│   ├── ABC.Template.Infrastructure/ # 基础设施层 - EF配置、仓储实现
+│   ├── ABC.Template.Infrastructure/ # 基础设施层 - EF配置、仓储接口、仓储实现
 │   └── ABC.Template.Web/           # 表现层 - API、应用服务
 └── test/                            # 测试项目
     ├── ABC.Template.Domain.UnitTests/         # 领域层测试项目
@@ -27,23 +34,9 @@ ABC.Template.sln
 
 **分层依赖关系：** Web → Infrastructure → Domain (严格单向依赖)
 
-## 开发主要工作项目
 
-- 创建聚合
-- 定义领域事件
-- 创建仓储
-- 配置实体映射
-- 创建命令与命令处理器
-- 创建查询与查询处理器
-- 创建Endpoints
-- 创建领域事件处理器
-- 创建集成事件
-- 创建集成事件转换器
-- 创建集成事件处理器
 
-## 详细开发指南
-
-对于具体的开发工作，请参考以下详细指令文件：
+## 对于具体的开发工作，请参考以下详细指令文件：
 
 ### 聚合与领域层
 - **聚合根开发**: 参考 `.github/instructions/aggregate.instructions.md`
