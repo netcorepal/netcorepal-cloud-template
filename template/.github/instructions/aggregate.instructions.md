@@ -34,7 +34,7 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 - 必须使用强类型ID，推荐使用 `IGuidStronglyTypedId`
 - 必须有 protected 无参构造器供 EF Core 使用
 - 状态改变时发布领域事件，使用 `this.AddDomainEvent()`
-- 所有属性使用 `private set`
+- 所有属性使用 `private set`,并显示设置默认值
 - 无需手动设置ID的值
 
 ## 子实体的定义应遵循以下规则：
@@ -68,8 +68,8 @@ public class User : Entity<UserId>, IAggregateRoot
 
     #region Properties
 
-    public string Name { get; private set; }
-    public string Email { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+    public string Email { get; private set; } = string.Empty;
 
     #endregion
 
