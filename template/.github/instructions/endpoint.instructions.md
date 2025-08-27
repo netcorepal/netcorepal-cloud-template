@@ -22,11 +22,13 @@ FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Contr
 - 必须为每个Endpoint单独定义请求DTO和响应DTO
 - 请求DTO、响应DTO与端点定义在同一文件中
 - 使用 `ResponseData<T>` 包装响应数据
-- 在 `Configure()` 方法中配置路由和权限
+- 使用特性方式配置路由和权限：`[HttpPost("/api/...")]`、`[AllowAnonymous]`等
 - 在 `HandleAsync()` 方法中处理业务逻辑
 - 使用构造函数注入 `IMediator` 发送命令或查询
 - 使用 `Send.OkAsync()` 发送成功响应
 - 使用 `.AsResponseData()` 扩展方法创建响应数据
+
+**重要**: 使用特性方式而不是 `Configure()` 方法来配置端点。
 
 ## FastEndpoints响应方法
 
@@ -43,6 +45,9 @@ FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Contr
 
 端点文件中的必要引用：
 - `using FastEndpoints;` - 用于端点基类
+- `using Microsoft.AspNetCore.Authorization;` - 用于 `[AllowAnonymous]` 等授权特性
+
+其他必要引用已在GlobalUsings.cs中全局定义。
 
 ## 强类型ID处理
 
@@ -65,15 +70,8 @@ public record CreateUserRequestDto(string Name, string Email);
 
 public record CreateUserResponseDto(UserId UserId);
 
-public class CreateUserEndpoint : Endpoint<CreateUserRequestDto, ResponseData<CreateUserResponseDto>>
+public class CreateUserEndpoint(IMediator mediator) : Endpoint<CreateUserRequestDto, ResponseData<CreateUserResponseDto>>
 {
-    private readonly IMediator _mediator;
-
-    public CreateUserEndpoint(IMediator mediator)
-    {
-        _mediator = mediator;
-    }
-
     public override void Configure()
     {
         Post("/api/users");
@@ -88,7 +86,7 @@ public class CreateUserEndpoint : Endpoint<CreateUserRequestDto, ResponseData<Cr
     public override async Task HandleAsync(CreateUserRequestDto req, CancellationToken ct)
     {
         var command = new CreateUserCommand(req.Name, req.Email);
-        var userId = await _mediator.Send(command, ct);
+        var userId = await mediator.Send(command, ct);
         
         await Send.OkAsync(new CreateUserResponseDto(userId).AsResponseData(), ct);
     }
@@ -160,7 +158,7 @@ public override async Task HandleAsync(UpdateUserRequestDto req, CancellationTok
 [Tags("ModuleName")]
 [HttpPost("/api/resource")]
 [AllowAnonymous]
-public class CreateResourceEndpoint : Endpoint<CreateRequest, ResponseData<CreateResponse>>
+public class CreateResourceEndpoint(IMediator mediator) : Endpoint<CreateRequest, ResponseData<CreateResponse>>
 {
     // 实现
 }

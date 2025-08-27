@@ -34,6 +34,27 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 - Infrastructure 层的 `AddRepositories()` 已自动注册所有仓储
 - 无需在 Program.cs 中手动注册仓储
 
+### 主构造函数警告
+**警告**: `参数"ApplicationDbContext context"捕获到封闭类型状态，其值也传递给基构造函数`
+**原因**: 使用主构造函数时编译器的保守警告
+**解决**: 这是正常的警告，不影响功能，可以忽略。如需消除警告，可使用传统构造函数：
+```csharp
+// 会产生警告但功能正常的写法
+public class MyRepository(ApplicationDbContext context) : RepositoryBase<Entity, EntityId, ApplicationDbContext>(context), IMyRepository
+{
+    // 实现
+}
+
+// 不产生警告的传统写法
+public class MyRepository : RepositoryBase<Entity, EntityId, ApplicationDbContext>, IMyRepository
+{
+    public MyRepository(ApplicationDbContext context) : base(context)
+    {
+    }
+    // 实现
+}
+```
+
 ## 必要的using引用
 
 仓储文件中的必要引用已在GlobalUsings.cs中定义：

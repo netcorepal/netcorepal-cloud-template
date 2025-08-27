@@ -49,6 +49,8 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 文件: `src/ABC.Template.Domain/AggregatesModel/UserAggregate/User.cs`
 
 ```csharp
+using ABC.Template.Domain.DomainEvents; // 必需：引用领域事件
+
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
 
 // 强类型ID定义 - 与聚合根在同一文件中
@@ -84,3 +86,10 @@ public class User : Entity<UserId>, IAggregateRoot
     #endregion
 }
 ```
+
+## 常见错误排查
+
+### 领域事件引用错误
+**错误**: `未能找到类型或命名空间名"UserCreatedDomainEvent"`
+**原因**: 缺少对领域事件命名空间的引用
+**解决**: 在聚合根文件顶部添加 `using ABC.Template.Domain.DomainEvents;`

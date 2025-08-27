@@ -20,7 +20,7 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 
 实体配置的定义应遵循以下规则：
 - 必须实现 `IEntityTypeConfiguration<T>` 接口
-- 必须配置强类型ID转换器，使用 `HasConversion<{Id}.EfCoreValueConverter>()`
+- 对于强类型ID，直接使用值生成器，无需显式转换器配置
 - 必须配置主键，使用 `HasKey(x => x.Id)`
 - 字符串属性必须设置最大长度
 - 必填属性使用 `IsRequired()`
@@ -31,6 +31,8 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 强类型Id值生成器配置：
 - IInt64StronglyTypedId 使用 UseSnowFlakeValueGenerator()
 - IGuidStronglyTypedId 使用 UseGuidVersion7ValueGenerator()
+
+**重要**: 不要使用 `HasConversion<{Id}.EfCoreValueConverter>()`，框架会自动处理强类型ID的转换。
 
 ## 必要的using引用
 
@@ -50,6 +52,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 ```csharp
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+```
+
+### 强类型ID转换器配置错误
+**错误**: `类型"UserId"中不存在类型名"EfCoreValueConverter"`
+**原因**: 尝试使用不存在的转换器配置
+**解决**: 直接使用值生成器，框架会自动处理转换：
+```csharp
+// 错误写法
+builder.Property(x => x.Id)
+    .HasConversion<UserId.EfCoreValueConverter>()
+    .UseGuidVersion7ValueGenerator();
+
+// 正确写法
+builder.Property(x => x.Id)
+    .UseGuidVersion7ValueGenerator()
+    .HasComment("用户ID");
 ```
 
 ### 值生成器配置错误

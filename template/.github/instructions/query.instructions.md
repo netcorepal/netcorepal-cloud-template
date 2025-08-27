@@ -55,10 +55,10 @@ applyTo: "src/ABC.Template.Web/Application/Queries/**/*.cs"
 ### 分页查询
 
 - 使用`PagedData<T>`类型包装分页结果
-- 使用`ToPagedData<T>`扩展方法将查询结果转换为分页数据
+- 使用`ToPagedDataAsync<T>`扩展方法将查询结果转换为分页数据
 
 下面展示了框架内置的分页对象和扩展方法的定义：
-```
+```csharp
 public class PagedData<T>
 {
     /// <summary>
@@ -102,12 +102,55 @@ public class PagedData<T>
     public int PageSize { get; private set; }
 }
 
-//扩展方法定义
-public static PagedData<T> ToPagedData<T>(
+//扩展方法定义 - ToPagedDataAsync
+namespace NetCorePal.Extensions.AspNetCore;
+
+public static class PageQueryableExtensions
+{
+    public static async Task<PagedData<T>> ToPagedDataAsync<T>(
         this IQueryable<T> query,
         int pageIndex = 1,
         int pageSize = 10,
-        bool countTotal = false)
+        bool countTotal = true,
+        CancellationToken cancellationToken = default)
+    {
+        if (pageIndex <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageIndex), "页码必须大于 0");
+        }
+
+        if (pageSize <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pageSize), "每页条数必须大于 0");
+        }
+
+        // countTotal为true时才查询总数。默认需要总数，可设为false优化性能
+        var totalCount = countTotal ? await query.CountAsync(cancellationToken) : 0;
+
+        var items = await query.Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+
+        return new PagedData<T>(items, totalCount, pageIndex, pageSize);
+    }
+
+
+    public static Task<PagedData<T>> ToPagedDataAsync<T>(
+        this IQueryable<T> query,
+        IPagedQuery<T> pagedQuery,
+        CancellationToken cancellationToken = default)
+    {
+        return query.ToPagedDataAsync(pagedQuery.PageIndex, pagedQuery.PageSize, pagedQuery.CountTotal,
+            cancellationToken);
+    }
+
+    public static Task<PagedData<T>> ToPagedDataAsync<T>(this IQueryable<T> query, IPageRequest pageRequest,
+        CancellationToken cancellationToken = default)
+    {
+        return query.ToPagedDataAsync(pageRequest.PageIndex, pageRequest.PageSize, pageRequest.CountTotal,
+            cancellationToken: cancellationToken);
+    }
+}
 ```
 
 ### 跨聚合查询
@@ -125,8 +168,14 @@ public static PagedData<T> ToPagedData<T>(
 - `global using FluentValidation;` - 用于验证器
 - `global using MediatR;` - 用于查询处理器接口
 - `global using NetCorePal.Extensions.Primitives;` - 用于KnownException等
+- `global using NetCorePal.Extensions.AspNetCore;` - 用于ToPagedDataAsync、WhereIf、OrderByIf等扩展方法
 
-因此在查询文件中无需重复添加这些using语句。
+**分页查询额外需要的引用**：
+```csharp
+using Microsoft.EntityFrameworkCore; // 用于EF Core扩展方法(FirstOrDefaultAsync, ToListAsync等)
+```
+
+因此在分页查询文件中只需要手动添加EntityFrameworkCore的using语句。
 
 ## 代码示例
 
@@ -135,6 +184,7 @@ public static PagedData<T> ToPagedData<T>(
 ```csharp
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure;
+using Microsoft.EntityFrameworkCore; // 必需：用于EF Core扩展方法
 
 namespace ABC.Template.Web.Application.Queries.User;
 
@@ -172,6 +222,7 @@ public record UserDto(UserId Id, string Name, string Email);
 ```csharp
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure;
+using Microsoft.EntityFrameworkCore; // 必需：用于EF Core扩展方法
 
 namespace ABC.Template.Web.Application.Queries.User;
 
@@ -208,10 +259,10 @@ public class GetUserListQueryHandler(ApplicationDbContext context) : IQueryHandl
             .ThenByIf(request.SortBy == "email", x => x.Email, request.Desc)
             .ThenByIf(string.IsNullOrEmpty(request.SortBy), x => x.Id); // 默认排序
 
-        // 使用 ToPagedData 进行分页
+        // 使用 ToPagedDataAsync 进行分页
         return await orderedQuery
             .Select(u => new UserListItemDto(u.Id, u.Name, u.Email))
-            .ToPagedDataAsync(request.PageIndex, request.PageSize, cancellationToken);
+            .ToPagedDataAsync(request.PageIndex, request.PageSize, cancellationToken: cancellationToken);
     }
 }
 public record UserListItemDto(
@@ -263,24 +314,36 @@ var orderedQuery = context.Users
 // - desc: 可选参数，是否降序排序，默认为 false（升序）
 ```
 
-### ToPagedData - 分页数据
+### ToPagedDataAsync - 分页数据
 
 使用 `ToPagedDataAsync` 方法可以自动处理分页逻辑，返回 `PagedData<T>` 类型：
 
 ```csharp
-// 自动处理分页
+// 基本分页用法 - 默认会查询总数
 var pagedResult = await query
     .Select(u => new UserListItemDto(u.Id, u.Name, u.Email))
-    .ToPagedDataAsync(pageIndex, pageSize, cancellationToken);
+    .ToPagedDataAsync(pageIndex, pageSize, cancellationToken: cancellationToken);
+
+// 性能优化版本 - 不查询总数（适用于不需要显示总页数的场景）
+var pagedResult = await query
+    .Select(u => new UserListItemDto(u.Id, u.Name, u.Email))
+    .ToPagedDataAsync(pageIndex, pageSize, countTotal: false, cancellationToken);
+
+// 使用 IPageRequest 接口的版本
+var pagedResult = await query
+    .ToPagedDataAsync(pageRequest, cancellationToken);
 
 // PagedData<T> 包含以下属性：
-// - Items: List<T> - 当前页数据
-// - TotalCount: int - 总记录数
+// - Items: IEnumerable<T> - 当前页数据
+// - Total: int - 总记录数
 // - PageIndex: int - 当前页码
 // - PageSize: int - 每页大小
-// - TotalPages: int - 总页数
-// - HasPreviousPage: bool - 是否有上一页
-// - HasNextPage: bool - 是否有下一页
+```
+
+**重要的using引用**：
+```csharp
+using Microsoft.EntityFrameworkCore;  // 用于EF Core扩展方法
+// NetCorePal.Extensions.AspNetCore 已在GlobalUsings.cs中全局引用
 ```
 
 ## 完整的分页查询示例
@@ -311,7 +374,7 @@ public class GetProductListQueryHandler(ApplicationDbContext context) : IQueryHa
                 p.IsActive,
                 p.CreateTime))
             // 分页处理
-            .ToPagedDataAsync(request.PageIndex, request.PageSize, cancellationToken);
+            .ToPagedDataAsync(request.PageIndex, request.PageSize, cancellationToken: cancellationToken);
     }
 }
 ```
@@ -348,8 +411,8 @@ public class GetProductListQueryHandler(ApplicationDbContext context) : IQueryHa
 **错误**: `IQueryable<T>"未包含"WhereIf"的定义`
 **错误**: `IQueryable<T>"未包含"OrderByIf"的定义`
 **错误**: `IQueryable<T>"未包含"ToPagedDataAsync"的定义`
-**原因**: 缺少 NetCorePal.Extensions.Dto 的 using 引用
-**解决**: 确保项目引用了 NetCorePal.Extensions.Dto，该引用通常已在 GlobalUsings.cs 中全局定义
+**原因**: NetCorePal.Extensions.AspNetCore 的 using 引用问题
+**解决**: 确保 `global using NetCorePal.Extensions.AspNetCore;` 已在GlobalUsings.cs中定义
 
 ## 框架特性
 
