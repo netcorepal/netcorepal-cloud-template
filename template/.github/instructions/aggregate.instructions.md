@@ -36,6 +36,7 @@ applyTo: "src/ABC.Template.Domain/AggregatesModel/**/*.cs"
 - 状态改变时发布领域事件，使用 `this.AddDomainEvent()`
 - 所有属性使用 `private set`,并显示设置默认值
 - 无需手动设置ID的值
+- RowVersion 属性用于乐观并发控制
 
 ## 子实体的定义应遵循以下规则：
 - 必须是 `public` 类
@@ -72,6 +73,7 @@ public class User : Entity<UserId>, IAggregateRoot
 
     public string Name { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
+    public RowVersion RowVersion { get; private set; } = new RowVersion(0);
 
     #endregion
 

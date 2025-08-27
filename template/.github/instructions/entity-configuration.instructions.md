@@ -27,6 +27,7 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 - 根据查询需求添加索引
 - 所有字段都不允许为null，使用 `IsRequired()`
 - 所有字段都必须提供注释说明
+- RowVersion无需配置
 
 强类型Id值生成器配置：
 - IInt64StronglyTypedId 使用 UseSnowFlakeValueGenerator()
