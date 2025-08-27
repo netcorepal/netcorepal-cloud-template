@@ -1,6 +1,4 @@
-﻿using NetCorePal.Extensions.Repository.EntityFrameworkCore;
-using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Infrastructure.EntityConfigurations;
+﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.DeliverAggregate;

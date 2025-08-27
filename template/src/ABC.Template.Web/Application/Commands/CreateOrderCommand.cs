@@ -24,7 +24,7 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger
     {
         var order = new Order(request.Name, request.Count);
         order = await orderRepository.AddAsync(order, cancellationToken);
-        logger.LogInformation("order created, id:{orderId}", order.Id);
+        logger.LogInformation("order created, id:{OrderId}", order.Id);
         return order.Id;
     }
 }
