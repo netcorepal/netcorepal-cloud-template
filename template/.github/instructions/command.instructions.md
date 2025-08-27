@@ -13,7 +13,8 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 类文件命名应遵循以下规则：
 - 应放置在 `src/ABC.Template.Web/Application/Commands/{Module}/` 目录下
 - 命令文件名格式为 `{Action}{Entity}Command.cs`
-- 命令、验证器和处理器定义在同一文件中
+- 同一个命令及其对应的验证器和处理器定义在同一文件中
+- 不同的命令放在不同文件中
 
 ## 开发规则
 
