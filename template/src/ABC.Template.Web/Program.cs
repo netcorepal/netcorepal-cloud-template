@@ -119,16 +119,16 @@ try
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
-        <!--#if (UseMySql)-->
+#if (UseMySql)
         options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
             new MySqlServerVersion(new Version(8, 0, 34)));
-        <!--#elif (UseMySqlOfficial)-->
+#elif (UseMySqlOfficial)
         options.UseMySQL(builder.Configuration.GetConnectionString("MySql"));
-        <!--#elif (UseSqlServer)-->
+#elif (UseSqlServer)
         options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-        <!--#elif (UsePostgreSQL)-->
+#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
-        <!--#endif-->
+#endif
         options.LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
@@ -142,13 +142,13 @@ try
         {
             b.RegisterServicesFromAssemblies(typeof(Program));
             b.AddContextIntegrationFilters();
-            <!--#if (UseMySql || UseMySqlOfficial)-->
+#if (UseMySql || UseMySqlOfficial)
             b.UseMySql();
-            <!--#elif (UseSqlServer)-->
+#elif (UseSqlServer)
             b.UseSqlServer();
-            <!--#elif (UsePostgreSQL)-->
+#elif (UsePostgreSQL)
             b.UsePostgreSQL();
-            <!--#endif-->
+#endif
         });
 
 
@@ -156,21 +156,21 @@ try
     {
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.UseEntityFramework<ApplicationDbContext>();
-        <!--#if (UseRabbitMQ)-->
+#if (UseRabbitMQ)
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
-        <!--#elif (UseKafka)-->
+#elif (UseKafka)
         x.UseKafka(p => builder.Configuration.GetSection("Kafka").Bind(p));
-        <!--#elif (UseAzureServiceBus)-->
+#elif (UseAzureServiceBus)
         x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
-        <!--#elif (UseAmazonSQS)-->
+#elif (UseAmazonSQS)
         x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
-        <!--#elif (UseNATS)-->
+#elif (UseNATS)
         x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
-        <!--#elif (UseRedisStreams)-->
+#elif (UseRedisStreams)
         x.UseRedis(p => builder.Configuration.GetSection("Redis").Bind(p));
-        <!--#elif (UsePulsar)-->
+#elif (UsePulsar)
         x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
-        <!--#endif-->
+#endif
         x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
 
