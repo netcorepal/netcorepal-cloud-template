@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>$(Framework)</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -12,7 +12,21 @@
     <PackageReference Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
     <PackageReference Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
     <PackageReference Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
+    <!--#if (UseRabbitMQ)-->
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.3.2" />
+    <!--#elif (UseKafka)-->
+    <PackageReference Include="DotNetCore.CAP.Kafka" Version="8.3.2" />
+    <!--#elif (UseAzureServiceBus)-->
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.2" />
+    <!--#elif (UseAmazonSQS)-->
+    <PackageReference Include="DotNetCore.CAP.AmazonSQS" Version="8.3.2" />
+    <!--#elif (UseNATS)-->
+    <PackageReference Include="DotNetCore.CAP.NATS" Version="8.3.2" />
+    <!--#elif (UseRedisStreams)-->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" Version="8.3.2" />
+    <!--#elif (UsePulsar)-->
+    <PackageReference Include="DotNetCore.CAP.Pulsar" Version="8.3.2" />
+    <!--#endif-->
     <PackageReference Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
     <PackageReference Include="FastEndpoints.Swagger" Version="$(FastEndpointsVersion)" />
     <PackageReference Include="FastEndpoints.Swagger.Swashbuckle" Version="2.3.0" />
@@ -34,14 +48,42 @@
     <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.CodeAnalysis" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
+    <!--#if (UseMySql)-->
     <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseSqlServer)-->
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" Version="$(NetCorePalVersion)" />
+    <!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" Version="$(NetCorePalVersion)" />
+    <!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
+    <!--#if (UseRabbitMQ)-->
     <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseKafka)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.Kafka" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseAzureServiceBus)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.AzureServiceBus" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseAmazonSQS)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.AmazonSQS" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseNATS)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.NATS" Version="$(NetCorePalVersion)" />
+    <!--#elif (UseRedisStreams)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RedisStreams" Version="$(NetCorePalVersion)" />
+    <!--#elif (UsePulsar)-->
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.Pulsar" Version="$(NetCorePalVersion)" />
+    <!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
+    <!--#if (UseMySql)-->
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
+    <!--#elif (UseMySqlOfficial)-->
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0" />
+    <!--#elif (UseSqlServer)-->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)" />
+    <!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+    <!--#endif-->
     <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
     <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />

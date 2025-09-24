@@ -14,6 +14,7 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             // change connectionstring if you want to run command “dotnet ef database update”
+            <!--#if (UseMySql)-->
             options.UseMySql("Server=any;User ID=any;Password=any;Database=any",
                 new MySqlServerVersion(new Version(8, 0, 34)),
                 b =>
@@ -21,6 +22,25 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                     b.UseMicrosoftJson();
                 });
+            <!--#elif (UseMySqlOfficial)-->
+            options.UseMySQL("Server=any;User ID=any;Password=any;Database=any",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
+            <!--#elif (UseSqlServer)-->
+            options.UseSqlServer("Server=any;Database=any;Trusted_Connection=true;",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
+            <!--#elif (UsePostgreSQL)-->
+            options.UseNpgsql("Host=any;Database=any;Username=any;Password=any",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
+            <!--#endif-->
         });
         var provider = services.BuildServiceProvider();
         var dbContext = provider.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
