@@ -142,13 +142,6 @@ try
         {
             b.RegisterServicesFromAssemblies(typeof(Program));
             b.AddContextIntegrationFilters();
-//#if (UseMySql || UseMySqlOfficial)
-            b.UseMySql();
-//#elif (UseSqlServer)
-            b.UseSqlServer();
-//#elif (UsePostgreSQL)
-            b.UsePostgreSQL();
-//#endif
         });
 
 
