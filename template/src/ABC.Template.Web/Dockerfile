@@ -1,11 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:$(Framework) AS base
+FROM mcr.microsoft.com/dotnet/aspnet:NETCOREPAL_FRAMEWORK AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:$(Framework) AS build
+FROM mcr.microsoft.com/dotnet/sdk:NETCOREPAL_FRAMEWORK AS build
 WORKDIR /src
 COPY . .
 RUN dotnet restore "src/ABC.Template.Web/ABC.Template.Web.csproj"

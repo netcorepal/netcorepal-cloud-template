@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>$(Framework)</TargetFramework>
+    <TargetFramework>NETCOREPAL_FRAMEWORK</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -9,16 +9,16 @@
   <ItemGroup>
 
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
-#if (UseMySql)
+<!--#if (UseMySql)-->
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0-preview.3.efcore.9.0.0" />
-#elif (UseMySqlOfficial)
+<!--#elif (UseMySqlOfficial)-->
     <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.0" />
-#elif (UseSqlServer)
+<!--#elif (UseSqlServer)-->
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)" />
-#elif (UsePostgreSQL)
+<!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
-#endif
+<!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
   </ItemGroup>

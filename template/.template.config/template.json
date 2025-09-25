@@ -27,7 +27,7 @@
                 }
             ],
             "defaultValue": "net9.0",
-            "replaces": "net9.0"
+            "replaces": "NETCOREPAL_FRAMEWORK"
         },
         "Database": {
             "type": "parameter",
