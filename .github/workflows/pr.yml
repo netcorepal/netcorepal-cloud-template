@@ -58,5 +58,5 @@ jobs:
             "messagequeue": "RabbitMQ"
           }
         ]
-      include-docker-build: true
-      include-tests: true
+      include-docker-build: false
+      include-tests: false

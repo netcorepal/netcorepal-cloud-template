@@ -52,20 +52,34 @@ jobs:
     - name: Restore dependencies for generated project
       run: |
         cd test-projects/${{ matrix.config.name }}/TestProject
-        # Try to restore with fallback if packages are missing
-        dotnet restore --ignore-failed-sources || echo "Restore completed with warnings"
+        # Restore dependencies, but allow missing preview packages
+        if ! dotnet restore --ignore-failed-sources; then
+          echo "❌ RESTORE FAILED for ${{ matrix.config.name }}"
+          exit 1
+        fi
         
-    - name: Build generated project (allow warnings)
+    - name: Build generated project
       run: |
         cd test-projects/${{ matrix.config.name }}/TestProject
-        # Build without restore, allow warnings for missing packages
-        dotnet build --no-restore --configuration Release --verbosity minimal || echo "Build completed with warnings"
+        # Build the project - this must succeed
+        if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
+          echo "❌ BUILD FAILED for ${{ matrix.config.name }}"
+          echo "Build logs:"
+          dotnet build --no-restore --configuration Release --verbosity normal
+          exit 1
+        fi
+        echo "✅ BUILD SUCCEEDED for ${{ matrix.config.name }}"
         
     - name: Run tests for generated project
       if: ${{ inputs.include-tests }}
       run: |
         cd test-projects/${{ matrix.config.name }}/TestProject
-        dotnet test --no-build --configuration Release --verbosity normal || echo "Tests completed with warnings"
+        # Run tests - this must succeed
+        if ! dotnet test --no-build --configuration Release --verbosity normal; then
+          echo "❌ TESTS FAILED for ${{ matrix.config.name }}"
+          exit 1
+        fi  
+        echo "✅ TESTS SUCCEEDED for ${{ matrix.config.name }}"
         
     - name: Verify project structure and templates
       run: |
@@ -93,8 +107,12 @@ jobs:
       if: ${{ inputs.include-docker-build }}
       run: |
         cd test-projects/${{ matrix.config.name }}/TestProject
-        # Try to build Docker image, but don't fail CI if it doesn't work due to missing packages
-        docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.config.name }}:latest . || echo "Docker build failed due to missing packages, but template structure is correct"
+        # Build Docker image - this must succeed for Docker tests
+        if ! docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.config.name }}:latest .; then
+          echo "❌ DOCKER BUILD FAILED for ${{ matrix.config.name }}"
+          exit 1
+        fi
+        echo "✅ DOCKER BUILD SUCCEEDED for ${{ matrix.config.name }}"
         
     - name: Uninstall template
       run: dotnet new uninstall .
