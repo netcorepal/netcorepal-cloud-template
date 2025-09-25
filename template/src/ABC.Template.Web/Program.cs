@@ -187,7 +187,9 @@ try
     builder.Services.AddMultiEnv(envOption => envOption.ServiceName = "Abc.Template")
         .UseMicrosoftServiceDiscovery();
     builder.Services.AddConfigurationServiceEndpointProvider();
+//#if (UseRabbitMQ)
     builder.Services.AddEnvFixedConnectionChannelPool();
+//#endif
 
     #endregion
 

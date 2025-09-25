@@ -8,37 +8,33 @@
     <NetCorePalVersion>2.9.3</NetCorePalVersion>
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
     <TestcontainersVersion>4.1.0</TestcontainersVersion>
-    <!-- Default to .NET 9.0 versions -->
-    <FrameworkVersion>9.0.0</FrameworkVersion>
-    <EntityFrameworkVersion>9.0.0</EntityFrameworkVersion>
-    <ExtensionsVersion>9.0.0</ExtensionsVersion>
-  </PropertyGroup>
-
-  <!-- Override for .NET 8.0 -->
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
-    <FrameworkVersion>8.0.0</FrameworkVersion>
-    <EntityFrameworkVersion>8.0.0</EntityFrameworkVersion>
-    <ExtensionsVersion>8.0.0</ExtensionsVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- ASP.NET Core and Microsoft packages -->
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(FrameworkVersion)" />
-    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="$(FrameworkVersion)" />
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(FrameworkVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)" />
-    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(ExtensionsVersion)" />
+    <!-- ASP.NET Core and Microsoft packages - framework specific versions -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
 
-    <!-- OAuth packages - default to .NET 9.0, override for .NET 8.0 -->
-    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
+    <!-- OAuth packages - framework specific versions -->
     <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
 
     <!-- CAP packages -->
     <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
@@ -55,15 +51,15 @@
     <PackageVersion Include="FastEndpoints.Swagger" Version="$(FastEndpointsVersion)" />
     <PackageVersion Include="FastEndpoints.Swagger.Swashbuckle" Version="2.3.0" />
 
-    <!-- Database providers - default to .NET 9.0, override for .NET 8.0 -->
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <!-- Database providers - framework specific versions -->
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="MySql.EntityFrameworkCore" Version="8.0.5" Condition="'$(TargetFramework)' == 'net8.0'" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
 
     <!-- Other packages -->
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
