@@ -58,18 +58,6 @@
     <PackageReference Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
 #if (UseRabbitMQ)
     <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
-#elif (UseKafka)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.Kafka" Version="$(NetCorePalVersion)" />
-#elif (UseAzureServiceBus)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.AzureServiceBus" Version="$(NetCorePalVersion)" />
-#elif (UseAmazonSQS)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.AmazonSQS" Version="$(NetCorePalVersion)" />
-#elif (UseNATS)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.NATS" Version="$(NetCorePalVersion)" />
-#elif (UseRedisStreams)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RedisStreams" Version="$(NetCorePalVersion)" />
-#elif (UsePulsar)
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.Pulsar" Version="$(NetCorePalVersion)" />
 #endif
     <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
