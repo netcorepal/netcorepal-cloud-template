@@ -1,0 +1,125 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Third-party package versions -->
+    <NetCorePalVersion>2.9.3</NetCorePalVersion>
+    <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
+    <TestcontainersVersion>4.1.0</TestcontainersVersion>
+  </PropertyGroup>
+
+  <!-- Framework-specific Microsoft package versions -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <FrameworkVersion>8.0.0</FrameworkVersion>
+    <EntityFrameworkVersion>8.0.0</EntityFrameworkVersion>
+    <ExtensionsVersion>8.0.0</ExtensionsVersion>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <FrameworkVersion>9.0.0</FrameworkVersion>
+    <EntityFrameworkVersion>9.0.0</EntityFrameworkVersion>
+    <ExtensionsVersion>9.0.0</ExtensionsVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ASP.NET Core and Microsoft packages -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(FrameworkVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="$(FrameworkVersion)" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(FrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="$(EntityFrameworkVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="$(ExtensionsVersion)" />
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+
+    <!-- OAuth packages - framework specific versions -->
+    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+
+    <!-- CAP packages -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.2" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.2" />
+
+    <!-- FastEndpoints -->
+    <PackageVersion Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="$(FastEndpointsVersion)" />
+    <PackageVersion Include="FastEndpoints.Swagger.Swashbuckle" Version="2.3.0" />
+
+    <!-- Database providers - framework specific versions -->
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="8.0.5" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" Condition="'$(TargetFramework)' == 'net9.0'" />
+
+    <!-- Special case for Infrastructure project: Use preview versions for Pomelo -->
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-preview.2.efcore.8.0.8" Condition="'$(MSBuildProjectName)' == 'ABC.Template.Infrastructure' AND '$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" Condition="'$(MSBuildProjectName)' == 'ABC.Template.Infrastructure' AND '$(TargetFramework)' == 'net9.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="8.0.0-preview.2.efcore.8.0.8" Condition="'$(MSBuildProjectName)' == 'ABC.Template.Infrastructure' AND '$(TargetFramework)' == 'net8.0'" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0-preview.3.efcore.9.0.0" Condition="'$(MSBuildProjectName)' == 'ABC.Template.Infrastructure' AND '$(TargetFramework)' == 'net9.0'" />
+
+    <!-- Other packages -->
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.17" />
+    <PackageVersion Include="Hangfire.Redis.StackExchange" Version="1.9.4" />
+    <PackageVersion Include="prometheus-net.AspNetCore" Version="8.2.1" />
+    <PackageVersion Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
+    <PackageVersion Include="Refit.HttpClientFactory" Version="8.0.0" />
+    <PackageVersion Include="Refit.Newtonsoft.Json" Version="8.0.0" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Enrichers.ClientInfo" Version="2.1.2" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.8.41" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+
+    <!-- NetCorePal packages -->
+    <PackageVersion Include="NetCorePal.Context.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Context.CAP" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Context.Shared" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.CodeAnalysis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
+
+    <!-- Testing packages -->
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MySql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MsSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.RabbitMq" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+
+    <!-- Code analysis -->
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.3.0.106239" />
+  </ItemGroup>
+</Project>

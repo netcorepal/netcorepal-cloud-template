@@ -14,36 +14,36 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
-    <PackageReference Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="$(FrameworkVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
-    <PackageReference Include="Moq" Version="4.20.72" />
-    <PackageReference Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
-    <PackageReference Include="Refit.Newtonsoft.Json" Version="8.0.0" />
-    <PackageReference Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="AspNet.Security.OAuth.Feishu" />
+    <PackageReference Include="AspNet.Security.OAuth.Weixin" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="NetCorePal.Extensions.NewtonsoftJson" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+    <PackageReference Include="Refit.Newtonsoft.Json" />
+    <PackageReference Include="Testcontainers" />
 <!--#if (UseMySql || UseMySqlOfficial)-->
-    <PackageReference Include="Testcontainers.MySql" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="Testcontainers.MySql" />
 <!--#elif (UsePostgreSQL)-->
-    <PackageReference Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="Testcontainers.PostgreSql" />
 <!--#elif (UseSqlServer)-->
-    <PackageReference Include="Testcontainers.MsSql" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="Testcontainers.MsSql" />
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
-    <PackageReference Include="Testcontainers.RabbitMq" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="Testcontainers.RabbitMq" />
 <!--#elif (UseKafka)-->
-    <PackageReference Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />
+    <PackageReference Include="Testcontainers.Kafka" />
 <!--#endif-->
-    <PackageReference Include="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.12.0" />
-    <PackageReference Include="xunit" Version="2.9.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+    <PackageReference Include="Testcontainers.Redis" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Microsoft.CodeAnalysis" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.2">
+    <PackageReference Include="coverlet.collector">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
