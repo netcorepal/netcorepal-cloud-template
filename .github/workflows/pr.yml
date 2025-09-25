@@ -22,91 +22,41 @@ jobs:
       run: dotnet new netcorepal-web --help
 
   template-test:
-    runs-on: ubuntu-latest
     needs: build
-    strategy:
-      matrix:
-        config:
-          - name: "MySQL-RabbitMQ-NET8"
-            framework: "net8.0"
-            database: "MySql"
-            messagequeue: "RabbitMQ"
-          - name: "SqlServer-Kafka-NET9"
-            framework: "net9.0"
-            database: "SqlServer"
-            messagequeue: "Kafka"
-          - name: "PostgreSQL-RedisStreams-NET8"
-            framework: "net8.0"
-            database: "PostgreSQL"
-            messagequeue: "RedisStreams"
-          - name: "MySqlOfficial-AzureServiceBus-NET9"
-            framework: "net9.0"
-            database: "MySqlOfficial"
-            messagequeue: "AzureServiceBus"
-          - name: "Default-Configuration"
-            framework: "net9.0"
-            database: "MySql"
-            messagequeue: "RabbitMQ"
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        global-json-file: global.json
-        
-    - name: Install template locally
-      run: dotnet new install .
-      
-    - name: Generate project from template - ${{ matrix.config.name }}
-      run: |
-        mkdir -p test-projects/${{ matrix.config.name }}
-        cd test-projects/${{ matrix.config.name }}
-        dotnet new netcorepal-web -n TestProject -F ${{ matrix.config.framework }} -D ${{ matrix.config.database }} -M ${{ matrix.config.messagequeue }}
-      
-    - name: Remove MyGet source for CI
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        # Remove MyGet source which is blocked in CI
-        if [ -f NuGet.config ]; then
-          sed -i '/<add key="netcorepal-preview"/d' NuGet.config
-        fi
-        
-    - name: Restore dependencies for generated project
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        # Try to restore with fallback if packages are missing
-        dotnet restore --ignore-failed-sources || echo "Restore completed with warnings"
-        
-    - name: Build generated project (allow warnings)
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        # Build without restore, allow warnings for missing packages
-        dotnet build --no-restore --configuration Release --verbosity minimal || echo "Build completed with warnings"
-        
-    - name: Verify project structure
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        echo "Project structure verification:"
-        ls -la src/
-        echo "Project file verification:"
-        head -20 src/TestProject.Web/TestProject.Web.csproj
-        
-    - name: Setup Docker Buildx
-      uses: docker/setup-buildx-action@v3
-      
-    - name: Verify Dockerfile template substitution
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        echo "Dockerfile verification:"
-        head -10 src/TestProject.Web/Dockerfile
-        
-    - name: Build Docker image for generated project (best effort)
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        # Try to build Docker image, but don't fail CI if it doesn't work due to missing packages
-        docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.config.name }}:latest . || echo "Docker build failed due to missing packages, but template structure is correct"
-        
-    - name: Uninstall template
-      run: dotnet new uninstall .
-      if: always()
+    uses: ./.github/workflows/template-test.yml
+    with:
+      test-matrix: |
+        [
+          {
+            "name": "MySQL-RabbitMQ-NET8",
+            "framework": "net8.0",
+            "database": "MySql",
+            "messagequeue": "RabbitMQ"
+          },
+          {
+            "name": "SqlServer-Kafka-NET9",
+            "framework": "net9.0",
+            "database": "SqlServer",
+            "messagequeue": "Kafka"
+          },
+          {
+            "name": "PostgreSQL-RedisStreams-NET8",
+            "framework": "net8.0",
+            "database": "PostgreSQL",
+            "messagequeue": "RedisStreams"
+          },
+          {
+            "name": "MySqlOfficial-AzureServiceBus-NET9",
+            "framework": "net9.0",
+            "database": "MySqlOfficial",
+            "messagequeue": "AzureServiceBus"
+          },
+          {
+            "name": "Default-Configuration",
+            "framework": "net9.0",
+            "database": "MySql",
+            "messagequeue": "RabbitMQ"
+          }
+        ]
+      include-docker-build: true
+      include-tests: true
