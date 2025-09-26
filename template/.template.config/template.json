@@ -93,6 +93,11 @@
             ],
             "defaultValue": "RabbitMQ"
         },
+        "SdkVersion": {
+            "type": "computed",
+            "value": "(Framework == \"net8.0\" ? \"8.0.409\" : (Framework == \"net9.0\" ? \"9.0.305\" : \"10.0.100-rc.1.25451.107\"))",
+            "replaces": "NETCOREPAL_SDK_VERSION"
+        },
         "UseSqlServer": {
             "type": "computed",
             "value": "(Database == \"SqlServer\")"
