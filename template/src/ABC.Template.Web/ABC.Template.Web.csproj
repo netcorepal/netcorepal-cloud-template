@@ -55,9 +55,6 @@
     <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" />
 <!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.MultiEnv" />
-<!--#if (UseRabbitMQ)-->
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" />
-<!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" />
     <PackageReference Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" />

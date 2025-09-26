@@ -105,7 +105,6 @@
     <PackageVersion Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
-    <PackageVersion Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
