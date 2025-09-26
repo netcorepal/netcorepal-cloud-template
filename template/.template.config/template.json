@@ -27,7 +27,7 @@
                 },
                 {
                     "choice": "net10.0",
-                    "description": "Target .NET 10.0 (Preview)"
+                    "description": "Target .NET 10.0 (RC1)"
                 }
             ],
             "defaultValue": "net9.0",
@@ -94,8 +94,17 @@
             "defaultValue": "RabbitMQ"
         },
         "SdkVersion": {
-            "type": "computed",
-            "value": "(Framework == \"net8.0\" ? \"8.0.409\" : (Framework == \"net9.0\" ? \"9.0.305\" : \"10.0.100-rc.1.25451.107\"))",
+            "type": "generated",
+            "generator": "switch",
+            "dataType": "string",
+            "parameters": {
+                "cases": [
+                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0.409" },
+                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0.305" },
+                    { "condition": "(Framework == \"net10.0\")", "value": "10.0.100-rc.1.25451.107" }
+                ],
+                "defaultValue": "9.0.305"
+            },
             "replaces": "NETCOREPAL_SDK_VERSION"
         },
         "UseSqlServer": {
