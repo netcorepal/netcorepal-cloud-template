@@ -40,14 +40,6 @@ jobs:
         mkdir -p test-projects/${{ matrix.config.name }}
         cd test-projects/${{ matrix.config.name }}
         dotnet new netcorepal-web -n TestProject -F ${{ matrix.config.framework }} -D ${{ matrix.config.database }} -M ${{ matrix.config.messagequeue }}
-      
-    - name: Remove MyGet source for CI
-      run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
-        # Remove MyGet source which is blocked in CI
-        if [ -f NuGet.config ]; then
-          sed -i '/<add key="netcorepal-preview"/d' NuGet.config
-        fi
         
     - name: Restore dependencies for generated project
       run: |
