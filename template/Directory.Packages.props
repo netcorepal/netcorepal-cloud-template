@@ -52,13 +52,13 @@
     <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
 
     <!-- Database providers - framework specific versions -->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0-rc.1.25451.3" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0-rc.1.25451.3" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0-rc.1.25451.3" />
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="10.0.0-rc.1.25451.3" />
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="10.0.0-rc.1.25451.3" />
-    <PackageVersion Include="MySql.EntityFrameworkCore" Version="10.0.5-rc.1" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0-rc.1.25451.3" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
 // #endif
     <!-- ASP.NET Core and Microsoft packages - framework specific versions -->
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
