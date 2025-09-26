@@ -28,6 +28,10 @@
 
     <!-- CAP packages -->
     <PackageVersion Include="DotNetCore.CAP" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.SqlServer" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.MySql" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.PostgreSql" Version="8.2.0" />
     <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.2.0" />
     <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.2.0" />
     <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.2.0" />

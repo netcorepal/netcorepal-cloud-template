@@ -52,6 +52,12 @@ jobs:
             "messagequeue": "AzureServiceBus"
           },
           {
+            "name": "MySQL-NATS-NET10",
+            "framework": "net10.0",
+            "database": "MySql",
+            "messagequeue": "NATS"
+          },
+          {
             "name": "Default-Configuration",
             "framework": "net9.0",
             "database": "MySql",
