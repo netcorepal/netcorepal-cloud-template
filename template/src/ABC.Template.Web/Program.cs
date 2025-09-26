@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
+using DotNetCore.CAP;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
