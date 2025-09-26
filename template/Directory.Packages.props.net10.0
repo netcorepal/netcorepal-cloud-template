@@ -1,0 +1,85 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <NetCorePalVersion>3.0.0-preview.1.2509250544</NetCorePalVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Microsoft packages for .NET 10.0 -->
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.0-preview.1.25570.7" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0-preview.1.25570.7" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.0-preview.1.25570.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0-preview.1.25570.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.0-preview.1.25570.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.0-preview.1.25570.10" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.0-preview.1.25570.7" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+
+    <!-- Third-party packages for .NET 10.0 - fallback to .NET 9.0 versions -->
+    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.GitHub" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.QQ" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
+
+    <!-- Database providers -->
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
+
+    <!-- CAP packages -->
+    <PackageVersion Include="DotNetCore.CAP" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.2.0" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.2.0" />
+
+    <!-- Other packages -->
+    <PackageVersion Include="AutoMapper" Version="13.0.1" />
+    <PackageVersion Include="FastEndpoints" Version="5.30.0" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="5.30.0" />
+    <PackageVersion Include="FluentValidation" Version="11.9.2" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.14" />
+    <PackageVersion Include="Hangfire.Redis.StackExchange" Version="1.9.3" />
+    <PackageVersion Include="MediatR" Version="12.4.0" />
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="Polly" Version="8.4.1" />
+    <PackageVersion Include="Refit" Version="7.1.2" />
+    <PackageVersion Include="Refit.Newtonsoft.Json" Version="7.1.2" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="8.0.2" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.8.0" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.7.3" />
+    <PackageVersion Include="xunit" Version="2.6.6" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.6" />
+
+    <!-- Test containers for .NET 10.0 -->
+    <PackageVersion Include="Testcontainers.MsSql" Version="3.11.0" />
+    <PackageVersion Include="Testcontainers.MySql" Version="3.11.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="3.11.0" />
+    <PackageVersion Include="Testcontainers.RabbitMq" Version="3.11.0" />
+    <PackageVersion Include="Testcontainers.Kafka" Version="3.11.0" />
+    <PackageVersion Include="Testcontainers.Redis" Version="3.11.0" />
+
+    <!-- NetCorePal packages -->
+    <PackageVersion Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Domain" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Domain.Json" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Dto" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Mappers" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.ServiceDiscovery.Abstractions" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.ServiceDiscovery.Http" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Web.Application" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Web.Domain" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Web.Infrastructure" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.CodeAnalysis.Tools" Version="$(NetCorePalVersion)" />
+  </ItemGroup>
+</Project>
