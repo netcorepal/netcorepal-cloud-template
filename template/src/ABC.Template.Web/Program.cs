@@ -146,6 +146,7 @@ try
 
     builder.Services.AddCap(x =>
     {
+        x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.UseEntityFramework<ApplicationDbContext>();
 //#if (UseRabbitMQ)
