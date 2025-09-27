@@ -11,7 +11,6 @@
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.Feishu" />
     <PackageReference Include="AspNet.Security.OAuth.Weixin" />
-        <PackageReference Include="DotNetCore.CAP.EntityFrameworkCore" />
     <PackageReference Include="DotNetCore.CAP.Dashboard" />
 <!--#if (UseRabbitMQ)-->
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" />
