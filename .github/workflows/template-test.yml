@@ -100,11 +100,14 @@ jobs:
       run: |
         cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         # Build Docker image - this must succeed for Docker tests
-        if ! docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}:latest .; then
-          echo "❌ DOCKER BUILD FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        CONFIG_NAME="${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        IMAGE_TAG="testproject-$(echo "$CONFIG_NAME" | tr '[:upper:]' '[:lower:]'):latest"
+        echo "Building Docker image with tag: $IMAGE_TAG"
+        if ! docker build -f src/TestProject.Web/Dockerfile -t "$IMAGE_TAG" .; then
+          echo "❌ DOCKER BUILD FAILED for $CONFIG_NAME"
           exit 1
         fi
-        echo "✅ DOCKER BUILD SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        echo "✅ DOCKER BUILD SUCCEEDED for $CONFIG_NAME"
         
     - name: Uninstall template
       run: dotnet new uninstall .
