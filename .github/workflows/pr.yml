@@ -46,12 +46,6 @@ jobs:
             "messagequeue": "RedisStreams"
           },
           {
-            "name": "MySqlOfficial-AzureServiceBus-NET9",
-            "framework": "net9.0",
-            "database": "MySqlOfficial",
-            "messagequeue": "AzureServiceBus"
-          },
-          {
             "name": "SqlServer-NATS-NET10",
             "framework": "net10.0",
             "database": "SqlServer",

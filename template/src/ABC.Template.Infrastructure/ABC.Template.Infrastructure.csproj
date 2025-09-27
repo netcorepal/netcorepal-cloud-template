@@ -12,10 +12,13 @@
 <!--#if (UseMySql)-->
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" />
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" />
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" />
 <!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" />
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" />

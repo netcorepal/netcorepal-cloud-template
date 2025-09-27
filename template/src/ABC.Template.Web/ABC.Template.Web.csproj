@@ -47,25 +47,10 @@
     <PackageReference Include="NetCorePal.Extensions.AspNetCore" />
     <PackageReference Include="NetCorePal.Extensions.CodeAnalysis" />
     <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" />
-<!--#if (UseMySql)-->
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" />
-<!--#elif (UseSqlServer)-->
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" />
-<!--#elif (UsePostgreSQL)-->
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" />
-<!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.MultiEnv" />
     <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" />
     <PackageReference Include="NetCorePal.Extensions.Primitives" />
     <PackageReference Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" />
-<!--#if (UseMySql)-->
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" />
-<!--#elif (UseSqlServer)-->
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-<!--#elif (UsePostgreSQL)-->
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-<!--#endif-->
     <PackageReference Include="prometheus-net.AspNetCore" />
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" />
     <PackageReference Include="Refit.HttpClientFactory" />
