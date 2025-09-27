@@ -8,6 +8,7 @@ using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Tests;
 
+[Collection("web")]
 public class UserTests : IClassFixture<MyWebApplicationFactory>
 {
     private readonly MyWebApplicationFactory _factory;
