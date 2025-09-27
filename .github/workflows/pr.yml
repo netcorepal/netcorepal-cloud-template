@@ -25,38 +25,5 @@ jobs:
     needs: build
     uses: ./.github/workflows/template-test.yml
     with:
-      test-matrix: |
-        [
-          {
-            "name": "MySQL-RabbitMQ-NET8",
-            "framework": "net8.0",
-            "database": "MySql",
-            "messagequeue": "RabbitMQ"
-          },
-          {
-            "name": "SqlServer-Kafka-NET9",
-            "framework": "net9.0",
-            "database": "SqlServer",
-            "messagequeue": "Kafka"
-          },
-          {
-            "name": "PostgreSQL-RedisStreams-NET8",
-            "framework": "net8.0",
-            "database": "PostgreSQL",
-            "messagequeue": "RedisStreams"
-          },
-          {
-            "name": "SqlServer-NATS-NET10",
-            "framework": "net10.0",
-            "database": "SqlServer",
-            "messagequeue": "NATS"
-          },
-          {
-            "name": "Default-Configuration",
-            "framework": "net9.0",
-            "database": "MySql",
-            "messagequeue": "RabbitMQ"
-          }
-        ]
       include-docker-build: true
       include-tests: true

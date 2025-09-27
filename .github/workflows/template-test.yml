@@ -3,10 +3,6 @@ name: Template Test
 on:
   workflow_call:
     inputs:
-      test-matrix:
-        description: 'JSON array of test configurations'
-        required: true
-        type: string
       include-docker-build:
         description: 'Whether to include Docker image build'
         required: false
@@ -24,7 +20,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        config: ${{ fromJson(inputs.test-matrix) }}
+        framework: [ 'net8.0', 'net9.0', 'net10.0' ]
+        database: [ 'MySql', 'SqlServer', 'PostgreSQL' ]
+        messagequeue: [ 'RabbitMQ', 'Kafka', 'RedisStreams', 'NATS' ]
+    name: ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
 
     steps:
     - uses: actions/checkout@v3
@@ -36,47 +35,47 @@ jobs:
     - name: Install template locally
       run: dotnet new install .
       
-    - name: Generate project from template - ${{ matrix.config.name }}
+    - name: Generate project from template - ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
       run: |
-        mkdir -p test-projects/${{ matrix.config.name }}
-        cd test-projects/${{ matrix.config.name }}
-        dotnet new netcorepal-web -n TestProject -F ${{ matrix.config.framework }} -D ${{ matrix.config.database }} -M ${{ matrix.config.messagequeue }}
+        mkdir -p test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
+        dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.database }} -M ${{ matrix.messagequeue }}
         
     - name: Restore dependencies for generated project
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         # Restore dependencies, but allow missing preview packages
         if ! dotnet restore --ignore-failed-sources; then
-          echo "❌ RESTORE FAILED for ${{ matrix.config.name }}"
+          echo "❌ RESTORE FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
           exit 1
         fi
         
     - name: Build generated project
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         # Build the project - this must succeed
         if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
-          echo "❌ BUILD FAILED for ${{ matrix.config.name }}"
+          echo "❌ BUILD FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
           echo "Build logs:"
           dotnet build --no-restore --configuration Release --verbosity normal
           exit 1
         fi
-        echo "✅ BUILD SUCCEEDED for ${{ matrix.config.name }}"
+        echo "✅ BUILD SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
         
     - name: Run tests for generated project
       if: ${{ inputs.include-tests }}
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         # Run tests - this must succeed
         if ! dotnet test --no-build --configuration Release --verbosity normal; then
-          echo "❌ TESTS FAILED for ${{ matrix.config.name }}"
+          echo "❌ TESTS FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
           exit 1
         fi  
-        echo "✅ TESTS SUCCEEDED for ${{ matrix.config.name }}"
+        echo "✅ TESTS SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
         
     - name: Verify project structure and templates
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         echo "Project structure verification:"
         ls -la src/
         echo "Framework verification in csproj:"
@@ -92,20 +91,20 @@ jobs:
       
     - name: Verify Dockerfile template substitution
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         echo "Dockerfile framework verification:"
         grep -E "(aspnet|sdk):" src/TestProject.Web/Dockerfile
         
     - name: Build Docker image for generated project
       if: ${{ inputs.include-docker-build }}
       run: |
-        cd test-projects/${{ matrix.config.name }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
         # Build Docker image - this must succeed for Docker tests
-        if ! docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.config.name }}:latest .; then
-          echo "❌ DOCKER BUILD FAILED for ${{ matrix.config.name }}"
+        if ! docker build -f src/TestProject.Web/Dockerfile -t testproject-${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}:latest .; then
+          echo "❌ DOCKER BUILD FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
           exit 1
         fi
-        echo "✅ DOCKER BUILD SUCCEEDED for ${{ matrix.config.name }}"
+        echo "✅ DOCKER BUILD SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
         
     - name: Uninstall template
       run: dotnet new uninstall .
