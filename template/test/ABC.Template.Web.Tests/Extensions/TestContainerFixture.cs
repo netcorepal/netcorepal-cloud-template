@@ -1,4 +1,4 @@
-//#if (UseMySql || UseMySqlOfficial)
+//#if (UseMySql)
 using Testcontainers.MySql;
 //#elif (UseSqlServer)
 using Testcontainers.MsSql;
@@ -26,7 +26,7 @@ public class TestContainerFixture : IDisposable
     public KafkaContainer KafkaContainer { get; } = new KafkaBuilder().Build();
 //#endif
 
-//#if (UseMySql || UseMySqlOfficial)
+//#if (UseMySql)
     public MySqlContainer DatabaseContainer { get; } = new MySqlBuilder()
         .WithUsername("root").WithPassword("123456")
         .WithEnvironment("TZ", "Asia/Shanghai")

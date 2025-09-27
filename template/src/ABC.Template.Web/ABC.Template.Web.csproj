@@ -61,8 +61,6 @@
 <!--#if (UseMySql)-->
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" />
-<!--#elif (UseMySqlOfficial)-->
-    <PackageReference Include="MySql.EntityFrameworkCore" />
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
 <!--#elif (UsePostgreSQL)-->

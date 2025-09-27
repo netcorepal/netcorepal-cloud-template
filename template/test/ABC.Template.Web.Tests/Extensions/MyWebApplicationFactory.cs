@@ -20,7 +20,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
     {
         builder.UseSetting("ConnectionStrings:Redis",
             Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
-//#if (UseMySql || UseMySqlOfficial)
+//#if (UseMySql)
         builder.UseSetting("ConnectionStrings:MySql",
             Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
 //#elif (UseSqlServer)

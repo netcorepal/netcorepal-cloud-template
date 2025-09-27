@@ -23,7 +23,7 @@
     <PackageReference Include="Refit.HttpClientFactory" />
     <PackageReference Include="Refit.Newtonsoft.Json" />
     <PackageReference Include="Testcontainers" />
-<!--#if (UseMySql || UseMySqlOfficial)-->
+<!--#if (UseMySql)-->
     <PackageReference Include="Testcontainers.MySql" />
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Testcontainers.PostgreSql" />

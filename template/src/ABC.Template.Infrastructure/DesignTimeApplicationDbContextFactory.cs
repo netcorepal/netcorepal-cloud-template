@@ -22,12 +22,6 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                     b.UseMicrosoftJson();
                 });
-            <!--#elif (UseMySqlOfficial)-->
-            options.UseMySQL("Server=any;User ID=any;Password=any;Database=any",
-                b =>
-                {
-                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
-                });
             <!--#elif (UseSqlServer)-->
             options.UseSqlServer("Server=any;Database=any;Trusted_Connection=true;",
                 b =>

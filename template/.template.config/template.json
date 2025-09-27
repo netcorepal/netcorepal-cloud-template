@@ -47,10 +47,6 @@
                     "description": "Use MySQL with Pomelo provider"
                 },
                 {
-                    "choice": "MySqlOfficial",
-                    "description": "Use MySQL with official Oracle provider"
-                },
-                {
                     "choice": "PostgreSQL",
                     "description": "Use PostgreSQL"
                 }
@@ -114,10 +110,6 @@
         "UseMySql": {
             "type": "computed",
             "value": "(Database == \"MySql\")"
-        },
-        "UseMySqlOfficial": {
-            "type": "computed",
-            "value": "(Database == \"MySqlOfficial\")"
         },
         "UsePostgreSQL": {
             "type": "computed",

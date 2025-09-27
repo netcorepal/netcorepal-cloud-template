@@ -123,8 +123,6 @@ try
 //#if (UseMySql)
         options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
             new MySqlServerVersion(new Version(8, 0, 34)));
-//#elif (UseMySqlOfficial)
-        options.UseMySQL(builder.Configuration.GetConnectionString("MySql")!);
 //#elif (UseSqlServer)
         options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //#elif (UsePostgreSQL)
