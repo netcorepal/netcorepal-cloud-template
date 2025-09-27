@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    needs: template-test
     runs-on: ubuntu-latest
 
     steps:
@@ -25,24 +26,8 @@ jobs:
     - name: Push NuGet
       run: dotnet nuget push '*.nupkg' -s https://www.myget.org/F/netcorepal/api/v3/index.json -k ${{ secrets.MYGET_API_KEY }} --skip-duplicate
 
-  template-smoke-test:
-    needs: build
+  template-test:
     uses: ./.github/workflows/template-test.yml
     with:
-      test-matrix: |
-        [
-          {
-            "name": "Default-MySql-RabbitMQ",
-            "framework": "net9.0",
-            "database": "MySql",
-            "messagequeue": "RabbitMQ"
-          },
-          {
-            "name": "SqlServer-Kafka",
-            "framework": "net8.0",
-            "database": "SqlServer",
-            "messagequeue": "Kafka"
-          }
-        ]
-      include-docker-build: false
-      include-tests: false
+      include-docker-build: true
+      include-tests: true

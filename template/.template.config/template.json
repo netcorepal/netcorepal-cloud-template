@@ -95,8 +95,8 @@
             "dataType": "string",
             "parameters": {
                 "cases": [
-                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0.409" },
-                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0.301" },
+                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0.100" },
+                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0.100" },
                     { "condition": "(Framework == \"net10.0\")", "value": "10.0.100-rc.1.25451.107" }
                 ],
                 "defaultValue": "9.0.301"
