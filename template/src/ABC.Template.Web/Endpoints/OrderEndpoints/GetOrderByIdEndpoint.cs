@@ -7,7 +7,7 @@ namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 
 [Tags("Orders")]
 [HttpGet("/get/{Id}")]
-public class GetOrderByIdEndpoint(OrderQuery orderQuery) : Endpoint<GetOrderByIdRequest, ResponseData<Order?>>
+public class GetOrderByIdEndpoint(OrderQuery orderQuery) : Endpoint<GetOrderByIdRequest, ResponseData<ABC.Template.Domain.AggregatesModel.OrderAggregate.Order?>>
 {
     public override async Task HandleAsync(GetOrderByIdRequest req, CancellationToken ct)
     {
