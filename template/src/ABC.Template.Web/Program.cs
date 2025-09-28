@@ -160,7 +160,7 @@ try
 //#elif (UseNATS)
         x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
 //#elif (UseRedisStreams)
-        x.UseRedis(p => builder.Configuration.GetSection("Redis").Bind(p));
+        x.UseRedis(builder.Configuration.GetConnectionString("Redis"));
 //#elif (UsePulsar)
         x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
 //#endif
