@@ -1,6 +1,6 @@
 using System.Net.Http.Headers;
 using ABC.Template.Infrastructure;
-using ABC.Template.Web.Controllers;
+using ABC.Template.Web.Endpoints.DemoEndpoints;
 using Microsoft.EntityFrameworkCore;
 using NetCorePal.Context;
 using NetCorePal.Extensions.Dto;
@@ -56,7 +56,7 @@ namespace ABC.Template.Web.Tests
                        {
                          "id": "5",
                          "name": "myName",
-                         "time": "2021-08-31 15:00:00"
+                         "time": "2021-08-31T15:00:00"
                        }
                        """;
             var content = new StringContent(json);
