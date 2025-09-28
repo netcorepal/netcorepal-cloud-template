@@ -14,6 +14,7 @@ namespace ABC.Template.Web.Controllers;
 public class OrderController(IMediator mediator, OrderQuery orderQuery, ICapPublisher capPublisher) : ControllerBase
 {
     [HttpGet]
+    [ProducesResponseType(typeof(string), 200)]
     public IActionResult Get()
     {
         return Ok("Hello World");
@@ -45,4 +46,4 @@ public class OrderController(IMediator mediator, OrderQuery orderQuery, ICapPubl
     }
 }
 
-public record CreateOrderRequest(string Name, int Price, int Count);
+public record CreateOrderRequest(required string Name, required int Price, required int Count);

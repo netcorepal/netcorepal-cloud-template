@@ -17,12 +17,6 @@ public class UserTests : IClassFixture<MyWebApplicationFactory>
 
     public UserTests(MyWebApplicationFactory factory)
     {
-        // using (var scope = factory.Services.CreateScope())
-        // {
-        //     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        //     db.Database.Migrate();
-        // }
-
         _factory = factory;
         _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
     }

@@ -48,7 +48,7 @@ namespace ABC.Template.Web.Controllers
             return (tenanContext == null ? "" : tenanContext.TenantId).AsResponseData();
         }
 
-        private static bool _isRunning = false;
+        private bool _isRunning = false;
 
         [HttpGet]
         [Route("lock")]

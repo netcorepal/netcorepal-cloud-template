@@ -15,12 +15,6 @@ namespace ABC.Template.Web.Tests
 
         public ProgramTests(MyWebApplicationFactory factory)
         {
-            // using (var scope = factory.Services.CreateScope())
-            // {
-            //     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            //     db.Database.Migrate();
-            // }
-            
             _factory = factory;
             _client = factory.CreateClient();
         }
