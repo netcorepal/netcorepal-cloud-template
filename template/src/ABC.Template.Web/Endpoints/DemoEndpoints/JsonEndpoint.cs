@@ -1,14 +1,7 @@
 using FastEndpoints;
 using NetCorePal.Extensions.Dto;
-using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
-
-public partial record MyId : IInt64StronglyTypedId;
-
-public record JsonRequest(MyId Id, string Name, DateTime Time);
-
-public record JsonResponse(MyId Id, string Name, DateTime Time);
 
 [Tags("Demo")]
 [HttpPost("/demo/json")]

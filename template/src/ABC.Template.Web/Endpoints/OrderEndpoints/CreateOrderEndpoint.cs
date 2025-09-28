@@ -6,8 +6,6 @@ using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 
-public record CreateOrderRequest(string Name, int Price, int Count);
-
 [Tags("Orders")]
 [HttpPost("/api/order")]
 public class CreateOrderEndpoint(IMediator mediator) : Endpoint<CreateOrderRequest, ResponseData<OrderId>>

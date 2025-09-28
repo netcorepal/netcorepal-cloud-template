@@ -5,8 +5,6 @@ using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 
-public record GetOrderByIdRequest(OrderId Id);
-
 [Tags("Orders")]
 [HttpGet("/get/{Id}")]
 public class GetOrderByIdEndpoint(OrderQuery orderQuery) : Endpoint<GetOrderByIdRequest, ResponseData<Order?>>
