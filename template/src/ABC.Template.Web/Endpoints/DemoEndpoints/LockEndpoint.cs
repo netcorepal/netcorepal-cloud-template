@@ -1,4 +1,5 @@
 using FastEndpoints;
+using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.DistributedLocks;
 using NetCorePal.Extensions.Dto;
 
@@ -6,6 +7,7 @@ namespace ABC.Template.Web.Endpoints.DemoEndpoints;
 
 [Tags("Demo")]
 [HttpGet("/demo/lock")]
+[AllowAnonymous]
 public class LockEndpoint(IDistributedLock distributedLock) : EndpointWithoutRequest<ResponseData<bool>>
 {
     private static bool _isRunning = false;

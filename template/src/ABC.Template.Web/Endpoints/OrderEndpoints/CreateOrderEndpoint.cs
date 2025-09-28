@@ -2,12 +2,14 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.Commands;
 using FastEndpoints;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 
 [Tags("Orders")]
 [HttpPost("/api/order")]
+[AllowAnonymous]
 public class CreateOrderEndpoint(IMediator mediator) : Endpoint<CreateOrderRequest, ResponseData<OrderId>>
 {
     public override async Task HandleAsync(CreateOrderRequest req, CancellationToken ct)

@@ -1,10 +1,12 @@
 using FastEndpoints;
+using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
 
 [Tags("Demo")]
 [HttpPost("/demo/json")]
+[AllowAnonymous]
 public class JsonEndpoint : Endpoint<JsonRequest, ResponseData<JsonResponse>>
 {
     public override Task HandleAsync(JsonRequest req, CancellationToken ct)

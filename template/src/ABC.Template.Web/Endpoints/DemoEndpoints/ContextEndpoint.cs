@@ -1,4 +1,5 @@
 using FastEndpoints;
+using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Context;
 using NetCorePal.Extensions.Dto;
 
@@ -6,6 +7,7 @@ namespace ABC.Template.Web.Endpoints.DemoEndpoints;
 
 [Tags("Demo")]
 [HttpPost("/demo/context")]
+[AllowAnonymous]
 public class ContextEndpoint(IContextAccessor contextAccessor) : EndpointWithoutRequest<ResponseData<string>>
 {
     public override Task HandleAsync(CancellationToken ct)
