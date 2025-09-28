@@ -14,7 +14,7 @@ public class EventEndpoint(IIntegrationEventPublisher publisher) : EndpointWitho
 {
     public override async Task HandleAsync(CancellationToken ct)
     {
-        await publisher.PublishAsync(new OrderPaidIntegrationEvent(new OrderId(55)));
+        await publisher.PublishAsync(new OrderPaidIntegrationEvent(new OrderId(Guid.NewGuid())));
         await Send.OkAsync(55L.AsResponseData(), cancellation: ct);
     }
 }
