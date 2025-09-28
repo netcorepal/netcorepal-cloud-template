@@ -45,6 +45,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 
     public async Task InitializeAsync()
     {
+        await Containers.InitializeAsync();
 //#if (UseRabbitMQ)
         await Containers.CreateVisualHostAsync("/");
 //#endif
@@ -53,6 +54,6 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
     public new async Task DisposeAsync()
     {
         await base.DisposeAsync();
-        Containers.Dispose();
+        await Containers.DisposeAsync();
     }
 }
