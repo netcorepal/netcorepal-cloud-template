@@ -52,6 +52,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 
     public new async Task DisposeAsync()
     {
+        Containers.Dispose();
         await base.DisposeAsync();
     }
 }
