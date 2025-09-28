@@ -22,6 +22,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
 using DotNetCore.CAP;
+using NetCorePal.Extensions.CodeAnalysis;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -243,6 +244,16 @@ try
     app.UseHttpMetrics();
     app.MapHealthChecks("/health");
     app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
+    
+    // Code analysis endpoint
+    app.MapGet("/code-analysis", () =>
+    {
+        var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(new[] { Assembly.GetExecutingAssembly() })
+        );
+        return Results.Content(html, "text/html; charset=utf-8");
+    });
+    
     app.UseHangfireDashboard();
     await app.RunAsync();
 }
