@@ -247,10 +247,12 @@ try
     
     // Code analysis endpoint
     app.MapGet("/code-analysis", () =>
-        VisualizationHtmlBuilder.GenerateVisualizationHtml(
+    {
+        var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
             CodeFlowAnalysisHelper.GetResultFromAssemblies(new[] { Assembly.GetExecutingAssembly() })
-        )
-    );
+        );
+        return Results.Content(html, "text/html; charset=utf-8");
+    });
     
     app.UseHangfireDashboard();
     await app.RunAsync();
