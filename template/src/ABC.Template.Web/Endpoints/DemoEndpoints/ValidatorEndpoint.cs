@@ -12,6 +12,6 @@ public class ValidatorEndpoint(IMediator mediator) : Endpoint<ValidatorRequest, 
     {
         var cmd = new ValidatorCommand(req.Name, req.Price);
         await mediator.Send(cmd, ct);
-        await Send.OkAsync(ResponseData.Success(), cancellation: ct);
+        await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
