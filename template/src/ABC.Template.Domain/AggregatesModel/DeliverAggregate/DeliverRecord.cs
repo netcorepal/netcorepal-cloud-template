@@ -2,7 +2,7 @@
 
 namespace ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
-public partial record DeliverRecordId : IInt64StronglyTypedId;
+public partial record DeliverRecordId : IGuidStronglyTypedId;
 
 public class DeliverRecord : Entity<DeliverRecordId>, IAggregateRoot
 {
