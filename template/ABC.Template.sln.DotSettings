@@ -885,4 +885,34 @@ sealed class $epName$Endpoint : Endpoint&lt;$epName$Request, $epName$Response&gt
 	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FDE43092B97B5F45996AF67E4BAB0B34/Field/=verb/Order/@EntryValue">1</s:Int64>
 	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FDE43092B97B5F45996AF67E4BAB0B34/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FDE43092B97B5F45996AF67E4BAB0B34/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
-	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FDE43092B97B5F45996AF67E4BAB0B34/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=FDE43092B97B5F45996AF67E4BAB0B34/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/@KeyIndexDefined">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Applicability/=Live/@EntryIndexedValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Description/@EntryValue">创建实体配置类</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Reformat/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Shortcut/@EntryValue">ncpconfig</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Text/@EntryValue">public class $Entity$Configuration : IEntityTypeConfiguration&lt;$Entity$&gt;
+{
+    public void Configure(EntityTypeBuilder&lt;$Entity$&gt; builder)
+    {
+        builder.ToTable("$table$");
+        builder.HasKey(t =&gt; t.Id);
+        builder.Property(t =&gt; t.Id)
+            /*.UseSnowFlakeValueGenerator()*/ // 如果使用 SnowFlake ID 生成器，请取消注释
+            /*.UseGuidVersion7ValueGenerator()*/ // 如果使用 Guid Version 7 ID 生成器，请取消注释
+            ;
+
+        // Configure other properties if needed
+        $END$
+    }
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=Entity/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=Entity/Expression/@EntryValue">constant("Entity")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=Entity/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=table/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=table/Expression/@EntryValue">constant("table")</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Field/=table/Order/@EntryValue">1</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Scope/=C3001E7C0DA78E4487072B7E050D86C5/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Scope/=C3001E7C0DA78E4487072B7E050D86C5/CustomProperties/=minimumLanguageVersion/@EntryIndexedValue">2.0</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=NCPCONFIG1234567890ABCDEF/Scope/=C3001E7C0DA78E4487072B7E050D86C5/Type/@EntryValue">InCSharpFile</s:String></wpf:ResourceDictionary>

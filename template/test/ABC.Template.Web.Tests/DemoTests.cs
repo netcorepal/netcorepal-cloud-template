@@ -32,9 +32,10 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task JsonTest()
         {
-            var json = """
+            var testGuid = Guid.NewGuid();
+            var json = $$"""
                        {
-                         "id": "5",
+                         "id": "{{testGuid}}",
                          "name": "myName",
                          "time": "2021-08-31T15:00:00"
                        }
@@ -47,15 +48,16 @@ namespace ABC.Template.Web.Tests
             Assert.NotNull(responseData);
             Assert.Contains("2021-08-31T15:00:00", responseData);
             Assert.Contains("\"name\":\"myName\"", responseData);
-            Assert.Contains("\"id\":\"5\"", responseData);
+            Assert.Contains($"\"id\":\"{testGuid}\"", responseData);
         }
 
         [Fact]
         public async Task Json_ReadFromJson_Test()
         {
-            var json = """
+            var testGuid = Guid.NewGuid();
+            var json = $$"""
                        {
-                         "id": "5",
+                         "id": "{{testGuid}}",
                          "name": "myName",
                          "time": "2021-08-31T15:00:00"
                        }
@@ -68,7 +70,7 @@ namespace ABC.Template.Web.Tests
             Assert.NotNull(responseData);
             Assert.Equal(DateTime.Parse("2021-08-31 15:00:00"), responseData.Data.Time);
             Assert.Equal("myName", responseData.Data.Name);
-            Assert.Equal(5, responseData.Data.Id.Id);
+            Assert.Equal(testGuid, responseData.Data.Id.Id);
         }
 
         [Fact]

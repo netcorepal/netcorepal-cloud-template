@@ -5,7 +5,7 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
 
-public partial record MyId : IInt64StronglyTypedId;
+public partial record MyId : IGuidStronglyTypedId;
 
 public record JsonRequest(MyId Id, string Name, DateTime Time);
 

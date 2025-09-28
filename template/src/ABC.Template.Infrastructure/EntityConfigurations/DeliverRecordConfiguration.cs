@@ -10,7 +10,7 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
         {
             builder.ToTable("deliverrecord");
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.Id).UseSnowFlakeValueGenerator();
+            builder.Property(t => t.Id).UseGuidVersion7ValueGenerator();
         }
     }
 

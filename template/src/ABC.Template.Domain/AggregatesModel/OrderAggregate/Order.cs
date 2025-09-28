@@ -6,7 +6,7 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Domain.AggregatesModel.OrderAggregate;
 
-public partial record OrderId : IInt64StronglyTypedId;
+public partial record OrderId : IGuidStronglyTypedId;
 
 /// <summary>
 /// 聚合根

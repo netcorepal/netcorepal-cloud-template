@@ -599,5 +599,27 @@
       "}"
     ],
     "description": "endpoint with request & response"
+  },
+
+  "NetCorePal Entity Configuration": {
+    "prefix": "ncpconfig",
+    "body": [
+      "public class ${1:Entity}Configuration : IEntityTypeConfiguration<${1:Entity}>",
+      "{",
+      "    public void Configure(EntityTypeBuilder<${1:Entity}> builder)",
+      "    {",
+      "        builder.ToTable(\"${2:table}\");",
+      "        builder.HasKey(t => t.Id);",
+      "        builder.Property(t => t.Id)",
+      "            /*.UseSnowFlakeValueGenerator()*/ // 如果使用 SnowFlake ID 生成器，请取消注释",
+      "            /*.UseGuidVersion7ValueGenerator()*/ // 如果使用 Guid Version 7 ID 生成器，请取消注释",
+      "            ;",
+      "",
+      "        // Configure other properties if needed",
+      "        $0",
+      "    }",
+      "}"
+    ],
+    "description": "创建实体配置类"
   }
 }

@@ -1224,4 +1224,48 @@ sealed class $name$Handler : ICommandHandler<$name$>
     </Snippet>
   </CodeSnippet>
 
+  <!-- NetCorePal Entity Configuration -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>NetCorePal Entity Configuration</Title>
+      <Shortcut>ncpconfig</Shortcut>
+      <Description>创建实体配置类</Description>
+      <Author>NetCorePal Template</Author>
+      <SnippetTypes>
+        <SnippetType>Expansion</SnippetType>
+      </SnippetTypes>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal>
+          <ID>Entity</ID>
+          <ToolTip>Entity name</ToolTip>
+          <Default>Entity</Default>
+        </Literal>
+        <Literal>
+          <ID>table</ID>
+          <ToolTip>Table name</ToolTip>
+          <Default>table</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="csharp">
+        <![CDATA[public class $Entity$Configuration : IEntityTypeConfiguration<$Entity$>
+{
+    public void Configure(EntityTypeBuilder<$Entity$> builder)
+    {
+        builder.ToTable("$table$");
+        builder.HasKey(t => t.Id);
+        builder.Property(t => t.Id)
+            /*.UseSnowFlakeValueGenerator()*/ // 如果使用 SnowFlake ID 生成器，请取消注释
+            /*.UseGuidVersion7ValueGenerator()*/ // 如果使用 Guid Version 7 ID 生成器，请取消注释
+            ;
+
+        // Configure other properties if needed
+        $end$
+    }
+}]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
 </CodeSnippets>
