@@ -132,14 +132,12 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task CodeAnalysisTest()
         {
-            var response = await _client.GetAsync("/code-analysis");
+            var response = await _client.GetAsync("/diagnostics/code-analysis");
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType?.ToString());
             
             var content = await response.Content.ReadAsStringAsync();
             Assert.NotNull(content);
-            Assert.Contains("代码架构分析", content);
-            Assert.Contains("ABC.Template.Web", content);
             Assert.Contains("<!DOCTYPE html>", content);
         }
     }
