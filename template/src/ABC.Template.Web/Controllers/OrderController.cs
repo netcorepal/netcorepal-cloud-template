@@ -6,6 +6,7 @@ using DotNetCore.CAP;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using NetCorePal.Extensions.Dto;
+using System.Text.Json.Serialization;
 
 namespace ABC.Template.Web.Controllers;
 
@@ -39,4 +40,4 @@ public class OrderController(IMediator mediator, OrderQuery orderQuery, ICapPubl
     }
 }
 
-public record CreateOrderRequest(required string Name, required int Price, required int Count);
+public record CreateOrderRequest(string Name, [property: JsonRequired] int Price, [property: JsonRequired] int Count);
