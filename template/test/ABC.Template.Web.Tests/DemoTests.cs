@@ -56,7 +56,7 @@ namespace ABC.Template.Web.Tests
                        {
                          "id": "5",
                          "name": "myName",
-                         "time": "2021-08-31 15:00:00"
+                         "time": "2021-08-31T15:00:00"
                        }
                        """;
             var content = new StringContent(json);
