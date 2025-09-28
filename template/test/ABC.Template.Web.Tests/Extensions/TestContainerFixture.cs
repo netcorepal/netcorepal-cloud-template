@@ -14,7 +14,7 @@ using Testcontainers.Redis;
 
 namespace ABC.Template.Web.Tests.Extensions;
 
-public class TestContainerFixture : IDisposable
+public class TestContainerFixture : IAsyncLifetime
 {
     public RedisContainer RedisContainer { get; } = new RedisBuilder()
         .WithCommand("--databases", "1024").Build();
@@ -41,7 +41,7 @@ public class TestContainerFixture : IDisposable
         .WithDatabase("postgres").Build();
 //#endif
 
-    public TestContainerFixture()
+    public async Task InitializeAsync()
     {
         var tasks = new List<Task> { RedisContainer.StartAsync() };
 //#if (UseRabbitMQ)
@@ -50,10 +50,10 @@ public class TestContainerFixture : IDisposable
         tasks.Add(KafkaContainer.StartAsync());
 //#endif
         tasks.Add(DatabaseContainer.StartAsync());
-        Task.WhenAll(tasks).Wait();
+        await Task.WhenAll(tasks);
     }
 
-    public void Dispose()
+    public async Task DisposeAsync()
     {
         var tasks = new List<Task> { RedisContainer.StopAsync() };
 //#if (UseRabbitMQ)
@@ -62,7 +62,7 @@ public class TestContainerFixture : IDisposable
         tasks.Add(KafkaContainer.StopAsync());
 //#endif
         tasks.Add(DatabaseContainer.StopAsync());
-        Task.WhenAll(tasks).Wait();
+        await Task.WhenAll(tasks);
     }
 
 //#if (UseRabbitMQ)
