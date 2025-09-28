@@ -132,7 +132,7 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task CodeAnalysisTest()
         {
-            var response = await _client.GetAsync("/diagnostics/code-analysis");
+            var response = await _client.GetAsync("/code-analysis");
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType?.ToString());
             

@@ -246,9 +246,9 @@ try
     app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
     
     // Code analysis endpoint
-    app.MapGet("/diagnostics/code-analysis", () =>
+    app.MapGet("/code-analysis", () =>
         VisualizationHtmlBuilder.GenerateVisualizationHtml(
-            AnalysisResultAggregator.Aggregate(new[] { Assembly.GetExecutingAssembly() })
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(new[] { Assembly.GetExecutingAssembly() })
         )
     );
     
