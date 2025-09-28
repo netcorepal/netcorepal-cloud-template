@@ -2,13 +2,76 @@
 
 ## 环境准备
 
+### 推荐方式：使用初始化脚本
+
+项目提供了完整的基础设施初始化脚本，支持快速搭建开发环境：
+
+#### 使用 Docker Compose（推荐）
 ```bash
-docker run --restart always --name mysql -v /mnt/d/docker/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:latest
+# 进入脚本目录
+cd scripts
 
-docker run --restart always -d --hostname node1 --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3-management
+# 启动默认基础设施 (MySQL + Redis + RabbitMQ)
+docker-compose up -d
 
-docker run --restart always --name redis -v /mnt/d/docker/redis:/data -p 6379:6379 -d redis:5.0.7 redis-server
+# 使用 SQL Server 替代 MySQL
+docker-compose --profile sqlserver up -d
+
+# 使用 PostgreSQL 替代 MySQL  
+docker-compose --profile postgres up -d
+
+# 使用 Kafka 替代 RabbitMQ
+docker-compose --profile kafka up -d
+
+# 停止所有服务
+docker-compose down
+
+# 停止并删除数据卷（完全清理）
+docker-compose down -v
 ```
+
+#### 使用初始化脚本
+```bash
+# Linux/macOS
+cd scripts
+./init-infrastructure.sh
+
+# Windows PowerShell
+cd scripts
+.\init-infrastructure.ps1
+
+# 清理环境
+./clean-infrastructure.sh        # Linux/macOS
+.\clean-infrastructure.ps1       # Windows
+```
+
+### 手动方式：单独运行 Docker 容器
+
+如果需要手动控制每个容器，可以使用以下命令：
+
+```bash
+# Redis
+docker run --restart unless-stopped --name netcorepal-redis -p 6379:6379 -v netcorepal_redis_data:/data -d redis:7.2-alpine redis-server --appendonly yes --databases 1024
+
+# MySQL
+docker run --restart unless-stopped --name netcorepal-mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_CHARACTER_SET_SERVER=utf8mb4 -e MYSQL_COLLATION_SERVER=utf8mb4_unicode_ci -e TZ=Asia/Shanghai -v netcorepal_mysql_data:/var/lib/mysql -d mysql:8.0
+
+# RabbitMQ
+docker run --restart unless-stopped --name netcorepal-rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest -v netcorepal_rabbitmq_data:/var/lib/rabbitmq -d rabbitmq:3.12-management-alpine
+```
+
+### 服务访问信息
+
+启动后，可以通过以下地址访问各个服务：
+
+- **Redis**: `localhost:6379`
+- **MySQL**: `localhost:3306` (root/123456)  
+- **RabbitMQ AMQP**: `localhost:5672` (guest/guest)
+- **RabbitMQ 管理界面**: http://localhost:15672 (guest/guest)
+- **SQL Server**: `localhost:1433` (sa/Test123456!)
+- **PostgreSQL**: `localhost:5432` (postgres/123456)
+- **Kafka**: `localhost:9092`
+- **Kafka UI**: http://localhost:8080
 
 ## IDE 代码片段配置
 
