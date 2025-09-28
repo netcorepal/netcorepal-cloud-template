@@ -13,13 +13,6 @@ namespace ABC.Template.Web.Controllers;
 [ApiController]
 public class OrderController(IMediator mediator, OrderQuery orderQuery, ICapPublisher capPublisher) : ControllerBase
 {
-    [HttpGet]
-    [ProducesResponseType(typeof(string), 200)]
-    public IActionResult Get()
-    {
-        return Ok("Hello World");
-    }
-
     [HttpPost]
     public async Task<ResponseData<OrderId>> Post([FromBody] CreateOrderRequest request)
     {
