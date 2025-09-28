@@ -1,6 +1,6 @@
 using System.Net.Http.Headers;
 using ABC.Template.Infrastructure;
-using ABC.Template.Web.Controllers;
+using ABC.Template.Web.Endpoints.DemoEndpoints;
 using Microsoft.EntityFrameworkCore;
 using NetCorePal.Context;
 using NetCorePal.Extensions.Dto;
