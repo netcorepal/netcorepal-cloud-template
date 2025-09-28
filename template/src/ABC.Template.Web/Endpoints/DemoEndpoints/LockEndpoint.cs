@@ -27,9 +27,13 @@ public class LockEndpoint(IDistributedLock distributedLock) : EndpointWithoutReq
             return;
         }
 
+#pragma warning disable S2696
         _isRunning = true;
+#pragma warning restore S2696
         await Task.Delay(1000, ct);
+#pragma warning disable S2696
         _isRunning = false;
+#pragma warning restore S2696 
         await Send.OkAsync(false.AsResponseData(), cancellation: ct);
     }
 }
