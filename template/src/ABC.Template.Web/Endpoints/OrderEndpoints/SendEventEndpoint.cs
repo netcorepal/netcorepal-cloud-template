@@ -1,9 +1,12 @@
+using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using DotNetCore.CAP;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 
 namespace ABC.Template.Web.Endpoints.OrderEndpoints;
+
+public record SendEventRequest(OrderId Id);
 
 [Tags("Orders")]
 [HttpGet("/sendEvent")]

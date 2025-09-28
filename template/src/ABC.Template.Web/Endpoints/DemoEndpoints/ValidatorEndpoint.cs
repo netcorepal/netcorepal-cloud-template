@@ -1,9 +1,12 @@
+using ABC.Template.Web.Application.Commands;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
+
+public record ValidatorRequest(string Name, int Price);
 
 [Tags("Demo")]
 [HttpPost("/demo/validator")]
