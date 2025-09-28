@@ -2,16 +2,15 @@ using FastEndpoints;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using NetCorePal.Extensions.Domain;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
 
-public record ValidatorCommand(string Name, int Price) : ICommand;
+public record ValidatorCommand(string Name, int Price) : NetCorePal.Extensions.Domain.ICommand;
 
 public record ValidatorRequest(string Name, int Price);
 
-public class ValidatorCommandHandler : ICommandHandler<ValidatorCommand>
+public class ValidatorCommandHandler : NetCorePal.Extensions.Domain.ICommandHandler<ValidatorCommand>
 {
     public Task Handle(ValidatorCommand request, CancellationToken cancellationToken)
     {
