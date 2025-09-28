@@ -47,6 +47,8 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
     {
 //#if (UseRabbitMQ)
         await Containers.CreateVisualHostAsync("/");
+//#else
+        await Task.CompletedTask;
 //#endif
     }
 
