@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>NETCOREPAL_FRAMEWORK</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -9,47 +9,56 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
-    <PackageReference Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
-    <PackageReference Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="8.3.2" />
-    <PackageReference Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
-    <PackageReference Include="FastEndpoints.Swagger" Version="$(FastEndpointsVersion)" />
-    <PackageReference Include="FastEndpoints.Swagger.Swashbuckle" Version="2.3.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.17" />
-    <PackageReference Include="Hangfire.Redis.StackExchange" Version="1.9.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(FrameworkVersion)" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="$(FrameworkVersion)" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="$(EntityFrameworkVersion)">
+    <PackageReference Include="AspNet.Security.OAuth.Feishu" />
+    <PackageReference Include="AspNet.Security.OAuth.Weixin" />
+    <PackageReference Include="DotNetCore.CAP.Dashboard" />
+<!--#if (UseRabbitMQ)-->
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" />
+<!--#elif (UseKafka)-->
+    <PackageReference Include="DotNetCore.CAP.Kafka" />
+<!--#elif (UseAzureServiceBus)-->
+    <PackageReference Include="DotNetCore.CAP.AzureServiceBus" />
+<!--#elif (UseAmazonSQS)-->
+    <PackageReference Include="DotNetCore.CAP.AmazonSQS" />
+<!--#elif (UseNATS)-->
+    <PackageReference Include="DotNetCore.CAP.NATS" />
+<!--#elif (UseRedisStreams)-->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
+<!--#elif (UsePulsar)-->
+    <PackageReference Include="DotNetCore.CAP.Pulsar" />
+<!--#endif-->
+    <PackageReference Include="FastEndpoints" />
+    <PackageReference Include="FastEndpoints.Swagger" />
+    <PackageReference Include="FastEndpoints.Swagger.Swashbuckle" />
+    <PackageReference Include="FluentValidation.AspNetCore" />
+    <PackageReference Include="Hangfire.AspNetCore" />
+    <PackageReference Include="Hangfire.Redis.StackExchange" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="$(EntityFrameworkVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="NetCorePal.Context.AspNetCore" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Context.CAP" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Context.Shared" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.CodeAnalysis" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.MultiEnv.CAP.RabbitMQ" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
-    <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
-    <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
-    <PackageReference Include="Refit.HttpClientFactory" Version="8.0.0" />
-    <PackageReference Include="Refit.Newtonsoft.Json" Version="8.0.0" />
-    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-    <PackageReference Include="Serilog.Enrichers.ClientInfo" Version="2.1.2" />
-    <PackageReference Include="StackExchange.Redis" Version="2.8.41" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
+    <PackageReference Include="NetCorePal.Context.AspNetCore" />
+    <PackageReference Include="NetCorePal.Context.CAP" />
+    <PackageReference Include="NetCorePal.Context.Shared" />
+    <PackageReference Include="NetCorePal.Extensions.AspNetCore" />
+    <PackageReference Include="NetCorePal.Extensions.CodeAnalysis" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedLocks.Redis" />
+    <PackageReference Include="NetCorePal.Extensions.MultiEnv" />
+    <PackageReference Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" />
+    <PackageReference Include="NetCorePal.Extensions.Primitives" />
+    <PackageReference Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" />
+    <PackageReference Include="prometheus-net.AspNetCore" />
+    <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" />
+    <PackageReference Include="Refit.HttpClientFactory" />
+    <PackageReference Include="Refit.Newtonsoft.Json" />
+    <PackageReference Include="Serilog.AspNetCore" />
+    <PackageReference Include="Serilog.Enrichers.ClientInfo" />
+    <PackageReference Include="StackExchange.Redis" />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,7 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.3.0.106239">
+    <PackageReference Update="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

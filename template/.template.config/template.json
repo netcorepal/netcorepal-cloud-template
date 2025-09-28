@@ -10,5 +10,168 @@
     "name": "NetCorePal Cloud Web Application",
     "shortName": "netcorepal-web",
     "sourceName": "ABC.Template",
-    "preferNameDirectory": true
+    "preferNameDirectory": true,
+    "symbols": {
+        "Framework": {
+            "type": "parameter",
+            "description": "The target framework for the project",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "net8.0",
+                    "description": "Target .NET 8.0"
+                },
+                {
+                    "choice": "net9.0",
+                    "description": "Target .NET 9.0"
+                },
+                {
+                    "choice": "net10.0",
+                    "description": "Target .NET 10.0 (RC1)"
+                }
+            ],
+            "defaultValue": "net9.0",
+            "replaces": "NETCOREPAL_FRAMEWORK"
+        },
+        "Database": {
+            "type": "parameter",
+            "description": "The database provider to use",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "SqlServer",
+                    "description": "Use Microsoft SQL Server"
+                },
+                {
+                    "choice": "MySql",
+                    "description": "Use MySQL with Pomelo provider"
+                },
+                {
+                    "choice": "PostgreSQL",
+                    "description": "Use PostgreSQL"
+                }
+            ],
+            "defaultValue": "MySql"
+        },
+        "MessageQueue": {
+            "type": "parameter",
+            "description": "The message queue provider to use with CAP",
+            "datatype": "choice",
+            "choices": [
+                {
+                    "choice": "RabbitMQ",
+                    "description": "Use RabbitMQ"
+                },
+                {
+                    "choice": "Kafka",
+                    "description": "Use Apache Kafka"
+                },
+                {
+                    "choice": "AzureServiceBus",
+                    "description": "Use Azure Service Bus"
+                },
+                {
+                    "choice": "AmazonSQS",
+                    "description": "Use Amazon SQS"
+                },
+                {
+                    "choice": "NATS",
+                    "description": "Use NATS"
+                },
+                {
+                    "choice": "RedisStreams",
+                    "description": "Use Redis Streams"
+                },
+                {
+                    "choice": "Pulsar",
+                    "description": "Use Apache Pulsar"
+                }
+            ],
+            "defaultValue": "RabbitMQ"
+        },
+        "SdkVersion": {
+            "type": "generated",
+            "generator": "switch",
+            "dataType": "string",
+            "parameters": {
+                "cases": [
+                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0.100" },
+                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0.100" },
+                    { "condition": "(Framework == \"net10.0\")", "value": "10.0.100-rc.1.25451.107" }
+                ],
+                "defaultValue": "9.0.100"
+            },
+            "replaces": "NETCOREPAL_SDK_VERSION"
+        },
+        "DockerFramework": {
+            "type": "generated",
+            "generator": "switch",
+            "dataType": "string",
+            "parameters": {
+                "cases": [
+                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0" },
+                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0" },
+                    { "condition": "(Framework == \"net10.0\")", "value": "10.0" }
+                ],
+                "defaultValue": "9.0"
+            },
+            "replaces": "NETCOREPAL_DOCKER_FRAMEWORK"
+        },
+        "UseSqlServer": {
+            "type": "computed",
+            "value": "(Database == \"SqlServer\")"
+        },
+        "UseMySql": {
+            "type": "computed",
+            "value": "(Database == \"MySql\")"
+        },
+        "UsePostgreSQL": {
+            "type": "computed",
+            "value": "(Database == \"PostgreSQL\")"
+        },
+        "UseRabbitMQ": {
+            "type": "computed",
+            "value": "(MessageQueue == \"RabbitMQ\")"
+        },
+        "UseKafka": {
+            "type": "computed",
+            "value": "(MessageQueue == \"Kafka\")"
+        },
+        "UseAzureServiceBus": {
+            "type": "computed",
+            "value": "(MessageQueue == \"AzureServiceBus\")"
+        },
+        "UseAmazonSQS": {
+            "type": "computed",
+            "value": "(MessageQueue == \"AmazonSQS\")"
+        },
+        "UseNATS": {
+            "type": "computed",
+            "value": "(MessageQueue == \"NATS\")"
+        },
+        "UseRedisStreams": {
+            "type": "computed",
+            "value": "(MessageQueue == \"RedisStreams\")"
+        },
+        "UsePulsar": {
+            "type": "computed",
+            "value": "(MessageQueue == \"Pulsar\")"
+        }
+    },
+    "sources": [
+        {
+            "modifiers": [
+                {
+                    "condition": "(Framework == \"net8.0\")",
+                    "exclude": [ "**/*.slnx" ]
+                },
+                {
+                    "condition": "(Framework != \"net8.0\")",
+                    "exclude": [
+                        "**/*.sln"
+                    ]
+                }
+            ]
+        }
+    ]
 }

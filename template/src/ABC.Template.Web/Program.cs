@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
+using DotNetCore.CAP;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithClientIp()
@@ -119,8 +120,14 @@ try
 
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
+//#if (UseMySql)
         options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
             new MySqlServerVersion(new Version(8, 0, 34)));
+//#elif (UseSqlServer)
+        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+//#elif (UsePostgreSQL)
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+//#endif
         options.LogTo(Console.WriteLine, LogLevel.Information)
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
@@ -134,15 +141,29 @@ try
         {
             b.RegisterServicesFromAssemblies(typeof(Program));
             b.AddContextIntegrationFilters();
-            b.UseMySql();
         });
 
 
     builder.Services.AddCap(x =>
     {
+        x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.UseEntityFramework<ApplicationDbContext>();
+//#if (UseRabbitMQ)
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
+//#elif (UseKafka)
+        x.UseKafka(p => builder.Configuration.GetSection("Kafka").Bind(p));
+//#elif (UseAzureServiceBus)
+        x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+//#elif (UseAmazonSQS)
+        x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+//#elif (UseNATS)
+        x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
+//#elif (UseRedisStreams)
+        x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+//#elif (UsePulsar)
+        x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+//#endif
         x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
 
@@ -159,7 +180,6 @@ try
     builder.Services.AddMultiEnv(envOption => envOption.ServiceName = "Abc.Template")
         .UseMicrosoftServiceDiscovery();
     builder.Services.AddConfigurationServiceEndpointProvider();
-    builder.Services.AddEnvFixedConnectionChannelPool();
 
     #endregion
 

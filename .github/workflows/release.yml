@@ -21,7 +21,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore NetCorePal.Template.csproj
     - name: Test
-      run: dotnet test --verbosity normal template/ABC.Template.sln
+      run: dotnet test --verbosity normal template/ABC.Template.slnx
     - name: Pack NuGet
       run: dotnet pack -c Release -o "./" NetCorePal.Template.csproj 
     - name: Push NuGet

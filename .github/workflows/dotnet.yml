@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-
+    needs: template-test
     runs-on: ubuntu-latest
 
     steps:
@@ -19,9 +19,15 @@ jobs:
       run: dotnet restore NetCorePal.Template.csproj
     - name: Build
       run: dotnet build --no-restore NetCorePal.Template.csproj
-    - name: Test
-      run: dotnet test --verbosity normal template/ABC.Template.sln
+    - name: Test template syntax
+      run: dotnet new netcorepal-web --help
     - name: Pack NuGet
       run: dotnet pack -c Release --version-suffix alpha`date +%y%m%d%H%M` -o "./" NetCorePal.Template.csproj 
     - name: Push NuGet
       run: dotnet nuget push '*.nupkg' -s https://www.myget.org/F/netcorepal/api/v3/index.json -k ${{ secrets.MYGET_API_KEY }} --skip-duplicate
+
+  template-test:
+    uses: ./.github/workflows/template-test.yml
+    with:
+      include-docker-build: true
+      include-tests: true

@@ -1,12 +1,20 @@
 ﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
 using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure;
 
 public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IMediator mediator)
     : AppDbContextBase(options, mediator)
+    //#if (UseMySql)
+    , IMySqlCapDataStorage
+    //#elif (UseSqlServer)
+    , ISqlServerCapDataStorage
+    //#elif (UsePostgreSQL)
+    , IPostgreSqlCapDataStorage
+    //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
