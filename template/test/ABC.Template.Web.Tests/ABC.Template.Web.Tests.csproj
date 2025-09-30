@@ -14,14 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Feishu" />
-    <PackageReference Include="AspNet.Security.OAuth.Weixin" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" />
     <PackageReference Include="Moq" />
-    <PackageReference Include="NetCorePal.Extensions.NewtonsoftJson" />
-    <PackageReference Include="Refit.HttpClientFactory" />
-    <PackageReference Include="Refit.Newtonsoft.Json" />
     <PackageReference Include="Testcontainers" />
 <!--#if (UseMySql)-->
     <PackageReference Include="Testcontainers.MySql" />
