@@ -246,7 +246,9 @@ try
     app.MapGet("/code-analysis", () =>
     {
         var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
-            CodeFlowAnalysisHelper.GetResultFromAssemblies(Assembly.GetExecutingAssembly())
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(typeof(Program).Assembly,
+                typeof(ApplicationDbContext).Assembly,
+                typeof(ABC.Template.Domain.AggregatesModel.OrderAggregate.Order).Assembly)
         );
         return Results.Content(html, "text/html; charset=utf-8");
     });
