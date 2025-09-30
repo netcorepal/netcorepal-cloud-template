@@ -43,6 +43,70 @@ dotnet new install NetCorePal.Template::<package-version> --add-source "https://
 dotnet new netcorepal-web -n My.Project.Name
 ```
 
+### 命令参数说明
+
+模板支持多个参数来定制生成的项目，您可以根据需要选择不同的技术栈：
+
+#### 基本语法
+
+```shell
+dotnet new netcorepal-web -n <项目名称> [参数选项]
+```
+
+#### 获取帮助
+
+```shell
+# 查看所有可用的参数和选项
+dotnet new netcorepal-web --help
+
+# 查看所有已安装的模板
+dotnet new list
+```
+
+#### 可用参数
+
+| 参数 | 短参数 | 说明 | 可选值 | 默认值 |
+|------|--------|------|--------|--------|
+| `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net9.0` |
+| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL` | `MySql` |
+| `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
+
+#### 使用示例
+
+```shell
+# 使用默认配置（.NET 9.0 + MySQL + RabbitMQ）
+dotnet new netcorepal-web -n My.Project.Name
+
+# 使用 .NET 8.0 框架
+dotnet new netcorepal-web -n My.Project.Name --Framework net8.0
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -F net8.0
+
+# 使用 SQL Server 数据库
+dotnet new netcorepal-web -n My.Project.Name --Database SqlServer
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -D SqlServer
+
+# 使用 PostgreSQL 数据库
+dotnet new netcorepal-web -n My.Project.Name --Database PostgreSQL
+
+# 使用 Kafka 消息队列
+dotnet new netcorepal-web -n My.Project.Name --MessageQueue Kafka
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -M Kafka
+
+# 组合使用多个参数（推荐使用短参数）
+dotnet new netcorepal-web -n My.Project.Name -F net8.0 -D PostgreSQL -M Kafka
+
+# 使用云服务（Azure Service Bus）
+dotnet new netcorepal-web -n My.Project.Name -M AzureServiceBus
+
+# 使用 Redis Streams 作为消息队列
+dotnet new netcorepal-web -n My.Project.Name -M RedisStreams
+```
+
+> **提示：** 创建项目后，请根据选择的数据库和消息队列配置，使用对应的基础设施初始化脚本来启动所需的服务。详细说明请参考生成项目中的 `scripts/README.md` 文件。
+
 进入项目目录
 
 ```shell
