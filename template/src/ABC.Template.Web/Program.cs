@@ -1,4 +1,3 @@
-using NetCorePal.Extensions.Primitives;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Prometheus;
@@ -7,7 +6,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
-using FluentValidation;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
@@ -21,7 +19,6 @@ using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
-using DotNetCore.CAP;
 using NetCorePal.Extensions.CodeAnalysis;
 
 Log.Logger = new LoggerConfiguration()
@@ -243,13 +240,13 @@ try
 
     app.UseHttpMetrics();
     app.MapHealthChecks("/health");
-    app.MapMetrics("/metrics"); // 通过   /metrics  访问指标
+    app.MapMetrics(); // 通过   /metrics  访问指标
     
     // Code analysis endpoint
     app.MapGet("/code-analysis", () =>
     {
         var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
-            CodeFlowAnalysisHelper.GetResultFromAssemblies(new[] { Assembly.GetExecutingAssembly() })
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(Assembly.GetExecutingAssembly())
         );
         return Results.Content(html, "text/html; charset=utf-8");
     });
