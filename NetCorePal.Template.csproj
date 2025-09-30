@@ -17,6 +17,8 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/netcorepal/netcorepal-cloud-template.git</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Suppress NuGet pack warnings for template packages - these warnings don't apply to .NET templates -->
+    <NoWarn>$(NoWarn);NU5110;NU5111;NU5128</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
