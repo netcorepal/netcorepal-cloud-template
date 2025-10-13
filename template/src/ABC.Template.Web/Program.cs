@@ -79,7 +79,7 @@ try
 
     #region FastEndpoints
 
-    builder.Services.AddFastEndpoints();
+    builder.Services.AddFastEndpoints(o => o.IncludeAbstractValidators = true);
     builder.Services.Configure<JsonOptions>(o =>
         o.SerializerOptions.AddNetCorePalJsonConverters());
 
