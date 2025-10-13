@@ -85,18 +85,6 @@ try
 
     #endregion
 
-    #region 公共服务
-
-    builder.Services.AddSingleton<IClock, SystemClock>();
-
-    #endregion
-
-    #region 集成事件
-
-    builder.Services.AddTransient<OrderPaidIntegrationEventHandler>();
-
-    #endregion
-
     #region 模型验证器
 
     builder.Services.AddFluentValidationAutoValidation();
