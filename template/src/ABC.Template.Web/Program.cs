@@ -134,7 +134,6 @@ try
     {
         x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
-        x.UseEntityFramework<ApplicationDbContext>();
 //#if (UseRabbitMQ)
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
 //#elif (UseKafka)
