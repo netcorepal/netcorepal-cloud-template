@@ -106,12 +106,12 @@ dotnet new netcorepal-web -n My.Project.Name -M AzureServiceBus
 dotnet new netcorepal-web -n My.Project.Name -M RedisStreams
 
 # 启用 Aspire Dashboard 支持（用于可观测性和编排）
-dotnet new netcorepal-web -n My.Project.Name --UseAspire true
+dotnet new netcorepal-web -n My.Project.Name --UseAspire
 # 或使用短参数
-dotnet new netcorepal-web -n My.Project.Name -U true
+dotnet new netcorepal-web -n My.Project.Name -U
 
 # 组合使用 Aspire 与其他选项
-dotnet new netcorepal-web -n My.Project.Name -F net9.0 -D PostgreSQL -U true
+dotnet new netcorepal-web -n My.Project.Name -F net9.0 -D PostgreSQL -U
 ```
 
 > **提示：** 创建项目后，请根据选择的数据库和消息队列配置，使用对应的基础设施初始化脚本来启动所需的服务。详细说明请参考生成项目中的 `scripts/README.md` 文件。
