@@ -24,7 +24,8 @@ jobs:
         framework: [ 'net8.0', 'net9.0', 'net10.0' ]
         database: [ 'MySql', 'SqlServer', 'PostgreSQL' ]
         messagequeue: [ 'RabbitMQ', 'Kafka', 'RedisStreams', 'NATS' ]
-    name: ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
+        aspire: [ 'false', 'true' ]
+    name: ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
 
     steps:
     - uses: actions/checkout@v3
@@ -36,47 +37,51 @@ jobs:
     - name: Install template locally
       run: dotnet new install .
       
-    - name: Generate project from template - ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
+    - name: Generate project from template - ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
       run: |
-        mkdir -p test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}
-        dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.database }} -M ${{ matrix.messagequeue }}
+        mkdir -p test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
+        if [ "${{ matrix.aspire }}" == "true" ]; then
+          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.database }} -M ${{ matrix.messagequeue }} --UseAspire
+        else
+          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.database }} -M ${{ matrix.messagequeue }}
+        fi
         
     - name: Restore dependencies for generated project
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Restore dependencies, but allow missing preview packages
         if ! dotnet restore --ignore-failed-sources; then
-          echo "❌ RESTORE FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+          echo "❌ RESTORE FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
           exit 1
         fi
         
     - name: Build generated project
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Build the project - this must succeed
         if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
-          echo "❌ BUILD FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+          echo "❌ BUILD FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
           echo "Build logs:"
           dotnet build --no-restore --configuration Release --verbosity normal
           exit 1
         fi
-        echo "✅ BUILD SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        echo "✅ BUILD SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
         
     - name: Run tests for generated project
       if: ${{ inputs.include-tests }}
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Run tests - this must succeed
         if ! dotnet test --no-build --configuration Release --verbosity normal; then
-          echo "❌ TESTS FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+          echo "❌ TESTS FAILED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
           exit 1
         fi  
-        echo "✅ TESTS SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        echo "✅ TESTS SUCCEEDED for ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
         
     - name: Verify project structure and templates
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         echo "Project structure verification:"
         ls -la src/
         echo "Framework verification in csproj:"
@@ -85,6 +90,24 @@ jobs:
         grep -E "(SqlServer|MySql|PostgreSQL)" src/TestProject.Web/TestProject.Web.csproj || echo "Database packages found"
         echo "MQ packages verification:"
         grep -E "(RabbitMQ|Kafka|AzureServiceBus)" src/TestProject.Web/TestProject.Web.csproj || echo "MQ packages found"
+        if [ "${{ matrix.aspire }}" == "true" ]; then
+          echo "Aspire projects verification:"
+          ls -la src/ | grep -E "(AppHost|ServiceDefaults)" || echo "❌ Aspire projects not found"
+          if [ -d "src/TestProject.AppHost" ] && [ -d "src/TestProject.ServiceDefaults" ]; then
+            echo "✅ Aspire projects found: AppHost and ServiceDefaults"
+          else
+            echo "❌ Expected Aspire projects not found"
+            exit 1
+          fi
+        else
+          echo "Verifying Aspire projects are NOT generated:"
+          if [ -d "src/TestProject.AppHost" ] || [ -d "src/TestProject.ServiceDefaults" ]; then
+            echo "❌ Aspire projects should not exist when UseAspire is false"
+            exit 1
+          else
+            echo "✅ Aspire projects correctly not generated"
+          fi
+        fi
         
     - name: Setup Docker Buildx
       if: ${{ inputs.include-docker-build }}
@@ -92,16 +115,16 @@ jobs:
       
     - name: Verify Dockerfile template substitution
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         echo "Dockerfile framework verification:"
         grep -E "(aspnet|sdk):" src/TestProject.Web/Dockerfile
         
     - name: Build Docker image for generated project
       if: ${{ inputs.include-docker-build }}
       run: |
-        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}/TestProject
+        cd test-projects/${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Build Docker image - this must succeed for Docker tests
-        CONFIG_NAME="${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}"
+        CONFIG_NAME="${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
         IMAGE_TAG="testproject-$(echo "$CONFIG_NAME" | tr '[:upper:]' '[:lower:]'):latest"
         echo "Building Docker image with tag: $IMAGE_TAG"
         if ! docker build -f src/TestProject.Web/Dockerfile -t "$IMAGE_TAG" .; then
