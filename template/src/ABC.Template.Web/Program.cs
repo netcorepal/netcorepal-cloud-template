@@ -29,6 +29,11 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
     builder.Host.UseSerilog();
+<!--#if (UseAspire)-->
+
+    // Add service defaults & Aspire client integrations.
+    builder.AddServiceDefaults();
+<!--#endif-->
 
     #region SignalR
 
@@ -228,6 +233,9 @@ try
     app.UseHttpMetrics();
     app.MapHealthChecks("/health");
     app.MapMetrics(); // 通过   /metrics  访问指标
+<!--#if (UseAspire)-->
+    app.MapDefaultEndpoints();
+<!--#endif-->
     
     // Code analysis endpoint
     app.MapGet("/code-analysis", () =>

@@ -12,6 +12,10 @@
     <Project Path="src/ABC.Template.Domain/ABC.Template.Domain.csproj" />
     <Project Path="src/ABC.Template.Infrastructure/ABC.Template.Infrastructure.csproj" />
     <Project Path="src/ABC.Template.Web/ABC.Template.Web.csproj" />
+<!--#if (UseAspire)-->
+    <Project Path="src/ABC.Template.AppHost/ABC.Template.AppHost.csproj" />
+    <Project Path="src/ABC.Template.ServiceDefaults/ABC.Template.ServiceDefaults.csproj" />
+<!--#endif-->
   </Folder>
   <Folder Name="/test/">
     <Project Path="test/ABC.Template.Domain.Tests/ABC.Template.Domain.Tests.csproj" />
