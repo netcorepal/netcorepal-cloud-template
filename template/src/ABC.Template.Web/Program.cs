@@ -231,7 +231,9 @@ try
     #endregion
 
     app.UseHttpMetrics();
+<!--#if (!UseAspire)-->
     app.MapHealthChecks("/health");
+<!--#endif-->
     app.MapMetrics(); // 通过   /metrics  访问指标
 <!--#if (UseAspire)-->
     app.MapDefaultEndpoints();
