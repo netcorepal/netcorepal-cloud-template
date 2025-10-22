@@ -70,6 +70,7 @@ dotnet new list
 | `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net9.0` |
 | `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL` | `MySql` |
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
+| `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 
 #### 使用示例
 
@@ -103,9 +104,39 @@ dotnet new netcorepal-web -n My.Project.Name -M AzureServiceBus
 
 # 使用 Redis Streams 作为消息队列
 dotnet new netcorepal-web -n My.Project.Name -M RedisStreams
+
+# 启用 Aspire Dashboard 支持（用于可观测性和编排）
+dotnet new netcorepal-web -n My.Project.Name --UseAspire
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -U
+
+# 组合使用 Aspire 与其他选项
+dotnet new netcorepal-web -n My.Project.Name -F net9.0 -D PostgreSQL -U
 ```
 
 > **提示：** 创建项目后，请根据选择的数据库和消息队列配置，使用对应的基础设施初始化脚本来启动所需的服务。详细说明请参考生成项目中的 `scripts/README.md` 文件。
+
+### 关于 Aspire Dashboard
+
+当启用 `--UseAspire` 选项时，模板会生成以下额外的项目：
+
++ **AppHost 项目**：用于应用程序的编排和启动，集成了 Aspire Dashboard
++ **ServiceDefaults 项目**：包含共享的服务配置，如 OpenTelemetry、服务发现、健康检查等
+
+启用 Aspire Dashboard 后，可以通过运行 AppHost 项目来启动应用程序并访问 Dashboard：
+
+```shell
+cd src/My.Project.Name.AppHost
+dotnet run
+```
+
+Aspire Dashboard 提供了以下功能：
+
++ **分布式追踪**：可视化查看请求在不同服务间的流转
++ **指标监控**：实时监控应用程序的性能指标
++ **日志聚合**：集中查看所有服务的日志
++ **服务健康检查**：监控各服务的健康状态
++ **资源管理**：查看和管理应用程序使用的资源
 
 进入项目目录
 

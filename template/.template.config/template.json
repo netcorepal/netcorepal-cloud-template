@@ -89,6 +89,12 @@
             ],
             "defaultValue": "RabbitMQ"
         },
+        "UseAspire": {
+            "type": "parameter",
+            "datatype": "bool",
+            "defaultValue": "false",
+            "description": "Enable Aspire Dashboard support for observability and orchestration"
+        },
         "SdkVersion": {
             "type": "generated",
             "generator": "switch",
@@ -169,6 +175,13 @@
                     "condition": "(Framework != \"net8.0\")",
                     "exclude": [
                         "**/*.sln"
+                    ]
+                },
+                {
+                    "condition": "(!UseAspire)",
+                    "exclude": [
+                        "src/ABC.Template.AppHost/**",
+                        "src/ABC.Template.ServiceDefaults/**"
                     ]
                 }
             ]

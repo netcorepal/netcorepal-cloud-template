@@ -64,6 +64,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ABC.Template.Domain\ABC.Template.Domain.csproj" />
     <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj" />
+<!--#if (UseAspire)-->
+    <ProjectReference Include="..\ABC.Template.ServiceDefaults\ABC.Template.ServiceDefaults.csproj" />
+<!--#endif-->
   </ItemGroup>
 
   <ItemGroup>
