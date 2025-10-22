@@ -53,11 +53,18 @@ try
         var otlpEndpoint = context.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
         if (!string.IsNullOrWhiteSpace(otlpEndpoint))
         {
-            // Send logs to OpenTelemetry when OTLP endpoint is configured
+            // Send logs to OpenTelemetry when OTLP endpoint is configured (Aspire Dashboard)
             loggerConfiguration.WriteTo.OpenTelemetry(options =>
             {
                 options.Endpoint = otlpEndpoint;
-                options.Protocol = Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc;
+                // Aspire uses HTTP/Protobuf for logs by default
+                var protocol = context.Configuration["OTEL_EXPORTER_OTLP_PROTOCOL"];
+                options.Protocol = protocol?.ToLowerInvariant() switch
+                {
+                    "grpc" => Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc,
+                    "http/protobuf" => Serilog.Sinks.OpenTelemetry.OtlpProtocol.HttpProtobuf,
+                    _ => Serilog.Sinks.OpenTelemetry.OtlpProtocol.HttpProtobuf // Default to HTTP/Protobuf
+                };
                 options.ResourceAttributes = new Dictionary<string, object>
                 {
                     ["service.name"] = context.Configuration["OTEL_SERVICE_NAME"] ?? context.HostingEnvironment.ApplicationName
@@ -66,7 +73,7 @@ try
         }
         else
         {
-            // Fallback to console logging
+            // Fallback to console logging when OTLP is not configured
             loggerConfiguration.WriteTo.Console(new JsonFormatter());
         }
     });
