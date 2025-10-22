@@ -57,6 +57,7 @@
     <PackageReference Include="Refit.Newtonsoft.Json" />
     <PackageReference Include="Serilog.AspNetCore" />
     <PackageReference Include="Serilog.Enrichers.ClientInfo" />
+    <PackageReference Include="Serilog.Sinks.OpenTelemetry" />
     <PackageReference Include="StackExchange.Redis" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
