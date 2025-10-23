@@ -110,13 +110,9 @@ try
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
 <!--#endif-->
     
-    // DataProtection - use IConnectionMultiplexer from DI (works for both Aspire and non-Aspire)
+    // DataProtection - use custom extension that resolves IConnectionMultiplexer from DI
     builder.Services.AddDataProtection()
-        .PersistKeysToStackExchangeRedis(sp => 
-        {
-            var connectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
-            return connectionMultiplexer.GetDatabase();
-        }, "DataProtection-Keys");
+        .PersistKeysToStackExchangeRedis("DataProtection-Keys");
 
     builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
