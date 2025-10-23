@@ -37,6 +37,8 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
             $"amqp://guest:guest@{Containers.RabbitMqContainer.Hostname}:{Containers.RabbitMqContainer.GetMappedPublicPort(5672)}/");
 //#elif (UseKafka)
         builder.UseSetting("ConnectionStrings:kafka", Containers.KafkaContainer.GetBootstrapAddress());
+//#elif (UseRedisStreams)
+        // RedisStreams uses the same redis connection string
 //#endif
 <!--#else-->
         builder.UseSetting("ConnectionStrings:Redis",
