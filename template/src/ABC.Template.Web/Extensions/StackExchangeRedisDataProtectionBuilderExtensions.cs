@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.DataProtection.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using StackExchange.Redis;
 
 namespace ABC.Template.Web.Extensions;
@@ -21,10 +24,15 @@ public static class StackExchangeRedisDataProtectionBuilderExtensions
         this IDataProtectionBuilder builder,
         RedisKey key)
     {
-        return builder.PersistKeysToStackExchangeRedis(sp =>
+        builder.Services.AddSingleton<IConfigureOptions<KeyManagementOptions>>(services =>
         {
-            var connectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
-            return connectionMultiplexer.GetDatabase();
-        }, key);
+            var connectionMultiplexer = services.GetRequiredService<IConnectionMultiplexer>();
+            return new ConfigureOptions<KeyManagementOptions>(options =>
+            {
+                options.XmlRepository = new RedisXmlRepository(() => connectionMultiplexer.GetDatabase(), key);
+            });
+        });
+
+        return builder;
     }
 }
