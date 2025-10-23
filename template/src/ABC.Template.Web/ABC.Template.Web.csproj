@@ -70,6 +70,25 @@
 <!--#endif-->
   </ItemGroup>
 
+  <ItemGroup Condition="'$(UseAspire)' == 'true'">
+<!--#if (UseAspire)-->
+    <!-- Aspire client integrations for infrastructure resources -->
+    <PackageReference Include="Aspire.StackExchange.Redis" />
+<!--#if (UseMySql)-->
+    <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" />
+<!--#elif (UseSqlServer)-->
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
+<!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+<!--#endif-->
+<!--#if (UseRabbitMQ)-->
+    <PackageReference Include="Aspire.RabbitMQ.Client" />
+<!--#elif (UseKafka)-->
+    <PackageReference Include="Aspire.Confluent.Kafka" />
+<!--#endif-->
+<!--#endif-->
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Update="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>

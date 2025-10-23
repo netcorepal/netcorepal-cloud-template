@@ -102,10 +102,17 @@ try
 
     #region 身份认证
 
+<!--#if (UseAspire)-->
+    // When using Aspire, Redis connection is managed by Aspire and injected automatically
+    builder.AddRedisClient("redis");
+    builder.Services.AddDataProtection()
+        .PersistKeysToStackExchangeRedis(builder.Configuration.GetConnectionString("redis")!);
+<!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
     builder.Services.AddDataProtection()
         .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+<!--#endif-->
 
     builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
@@ -155,6 +162,31 @@ try
 
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
+<!--#if (UseAspire)-->
+    // When using Aspire, database connection is managed by Aspire
+//#if (UseMySql)
+    builder.AddMySqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    });
+//#elif (UseSqlServer)
+    builder.AddSqlServerDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    });
+//#elif (UsePostgreSQL)
+    builder.AddNpgsqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        options.LogTo(Console.WriteLine, LogLevel.Information)
+            .EnableSensitiveDataLogging()
+            .EnableDetailedErrors();
+    });
+//#endif
+<!--#else-->
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
 //#if (UseMySql)
@@ -169,8 +201,14 @@ try
             .EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
+<!--#endif-->
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
+<!--#if (UseAspire)-->
+    // Redis locks use the Aspire-managed Redis connection
     builder.Services.AddRedisLocks();
+<!--#else-->
+    builder.Services.AddRedisLocks();
+<!--#endif-->
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEvents(typeof(Program))
@@ -185,6 +223,46 @@ try
     {
         x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
+<!--#if (UseAspire)-->
+//#if (UseRabbitMQ)
+        // When using Aspire, RabbitMQ connection is managed by Aspire
+        x.UseRabbitMQ(p =>
+        {
+            var connectionString = builder.Configuration.GetConnectionString("rabbitmq");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                // Parse Aspire-provided connection string
+                var uri = new Uri(connectionString);
+                p.HostName = uri.Host;
+                p.Port = uri.Port;
+                p.UserName = uri.UserInfo.Split(':')[0];
+                p.Password = uri.UserInfo.Split(':')[1];
+                p.VirtualHost = uri.AbsolutePath.TrimStart('/');
+            }
+            else
+            {
+                builder.Configuration.GetSection("RabbitMQ").Bind(p);
+            }
+        });
+//#elif (UseKafka)
+        // When using Aspire, Kafka connection is managed by Aspire
+        x.UseKafka(p =>
+        {
+            var connectionString = builder.Configuration.GetConnectionString("kafka");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                p.Servers = connectionString;
+            }
+            else
+            {
+                builder.Configuration.GetSection("Kafka").Bind(p);
+            }
+        });
+//#elif (UseRedisStreams)
+        // When using Aspire, Redis connection is managed by Aspire
+        x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+//#endif
+<!--#else-->
 //#if (UseRabbitMQ)
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
 //#elif (UseKafka)
@@ -200,6 +278,7 @@ try
 //#elif (UsePulsar)
         x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
 //#endif
+<!--#endif-->
         x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
 
@@ -240,7 +319,12 @@ try
 
     #region Jobs
 
+<!--#if (UseAspire)-->
+    // When using Aspire, Redis connection is managed by Aspire
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("redis")); });
+<!--#else-->
     builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
+<!--#endif-->
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
 
     #endregion
