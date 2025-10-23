@@ -82,7 +82,7 @@
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
-    <PackageReference Include="Aspire.RabbitMQ.Client" />
+    <PackageReference Include="Aspire.RabbitMQ.Client.v7" />
 <!--#elif (UseKafka)-->
     <PackageReference Include="Aspire.Confluent.Kafka" />
 <!--#endif-->
