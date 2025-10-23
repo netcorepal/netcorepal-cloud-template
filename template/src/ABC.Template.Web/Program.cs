@@ -105,15 +105,18 @@ try
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire and injected automatically
     builder.AddRedisClient("redis");
-    // DataProtection will use the connection string configured by Aspire
-    builder.Services.AddDataProtection()
-        .PersistKeysToStackExchangeRedis(builder.Configuration.GetConnectionString("redis")!, () => "DataProtection-Keys");
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
-    builder.Services.AddDataProtection()
-        .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
 <!--#endif-->
+    
+    // DataProtection - use IConnectionMultiplexer from DI (works for both Aspire and non-Aspire)
+    builder.Services.AddDataProtection()
+        .PersistKeysToStackExchangeRedis(sp => 
+        {
+            var connectionMultiplexer = sp.GetRequiredService<IConnectionMultiplexer>();
+            return connectionMultiplexer.GetDatabase();
+        }, "DataProtection-Keys");
 
     builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
