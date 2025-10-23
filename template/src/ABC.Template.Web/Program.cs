@@ -105,8 +105,9 @@ try
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire and injected automatically
     builder.AddRedisClient("redis");
+    // DataProtection will be configured after IConnectionMultiplexer is available
     builder.Services.AddDataProtection()
-        .PersistKeysToStackExchangeRedis(builder.Configuration.GetConnectionString("redis")!);
+        .PersistKeysToStackExchangeRedis(sp => sp.GetRequiredService<IConnectionMultiplexer>(), "DataProtection-Keys");
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
@@ -235,9 +236,19 @@ try
                 var uri = new Uri(connectionString);
                 p.HostName = uri.Host;
                 p.Port = uri.Port;
-                p.UserName = uri.UserInfo.Split(':')[0];
-                p.Password = uri.UserInfo.Split(':')[1];
-                p.VirtualHost = uri.AbsolutePath.TrimStart('/');
+                if (!string.IsNullOrEmpty(uri.UserInfo))
+                {
+                    var userInfo = uri.UserInfo.Split(':');
+                    p.UserName = userInfo[0];
+                    if (userInfo.Length > 1)
+                    {
+                        p.Password = userInfo[1];
+                    }
+                }
+                if (!string.IsNullOrEmpty(uri.AbsolutePath) && uri.AbsolutePath != "/")
+                {
+                    p.VirtualHost = uri.AbsolutePath.TrimStart('/');
+                }
             }
             else
             {
