@@ -18,14 +18,20 @@
     <PackageReference Include="DotNetCore.CAP.Kafka" />
 <!--#elif (UseAzureServiceBus)-->
     <PackageReference Include="DotNetCore.CAP.AzureServiceBus" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UseAmazonSQS)-->
     <PackageReference Include="DotNetCore.CAP.AmazonSQS" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UseNATS)-->
     <PackageReference Include="DotNetCore.CAP.NATS" />
 <!--#elif (UseRedisStreams)-->
     <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UsePulsar)-->
     <PackageReference Include="DotNetCore.CAP.Pulsar" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#endif-->
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="FastEndpoints.Swagger" />
