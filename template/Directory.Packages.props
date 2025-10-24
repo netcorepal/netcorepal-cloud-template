@@ -64,15 +64,27 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
 
-    <!-- CAP packages -->
-    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.2" />
+<!--#if (Framework == "net8.0")-->
+    <!-- CAP packages for .NET 8.0 -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.0" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.0" />
+<!--#else-->
+    <!-- CAP packages for .NET 9.0+ -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.4.1" />
+<!--#endif-->
 
     <!-- FastEndpoints -->
     <PackageVersion Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
