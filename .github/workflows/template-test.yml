@@ -23,7 +23,7 @@ jobs:
       matrix:
         framework: [ 'net8.0', 'net9.0', 'net10.0' ]
         database: [ 'MySql', 'SqlServer', 'PostgreSQL' ]
-        messagequeue: [ 'RabbitMQ', 'Kafka', 'RedisStreams', 'NATS' ]
+        messagequeue: [ 'RabbitMQ', 'Kafka', 'RedisStreams', 'NATS', 'AzureServiceBus', 'AmazonSQS', 'Pulsar' ]
         aspire: [ 'false', 'true' ]
     name: ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
 

@@ -271,6 +271,38 @@ try
 //#elif (UseRedisStreams)
         // When using Aspire, Redis connection is managed by Aspire
         x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+//#elif (UseAzureServiceBus)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        }
+//#elif (UseAmazonSQS)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        }
+//#elif (UseNATS)
+        x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
+//#elif (UsePulsar)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        }
 //#endif
 <!--#else-->
 //#if (UseRabbitMQ)
@@ -278,15 +310,39 @@ try
 //#elif (UseKafka)
         x.UseKafka(p => builder.Configuration.GetSection("Kafka").Bind(p));
 //#elif (UseAzureServiceBus)
-        x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        }
 //#elif (UseAmazonSQS)
-        x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        }
 //#elif (UseNATS)
         x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
 //#elif (UseRedisStreams)
         x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
 //#elif (UsePulsar)
-        x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        }
 //#endif
 <!--#endif-->
         x.UseDashboard(); //CAP Dashboard  path：  /cap
