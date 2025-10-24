@@ -118,7 +118,11 @@
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
+<!--#if (Framework == "net8.0")-->
+    <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="9.1.0" />
+<!--#else-->
     <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="$(AspireVersion)" />
+<!--#endif-->
     <PackageVersion Include="Aspire.Confluent.Kafka" Version="$(AspireVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="$(AspireVersion)" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
