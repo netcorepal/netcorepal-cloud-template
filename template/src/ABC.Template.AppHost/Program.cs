@@ -30,7 +30,7 @@ var kafka = builder.AddKafka("kafka")
 //#endif
 
 // Add web project with infrastructure dependencies
-var web = builder.AddProject<Projects.ABC_Template_Web>("web")
+builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(redis)
