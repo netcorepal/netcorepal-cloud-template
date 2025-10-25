@@ -167,22 +167,19 @@ try
 //#if (UseMySql)
     builder.AddMySqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
+        options.EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
 //#elif (UseSqlServer)
     builder.AddSqlServerDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
+        options.EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
 //#elif (UsePostgreSQL)
     builder.AddNpgsqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
+        options.EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
 //#endif
@@ -197,8 +194,7 @@ try
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#endif
-        options.LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
+        options.EnableSensitiveDataLogging()
             .EnableDetailedErrors();
     });
 <!--#endif-->
