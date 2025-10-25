@@ -18,6 +18,29 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+<!--#if (UseAspire)-->
+        // When using Aspire, connection strings use resource names
+        builder.UseSetting("ConnectionStrings:redis",
+            Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
+//#if (UseMySql)
+        builder.UseSetting("ConnectionStrings:demo",
+            Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
+//#elif (UseSqlServer)
+        builder.UseSetting("ConnectionStrings:demo",
+            Containers.DatabaseContainer.GetConnectionString());
+//#elif (UsePostgreSQL)
+        builder.UseSetting("ConnectionStrings:demo",
+            Containers.DatabaseContainer.GetConnectionString());
+//#endif
+//#if (UseRabbitMQ)
+        builder.UseSetting("ConnectionStrings:rabbitmq",
+            $"amqp://guest:guest@{Containers.RabbitMqContainer.Hostname}:{Containers.RabbitMqContainer.GetMappedPublicPort(5672)}/");
+//#elif (UseKafka)
+        builder.UseSetting("ConnectionStrings:kafka", Containers.KafkaContainer.GetBootstrapAddress());
+//#elif (UseRedisStreams)
+        // RedisStreams uses the same redis connection string
+//#endif
+<!--#else-->
         builder.UseSetting("ConnectionStrings:Redis",
             Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
 //#if (UseMySql)
@@ -39,6 +62,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 //#elif (UseKafka)
         builder.UseSetting("Kafka:BootstrapServers", Containers.KafkaContainer.GetBootstrapAddress());
 //#endif
+<!--#endif-->
         builder.UseEnvironment("Development");
         base.ConfigureWebHost(builder);
     }

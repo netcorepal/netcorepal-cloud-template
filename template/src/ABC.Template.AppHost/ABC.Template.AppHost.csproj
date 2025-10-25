@@ -16,6 +16,19 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
+<!--#if (UseMySql)-->
+    <PackageReference Include="Aspire.Hosting.MySql" />
+<!--#elif (UseSqlServer)-->
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+<!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+<!--#endif-->
+    <PackageReference Include="Aspire.Hosting.Redis" />
+<!--#if (UseRabbitMQ)-->
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" />
+<!--#elif (UseKafka)-->
+    <PackageReference Include="Aspire.Hosting.Kafka" />
+<!--#endif-->
   </ItemGroup>
 
 </Project>

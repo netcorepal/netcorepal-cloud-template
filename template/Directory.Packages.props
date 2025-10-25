@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.0.0-preview.1.2510150644</NetCorePalVersion>
+    <NetCorePalVersion>3.0.0-rc.1</NetCorePalVersion>
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
     <TestcontainersVersion>4.1.0</TestcontainersVersion>
     <AspireVersion>9.5.1</AspireVersion>
@@ -64,15 +64,27 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
 
-    <!-- CAP packages -->
-    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.2" />
-    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.2" />
+<!--#if (Framework == "net8.0")-->
+    <!-- CAP packages for .NET 8.0 -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.5" />
+<!--#else-->
+    <!-- CAP packages for .NET 9.0+ -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.4.1" />
+<!--#endif-->
 
     <!-- FastEndpoints -->
     <PackageVersion Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
@@ -91,11 +103,27 @@
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Serilog.Enrichers.ClientInfo" Version="2.1.2" />
     <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.1.0" />
-    <PackageVersion Include="StackExchange.Redis" Version="2.8.41" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.9.11" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
 
     <!-- Aspire packages -->
     <PackageVersion Include="Aspire.Hosting.AppHost" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.MySql" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.Redis" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.Kafka" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
+<!--#if (Framework == "net8.0")-->
+    <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="9.1.0" />
+<!--#else-->
+    <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="$(AspireVersion)" />
+<!--#endif-->
+    <PackageVersion Include="Aspire.Confluent.Kafka" Version="$(AspireVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="$(AspireVersion)" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />

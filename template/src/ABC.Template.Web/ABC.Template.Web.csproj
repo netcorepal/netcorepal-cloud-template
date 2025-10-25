@@ -18,14 +18,20 @@
     <PackageReference Include="DotNetCore.CAP.Kafka" />
 <!--#elif (UseAzureServiceBus)-->
     <PackageReference Include="DotNetCore.CAP.AzureServiceBus" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UseAmazonSQS)-->
     <PackageReference Include="DotNetCore.CAP.AmazonSQS" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UseNATS)-->
     <PackageReference Include="DotNetCore.CAP.NATS" />
 <!--#elif (UseRedisStreams)-->
     <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#elif (UsePulsar)-->
     <PackageReference Include="DotNetCore.CAP.Pulsar" />
+    <!-- RedisStreams package needed for development environment fallback -->
+    <PackageReference Include="DotNetCore.CAP.RedisStreams" />
 <!--#endif-->
     <PackageReference Include="FastEndpoints" />
     <PackageReference Include="FastEndpoints.Swagger" />
@@ -67,6 +73,25 @@
     <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj" />
 <!--#if (UseAspire)-->
     <ProjectReference Include="..\ABC.Template.ServiceDefaults\ABC.Template.ServiceDefaults.csproj" />
+<!--#endif-->
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseAspire)' == 'true'">
+<!--#if (UseAspire)-->
+    <!-- Aspire client integrations for infrastructure resources -->
+    <PackageReference Include="Aspire.StackExchange.Redis" />
+<!--#if (UseMySql)-->
+    <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" />
+<!--#elif (UseSqlServer)-->
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
+<!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+<!--#endif-->
+<!--#if (UseRabbitMQ)-->
+    <PackageReference Include="Aspire.RabbitMQ.Client.v7" />
+<!--#elif (UseKafka)-->
+    <PackageReference Include="Aspire.Confluent.Kafka" />
+<!--#endif-->
 <!--#endif-->
   </ItemGroup>
 

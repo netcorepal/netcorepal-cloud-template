@@ -102,10 +102,17 @@ try
 
     #region 身份认证
 
+<!--#if (UseAspire)-->
+    // When using Aspire, Redis connection is managed by Aspire and injected automatically
+    builder.AddRedisClient("redis");
+<!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
+<!--#endif-->
+    
+    // DataProtection - use custom extension that resolves IConnectionMultiplexer from DI
     builder.Services.AddDataProtection()
-        .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
+        .PersistKeysToStackExchangeRedis("DataProtection-Keys");
 
     builder.Services.AddAuthentication().AddJwtBearer(options =>
     {
@@ -155,6 +162,40 @@ try
 
     builder.Services.AddRepositories(typeof(ApplicationDbContext).Assembly);
 
+<!--#if (UseAspire)-->
+    // When using Aspire, database connection is managed by Aspire
+//#if (UseMySql)
+    builder.AddMySqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
+    });
+//#elif (UseSqlServer)
+    builder.AddSqlServerDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
+    });
+//#elif (UsePostgreSQL)
+    builder.AddNpgsqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
+    {
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
+    });
+//#endif
+<!--#else-->
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
 //#if (UseMySql)
@@ -165,12 +206,21 @@ try
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#endif
-        options.LogTo(Console.WriteLine, LogLevel.Information)
-            .EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
     });
+<!--#endif-->
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
+<!--#if (UseAspire)-->
+    // Redis locks use the Aspire-managed Redis connection
     builder.Services.AddRedisLocks();
+<!--#else-->
+    builder.Services.AddRedisLocks();
+<!--#endif-->
     builder.Services.AddContext().AddEnvContext().AddCapContextProcessor();
     builder.Services.AddNetCorePalServiceDiscoveryClient();
     builder.Services.AddIntegrationEvents(typeof(Program))
@@ -185,21 +235,128 @@ try
     {
         x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
+<!--#if (UseAspire)-->
+//#if (UseRabbitMQ)
+        // When using Aspire, RabbitMQ connection is managed by Aspire
+        x.UseRabbitMQ(p =>
+        {
+            var connectionString = builder.Configuration.GetConnectionString("rabbitmq");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                // Parse Aspire-provided connection string
+                var uri = new Uri(connectionString);
+                p.HostName = uri.Host;
+                p.Port = uri.Port;
+                if (!string.IsNullOrEmpty(uri.UserInfo))
+                {
+                    var userInfo = uri.UserInfo.Split(':');
+                    p.UserName = userInfo[0];
+                    if (userInfo.Length > 1)
+                    {
+                        p.Password = userInfo[1];
+                    }
+                }
+                if (!string.IsNullOrEmpty(uri.AbsolutePath) && uri.AbsolutePath != "/")
+                {
+                    p.VirtualHost = uri.AbsolutePath.TrimStart('/');
+                }
+            }
+            else
+            {
+                builder.Configuration.GetSection("RabbitMQ").Bind(p);
+            }
+        });
+//#elif (UseKafka)
+        // When using Aspire, Kafka connection is managed by Aspire
+        x.UseKafka(p =>
+        {
+            var connectionString = builder.Configuration.GetConnectionString("kafka");
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                p.Servers = connectionString;
+            }
+            else
+            {
+                builder.Configuration.GetSection("Kafka").Bind(p);
+            }
+        });
+//#elif (UseRedisStreams)
+        // When using Aspire, Redis connection is managed by Aspire
+        x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+//#elif (UseAzureServiceBus)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        }
+//#elif (UseAmazonSQS)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        }
+//#elif (UseNATS)
+        x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
+//#elif (UsePulsar)
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        }
+        else
+        {
+            x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        }
+//#endif
+<!--#else-->
 //#if (UseRabbitMQ)
         x.UseRabbitMQ(p => builder.Configuration.GetSection("RabbitMQ").Bind(p));
 //#elif (UseKafka)
         x.UseKafka(p => builder.Configuration.GetSection("Kafka").Bind(p));
 //#elif (UseAzureServiceBus)
-        x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
+        }
 //#elif (UseAmazonSQS)
-        x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
+        }
 //#elif (UseNATS)
         x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
 //#elif (UseRedisStreams)
         x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
 //#elif (UsePulsar)
-        x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        // In development, use RedisStreams as fallback for testing
+        if (builder.Environment.IsDevelopment())
+        {
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        }
+        else
+        {
+            x.UsePulsar(p => builder.Configuration.GetSection("Pulsar").Bind(p));
+        }
 //#endif
+<!--#endif-->
         x.UseDashboard(); //CAP Dashboard  path：  /cap
     });
 
@@ -240,7 +397,12 @@ try
 
     #region Jobs
 
+<!--#if (UseAspire)-->
+    // When using Aspire, Redis connection is managed by Aspire
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("redis")); });
+<!--#else-->
     builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
+<!--#endif-->
     builder.Services.AddHangfireServer(); //hangfire dashboard  path：  /hangfire
 
     #endregion
