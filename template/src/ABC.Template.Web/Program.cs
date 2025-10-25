@@ -167,20 +167,32 @@ try
 //#if (UseMySql)
     builder.AddMySqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
     });
 //#elif (UseSqlServer)
     builder.AddSqlServerDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
     });
 //#elif (UsePostgreSQL)
     builder.AddNpgsqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
     {
-        options.EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
     });
 //#endif
 <!--#else-->
@@ -194,8 +206,12 @@ try
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#endif
-        options.EnableSensitiveDataLogging()
-            .EnableDetailedErrors();
+        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+        }
+        options.EnableDetailedErrors();
     });
 <!--#endif-->
     builder.Services.AddUnitOfWork<ApplicationDbContext>();
