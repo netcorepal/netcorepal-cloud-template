@@ -174,21 +174,20 @@ cd netcorepal-cloud-template
 `dotnet new install` 支持直接从包含模板的源码目录安装，无需构建和打包：
 
 ```bash
-# 直接从 template 目录安装
-dotnet new install ./template
+# 在项目根目录直接安装（推荐）
+dotnet new install . --force
 
-# 或使用绝对路径
-dotnet new install /path/to/netcorepal-cloud-template/template
+# 或从 template 子目录安装
+dotnet new install ./template
 ```
 
-这种方式最简单快捷，特别适合本地开发和调试。修改模板文件后，只需卸载并重新安装即可：
+`--force` 参数可以强制安装或更新模板，无需先卸载旧版本。这种方式最简单快捷，特别适合本地开发和调试。
+
+修改模板文件后，重新运行安装命令即可更新：
 
 ```bash
-# 卸载模板
-dotnet new uninstall NetCorePal.Template
-
-# 重新安装
-dotnet new install ./template
+# 修改模板文件后，直接重新安装
+dotnet new install . --force
 ```
 
 #### 方式二：从构建的包安装
