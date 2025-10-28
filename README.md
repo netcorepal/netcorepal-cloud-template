@@ -118,8 +118,8 @@ dotnet test
 # 打包模板（可选）
 dotnet pack
 
-# 从本地安装模板
-dotnet new install ./bin/Debug/NetCorePal.Template.<version>.nupkg
+# 从本地安装模板（将 1.0.0 替换为实际版本号）
+dotnet new install ./bin/Debug/NetCorePal.Template.1.0.0.nupkg
 ```
 
 ## 如何使用
