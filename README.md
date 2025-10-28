@@ -176,9 +176,6 @@ cd netcorepal-cloud-template
 ```bash
 # 在项目根目录直接安装（推荐）
 dotnet new install . --force
-
-# 或从 template 子目录安装
-dotnet new install ./template
 ```
 
 `--force` 参数可以强制安装或更新模板，无需先卸载旧版本。这种方式最简单快捷，特别适合本地开发和调试。
