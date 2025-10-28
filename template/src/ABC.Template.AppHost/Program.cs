@@ -34,17 +34,23 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(redis)
+    .WaitFor(redis)
 //#if (UseMySql)
     .WithReference(mysql)
+    .WaitFor(mysql)
 //#elif (UseSqlServer)
     .WithReference(sqlserver)
+    .WaitFor(sqlserver)
 //#elif (UsePostgreSQL)
     .WithReference(postgres)
+    .WaitFor(postgres)
 //#endif
 //#if (UseRabbitMQ)
     .WithReference(rabbitmq)
+    .WaitFor(rabbitmq)
 //#elif (UseKafka)
     .WithReference(kafka)
+    .WaitFor(kafka)
 //#endif
     ;
 
