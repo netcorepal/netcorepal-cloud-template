@@ -130,6 +130,8 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.13.0-beta.1" />
+    <PackageVersion Include="Npgsql.OpenTelemetry" Version="8.0.8" />
 
     <!-- NetCorePal packages -->
     <PackageVersion Include="NetCorePal.Context.AspNetCore" Version="$(NetCorePalVersion)" />

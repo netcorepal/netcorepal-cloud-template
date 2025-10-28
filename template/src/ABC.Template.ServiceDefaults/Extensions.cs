@@ -71,6 +71,17 @@ public static class Extensions
                     // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
                     //.AddGrpcClientInstrumentation()
                     .AddHttpClientInstrumentation();
+                
+//#if (UseMySql)
+                // Add tracing from the underlying MySqlConnector ADO.NET library
+                tracing.AddSource("MySqlConnector");
+//#elif (UseSqlServer)
+                // Add SQL Server tracing instrumentation
+                tracing.AddSqlClientInstrumentation();
+//#elif (UsePostgreSQL)
+                // Add PostgreSQL tracing instrumentation
+                tracing.AddNpgsql();
+//#endif
             });
 
         builder.AddOpenTelemetryExporters();
