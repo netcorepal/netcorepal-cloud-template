@@ -156,6 +156,84 @@ dotnet build
 dotnet test
 ```
 
+## 本地开发
+
+如果您需要基于源码开发或调试本模板，可以按以下步骤操作：
+
+### 克隆仓库
+
+```bash
+git clone https://github.com/netcorepal/netcorepal-cloud-template.git
+cd netcorepal-cloud-template
+```
+
+### 从本地源码安装模板
+
+#### 方式一：直接从源码目录安装（推荐）
+
+`dotnet new install` 支持直接从包含模板的源码目录安装，无需构建和打包：
+
+```bash
+# 在项目根目录直接安装（推荐）
+dotnet new install . --force
+```
+
+`--force` 参数可以强制安装或更新模板，无需先卸载旧版本。这种方式最简单快捷，特别适合本地开发和调试。
+
+修改模板文件后，重新运行安装命令即可更新：
+
+```bash
+# 修改模板文件后，直接重新安装
+dotnet new install . --force
+```
+
+#### 方式二：从构建的包安装
+
+如果需要测试完整的打包流程，可以先构建再安装：
+
+```bash
+# 恢复依赖
+dotnet restore
+
+# 构建项目
+dotnet build
+
+# 打包模板
+dotnet pack
+
+# 从生成的 nupkg 文件安装
+dotnet new install ./bin/Debug/NetCorePal.Template.1.0.0.nupkg
+
+# 或者使用通配符安装
+dotnet new install ./bin/Debug/*.nupkg
+```
+
+### 测试本地模板
+
+安装后，您可以像使用正式版本一样创建项目来测试模板：
+
+```bash
+# 使用本地安装的模板创建项目
+dotnet new netcorepal-web -n TestProject
+
+# 进入测试项目目录
+cd TestProject
+
+# 构建和测试
+dotnet build
+dotnet test
+```
+
+### 查看已安装的模板
+
+```bash
+# 列出所有已安装的模板
+dotnet new list
+
+# 查看模板详细信息
+dotnet new netcorepal-web --help
+```
+
 ## 其它命令
 
 更新模板
