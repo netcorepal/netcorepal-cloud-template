@@ -17,6 +17,10 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
+<!--#if (UseMySql)-->
+    <!-- MySQL doesn't need additional instrumentation package -->
+    <!-- MySqlConnector emits OpenTelemetry traces natively -->
+<!--#endif-->
 <!--#if (UseSqlServer)-->
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" />
 <!--#endif-->

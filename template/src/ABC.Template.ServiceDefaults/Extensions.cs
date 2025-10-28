@@ -7,9 +7,6 @@ using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-//#if (UsePostgreSQL)
-using Npgsql;
-//#endif
 
 namespace Microsoft.Extensions.Hosting;
 
