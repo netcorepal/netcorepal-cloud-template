@@ -22,106 +22,6 @@
 
     `Docker Desktop`下载地址： <https://www.docker.com/products/docker-desktop/>
 
-## 本地开发环境配置
-
-### 方式一：使用安装程序（推荐）
-
-从官方网站下载并安装 .NET SDK：<https://dot.net/download>
-
-### 方式二：使用 dotnet-install 脚本
-
-`dotnet-install` 脚本允许您安装特定版本的 .NET SDK，特别适合需要多个 SDK 版本并行开发的场景。
-
-#### Linux/macOS
-
-```bash
-# 下载并安装脚本
-curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 9.0.100
-
-# 或者安装最新的 LTS 版本
-curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel LTS
-
-# 添加到 PATH（根据实际安装路径调整）
-export PATH="$HOME/.dotnet:$PATH"
-
-# 验证安装
-dotnet --version
-```
-
-#### Windows PowerShell
-
-```powershell
-# 下载并安装脚本
-Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
-.\dotnet-install.ps1 -Version 9.0.100
-
-# 或者安装最新的 LTS 版本
-.\dotnet-install.ps1 -Channel LTS
-
-# 添加到 PATH（根据实际安装路径调整）
-$env:PATH = "$env:LOCALAPPDATA\Microsoft\dotnet;$env:PATH"
-
-# 验证安装
-dotnet --version
-```
-
-#### 常用参数说明
-
-| 参数 | 说明 | 示例 |
-|------|------|------|
-| `-Version` | 指定要安装的 SDK 版本 | `-Version 9.0.100` |
-| `-Channel` | 指定要安装的频道（LTS、STS、Current） | `-Channel LTS` |
-| `-InstallDir` | 指定安装目录 | `-InstallDir ./sdk` |
-| `-Runtime` | 仅安装运行时（dotnet、aspnetcore） | `-Runtime aspnetcore` |
-| `-DryRun` | 显示要执行的操作但不实际安装 | `-DryRun` |
-
-更多信息请参考：
-+ [dotnet-install 脚本参考](https://learn.microsoft.com/zh-cn/dotnet/core/tools/dotnet-install-script)
-+ [.NET SDK 版本选择](https://dotnet.microsoft.com/zh-cn/download/dotnet)
-
-### 验证开发环境
-
-安装完成后，通过以下命令验证您的开发环境：
-
-```bash
-# 查看 .NET SDK 版本
-dotnet --version
-
-# 查看已安装的所有 SDK 版本
-dotnet --list-sdks
-
-# 查看已安装的所有运行时
-dotnet --list-runtimes
-
-# 查看 .NET 信息
-dotnet --info
-```
-
-### 从源码构建和开发本模板
-
-如果您需要修改或扩展本模板项目，可以按以下步骤操作：
-
-```bash
-# 克隆仓库
-git clone https://github.com/netcorepal/netcorepal-cloud-template.git
-cd netcorepal-cloud-template
-
-# 恢复依赖
-dotnet restore
-
-# 构建项目
-dotnet build
-
-# 运行测试
-dotnet test
-
-# 打包模板（可选）
-dotnet pack
-
-# 从本地安装模板（将 1.0.0 替换为实际版本号）
-dotnet new install ./bin/Debug/NetCorePal.Template.1.0.0.nupkg
-```
-
 ## 如何使用
 
 安装模板
@@ -254,6 +154,83 @@ dotnet build
 
 ```shell
 dotnet test
+```
+
+## 本地开发
+
+如果您需要基于源码开发或调试本模板，可以按以下步骤操作：
+
+### 克隆仓库
+
+```bash
+git clone https://github.com/netcorepal/netcorepal-cloud-template.git
+cd netcorepal-cloud-template
+```
+
+### 构建和打包模板
+
+```bash
+# 恢复依赖
+dotnet restore
+
+# 构建项目
+dotnet build
+
+# 打包模板
+dotnet pack
+```
+
+### 从本地源码安装模板
+
+打包完成后，使用 `dotnet new install` 命令从本地 nupkg 文件安装模板：
+
+```bash
+# 安装最新构建的模板包（替换版本号为实际版本）
+dotnet new install ./bin/Debug/NetCorePal.Template.1.0.0.nupkg
+
+# 或者使用通配符安装
+dotnet new install ./bin/Debug/*.nupkg
+```
+
+### 测试本地模板
+
+安装后，您可以像使用正式版本一样创建项目来测试模板：
+
+```bash
+# 使用本地安装的模板创建项目
+dotnet new netcorepal-web -n TestProject
+
+# 进入测试项目目录
+cd TestProject
+
+# 构建和测试
+dotnet build
+dotnet test
+```
+
+### 更新本地模板
+
+当您修改了模板源码后，需要重新打包并更新安装：
+
+```bash
+# 在模板项目根目录
+dotnet pack
+
+# 卸载旧版本
+dotnet new uninstall NetCorePal.Template
+
+# 安装新版本
+dotnet new install ./bin/Debug/*.nupkg
+```
+
+### 查看已安装的模板
+
+```bash
+# 列出所有已安装的模板
+dotnet new list
+
+# 查看模板详细信息
+dotnet new netcorepal-web --help
 ```
 
 ## 其它命令
