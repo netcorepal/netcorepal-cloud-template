@@ -164,29 +164,18 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, database connection is managed by Aspire
+    // Use AddDbContext instead of AddMySqlDbContext/AddSqlServerDbContext/AddNpgsqlDbContext
+    // to avoid ExecutionStrategy issues with user-initiated transactions
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
 //#if (UseMySql)
-    builder.AddMySqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
-    {
-        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
-        if (builder.Environment.IsDevelopment())
-        {
-            options.EnableSensitiveDataLogging();
-        }
-        options.EnableDetailedErrors();
-    });
+        options.UseMySql(builder.Configuration.GetConnectionString("demo"),
+            new MySqlServerVersion(new Version(8, 0, 34)));
 //#elif (UseSqlServer)
-    builder.AddSqlServerDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
-    {
-        // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
-        if (builder.Environment.IsDevelopment())
-        {
-            options.EnableSensitiveDataLogging();
-        }
-        options.EnableDetailedErrors();
-    });
+        options.UseSqlServer(builder.Configuration.GetConnectionString("demo"));
 //#elif (UsePostgreSQL)
-    builder.AddNpgsqlDbContext<ApplicationDbContext>("demo", configureDbContextOptions: options =>
-    {
+        options.UseNpgsql(builder.Configuration.GetConnectionString("demo"));
+//#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
         {
@@ -194,7 +183,6 @@ try
         }
         options.EnableDetailedErrors();
     });
-//#endif
 <!--#else-->
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
