@@ -167,7 +167,33 @@ git clone https://github.com/netcorepal/netcorepal-cloud-template.git
 cd netcorepal-cloud-template
 ```
 
-### 构建和打包模板
+### 从本地源码安装模板
+
+#### 方式一：直接从源码目录安装（推荐）
+
+`dotnet new install` 支持直接从包含模板的源码目录安装，无需构建和打包：
+
+```bash
+# 直接从 template 目录安装
+dotnet new install ./template
+
+# 或使用绝对路径
+dotnet new install /path/to/netcorepal-cloud-template/template
+```
+
+这种方式最简单快捷，特别适合本地开发和调试。修改模板文件后，只需卸载并重新安装即可：
+
+```bash
+# 卸载模板
+dotnet new uninstall NetCorePal.Template
+
+# 重新安装
+dotnet new install ./template
+```
+
+#### 方式二：从构建的包安装
+
+如果需要测试完整的打包流程，可以先构建再安装：
 
 ```bash
 # 恢复依赖
@@ -178,14 +204,8 @@ dotnet build
 
 # 打包模板
 dotnet pack
-```
 
-### 从本地源码安装模板
-
-打包完成后，使用 `dotnet new install` 命令从本地 nupkg 文件安装模板：
-
-```bash
-# 安装最新构建的模板包（替换版本号为实际版本）
+# 从生成的 nupkg 文件安装
 dotnet new install ./bin/Debug/NetCorePal.Template.1.0.0.nupkg
 
 # 或者使用通配符安装
@@ -206,21 +226,6 @@ cd TestProject
 # 构建和测试
 dotnet build
 dotnet test
-```
-
-### 更新本地模板
-
-当您修改了模板源码后，需要重新打包并更新安装：
-
-```bash
-# 在模板项目根目录
-dotnet pack
-
-# 卸载旧版本
-dotnet new uninstall NetCorePal.Template
-
-# 安装新版本
-dotnet new install ./bin/Debug/*.nupkg
 ```
 
 ### 查看已安装的模板
