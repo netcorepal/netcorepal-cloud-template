@@ -7,6 +7,9 @@ using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+//#if (UsePostgreSQL)
+using Npgsql;
+//#endif
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -80,7 +83,8 @@ public static class Extensions
                 tracing.AddSqlClientInstrumentation();
 //#elif (UsePostgreSQL)
                 // Add PostgreSQL tracing instrumentation
-                tracing.AddNpgsql();
+                // Npgsql.OpenTelemetry automatically enables tracing when the package is referenced
+                tracing.AddSource("Npgsql");
 //#endif
             });
 

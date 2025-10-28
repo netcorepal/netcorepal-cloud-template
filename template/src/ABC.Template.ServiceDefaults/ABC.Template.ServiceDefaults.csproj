@@ -17,8 +17,12 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
     <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" />
+<!--#if (UseSqlServer)-->
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" />
+<!--#endif-->
+<!--#if (UsePostgreSQL)-->
     <PackageReference Include="Npgsql.OpenTelemetry" />
+<!--#endif-->
   </ItemGroup>
 
 </Project>
