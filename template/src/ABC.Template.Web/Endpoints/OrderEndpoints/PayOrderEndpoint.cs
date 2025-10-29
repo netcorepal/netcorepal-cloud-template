@@ -17,6 +17,6 @@ public class PayOrderEndpoint(IMediator mediator) : Endpoint<PayOrderRequest, Re
     public override async Task HandleAsync(PayOrderRequest req, CancellationToken ct)
     {
         await mediator.Send(new PayOrderCommand(req.Id), ct);
-        await SendOkAsync(true.AsResponseData(), ct);
+        await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
