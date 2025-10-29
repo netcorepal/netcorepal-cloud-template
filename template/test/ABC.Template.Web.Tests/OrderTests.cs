@@ -22,8 +22,8 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
     [Fact]
     public async Task CreateOrder_And_PayOrder_Test()
     {
-        // Arrange - Create an order first
-        var createRequest = new CreateOrderRequest("Test Order", 100, 2);
+        // Arrange - Create an order first (Price must be 18-60 per validator)
+        var createRequest = new CreateOrderRequest("TestOrder", 25, 2);
         var createResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order", createRequest);
         Assert.True(createResponse.IsSuccessStatusCode);
         
@@ -35,9 +35,12 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         // Act - Pay for the order
         var payRequest = new PayOrderRequest(orderId);
         var payResponse = await _client.PostAsNewtonsoftJsonAsync("/payOrder", payRequest);
-        
-        // Assert
         Assert.True(payResponse.IsSuccessStatusCode);
+        
+        var payResponseData = await payResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
+        Assert.NotNull(payResponseData);
+        Assert.True(payResponseData.Success);
+        Assert.True(payResponseData.Data);
         
         // Verify order is marked as paid in the database
         using var scope = _factory.Services.CreateScope();
@@ -64,8 +67,8 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
     [Fact]
     public async Task GetOrderById_Test()
     {
-        // Arrange - Create an order first
-        var createRequest = new CreateOrderRequest("Test Order for Get", 150, 1);
+        // Arrange - Create an order first (Name max 10 chars, Price 18-60 per validator)
+        var createRequest = new CreateOrderRequest("TestGet", 30, 1);
         var createResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order", createRequest);
         Assert.True(createResponse.IsSuccessStatusCode);
         
@@ -74,10 +77,15 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         Assert.NotNull(createResponseData.Data);
         var orderId = createResponseData.Data;
 
-        // Act - Get the order
-        var getResponse = await _client.GetAsync($"/api/order/{orderId.Id}");
+        // Act - Get the order (correct endpoint path is /get/{Id})
+        var getResponse = await _client.GetAsync($"/get/{orderId.Id}");
         
         // Assert
         Assert.True(getResponse.IsSuccessStatusCode);
+        var getResponseData = await getResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<Order>>();
+        Assert.NotNull(getResponseData);
+        Assert.True(getResponseData.Success);
+        Assert.NotNull(getResponseData.Data);
+        Assert.Equal(orderId, getResponseData.Data.Id);
     }
 }
