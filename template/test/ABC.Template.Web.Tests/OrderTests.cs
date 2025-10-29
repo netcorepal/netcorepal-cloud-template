@@ -51,7 +51,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
     public async Task PayOrder_NonExistentOrder_ShouldFail()
     {
         // Arrange - Use a non-existent order ID
-        var nonExistentOrderId = new OrderId(999999);
+        var nonExistentOrderId = new OrderId(Guid.NewGuid());
         var payRequest = new PayOrderRequest(nonExistentOrderId);
         
         // Act
