@@ -9,7 +9,7 @@ namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 public record GetOrderByIdRequest(OrderId Id);
 
 [Tags("Orders")]
-[HttpGet("/get/{Id}")]
+[HttpGet("/api/order/{Id}")]
 [AllowAnonymous]
 public class GetOrderByIdEndpoint(OrderQuery orderQuery) : Endpoint<GetOrderByIdRequest, ResponseData<ABC.Template.Domain.AggregatesModel.OrderAggregate.Order?>>
 {

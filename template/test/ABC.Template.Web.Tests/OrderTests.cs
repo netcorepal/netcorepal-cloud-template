@@ -34,7 +34,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
 
         // Act - Pay for the order
         var payRequest = new PayOrderRequest(orderId);
-        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/payOrder", payRequest);
+        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order/pay", payRequest);
         Assert.True(payResponse.IsSuccessStatusCode);
         
         var payResponseData = await payResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
@@ -58,7 +58,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         var payRequest = new PayOrderRequest(nonExistentOrderId);
         
         // Act
-        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/payOrder", payRequest);
+        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order/pay", payRequest);
         
         // Assert - Should fail
         Assert.False(payResponse.IsSuccessStatusCode);
@@ -77,8 +77,8 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         Assert.NotNull(createResponseData.Data);
         var orderId = createResponseData.Data;
 
-        // Act - Get the order (correct endpoint path is /get/{Id})
-        var getResponse = await _client.GetAsync($"/get/{orderId.Id}");
+        // Act - Get the order
+        var getResponse = await _client.GetAsync($"/api/order/{orderId.Id}");
         
         // Assert
         Assert.True(getResponse.IsSuccessStatusCode);

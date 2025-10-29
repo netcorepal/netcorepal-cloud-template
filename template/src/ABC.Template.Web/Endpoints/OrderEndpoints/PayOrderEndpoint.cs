@@ -10,7 +10,7 @@ namespace ABC.Template.Web.Endpoints.OrderEndpoints;
 public record PayOrderRequest(OrderId Id);
 
 [Tags("Orders")]
-[HttpPost("/payOrder")]
+[HttpPost("/api/order/pay")]
 [AllowAnonymous]
 public class PayOrderEndpoint(IMediator mediator) : Endpoint<PayOrderRequest, ResponseData<bool>>
 {
