@@ -4,20 +4,20 @@ using NetCorePal.Extensions.Primitives;
 
 namespace ABC.Template.Web.Application.Commands;
 
-public record class OrderPaidCommand(OrderId OrderId) : ICommand;
+public record class PayOrderCommand(OrderId OrderId) : ICommand;
 
-public class OrderPaidCommandLock : ICommandLock<OrderPaidCommand>
+public class PayOrderCommandLock : ICommandLock<PayOrderCommand>
 {
-    public Task<CommandLockSettings> GetLockKeysAsync(OrderPaidCommand command,
+    public Task<CommandLockSettings> GetLockKeysAsync(PayOrderCommand command,
         CancellationToken cancellationToken = new CancellationToken())
     {
         return Task.FromResult(command.OrderId.ToCommandLockSettings());
     }
 }
 
-public class OrderPaidCommandHandler(IOrderRepository orderRepository) : ICommandHandler<OrderPaidCommand>
+public class PayOrderCommandHandler(IOrderRepository orderRepository) : ICommandHandler<PayOrderCommand>
 {
-    public async Task Handle(OrderPaidCommand request, CancellationToken cancellationToken)
+    public async Task Handle(PayOrderCommand request, CancellationToken cancellationToken)
     {
         var order = await orderRepository.GetAsync(request.OrderId, cancellationToken) ??
                     throw new KnownException($"未找到订单，OrderId = {request.OrderId}");

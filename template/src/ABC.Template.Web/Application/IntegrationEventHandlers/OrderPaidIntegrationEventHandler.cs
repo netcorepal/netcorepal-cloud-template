@@ -10,7 +10,7 @@ namespace ABC.Template.Web.Application.IntegrationEventHandlers
     {
         public Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
         {
-            var cmd = new OrderPaidCommand(eventData.OrderId);
+            var cmd = new DeliverGoodsCommand(eventData.OrderId);
             return mediator.Send(cmd, cancellationToken);
         }
     }
