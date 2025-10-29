@@ -1,6 +1,7 @@
 using System.Net.Http.Json;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure;
+using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Endpoints.OrderEndpoints;
 using Microsoft.EntityFrameworkCore;
 using NetCorePal.Extensions.Dto;
@@ -61,7 +62,10 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         var payResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order/pay", payRequest);
         
         // Assert - Should fail
-        Assert.False(payResponse.IsSuccessStatusCode);
+        Assert.True(payResponse.IsSuccessStatusCode);
+        var payResponseData = await payResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
+        Assert.NotNull(payResponseData);
+        Assert.False(payResponseData.Success);
     }
 
     [Fact]
@@ -82,7 +86,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         
         // Assert
         Assert.True(getResponse.IsSuccessStatusCode);
-        var getResponseData = await getResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<Order>>();
+        var getResponseData = await getResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<QueryOrderResult>>();
         Assert.NotNull(getResponseData);
         Assert.True(getResponseData.Success);
         Assert.NotNull(getResponseData.Data);
