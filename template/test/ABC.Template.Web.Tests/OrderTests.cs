@@ -42,6 +42,8 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         Assert.NotNull(payResponseData);
         Assert.True(payResponseData.Success);
         Assert.True(payResponseData.Data);
+
+        await Task.Delay(1000); //wait for IntegrationEventHandler
         
         // Verify order is marked as paid in the database
         using var scope = _factory.Services.CreateScope();
@@ -49,6 +51,10 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         var order = await dbContext.Set<Order>().FirstOrDefaultAsync(o => o.Id == orderId);
         Assert.NotNull(order);
         Assert.True(order.Paid);
+
+        //verify DeliverGoods
+        var goods = await dbContext.DeliverRecords.FirstOrDefaultAsync(o=>o.OrderId==orderId);
+        Assert.NotNull(goods);
     }
 
     [Fact]
