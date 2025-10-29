@@ -9,7 +9,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 
     static MyWebApplicationFactory()
     {
-        NewtonsoftJsonDefaults.DefaultOptions.Converters.Add(new NewtonsoftEntityIdJsonConverter());
+        NewtonsoftJsonDefaults.DefaultOptions.AddNetCorePalJsonConverters();
     }
 
     public MyWebApplicationFactory()
