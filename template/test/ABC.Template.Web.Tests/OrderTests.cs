@@ -24,7 +24,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
     {
         // Arrange - Create an order first
         var createRequest = new CreateOrderRequest("Test Order", 100, 2);
-        var createResponse = await _client.PostAsJsonAsync("/api/order", createRequest);
+        var createResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order", createRequest);
         Assert.True(createResponse.IsSuccessStatusCode);
         
         var createResponseData = await createResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<OrderId>>();
@@ -34,7 +34,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
 
         // Act - Pay for the order
         var payRequest = new PayOrderRequest(orderId);
-        var payResponse = await _client.PostAsJsonAsync("/payOrder", payRequest);
+        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/payOrder", payRequest);
         
         // Assert
         Assert.True(payResponse.IsSuccessStatusCode);
@@ -55,7 +55,7 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
         var payRequest = new PayOrderRequest(nonExistentOrderId);
         
         // Act
-        var payResponse = await _client.PostAsJsonAsync("/payOrder", payRequest);
+        var payResponse = await _client.PostAsNewtonsoftJsonAsync("/payOrder", payRequest);
         
         // Assert - Should fail
         Assert.False(payResponse.IsSuccessStatusCode);
@@ -66,11 +66,12 @@ public class OrderTests : IClassFixture<MyWebApplicationFactory>
     {
         // Arrange - Create an order first
         var createRequest = new CreateOrderRequest("Test Order for Get", 150, 1);
-        var createResponse = await _client.PostAsJsonAsync("/api/order", createRequest);
+        var createResponse = await _client.PostAsNewtonsoftJsonAsync("/api/order", createRequest);
         Assert.True(createResponse.IsSuccessStatusCode);
         
         var createResponseData = await createResponse.Content.ReadFromNewtonsoftJsonAsync<ResponseData<OrderId>>();
         Assert.NotNull(createResponseData);
+        Assert.NotNull(createResponseData.Data);
         var orderId = createResponseData.Data;
 
         // Act - Get the order
