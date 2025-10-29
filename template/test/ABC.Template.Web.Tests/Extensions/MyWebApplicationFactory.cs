@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 
 namespace ABC.Template.Web.Tests.Extensions;
 
