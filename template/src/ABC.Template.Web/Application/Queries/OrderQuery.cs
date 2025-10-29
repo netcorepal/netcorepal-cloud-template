@@ -13,8 +13,9 @@ public class OrderQueryHandler(ApplicationDbContext applicationDbContext)
 {
     public async Task<QueryOrderResult> Handle(QueryOrder request, CancellationToken cancellationToken)
     {
-        return await applicationDbContext.Orders.Where(p => p.Id == request.Id)
-            .Select(p => new QueryOrderResult(p.Id, p.Name, p.Count))
-            .FirstAsync(cancellationToken);
+        var result = await applicationDbContext.Orders.Where(p => p.Id == request.Id)
+                .Select(p => new QueryOrderResult(p.Id, p.Name, p.Count))
+                .FirstOrDefaultAsync(cancellationToken);
+        return result ?? throw new KnownException("Order not found");
     }
 }
