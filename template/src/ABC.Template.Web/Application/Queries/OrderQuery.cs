@@ -3,13 +3,20 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure;
 using System.Threading;
 
-namespace ABC.Template.Web.Application.Queries
+namespace ABC.Template.Web.Application.Queries;
+
+
+public record QueryOrder(OrderId Id) : IQuery<QueryOrderResult>;
+
+public record QueryOrderResult(OrderId Id, string Name, int Count);
+
+public class OrderQueryHandler(ApplicationDbContext applicationDbContext)
+    : IQueryHandler<QueryOrder, QueryOrderResult>
 {
-    public class OrderQuery(ApplicationDbContext applicationDbContext)
+    public async Task<QueryOrderResult> Handle(QueryOrder request, CancellationToken cancellationToken)
     {
-        public async Task<Order?> QueryOrder(OrderId orderId, CancellationToken cancellationToken)
-        {
-            return await applicationDbContext.Orders.FindAsync(new object[] { orderId }, cancellationToken);
-        }
+        return await applicationDbContext.Orders.Where(p => p.Id == request.Id)
+            .Select(p => new QueryOrderResult(p.Id, p.Name, p.Count))
+            .FirstAsync(cancellationToken);
     }
 }
