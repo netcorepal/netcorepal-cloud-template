@@ -11,11 +11,11 @@ public record GetOrderByIdRequest(OrderId Id);
 [Tags("Orders")]
 [HttpGet("/api/order/{Id}")]
 [AllowAnonymous]
-public class GetOrderByIdEndpoint(OrderQuery orderQuery) : Endpoint<GetOrderByIdRequest, ResponseData<ABC.Template.Domain.AggregatesModel.OrderAggregate.Order?>>
+public class GetOrderByIdEndpoint(IMediator mediator) : Endpoint<GetOrderByIdRequest, ResponseData<QueryOrderResult>>
 {
     public override async Task HandleAsync(GetOrderByIdRequest req, CancellationToken ct)
     {
-        var order = await orderQuery.QueryOrder(req.Id, ct);
+        var order = await mediator.Send(new QueryOrder(req.Id), ct);
         await Send.OkAsync(order.AsResponseData(), cancellation: ct);
     }
 }
