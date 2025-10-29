@@ -1,7 +1,5 @@
-﻿using ABC.Template.Domain;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Infrastructure;
-using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace ABC.Template.Web.Application.Queries;
 
