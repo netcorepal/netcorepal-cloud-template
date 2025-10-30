@@ -8,10 +8,10 @@ namespace ABC.Template.Web.Application.IntegrationEventHandlers
 {
     public class OrderPaidIntegrationEventHandler(IMediator mediator) : IIntegrationEventHandler<OrderPaidIntegrationEvent>
     {
-        public Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
+        public async Task HandleAsync(OrderPaidIntegrationEvent eventData, CancellationToken cancellationToken = default)
         {
-            var cmd = new OrderPaidCommand(eventData.OrderId);
-            return mediator.Send(cmd, cancellationToken);
+            var cmd = new DeliverGoodsCommand(eventData.OrderId);
+            _ = await mediator.Send(cmd, cancellationToken);
         }
     }
 }

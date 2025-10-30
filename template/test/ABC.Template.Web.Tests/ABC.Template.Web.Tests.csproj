@@ -28,6 +28,8 @@
     <PackageReference Include="Testcontainers.RabbitMq" />
 <!--#elif (UseKafka)-->
     <PackageReference Include="Testcontainers.Kafka" />
+<!--#elif (UseNATS)-->
+    <PackageReference Include="Testcontainers.Nats" />
 <!--#endif-->
     <PackageReference Include="Testcontainers.Redis" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />

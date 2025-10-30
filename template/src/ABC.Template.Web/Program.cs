@@ -6,7 +6,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
-using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
@@ -150,13 +149,6 @@ try
     builder.Services.AddKnownExceptionErrorModelInterceptor();
 
     #endregion
-
-    #region Query
-
-    builder.Services.AddScoped<OrderQuery>();
-
-    #endregion
-
 
     #region 基础设施
 

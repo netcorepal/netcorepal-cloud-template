@@ -9,6 +9,8 @@ using Testcontainers.PostgreSql;
 using Testcontainers.RabbitMq;
 //#elif (UseKafka)
 using Testcontainers.Kafka;
+//#elif (UseNATS)
+using Testcontainers.Nats;
 //#endif
 using Testcontainers.Redis;
 
@@ -24,6 +26,8 @@ public class TestContainerFixture : IAsyncLifetime
         .WithUsername("guest").WithPassword("guest").Build();
 //#elif (UseKafka)
     public KafkaContainer KafkaContainer { get; } = new KafkaBuilder().Build();
+//#elif (UseNATS)
+    public NatsContainer NatsContainer { get; } = new NatsBuilder().Build();
 //#endif
 
 //#if (UseMySql)
@@ -48,6 +52,8 @@ public class TestContainerFixture : IAsyncLifetime
         tasks.Add(RabbitMqContainer.StartAsync());
 //#elif (UseKafka)
         tasks.Add(KafkaContainer.StartAsync());
+//#elif (UseNATS)
+        tasks.Add(NatsContainer.StartAsync());
 //#endif
         tasks.Add(DatabaseContainer.StartAsync());
         await Task.WhenAll(tasks);
@@ -60,6 +66,8 @@ public class TestContainerFixture : IAsyncLifetime
         tasks.Add(RabbitMqContainer.StopAsync());
 //#elif (UseKafka)
         tasks.Add(KafkaContainer.StopAsync());
+//#elif (UseNATS)
+        tasks.Add(NatsContainer.StopAsync());
 //#endif
         tasks.Add(DatabaseContainer.StopAsync());
         await Task.WhenAll(tasks);
