@@ -74,6 +74,7 @@
     <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.3.5" />
     <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.3.5" />
     <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.3.5" />
+    <PackageVersion Include="DotNetCore.CAP.OpenTelemetry" Version="8.3.5" />
 <!--#else-->
     <!-- CAP packages for .NET 9.0+ -->
     <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.4.1" />
@@ -84,6 +85,7 @@
     <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.4.1" />
     <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.4.1" />
     <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.OpenTelemetry" Version="8.4.1" />
 <!--#endif-->
 
     <!-- FastEndpoints -->
