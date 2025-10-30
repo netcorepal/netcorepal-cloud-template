@@ -39,7 +39,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 //#elif (UseKafka)
         builder.UseSetting("ConnectionStrings:kafka", Containers.KafkaContainer.GetBootstrapAddress());
 //#elif (UseNATS)
-        builder.UseSetting("ConnectionStrings:nats", Containers.NatsContainer.GetConnectionString());
+        builder.UseSetting("NATS:Servers", Containers.NatsContainer.GetConnectionString());
 //#elif (UseRedisStreams)
         // RedisStreams uses the same redis connection string
 //#endif
