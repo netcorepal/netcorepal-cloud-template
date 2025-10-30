@@ -38,6 +38,8 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
             $"amqp://guest:guest@{Containers.RabbitMqContainer.Hostname}:{Containers.RabbitMqContainer.GetMappedPublicPort(5672)}/");
 //#elif (UseKafka)
         builder.UseSetting("ConnectionStrings:kafka", Containers.KafkaContainer.GetBootstrapAddress());
+//#elif (UseNATS)
+        builder.UseSetting("ConnectionStrings:nats", Containers.NatsContainer.GetConnectionString());
 //#elif (UseRedisStreams)
         // RedisStreams uses the same redis connection string
 //#endif
@@ -62,6 +64,8 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
         builder.UseSetting("RabbitMQ:HostName", Containers.RabbitMqContainer.Hostname);
 //#elif (UseKafka)
         builder.UseSetting("Kafka:BootstrapServers", Containers.KafkaContainer.GetBootstrapAddress());
+//#elif (UseNATS)
+        builder.UseSetting("NATS:Servers", Containers.NatsContainer.GetConnectionString());
 //#endif
 <!--#endif-->
         builder.UseEnvironment("Development");
