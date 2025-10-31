@@ -34,6 +34,15 @@ dotnet new install NetCorePal.Template
 安装Preview版本
 
 ``` shell
+dotnet new install NetCorePal.Template::<package-version>"
+
+# 例如
+dotnet new install NetCorePal.Template::3.0.0-rc.2
+```
+
+安装Nightly版本
+
+``` shell
 dotnet new install NetCorePal.Template::<package-version> --add-source "https://www.myget.org/F/netcorepal/api/v3/index.json"
 ```
 
