@@ -69,7 +69,7 @@ ABC.Template.sln
 - **单元测试**: 参考 `.github/instructions/unit-testing.instructions.md`
 
 ### 最佳实践
-- **通用最佳实践**: 参考 `.github/instructions/best-practices.instructions.md`
+（遵循各模块对应的 *.instructions.md 文档；本节不再另行维护“通用最佳实践”文件以避免重复和漂移。）
 
 ## 核心开发原则
 
@@ -98,7 +98,7 @@ ABC.Template.sln
 ### 关键技术要求
 - **验证器**: 必须继承 `AbstractValidator<T>` 而不是 `Validator<T>`
 - **领域事件处理器**: 实现 `Handle()` 方法而不是 `HandleAsync()`
-- **FastEndpoints**: 使用构造函数注入 `IMediator`，使用 `Send.OkAsync()` 和 `.AsResponseData()`
+- **FastEndpoints**: 使用构造函数注入 `IMediator`，使用 `Send.OkAsync()` 和 `.AsResponseData()`；端点采用属性特性配置（如 `[HttpPost]`、`[AllowAnonymous]`、`[Tags]`），不使用 `Configure()`
 - **强类型ID**: 直接使用类型，避免 `.Value` 属性，依赖隐式转换
 - **仓储**: 通过构造函数参数访问 `ApplicationDbContext`，所有操作必须异步
 - **ID生成**: 使用EF Core值生成器，聚合根构造函数不设置ID

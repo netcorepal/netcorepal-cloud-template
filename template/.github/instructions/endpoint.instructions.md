@@ -29,7 +29,7 @@ FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Contr
 - 使用 `Send.OkAsync()` 发送成功响应
 - 使用 `.AsResponseData()` 扩展方法创建响应数据
 
-**重要**: 使用特性方式而不是 `Configure()` 方法来配置端点。
+**重要**: 使用属性特性而不是 `Configure()` 方法来配置端点。
 
 ## FastEndpoints响应方法
 
@@ -64,6 +64,7 @@ FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Contr
 using FastEndpoints;
 using ABC.Template.Web.Application.Commands;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ABC.Template.Web.Endpoints.User;
 
@@ -71,25 +72,17 @@ public record CreateUserRequestDto(string Name, string Email);
 
 public record CreateUserResponseDto(UserId UserId);
 
+[Tags("Users")]
+[HttpPost("/api/users")]
+[AllowAnonymous]
 public class CreateUserEndpoint(IMediator mediator) : Endpoint<CreateUserRequestDto, ResponseData<CreateUserResponseDto>>
 {
-    public override void Configure()
-    {
-        Post("/api/users");
-        AllowAnonymous();
-        Summary(s =>
-        {
-            s.Summary = "创建用户";
-            s.Description = "创建一个新用户";
-        });
-    }
-    
     public override async Task HandleAsync(CreateUserRequestDto req, CancellationToken ct)
     {
         var command = new CreateUserCommand(req.Name, req.Email);
         var userId = await mediator.Send(command, ct);
-        
-        await Send.OkAsync(new CreateUserResponseDto(userId).AsResponseData(), ct);
+
+        await Send.OkAsync(new CreateUserResponseDto(userId).AsResponseData(), cancellation: ct);
     }
 }
 ```
