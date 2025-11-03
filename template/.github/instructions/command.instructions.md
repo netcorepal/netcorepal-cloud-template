@@ -30,6 +30,7 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 
 ### 事务管理
 - **不要手动调用SaveChanges**: 框架会自动在命令处理完成后调用SaveChanges
+- **不需要手动调用UpdateAsync**: 如果实体是从仓储取出，则会自动跟踪变更
 - **依赖UnitOfWork模式**: 让框架管理事务边界
 
 ### 仓储方法使用
