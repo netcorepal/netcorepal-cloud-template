@@ -35,25 +35,8 @@ applyTo: "src/ABC.Template.Infrastructure/EntityConfigurations/*.cs"
 
 **重要**: 不要使用 `HasConversion<{Id}.EfCoreValueConverter>()`，框架会自动处理强类型ID的转换。
 
-## 必要的using引用
-
-实体配置文件中必须包含以下using语句：
-```csharp
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-```
 
 ## 常见错误排查
-
-### 实体配置基类错误
-**错误**: `未能找到类型或命名空间名"EntityTypeBuilder<>"`
-**错误**: `不实现接口成员"IEntityTypeConfiguration<T>.Configure(EntityTypeBuilder<T>)"`
-**原因**: 缺少必要的 using 引用
-**解决**: 添加以下 using 引用：
-```csharp
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-```
 
 ### 强类型ID转换器配置错误
 **错误**: `类型"UserId"中不存在类型名"EfCoreValueConverter"`
@@ -84,8 +67,6 @@ builder.Property(x => x.Id)
 
 ```csharp
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations;
 
