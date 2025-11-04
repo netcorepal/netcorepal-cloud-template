@@ -1,6 +1,4 @@
 ﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations
 {
