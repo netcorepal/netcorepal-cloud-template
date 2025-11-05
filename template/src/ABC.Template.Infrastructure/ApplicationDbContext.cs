@@ -14,6 +14,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , ISqlServerCapDataStorage
     //#elif (UsePostgreSQL)
     , IPostgreSqlCapDataStorage
+    //#elif (UseSqlite)
+    , ISqliteCapDataStorage
     //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
