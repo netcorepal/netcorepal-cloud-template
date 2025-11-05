@@ -30,8 +30,6 @@
     <PackageReference Include="Testcontainers.Kafka" />
 <!--#elif (UseNATS)-->
     <PackageReference Include="Testcontainers.Nats" />
-<!--#elif (UsePulsar)-->
-    <PackageReference Include="Testcontainers.Pulsar" />
 <!--#endif-->
     <PackageReference Include="Testcontainers.Redis" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
