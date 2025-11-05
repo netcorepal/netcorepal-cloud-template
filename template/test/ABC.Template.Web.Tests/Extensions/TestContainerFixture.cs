@@ -11,6 +11,8 @@ using Testcontainers.RabbitMq;
 using Testcontainers.Kafka;
 //#elif (UseNATS)
 using Testcontainers.Nats;
+//#elif (UsePulsar)
+using Testcontainers.Pulsar;
 //#endif
 using Testcontainers.Redis;
 
@@ -28,6 +30,8 @@ public class TestContainerFixture : IAsyncLifetime
     public KafkaContainer KafkaContainer { get; } = new KafkaBuilder().Build();
 //#elif (UseNATS)
     public NatsContainer NatsContainer { get; } = new NatsBuilder().Build();
+//#elif (UsePulsar)
+    public PulsarContainer PulsarContainer { get; } = new PulsarBuilder().Build();
 //#endif
 
 //#if (UseMySql)
@@ -57,6 +61,8 @@ public class TestContainerFixture : IAsyncLifetime
         tasks.Add(KafkaContainer.StartAsync());
 //#elif (UseNATS)
         tasks.Add(NatsContainer.StartAsync());
+//#elif (UsePulsar)
+        tasks.Add(PulsarContainer.StartAsync());
 //#endif
 //#if (!UseSqlite)
         tasks.Add(DatabaseContainer.StartAsync());
@@ -73,6 +79,8 @@ public class TestContainerFixture : IAsyncLifetime
         tasks.Add(KafkaContainer.StopAsync());
 //#elif (UseNATS)
         tasks.Add(NatsContainer.StopAsync());
+//#elif (UsePulsar)
+        tasks.Add(PulsarContainer.StopAsync());
 //#endif
 //#if (!UseSqlite)
         tasks.Add(DatabaseContainer.StopAsync());
