@@ -161,14 +161,14 @@ try
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
 //#if (UseMySql)
-        options.UseMySql(builder.Configuration.GetConnectionString("demo"),
+        options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
             new MySqlServerVersion(new Version(8, 0, 34)));
 //#elif (UseSqlServer)
-        options.UseSqlServer(builder.Configuration.GetConnectionString("demo"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //#elif (UsePostgreSQL)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("demo"));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
-        options.UseSqlite(builder.Configuration.GetConnectionString("demo"));
+        options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())

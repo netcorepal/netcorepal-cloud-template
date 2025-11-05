@@ -24,17 +24,17 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
         builder.UseSetting("ConnectionStrings:redis",
             Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
 //#if (UseMySql)
-        builder.UseSetting("ConnectionStrings:demo",
+        builder.UseSetting("ConnectionStrings:MySql",
             Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
 //#elif (UseSqlServer)
-        builder.UseSetting("ConnectionStrings:demo",
+        builder.UseSetting("ConnectionStrings:SqlServer",
             Containers.DatabaseContainer.GetConnectionString());
 //#elif (UsePostgreSQL)
-        builder.UseSetting("ConnectionStrings:demo",
+        builder.UseSetting("ConnectionStrings:PostgreSQL",
             Containers.DatabaseContainer.GetConnectionString());
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing
-        builder.UseSetting("ConnectionStrings:demo", "Data Source=:memory:");
+        builder.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:");
 //#endif
 //#if (UseRabbitMQ)
         builder.UseSetting("ConnectionStrings:rabbitmq",
