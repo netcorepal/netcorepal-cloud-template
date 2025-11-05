@@ -1,7 +1,7 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Add Redis infrastructure
-var redis = builder.AddRedis("redis");
+var redis = builder.AddRedis("Redis");
 
 //#if (UseMySql)
 // Add MySQL database infrastructure

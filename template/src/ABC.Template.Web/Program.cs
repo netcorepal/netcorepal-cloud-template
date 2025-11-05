@@ -103,7 +103,7 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire and injected automatically
-    builder.AddRedisClient("redis");
+    builder.AddRedisClient("Redis");
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
@@ -266,12 +266,12 @@ try
         });
 //#elif (UseRedisStreams)
         // When using Aspire, Redis connection is managed by Aspire
-        x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
 //#elif (UseAzureServiceBus)
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -281,7 +281,7 @@ try
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -293,7 +293,7 @@ try
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -383,7 +383,7 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire
-    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("redis")); });
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
 <!--#else-->
     builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
 <!--#endif-->
