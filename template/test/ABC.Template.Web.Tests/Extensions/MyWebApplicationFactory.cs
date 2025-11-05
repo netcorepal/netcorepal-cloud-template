@@ -25,7 +25,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
             Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
 //#if (UseMySql)
         builder.UseSetting("ConnectionStrings:MySql",
-            Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
+            Containers.DatabaseContainer.GetConnectionString());
 //#elif (UseSqlServer)
         builder.UseSetting("ConnectionStrings:SqlServer",
             Containers.DatabaseContainer.GetConnectionString());
@@ -51,7 +51,7 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
             Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
 //#if (UseMySql)
         builder.UseSetting("ConnectionStrings:MySql",
-            Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
+            Containers.DatabaseContainer.GetConnectionString());
 //#elif (UseSqlServer)
         builder.UseSetting("ConnectionStrings:SqlServer",
             Containers.DatabaseContainer.GetConnectionString());
