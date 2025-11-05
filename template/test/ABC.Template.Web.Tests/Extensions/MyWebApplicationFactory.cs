@@ -32,6 +32,9 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 //#elif (UsePostgreSQL)
         builder.UseSetting("ConnectionStrings:demo",
             Containers.DatabaseContainer.GetConnectionString());
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing
+        builder.UseSetting("ConnectionStrings:demo", "Data Source=:memory:");
 //#endif
 //#if (UseRabbitMQ)
         builder.UseSetting("ConnectionStrings:rabbitmq",
@@ -55,6 +58,9 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 //#elif (UsePostgreSQL)
         builder.UseSetting("ConnectionStrings:PostgreSQL",
             Containers.DatabaseContainer.GetConnectionString());
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing
+        builder.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:");
 //#endif
 //#if (UseRabbitMQ)
         builder.UseSetting("RabbitMQ:Port", Containers.RabbitMqContainer.GetMappedPublicPort(5672).ToString());
