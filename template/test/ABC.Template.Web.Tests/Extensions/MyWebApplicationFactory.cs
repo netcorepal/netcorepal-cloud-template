@@ -22,16 +22,19 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 <!--#if (UseAspire)-->
         // When using Aspire, connection strings use resource names
         builder.UseSetting("ConnectionStrings:redis",
-            Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
+            Containers.RedisContainer.GetConnectionString());
 //#if (UseMySql)
-        builder.UseSetting("ConnectionStrings:demo",
-            Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
+        builder.UseSetting("ConnectionStrings:MySql",
+            Containers.DatabaseContainer.GetConnectionString());
 //#elif (UseSqlServer)
-        builder.UseSetting("ConnectionStrings:demo",
+        builder.UseSetting("ConnectionStrings:SqlServer",
             Containers.DatabaseContainer.GetConnectionString());
 //#elif (UsePostgreSQL)
-        builder.UseSetting("ConnectionStrings:demo",
+        builder.UseSetting("ConnectionStrings:PostgreSQL",
             Containers.DatabaseContainer.GetConnectionString());
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing with cache=shared to persist data between connections
+        builder.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
 //#endif
 //#if (UseRabbitMQ)
         builder.UseSetting("ConnectionStrings:rabbitmq",
@@ -45,16 +48,19 @@ public class MyWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLif
 //#endif
 <!--#else-->
         builder.UseSetting("ConnectionStrings:Redis",
-            Containers.RedisContainer.GetConnectionString() + ",defaultDatabase=0");
+            Containers.RedisContainer.GetConnectionString());
 //#if (UseMySql)
         builder.UseSetting("ConnectionStrings:MySql",
-            Containers.DatabaseContainer.GetConnectionString().Replace("mysql", "mysql"));
+            Containers.DatabaseContainer.GetConnectionString());
 //#elif (UseSqlServer)
         builder.UseSetting("ConnectionStrings:SqlServer",
             Containers.DatabaseContainer.GetConnectionString());
 //#elif (UsePostgreSQL)
         builder.UseSetting("ConnectionStrings:PostgreSQL",
             Containers.DatabaseContainer.GetConnectionString());
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing with cache=shared to persist data between connections
+        builder.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
 //#endif
 //#if (UseRabbitMQ)
         builder.UseSetting("RabbitMQ:Port", Containers.RabbitMqContainer.GetMappedPublicPort(5672).ToString());

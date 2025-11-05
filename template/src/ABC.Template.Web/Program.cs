@@ -103,7 +103,7 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire and injected automatically
-    builder.AddRedisClient("redis");
+    builder.AddRedisClient("Redis");
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
@@ -161,12 +161,14 @@ try
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
 //#if (UseMySql)
-        options.UseMySql(builder.Configuration.GetConnectionString("demo"),
+        options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
             new MySqlServerVersion(new Version(8, 0, 34)));
 //#elif (UseSqlServer)
-        options.UseSqlServer(builder.Configuration.GetConnectionString("demo"));
+        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //#elif (UsePostgreSQL)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("demo"));
+        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+//#elif (UseSqlite)
+        options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -185,6 +187,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+//#elif (UseSqlite)
+        options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -262,12 +266,12 @@ try
         });
 //#elif (UseRedisStreams)
         // When using Aspire, Redis connection is managed by Aspire
-        x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+        x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
 //#elif (UseAzureServiceBus)
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -277,7 +281,7 @@ try
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -289,7 +293,7 @@ try
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("redis")!);
+            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
         }
         else
         {
@@ -379,7 +383,7 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire
-    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("redis")); });
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
 <!--#else-->
     builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
 <!--#endif-->
@@ -405,7 +409,7 @@ try
     }
 
     app.UseStaticFiles();
-    app.UseHttpsRedirection();
+    //app.UseHttpsRedirection();
     app.UseRouting();
     app.UseAuthorization();
 

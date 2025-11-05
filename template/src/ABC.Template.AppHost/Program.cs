@@ -1,22 +1,25 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Add Redis infrastructure
-var redis = builder.AddRedis("redis");
+var redis = builder.AddRedis("Redis");
 
 //#if (UseMySql)
 // Add MySQL database infrastructure
-var mysql = builder.AddMySql("mysql")
+var mysql = builder.AddMySql("Database")
     .WithPhpMyAdmin()
-    .AddDatabase("demo");
+    .AddDatabase("MySql", "dev");
 //#elif (UseSqlServer)
 // Add SQL Server database infrastructure
-var sqlserver = builder.AddSqlServer("sqlserver")
-    .AddDatabase("demo");
+var sqlserver = builder.AddSqlServer("Database")
+    .AddDatabase("SqlServer", "dev");
 //#elif (UsePostgreSQL)
 // Add PostgreSQL database infrastructure
-var postgres = builder.AddPostgres("postgres")
+var postgres = builder.AddPostgres("Database")
     .WithPgAdmin()
-    .AddDatabase("demo");
+    .AddDatabase("PostgreSQL", "dev");
+//#endif
+//#if (UseSqlite)
+// SQLite is a file-based database and doesn't require container infrastructure
 //#endif
 
 //#if (UseRabbitMQ)
@@ -44,6 +47,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UsePostgreSQL)
     .WithReference(postgres)
     .WaitFor(postgres)
+//#endif
+//#if (UseSqlite)
+    // SQLite doesn't need infrastructure reference
 //#endif
 //#if (UseRabbitMQ)
     .WithReference(rabbitmq)

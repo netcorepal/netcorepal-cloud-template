@@ -87,6 +87,9 @@
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
 <!--#endif-->
+<!--#if (UseSqlite)-->
+    <!-- SQLite doesn't require Aspire integration package -->
+<!--#endif-->
 <!--#if (UseRabbitMQ)-->
     <PackageReference Include="Aspire.RabbitMQ.Client.v7" />
 <!--#elif (UseKafka)-->

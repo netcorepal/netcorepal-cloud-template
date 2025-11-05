@@ -78,7 +78,7 @@ dotnet new list
 | 参数 | 短参数 | 说明 | 可选值 | 默认值 |
 |------|--------|------|--------|--------|
 | `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net9.0` |
-| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL` | `MySql` |
+| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite` | `MySql` |
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 
@@ -100,6 +100,11 @@ dotnet new netcorepal-web -n My.Project.Name -D SqlServer
 
 # 使用 PostgreSQL 数据库
 dotnet new netcorepal-web -n My.Project.Name --Database PostgreSQL
+
+# 使用 SQLite 数据库（轻量级文件数据库，适合开发和测试）
+dotnet new netcorepal-web -n My.Project.Name --Database Sqlite
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -D Sqlite
 
 # 使用 Kafka 消息队列
 dotnet new netcorepal-web -n My.Project.Name --MessageQueue Kafka
