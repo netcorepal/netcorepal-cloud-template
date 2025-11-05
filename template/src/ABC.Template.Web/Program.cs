@@ -167,6 +167,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("demo"));
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("demo"));
+//#elif (UseSqlite)
+        options.UseSqlite(builder.Configuration.GetConnectionString("demo"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -185,6 +187,8 @@ try
         options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
 //#elif (UsePostgreSQL)
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+//#elif (UseSqlite)
+        options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())

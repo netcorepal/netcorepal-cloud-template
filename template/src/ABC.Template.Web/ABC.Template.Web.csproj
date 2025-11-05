@@ -86,6 +86,8 @@
     <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+<!--#elif (UseSqlite)-->
+    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.Sqlite" />
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
     <PackageReference Include="Aspire.RabbitMQ.Client.v7" />

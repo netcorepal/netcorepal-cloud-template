@@ -19,6 +19,9 @@
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
     <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" />
+<!--#elif (UseSqlite)-->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+    <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.Sqlite" />
 <!--#endif-->
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" />
     <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" />

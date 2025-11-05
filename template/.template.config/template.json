@@ -49,6 +49,10 @@
                 {
                     "choice": "PostgreSQL",
                     "description": "Use PostgreSQL"
+                },
+                {
+                    "choice": "Sqlite",
+                    "description": "Use SQLite"
                 }
             ],
             "defaultValue": "MySql"
@@ -134,6 +138,10 @@
         "UsePostgreSQL": {
             "type": "computed",
             "value": "(Database == \"PostgreSQL\")"
+        },
+        "UseSqlite": {
+            "type": "computed",
+            "value": "(Database == \"Sqlite\")"
         },
         "UseRabbitMQ": {
             "type": "computed",

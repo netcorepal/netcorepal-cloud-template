@@ -17,6 +17,10 @@ var sqlserver = builder.AddSqlServer("sqlserver")
 var postgres = builder.AddPostgres("postgres")
     .WithPgAdmin()
     .AddDatabase("demo");
+//#elif (UseSqlite)
+// Add SQLite database infrastructure
+var sqlite = builder.AddSqliteContainer("sqlite")
+    .AddDatabase("demo");
 //#endif
 
 //#if (UseRabbitMQ)
@@ -44,6 +48,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UsePostgreSQL)
     .WithReference(postgres)
     .WaitFor(postgres)
+//#elif (UseSqlite)
+    .WithReference(sqlite)
+    .WaitFor(sqlite)
 //#endif
 //#if (UseRabbitMQ)
     .WithReference(rabbitmq)
