@@ -44,6 +44,9 @@ public class TestContainerFixture : IAsyncLifetime
         .WithEnvironment("TZ", "Asia/Shanghai")
         .WithDatabase("postgres").Build();
 //#endif
+//#if (UseSqlite)
+    // SQLite is file-based and doesn't require a test container
+//#endif
 
     public async Task InitializeAsync()
     {
@@ -55,7 +58,9 @@ public class TestContainerFixture : IAsyncLifetime
 //#elif (UseNATS)
         tasks.Add(NatsContainer.StartAsync());
 //#endif
+//#if (!UseSqlite)
         tasks.Add(DatabaseContainer.StartAsync());
+//#endif
         await Task.WhenAll(tasks);
     }
 
@@ -69,7 +74,9 @@ public class TestContainerFixture : IAsyncLifetime
 //#elif (UseNATS)
         tasks.Add(NatsContainer.StopAsync());
 //#endif
+//#if (!UseSqlite)
         tasks.Add(DatabaseContainer.StopAsync());
+//#endif
         await Task.WhenAll(tasks);
     }
 
