@@ -5,18 +5,18 @@ var redis = builder.AddRedis("redis");
 
 //#if (UseMySql)
 // Add MySQL database infrastructure
-var mysql = builder.AddMySql("mysql")
+var mysql = builder.AddMySql("Database")
     .WithPhpMyAdmin()
-    .AddDatabase("MySql", "devdb");
+    .AddDatabase("MySql", "dev");
 //#elif (UseSqlServer)
 // Add SQL Server database infrastructure
-var sqlserver = builder.AddSqlServer("sqlserver")
-    .AddDatabase("SqlServer", "devdb");
+var sqlserver = builder.AddSqlServer("Database")
+    .AddDatabase("SqlServer", "dev");
 //#elif (UsePostgreSQL)
 // Add PostgreSQL database infrastructure
-var postgres = builder.AddPostgres("postgres")
+var postgres = builder.AddPostgres("Database")
     .WithPgAdmin()
-    .AddDatabase("PostgreSQL", "devdb");
+    .AddDatabase("PostgreSQL", "dev");
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
