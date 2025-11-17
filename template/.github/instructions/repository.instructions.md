@@ -18,43 +18,6 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 - 仓储类会被自动注册到依赖注入容器中，无需手动注册
 - 默认基类已经实现了一组常用方法，如无必要，尽量不要定义新的仓储方法
 
-## 常见错误排查
-
-### 依赖注入错误
-**错误**: `未能找到类型或命名空间名"IDiaryRepository"`
-**原因**: 在 Domain 层定义了仓储接口，或缺少引用
-**解决**: 
-- 将仓储接口定义在 Infrastructure 层
-- 在使用仓储的地方添加 `using ABC.Template.Infrastructure.Repositories;`
-
-### 自动注册相关
-**错误**: 仓储未注册到 DI 容器
-**原因**: 期望手动注册仓储
-**解决**: 
-- Infrastructure 层的 `AddRepositories()` 已自动注册所有仓储
-- 无需在 Program.cs 中手动注册仓储
-
-### 主构造函数警告
-**警告**: `参数"ApplicationDbContext context"捕获到封闭类型状态，其值也传递给基构造函数`
-**原因**: 使用主构造函数时编译器的保守警告
-**解决**: 这是正常的警告，不影响功能，可以忽略。如需消除警告，可使用传统构造函数：
-```csharp
-// 会产生警告但功能正常的写法
-public class MyRepository(ApplicationDbContext context) : RepositoryBase<Entity, EntityId, ApplicationDbContext>(context), IMyRepository
-{
-    // 实现
-}
-
-// 不产生警告的传统写法
-public class MyRepository : RepositoryBase<Entity, EntityId, ApplicationDbContext>, IMyRepository
-{
-    public MyRepository(ApplicationDbContext context) : base(context)
-    {
-    }
-    // 实现
-}
-```
-
 ## 必要的using引用
 
 仓储文件中的必要引用已在GlobalUsings.cs中定义：
