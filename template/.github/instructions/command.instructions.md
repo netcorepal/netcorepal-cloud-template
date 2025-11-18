@@ -11,7 +11,7 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 ## 文件与目录
 
 类文件命名应遵循以下规则：
-- 应放置在 `src/ABC.Template.Web/Application/Commands/{Module}/` 目录下
+- 应放置在 `src/ABC.Template.Web/Application/Commands/{Module}s/` 目录下（以模块复数形式命名，避免命名空间与聚合类名冲突）
 - 命令文件名格式为 `{Action}{Entity}Command.cs`
 - 同一个命令及其对应的验证器和处理器定义在同一文件中
 - 不同的命令放在不同文件中
@@ -19,12 +19,12 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 ## 开发规则
 
 命令的定义应遵循以下规则：
+- 使用 `record` 类型定义命令
 - 无返回值命令实现 `ICommand` 接口
 - 有返回值命令实现 `ICommand<TResponse>` 接口
 - 必须为每个命令创建验证器，继承 `AbstractValidator<TCommand>`
 - 命令处理器实现对应的 `ICommandHandler` 接口
-- 使用 `record` 类型定义命令
-- 框架自动注册命令处理器
+- 框架自动注册命令处理器，无需手动注册
 
 ## 命令处理器最佳实践
 
@@ -41,8 +41,12 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 
 ### 数据访问原则
 - 命令处理器使用仓储获取聚合根进行业务操作
-- 如果只是为了检查数据存在性，考虑是否需要完整的聚合根
+- 如果只是为了检查数据存在性，考虑使用专门的查询方法而非获取完整聚合根
 - 避免在命令处理器中进行复杂的查询操作
+
+### 异常处理
+- 使用 `KnownException` 处理业务异常
+- 业务验证失败时抛出明确的错误信息
 
 ## 必要的using引用
 
@@ -59,13 +63,13 @@ applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 
 ## 代码示例
 
-**文件**: `src/ABC.Template.Web/Application/Commands/CreateUserCommand.cs`
+**文件**: `src/ABC.Template.Web/Application/Commands/Users/CreateUserCommand.cs`
 
 ```csharp
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
 
-namespace ABC.Template.Web.Application.Commands;
+namespace ABC.Template.Web.Application.Commands.Users;
 
 public record CreateUserCommand(string Name, string Email) : ICommand<UserId>;
 
@@ -133,3 +137,29 @@ public async Task<UserId> Handle(CreateUserCommand request, CancellationToken ca
     return user.Id;
 }
 ```
+
+## 常见错误排查
+
+### 仓储引用错误
+**错误**: `未能找到类型或命名空间名"IUserRepository"`
+**原因**: 缺少对仓储接口命名空间的引用
+**解决**: 在命令文件顶部添加 `using ABC.Template.Infrastructure.Repositories;`
+
+### 聚合根引用错误
+**错误**: `未能找到类型或命名空间名"User"或"UserId"`
+**原因**: 缺少对聚合根命名空间的引用
+**解决**: 在命令文件顶部添加 `using ABC.Template.Domain.AggregatesModel.UserAggregate;`
+
+### 手动调用SaveChanges
+**错误**: 在命令处理器中手动调用 `SaveChangesAsync`
+**原因**: 不理解框架的UnitOfWork模式
+**解决**: 移除手动调用，让框架自动处理事务提交
+
+## 框架特性
+
+命令处理器享有以下框架特性：
+- 自动依赖注入注册
+- 自动验证器执行
+- 自动事务管理和SaveChanges调用
+- 自动异常处理和转换
+- 自动性能监控和日志记录
