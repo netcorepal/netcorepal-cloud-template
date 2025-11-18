@@ -18,43 +18,6 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 - 仓储类会被自动注册到依赖注入容器中，无需手动注册
 - 默认基类已经实现了一组常用方法，如无必要，尽量不要定义新的仓储方法
 
-## 常见错误排查
-
-### 依赖注入错误
-**错误**: `未能找到类型或命名空间名"IDiaryRepository"`
-**原因**: 在 Domain 层定义了仓储接口，或缺少引用
-**解决**: 
-- 将仓储接口定义在 Infrastructure 层
-- 在使用仓储的地方添加 `using ABC.Template.Infrastructure.Repositories;`
-
-### 自动注册相关
-**错误**: 仓储未注册到 DI 容器
-**原因**: 期望手动注册仓储
-**解决**: 
-- Infrastructure 层的 `AddRepositories()` 已自动注册所有仓储
-- 无需在 Program.cs 中手动注册仓储
-
-### 主构造函数警告
-**警告**: `参数"ApplicationDbContext context"捕获到封闭类型状态，其值也传递给基构造函数`
-**原因**: 使用主构造函数时编译器的保守警告
-**解决**: 这是正常的警告，不影响功能，可以忽略。如需消除警告，可使用传统构造函数：
-```csharp
-// 会产生警告但功能正常的写法
-public class MyRepository(ApplicationDbContext context) : RepositoryBase<Entity, EntityId, ApplicationDbContext>(context), IMyRepository
-{
-    // 实现
-}
-
-// 不产生警告的传统写法
-public class MyRepository : RepositoryBase<Entity, EntityId, ApplicationDbContext>, IMyRepository
-{
-    public MyRepository(ApplicationDbContext context) : base(context)
-    {
-    }
-    // 实现
-}
-```
-
 ## 必要的using引用
 
 仓储文件中的必要引用已在GlobalUsings.cs中定义：
@@ -64,149 +27,67 @@ public class MyRepository : RepositoryBase<Entity, EntityId, ApplicationDbContex
 
 ## DbContext访问说明
 
-- 通过构造函数参数访问 `ApplicationDbContext`
-- 使用 `context.EntitySetName` 访问具体的DbSet
-- 基类没有提供公开的 `DbSet` 或 `Context` 属性
+- `RepositoryBase` 提供了 `DbContext` 属性，用于访问当前的 DbContext 实例
+- 在自定义仓储方法中，使用 `DbContext.EntitySetName` 访问具体的 DbSet
+- 示例：`await DbContext.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken)`
 
 ## 代码示例
 
-**文件**: `src/ABC.Template.Infrastructure/Repositories/UserRepository.cs`
+**文件**: `src/ABC.Template.Infrastructure/Repositories/AdminUserRepository.cs`
 
 ```csharp
-using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using ABC.Template.Domain.AggregatesModel.AdminUserAggregate;
 
 namespace ABC.Template.Infrastructure.Repositories;
 
 // 接口和实现定义在同一文件中
-public interface IUserRepository
+public interface IAdminUserRepository : IRepository<AdminUser, AdminUserId>
 {
     /// <summary>
-    /// 根据邮箱获取用户
+    /// 根据用户名获取管理员
     /// </summary>
-    /// <param name="email">邮箱地址</param>
-    /// <param name="cancellationToken">取消令牌</param>
-    /// <returns>用户实体，如果不存在则返回null</returns>
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<AdminUser?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 检查用户名是否存在
+    /// </summary>
+    Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = default);
 }
 
-public class UserRepository(ApplicationDbContext context) : IUserRepository
+public class AdminUserRepository(ApplicationDbContext context) : 
+    RepositoryBase<AdminUser, AdminUserId, ApplicationDbContext>(context), IAdminUserRepository
 {
-    public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
+    public async Task<AdminUser?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default)
     {
-        return await context.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        return await DbContext.AdminUsers.FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
+    }
+
+    public async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = default)
+    {
+        return await DbContext.AdminUsers.AnyAsync(x => x.Username == username, cancellationToken);
     }
 }
 ```
 
-## 框架默认实现了下列方法，无需额外实现
-```csharp
-/// <summary>
-/// 仓储接口
-/// </summary>
-/// <typeparam name="TEntity">实体类型</typeparam>
-public interface IRepository<TEntity> where TEntity : notnull, Entity, IAggregateRoot
-{
-    /// <summary>
-    /// 获取工作单元对象
-    /// </summary>
-    IUnitOfWork UnitOfWork { get; }
-    /// <summary>
-    /// 添加一个实体到仓储
-    /// </summary>
-    /// <param name="entity">要添加的实体对象</param>
-    /// <returns></returns>
-    TEntity Add(TEntity entity);
-    /// <summary>
-    /// 添加实体到仓储
-    /// </summary>
-    /// <param name="entity">要添加的实体对象</param>
-    /// <param name="cancellationToken">取消操作token</param>
-    /// <returns></returns>
-    Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken = default);
-    /// <summary>
-    /// 批量添加实体到仓储
-    /// </summary>
-    /// <param name="entities">要添加的实体集合</param>
-    /// <returns></returns>
-    void AddRange(IEnumerable<TEntity> entities);
-    /// <summary>
-    /// 附加一个实体到仓储,并将其状态设置为未更改，如果实体没有Id，则状态会被设置为Added
-    /// </summary>
-    /// <param name="entity"></param>
-    void Attach(TEntity entity);
-    /// <summary>
-    /// 附加一组实体到仓储,并将其状态设置为未更改，如果实体没有Id，则状态会被设置为Added
-    /// </summary>
-    /// <param name="entities"></param>
-    void AttachRange(IEnumerable<TEntity> entities);
-    /// <summary>
-    /// 批量添加实体到仓储的异步版本
-    /// </summary>
-    /// <param name="entities">要添加的实体集合</param>
-    /// <param name="cancellationToken">取消操作token</param>
-    /// <returns></returns>
-    Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
-    /// <summary>
-    /// 更新实体
-    /// </summary>
-    /// <param name="entity">要更新的实体对象</param>
-    /// <returns></returns>
-    TEntity Update(TEntity entity);
-    /// <summary>
-    /// 更新实体
-    /// </summary>
-    /// <param name="entity">要更新的实体对象</param>
-    /// <param name="cancellationToken">取消操作token</param>
-    /// <returns></returns>
-    Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
-    /// <summary>
-    /// 删除实体
-    /// </summary>
-    /// <param name="entity">要删除的实体对象</param>
-    /// <returns></returns>
-    bool Remove(Entity entity);
-    /// <summary>
-    /// 要删除的实体对象
-    /// </summary>
-    /// <param name="entity">要删除的实体对象</param>
-    /// <returns></returns>
-    Task<bool> RemoveAsync(Entity entity);
-}
+## 框架默认实现的方法
 
-/// <summary>
-/// 仓储接口
-/// </summary>
-/// <typeparam name="TEntity">实体类型</typeparam>
-/// <typeparam name="TKey">主键类型</typeparam>
-public interface IRepository<TEntity, TKey> : IRepository<TEntity>
-    where TEntity : notnull, Entity<TKey>, IAggregateRoot
-    where TKey : notnull
-{
-    /// <summary>
-    /// 根据主键删除实体
-    /// </summary>
-    /// <param name="id">主键值</param>
-    /// <returns></returns>
-    int DeleteById(TKey id);
-    /// <summary>
-    /// 根据主键删除实体
-    /// </summary>
-    /// <param name="id">主键值</param>
-    /// <param name="cancellationToken">取消操作token</param>
-    /// <returns></returns>
-    Task<int> DeleteByIdAsync(TKey id, CancellationToken cancellationToken = default);
-    /// <summary>
-    /// 根据ID获取实体
-    /// </summary>
-    /// <param name="id">主键值</param>
-    /// <returns></returns>
-    TEntity? Get(TKey id);
-    /// <summary>
-    /// 根据ID获取实体
-    /// </summary>
-    /// <param name="id">主键值</param>
-    /// <param name="cancellationToken">取消操作token</param>
-    /// <returns></returns>
-    Task<TEntity?> GetAsync(TKey id, CancellationToken cancellationToken = default);
-}
-```
+框架的 `IRepository<TEntity>` 和 `IRepository<TEntity, TKey>` 接口已实现以下方法，无需在自定义仓储中重复实现：
+
+### 基础操作
+- `IUnitOfWork UnitOfWork` - 获取工作单元对象
+- `TEntity Add(TEntity entity)` - 添加实体
+- `Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)` - 异步添加实体
+- `void AddRange(IEnumerable<TEntity> entities)` - 批量添加实体
+- `Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)` - 异步批量添加实体
+- `void Attach(TEntity entity)` - 附加实体（状态设为未更改）
+- `void AttachRange(IEnumerable<TEntity> entities)` - 批量附加实体
+- `TEntity Update(TEntity entity)` - 更新实体
+- `Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)` - 异步更新实体
+- `bool Delete(Entity entity)` - 删除实体
+- `Task DeleteAsync(Entity entity)` - 异步删除实体
+
+### 主键操作（仅 IRepository<TEntity, TKey>）
+- `TEntity? Get(TKey id)` - 根据主键获取实体
+- `Task<TEntity?> GetAsync(TKey id, CancellationToken cancellationToken = default)` - 异步根据主键获取实体
+- `int DeleteById(TKey id)` - 根据主键删除实体
+- `Task<int> DeleteByIdAsync(TKey id, CancellationToken cancellationToken = default)` - 异步根据主键删除实体
