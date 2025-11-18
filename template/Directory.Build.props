@@ -15,7 +15,7 @@
         <GenerateAssemblyProductAttribute>True</GenerateAssemblyProductAttribute>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <NoWarn>$(NoWarn);CS1591;NU1507;S125;</NoWarn>
+        <NoWarn>$(NoWarn);CS1591;NU1507;S125;CS9107;</NoWarn>
     </PropertyGroup>
 
 
