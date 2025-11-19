@@ -1,5 +1,5 @@
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Web.Application.Commands;
+using ABC.Template.Web.Application.Commands.Orders;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

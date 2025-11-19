@@ -1,10 +1,9 @@
-﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.Repositories;
-using NetCorePal.Extensions.Primitives;
 
-namespace ABC.Template.Web.Application.Commands;
+namespace ABC.Template.Web.Application.Commands.Orders;
 
-public record class PayOrderCommand(OrderId OrderId) : ICommand;
+public record PayOrderCommand(OrderId OrderId) : ICommand;
 
 public class PayOrderCommandLock : ICommandLock<PayOrderCommand>
 {
