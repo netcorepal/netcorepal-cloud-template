@@ -72,7 +72,7 @@ public class User : Entity<UserId>, IAggregateRoot
 
     public string Name { get; private set; } = string.Empty;
     public string Email { get; private set; } = string.Empty;
-    public Deleted Deleted { get; private set; } = new(); //默认false
+    public Deleted Deleted { get; private set; } = new(); // 默认false
     public RowVersion RowVersion { get; private set; } = new RowVersion(0);
 
     #endregion
