@@ -4,57 +4,39 @@ applyTo: "src/ABC.Template.Web/Endpoints/**/*.cs"
 
 # Endpoint 开发指南
 
-## 概述
+## 开发原则
 
-FastEndpoints 是推荐的 API 端点实现方式，提供了比传统 MVC Controller 更好的性能和开发体验。每个端点都应该有独立的文件。
+### 必须
 
-## 文件与目录
+- **端点定义**：
+    - 继承对应的 `Endpoint` 基类。
+    - 必须为每个 Endpoint 单独定义请求 DTO 和响应 DTO。
+    - 请求 DTO、响应 DTO 与端点定义在同一文件中。
+    - 不同的 Endpoint 放在不同文件中。
+    - 使用 `ResponseData<T>` 包装响应数据。
+    - 使用主构造函数注入依赖的服务，如 `IMediator`。
+- **配置与实现**：
+    - 使用特性方式配置路由和权限：`[HttpPost("/api/...")]`、`[AllowAnonymous]` 等。
+    - 在 `HandleAsync()` 方法中处理业务逻辑。
+    - 使用构造函数注入 `IMediator` 发送命令或查询。
+    - 使用 `Send.OkAsync()`、`Send.CreatedAsync()`、`Send.NoContentAsync()` 发送响应。
+    - 使用 `.AsResponseData()` 扩展方法创建响应数据。
+- **强类型ID处理**：
+    - 在 DTO 中直接使用强类型 ID 类型，如 `UserId`、`OrderId`。
+    - 依赖框架的隐式转换处理类型转换。
+- **引用**：
+    - 引用 `FastEndpoints` 和 `Microsoft.AspNetCore.Authorization`。
 
-类文件命名应遵循以下规则：
-- 应放置在 `src/ABC.Template.Web/Endpoints/{Module}/` 目录下
-- 端点文件名格式为 `{Action}{Entity}Endpoint.cs`
-- 请求DTO、响应DTO与端点定义在同一文件中
+### 必须不要
 
-## 开发规则
+- **配置方式**：使用属性特性而不是 `Configure()` 方法来配置端点。
+- **强类型ID**：避免使用 `.Value` 属性访问内部值。
 
-端点的定义应遵循以下规则：
-- 继承对应的 `Endpoint` 基类
-- 必须为每个Endpoint单独定义请求DTO和响应DTO
-- 请求DTO、响应DTO与端点定义在同一文件中
-- 不同的Endpoint放在不同文件中
-- 使用 `ResponseData<T>` 包装响应数据
-- 使用特性方式配置路由和权限：`[HttpPost("/api/...")]`、`[AllowAnonymous]`等
-- 在 `HandleAsync()` 方法中处理业务逻辑
-- 使用构造函数注入 `IMediator` 发送命令或查询
-- 使用 `Send.OkAsync()` 发送成功响应
-- 使用 `.AsResponseData()` 扩展方法创建响应数据
+## 文件命名规则
 
-**重要**: 使用属性特性而不是 `Configure()` 方法来配置端点。
-
-## FastEndpoints响应方法
-
-### 常用响应方法
-- `Send.OkAsync()` - 发送200 OK响应
-- `Send.CreatedAsync()` - 发送201 Created响应  
-- `Send.NoContentAsync()` - 发送204 No Content响应
-
-### 响应数据包装
-- 使用`ResponseData<T>`包装响应数据
-- 使用`.AsResponseData()`扩展方法创建包装
-
-## 必要的using引用
-
-端点文件中的必要引用：
-- `using FastEndpoints;` - 用于端点基类
-- `using Microsoft.AspNetCore.Authorization;` - 用于 `[AllowAnonymous]` 等授权特性
-
-其他必要引用已在GlobalUsings.cs中全局定义。
-
-## 强类型ID处理
-
-- 在DTO中直接使用强类型ID类型，如 `UserId`、`OrderId`
-- 避免使用 `.Value` 属性访问内部值
-- 依赖框架的隐式转换处理类型转换
+- 类文件应放置在 `src/ABC.Template.Web/Endpoints/{Module}/` 目录下。
+- 端点文件名格式为 `{Action}{Entity}Endpoint.cs`。
+- 请求 DTO、响应 DTO 与端点定义在同一文件中。
 
 ## 代码示例
 
@@ -87,21 +69,22 @@ public class CreateUserEndpoint(IMediator mediator) : Endpoint<CreateUserRequest
 }
 ```
 
-## 端点响应示例
+### 更多端点响应示例
 
-### ✅ 创建资源的端点
+#### 创建资源的端点
 ```csharp
 public override async Task HandleAsync(CreateUserRequestDto req, CancellationToken ct)
 {
     var command = new CreateUserCommand(req.Name, req.Email);
     var userId = await mediator.Send(command, ct);
     
+    // ...existing code...
     var response = new CreateUserResponseDto(userId);
     await Send.CreatedAsync(response.AsResponseData(), ct);
 }
 ```
 
-### ✅ 查询资源的端点  
+#### 查询资源的端点  
 ```csharp
 public override async Task HandleAsync(GetUserRequestDto req, CancellationToken ct)
 {
@@ -112,7 +95,7 @@ public override async Task HandleAsync(GetUserRequestDto req, CancellationToken 
 }
 ```
 
-### ✅ 更新资源的端点
+#### 更新资源的端点
 ```csharp
 public override async Task HandleAsync(UpdateUserRequestDto req, CancellationToken ct)
 {
@@ -122,27 +105,6 @@ public override async Task HandleAsync(UpdateUserRequestDto req, CancellationTok
     await Send.NoContentAsync(ct);
 }
 ```
-
-## 常见错误排查
-
-### FastEndpoints 基类选择错误
-**错误**: `非泛型 类型"Endpoint"不能与类型参数一起使用`
-**原因**: 缺少 `using FastEndpoints;` 引用
-**解决**: 添加必要的 using 引用
-
-### 响应方法不存在错误
-**错误**: `当前上下文中不存在名称"Send"`
-**原因**: 基类选择错误或缺少 using 引用
-**解决**: 
-- 检查基类是否正确
-- 有请求有响应：`Endpoint<TRequest, TResponse>`
-- 有请求无响应：`Endpoint<TRequest, EmptyResponse>`
-- 无请求有响应：`EndpointWithoutRequest<TResponse>`
-
-### 属性配置错误
-**错误**: `未能找到类型或命名空间名"HttpPostAttribute"`
-**原因**: 缺少 `using Microsoft.AspNetCore.Authorization;` 引用
-**解决**: 添加 `using Microsoft.AspNetCore.Authorization;`
 
 ## 配置方式
 

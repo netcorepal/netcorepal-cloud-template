@@ -2,64 +2,42 @@
 applyTo: "src/ABC.Template.Web/Application/Commands/**/*.cs"
 ---
 
-# 命令开发指南
+# 命令与命令处理器开发指南
 
-## 概述
+## 开发原则
 
-命令表示用户想要执行的操作，遵循 CQRS 模式。本模板使用 MediatR 库实现命令处理，所有命令处理器会被框架自动注册。
+### 必须
 
-## 文件与目录
+- **命令定义**：
+    - 使用 `record` 类型定义命令。
+    - 无返回值命令实现 `ICommand` 接口。
+    - 有返回值命令实现 `ICommand<TResponse>` 接口。
+    - 必须为每个命令创建验证器，继承 `AbstractValidator<TCommand>`。
+    - 命令处理器实现对应的 `ICommandHandler` 接口。
+    - 命令处理器中必须通过仓储存取聚合数据。
+    - 优先使用异步方法，所有仓储操作都应使用异步版本。
+    - 将 `CancellationToken` 传递给所有异步操作。
+    - 使用主构造函数注入所需的仓储或服务。
+- **异常处理**：
+    - 使用 `KnownException` 处理业务异常。
+    - 业务验证失败时抛出明确的错误信息。
 
-类文件命名应遵循以下规则：
-- 应放置在 `src/ABC.Template.Web/Application/Commands/{Module}s/` 目录下（以模块复数形式命名，避免命名空间与聚合类名冲突）
-- 命令文件名格式为 `{Action}{Entity}Command.cs`
-- 同一个命令及其对应的验证器和处理器定义在同一文件中
-- 不同的命令放在不同文件中
+### 必须不要
 
-## 开发规则
+- **事务管理**：
+    - 不要手动调用 `SaveChanges`，框架会自动在命令处理完成后调用。
+    - 不要手动调用 `UpdateAsync`，如果实体是从仓储取出，则会自动跟踪变更。
+- **仓储使用**：
+    - 避免在命令处理器中进行复杂的查询操作（应使用查询端）。
+    - 仓储方法名不应是通用数据访问，而应体现业务意图。
+- **重复引用**：无需重复添加 `GlobalUsings` 中已定义的 `using` 语句。
 
-命令的定义应遵循以下规则：
-- 使用 `record` 类型定义命令
-- 无返回值命令实现 `ICommand` 接口
-- 有返回值命令实现 `ICommand<TResponse>` 接口
-- 必须为每个命令创建验证器，继承 `AbstractValidator<TCommand>`
-- 命令处理器实现对应的 `ICommandHandler` 接口
-- 框架自动注册命令处理器，无需手动注册
+## 文件命名规则
 
-## 命令处理器最佳实践
-
-### 事务管理
-- **不要手动调用SaveChanges**: 框架会自动在命令处理完成后调用SaveChanges
-- **不要手动调用UpdateAsync**: 如果实体是从仓储取出，则会自动跟踪变更
-- **依赖UnitOfWork模式**: 让框架管理事务边界
-
-### 仓储方法使用
-- **仅用于业务操作**: 仓储方法只在需要获取聚合根进行业务操作时使用
-- **优先使用异步方法**: 所有仓储操作都应使用异步版本
-- **正确的取消令牌传递**: 将CancellationToken传递给所有异步操作
-- **体现业务意图**: 仓储方法名应该反映业务场景，而不是通用数据访问
-
-### 数据访问原则
-- 命令处理器使用仓储获取聚合根进行业务操作
-- 如果只是为了检查数据存在性，考虑使用专门的查询方法而非获取完整聚合根
-- 避免在命令处理器中进行复杂的查询操作
-
-### 异常处理
-- 使用 `KnownException` 处理业务异常
-- 业务验证失败时抛出明确的错误信息
-
-## 必要的using引用
-
-命令文件中的必要引用已在GlobalUsings.cs中定义：
-- `global using FluentValidation;` - 用于验证器
-- `global using MediatR;` - 用于命令处理器接口
-- `global using NetCorePal.Extensions.Primitives;` - 用于KnownException等
-
-命令处理器中常需手动添加的引用：
-- `using ABC.Template.Domain.AggregatesModel.{Aggregate};` - 聚合根引用
-- `using ABC.Template.Infrastructure.Repositories;` - 仓储接口引用
-
-因此在命令文件中无需重复添加GlobalUsings中已定义的using语句。
+- 类文件应放置在 `src/ABC.Template.Web/Application/Commands/{Module}s/` 目录下（以模块复数形式命名，避免命名空间与聚合类名冲突）。
+- 命令文件名格式为 `{Action}{Entity}Command.cs`。
+- 同一个命令及其对应的验证器和处理器定义在同一文件中。
+- 不同的命令放在不同文件中。
 
 ## 代码示例
 
@@ -109,57 +87,3 @@ public class CreateUserCommandHandler(IUserRepository userRepository)
     }
 }
 ```
-
-## 命令处理器示例对比
-
-### ❌ 错误的做法
-```csharp
-public async Task<UserId> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-{
-    var user = new User(request.Name, request.Email);
-    
-    userRepository.Add(user); // 应该使用异步方法
-    await userRepository.UnitOfWork.SaveChangesAsync(cancellationToken); // 不应手动调用
-    
-    return user.Id;
-}
-```
-
-### ✅ 正确的做法
-```csharp
-public async Task<UserId> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-{
-    var user = new User(request.Name, request.Email);
-    
-    await userRepository.AddAsync(user, cancellationToken); // 使用异步方法
-    // 框架会自动调用SaveChanges
-    
-    return user.Id;
-}
-```
-
-## 常见错误排查
-
-### 仓储引用错误
-**错误**: `未能找到类型或命名空间名"IUserRepository"`
-**原因**: 缺少对仓储接口命名空间的引用
-**解决**: 在命令文件顶部添加 `using ABC.Template.Infrastructure.Repositories;`
-
-### 聚合根引用错误
-**错误**: `未能找到类型或命名空间名"User"或"UserId"`
-**原因**: 缺少对聚合根命名空间的引用
-**解决**: 在命令文件顶部添加 `using ABC.Template.Domain.AggregatesModel.UserAggregate;`
-
-### 手动调用SaveChanges
-**错误**: 在命令处理器中手动调用 `SaveChangesAsync`
-**原因**: 不理解框架的UnitOfWork模式
-**解决**: 移除手动调用，让框架自动处理事务提交
-
-## 框架特性
-
-命令处理器享有以下框架特性：
-- 自动依赖注入注册
-- 自动验证器执行
-- 自动事务管理和SaveChanges调用
-- 自动异常处理和转换
-- 自动性能监控和日志记录
