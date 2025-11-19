@@ -1,5 +1,5 @@
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Web.Application.IntegrationEventHandlers;
+using ABC.Template.Web.Application.IntegrationEvents;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.DistributedTransactions;

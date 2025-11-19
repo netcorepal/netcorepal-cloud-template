@@ -1,5 +1,5 @@
 using ABC.Template.Domain.DomainEvents;
-using ABC.Template.Web.Application.IntegrationEventHandlers;
+using ABC.Template.Web.Application.IntegrationEvents;
 using NetCorePal.Extensions.DistributedTransactions;
 
 namespace ABC.Template.Web.Application.IntegrationEventConverters;

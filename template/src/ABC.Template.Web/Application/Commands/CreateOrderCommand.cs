@@ -17,7 +17,7 @@ public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
     }
 }
 
-public class CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger<OrderPaidIntegrationEventHandler> logger) : ICommandHandler<CreateOrderCommand, OrderId>
+public class CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger<OrderPaidIntegrationEventHandlerForDeliverGoods> logger) : ICommandHandler<CreateOrderCommand, OrderId>
 {
 
     public async Task<OrderId> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
