@@ -4,32 +4,29 @@ applyTo: "src/ABC.Template.Infrastructure/Repositories/*.cs"
 
 # 仓储开发指南
 
-## 概述
+## 开发原则
 
-仓储模式封装了聚合根的持久化逻辑，提供类似集合的访问接口。本模板中仓储接口定义在领域层，实现在基础设施层，遵循依赖倒置原则。
+### 必须
 
-## 重要设计原则
+- **仓储定义**：
+    - 每个聚合根对应一个仓储。
+    - 接口必须继承 `IRepository<TEntity, TKey>`。
+    - 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`。
+    - 接口和实现定义在同一个文件中。
+- **注册**：仓储类会被自动注册到依赖注入容器中，无需手动注册。
+- **实现**：
+    - 使用 `DbContext` 属性访问当前的 `DbContext` 实例。
+    - 在自定义仓储方法中，使用 `DbContext.EntitySetName` 访问具体的 DbSet。
 
-- 每个聚合根对应一个仓储
-- 仓储接口和实现应放置在 `src/ABC.Template.Infrastructure/Repositories/` 目录下
-- 接口和实现定义在同一个文件中，文件名格式为 `{AggregateName}Repository.cs`
-- 接口必须继承 `IRepository<TEntity, TKey>`
-- 实现必须继承 `RepositoryBase<TEntity, TKey, TDbContext>`
-- 仓储类会被自动注册到依赖注入容器中，无需手动注册
-- 默认基类已经实现了一组常用方法，如无必要，尽量不要定义新的仓储方法
+### 必须不要
 
-## 必要的using引用
+- **冗余方法**：默认基类已经实现了一组常用方法，如无必要，尽量不要定义新的仓储方法。
+- **重复引用**：无需重复添加 `Microsoft.EntityFrameworkCore` 引用（已在 `GlobalUsings.cs` 中定义）。
 
-仓储文件中的必要引用已在GlobalUsings.cs中定义：
-- `global using Microsoft.EntityFrameworkCore;` - 用于EF Core扩展方法
+## 文件命名规则
 
-因此在仓储文件中无需重复添加这些using语句。
-
-## DbContext访问说明
-
-- `RepositoryBase` 提供了 `DbContext` 属性，用于访问当前的 DbContext 实例
-- 在自定义仓储方法中，使用 `DbContext.EntitySetName` 访问具体的 DbSet
-- 示例：`await DbContext.Users.FirstOrDefaultAsync(x => x.Email == email, cancellationToken)`
+- 仓储接口和实现应放置在 `src/ABC.Template.Infrastructure/Repositories/` 目录下。
+- 文件名格式为 `{AggregateName}Repository.cs`。
 
 ## 代码示例
 
@@ -62,6 +59,7 @@ public class AdminUserRepository(ApplicationDbContext context) :
         return await DbContext.AdminUsers.FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
     }
 
+    // ...existing code...
     public async Task<bool> UsernameExistsAsync(string username, CancellationToken cancellationToken = default)
     {
         return await DbContext.AdminUsers.AnyAsync(x => x.Username == username, cancellationToken);

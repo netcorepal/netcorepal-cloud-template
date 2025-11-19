@@ -4,23 +4,23 @@ applyTo: "src/ABC.Template.Infrastructure/ApplicationDbContext.cs"
 
 # DbContext 添加聚合指南
 
-## 概述
+## 开发原则
 
-ApplicationDbContext 是应用程序与数据库交互的核心组件，负责应用程序与数据库之间的所有操作。
-当我们定义了新的聚合根时，需要在 DbContext 中添加相应的 DbSet 属性。
+### 必须
 
-## 文件与目录
+- **命名空间**：在头部添加聚合根的命名空间。
+- **DbSet 定义**：
+    - 添加新聚合时在 DbSet 区域添加对应属性。
+    - 使用 `=> Set<T>()` 模式定义 DbSet。
+- **配置注册**：默认使用 `ApplyConfigurationsFromAssembly` 自动注册实体配置。
 
-类文件命名应遵循以下规则：
-- 文件在 `src/ABC.Template.Infrastructure/ApplicationDbContext.cs`
+### 必须不要
 
-## 开发规则
+- **额外配置**：无需手动注册实体配置，框架会自动扫描。
 
-在DbContext 中添加聚合根DbSet时应遵循以下规则：
-- 在头部添加聚合根的命名空间
-- 添加新聚合时在 DbSet 区域添加对应属性
-- 使用 `=> Set<T>()` 模式定义 DbSet
-- 默认使用 `ApplyConfigurationsFromAssembly` 自动注册实体配置，无需额外配置
+## 文件命名规则
+
+- 文件在 `src/ABC.Template.Infrastructure/ApplicationDbContext.cs`。
 
 ## 代码示例
 

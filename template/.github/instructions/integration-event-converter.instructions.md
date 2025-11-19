@@ -4,23 +4,24 @@ applyTo: "src/ABC.Template.Web/Application/IntegrationEventConverters/*.cs"
 
 # 集成事件转换器开发指南
 
-## 概述
+## 开发原则
 
-集成事件转换器负责将领域事件转换为集成事件，用于跨服务通信。这是推荐的做法，替代了直接发布集成事件的方式，确保了事件发布的一致性和可靠性。
+### 必须
 
-## 文件与目录
+- **转换器定义**：
+    - 必须实现 `IIntegrationEventConverter<TDomainEvent, TIntegrationEvent>` 接口。
+    - 转换器负责从领域事件创建集成事件。
+    - 集成事件使用 `record` 类型定义。
+- **注册**：框架自动注册转换器。
 
-类文件命名应遵循以下规则：
-- 转换器应放置在 `src/ABC.Template.Web/Application/IntegrationEventConverters/` 目录下
-- 转换器文件名格式为 `{Entity}{Action}IntegrationEventConverter.cs`
+### 必须不要
 
-## 开发规则
+- **直接发布**：不要直接发布集成事件，应通过转换器。
 
-集成事件转换器的定义应遵循以下规则：
-- 必须实现 `IIntegrationEventConverter<TDomainEvent, TIntegrationEvent>` 接口
-- 转换器负责从领域事件创建集成事件
-- 集成事件使用 `record` 类型定义
-- 框架自动注册转换器
+## 文件命名规则
+
+- 转换器应放置在 `src/ABC.Template.Web/Application/IntegrationEventConverters/` 目录下。
+- 转换器文件名格式为 `{Entity}{Action}IntegrationEventConverter.cs`。
 
 ## 代码示例
 

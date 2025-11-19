@@ -3,27 +3,30 @@ applyTo: "src/ABC.Template.Domain/DomainEvents/*.cs"
 ---
 
 # 领域事件开发指南
-## 概述
 
-领域事件表示在业务领域中发生的重要事情，用于实现聚合之间的协作通信。当聚合根的状态发生变化时，应该发布相应的领域事件。
+## 开发原则
 
-## 文件与目录
+### 必须
 
-类文件命名应遵循以下规则：
-- 应放置在src/ABC.Template.Domain/DomainEvents目录下
-- 为每个聚合添加一个领域事件文件
-- 文件名格式为 `{Aggregate}DomainEvents.cs`
-- 一个领域事件文件中可以包含多个领域事件
+- **事件定义**：
+    - 必须使用 `record` 类型。
+    - 必须标记接口 `IDomainEvent`，无需额外实现。
+    - 无额外信息传递需求时，将聚合作为构造函数参数。
+- **命名规范**：
+    - 使用过去式动词描述已发生的事情。
+    - 格式：`{Entity}{Action}DomainEvent`。
+    - 例如：`UserCreatedDomainEvent`、`OrderPaidDomainEvent`、`ProductUpdatedDomainEvent`。
 
-## 开发规则
+### 必须不要
 
-领域事件的定义应遵循以下规则：
-- 必须使用 `record` 类型
-- 必须标记接口`IDomainEvent`，无需额外实现
-- 无额外信息传递需求时，将聚合作为构造函数参数
-- 使用过去式动词描述已发生的事情
-- 格式：`{Entity}{Action}DomainEvent`
-- 例如：`UserCreatedDomainEvent`、`OrderPaidDomainEvent`、`ProductUpdatedDomainEvent`
+- **复杂逻辑**：领域事件本身不应包含业务逻辑，仅作为数据载体。
+
+## 文件命名规则
+
+- 类文件应放置在 `src/ABC.Template.Domain/DomainEvents` 目录下。
+- 为每个聚合添加一个领域事件文件。
+- 文件名格式为 `{Aggregate}DomainEvents.cs`。
+- 一个领域事件文件中可以包含多个领域事件。
 
 ## 代码示例
 

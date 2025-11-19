@@ -4,59 +4,50 @@ applyTo: "src/ABC.Template.Web/Application/DomainEventHandlers/*.cs"
 
 # 领域事件处理器开发指南
 
-## 概述
+## 开发原则
 
-领域事件处理器负责处理聚合根发布的领域事件，实现跨聚合的业务协调和副作用处理。处理器在事务边界内执行，确保数据一致性。
+### 必须
 
-## 文件与目录
+- **处理器定义**：
+    - 必须实现 `IDomainEventHandler<T>` 接口。
+    - 实现方法：`public Task Handle(TEvent domainEvent, CancellationToken cancellationToken)`。
+    - 每个文件仅包含一个事件处理器。
+    - 使用主构造函数注入所需的仓储或服务。
+    - **命名规范**：按 `{DomainEvent}DomainEventHandlerFor{Action}` 命名，语义清晰、单一目的。
+- **业务逻辑**：
+    - 在框架会将处理器中的命令作为事务的一部分执行。
+    - 通过发送 Command（`IMediator.Send`）驱动聚合变化，而不是直接操作聚合或数据库。
+    - 仅访问与该领域事件直接相关的数据或服务。
+    - 尊重事务与取消：使用 `async/await`，传递并尊重 `CancellationToken`。
 
-类文件命名应遵循以下规则：
-- 应放置在 `src/ABC.Template.Web/Application/DomainEventHandlers/` 目录下
-- 文件名格式为 `{DomainEvent}HandlerFor{Action}.cs` ,其中{Action}需要准确描述该Handler的目的
-- 每个领域事件对应一个处理器文件
+### 必须不要
 
-## 开发规则
+- **直接操作**：
+    - 不直接通过仓储或 DbContext 修改数据（始终通过命令）。
+- **逻辑混合**：
+    - 不在一个文件中放多个处理器或混合不同事件的逻辑。
+- **性能与异常**：
+    - 不执行长时间阻塞操作，耗时操作应放置在集成事件处理器中。
+    - 不吞掉异常或忽略 `CancellationToken`。
 
-领域事件处理器的定义应遵循以下规则：
-- 必须实现 `IDomainEventHandler<T>` 接口
-- 实现 `Handle(TEvent domainEvent, CancellationToken cancellationToken)` 方法
-- 每个领域事件可以对应多个处理器，每个处理器对应特定的业务目的
-- 在事务边界内执行，确保数据一致性
-- 主要用于跨聚合协调和副作用处理
-- 通过发送Command来操作聚合，而不是直接操作
-- 使用依赖注入获取所需服务
-- 框架自动注册事件处理器
+## 文件命名规则
 
-## 必要的using引用
-
-领域事件处理器文件中的必要引用已在GlobalUsings.cs中定义：
-- `global using NetCorePal.Extensions.Domain;` - 用于IDomainEventHandler接口
-- `global using MediatR;` - 用于发送其他命令
-
-因此在领域事件处理器文件中无需重复添加这些using语句。
+- 类文件应放置在 `src/ABC.Template.Web/Application/DomainEventHandlers/` 目录下。
+- 文件名格式为 `{DomainEvent}DomainEventHandlerFor{Action}.cs`，其中 `{Action}` 准确描述该 Handler 的目的。
+- 示例：`OrderCreatedDomainEventHandlerForSetPaymentInfo.cs`。
+- 类命名：`{DomainEvent}DomainEventHandlerFor{Action}`。
 
 ## 代码示例
-
-**文件**: `src/ABC.Template.Web/Application/DomainEventHandlers/UserCreatedDomainEventHandlerForCreateScoreAccount.cs`
-
 ```csharp
-using ABC.Template.Domain.DomainEvents;
 using ABC.Template.Web.Application.Commands;
-
-namespace ABC.Template.Web.Application.DomainEventHandlers;
-
-public class UserCreatedDomainEventHandlerForCreateScoreAccount(
-    ILogger<UserCreatedDomainEventHandlerForCreateScoreAccount> logger,
-    IMediator mediator)
-    : IDomainEventHandler<UserCreatedDomainEvent>
+using ABC.Template.Web.Domain.DomainEvents;
+public class OrderCreatedDomainEventHandlerForSetPaymentInfo(IMediator mediator) : 
+   IDomainEventHandler<OrderCreatedDomainEvent>
 {
-    public async Task Handle(UserCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
+    public async Task Handle(OrderCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
     {
-        var user = domainEvent.User;
-        logger.LogInformation("为新用户创建积分账户：{UserId}", user.Id);
-        
-        // 通过发送Command来创建积分账户
-        var command = new CreateScoreAccountCommand(user.Id, user.Name);
+        // 通过发送命令操作聚合，而不是直接操作服务
+        var command = new SetPaymentInfoCommand(domainEvent.OrderId, domainEvent.PaymentInfo);
         await mediator.Send(command, cancellationToken);
     }
 }
