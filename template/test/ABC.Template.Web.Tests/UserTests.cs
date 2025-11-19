@@ -9,17 +9,11 @@ using NetCorePal.Extensions.Dto;
 namespace ABC.Template.Web.Tests;
 
 [Collection("web")]
-public class UserTests : IClassFixture<MyWebApplicationFactory>
+public class UserTests(MyWebApplicationFactory factory) : IClassFixture<MyWebApplicationFactory>
 {
-    private readonly MyWebApplicationFactory _factory;
+    private readonly MyWebApplicationFactory _factory = factory;
 
-    private readonly HttpClient _client;
-
-    public UserTests(MyWebApplicationFactory factory)
-    {
-        _factory = factory;
-        _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
-    }
+    private readonly HttpClient _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
 
 
     [Fact]
