@@ -2,7 +2,6 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.IntegrationEvents;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
-using NetCorePal.Extensions.DistributedTransactions;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Endpoints.DemoEndpoints;
