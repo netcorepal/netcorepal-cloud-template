@@ -9,10 +9,16 @@ using NetCorePal.Extensions.Dto;
 namespace ABC.Template.Web.Tests;
 
 [Collection("web")]
-public class OrderTests(MyWebApplicationFactory factory) : IClassFixture<MyWebApplicationFactory>
+public class OrderTests : IClassFixture<MyWebApplicationFactory>
 {
-    private readonly MyWebApplicationFactory _factory = factory;
-    private readonly HttpClient _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
+    private readonly MyWebApplicationFactory _factory;
+    private readonly HttpClient _client;
+
+    public OrderTests(MyWebApplicationFactory factory)
+    {
+        _factory = factory;
+        _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
+    }
 
     [Fact]
     public async Task CreateOrder_And_PayOrder_Test()
