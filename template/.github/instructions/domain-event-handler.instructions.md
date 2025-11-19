@@ -41,7 +41,7 @@ applyTo: "src/ABC.Template.Web/Application/DomainEventHandlers/*.cs"
 ```csharp
 using ABC.Template.Web.Application.Commands;
 using ABC.Template.Web.Domain.DomainEvents;
-public class OrderCreatedDomainEventHandlerForSetPaymentInfo(IMediator mediator) :   
+public class OrderCreatedDomainEventHandlerForSetPaymentInfo(IMediator mediator) : 
    IDomainEventHandler<OrderCreatedDomainEvent>
 {
     public async Task Handle(OrderCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
