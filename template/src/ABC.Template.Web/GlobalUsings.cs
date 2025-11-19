@@ -8,3 +8,4 @@ global using NetCorePal.Extensions.Primitives;
 global using MediatR;
 global using NetCorePal.Extensions.Domain;
 global using NetCorePal.Extensions.Dto;
+global using NetCorePal.Extensions.DistributedTransactions;
