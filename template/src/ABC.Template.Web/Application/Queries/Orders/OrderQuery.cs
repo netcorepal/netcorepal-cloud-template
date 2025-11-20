@@ -1,7 +1,7 @@
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
-namespace ABC.Template.Web.Application.Queries;
+namespace ABC.Template.Web.Application.Queries.Orders;
 
 
 public record QueryOrder(OrderId Id) : IQuery<QueryOrderResult>;

@@ -1,4 +1,4 @@
-using ABC.Template.Web.Application.Commands;
+using ABC.Template.Web.Application.Commands.Demos;
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
