@@ -1,5 +1,5 @@
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Web.Application.Queries;
+using ABC.Template.Web.Application.Queries.Orders;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;

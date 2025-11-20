@@ -1,7 +1,7 @@
 using FluentValidation;
 using NetCorePal.Extensions.Domain;
 
-namespace ABC.Template.Web.Application.Commands;
+namespace ABC.Template.Web.Application.Commands.Demos;
 
 public record ValidatorCommand(string Name, int Price) : ICommand;
 

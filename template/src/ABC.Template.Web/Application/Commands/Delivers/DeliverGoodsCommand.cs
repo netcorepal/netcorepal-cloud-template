@@ -3,7 +3,7 @@ using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using NetCorePal.Extensions.Primitives;
 
-namespace ABC.Template.Web.Application.Commands;
+namespace ABC.Template.Web.Application.Commands.Delivers;
 
 public record DeliverGoodsCommand(OrderId OrderId) : ICommand<DeliverRecordId>;
 
