@@ -1,7 +1,7 @@
 using System.Net.Http.Json;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure;
-using ABC.Template.Web.Application.Queries;
+using ABC.Template.Web.Application.Queries.Orders;
 using ABC.Template.Web.Endpoints.OrderEndpoints;
 using Microsoft.EntityFrameworkCore;
 using NetCorePal.Extensions.Dto;
