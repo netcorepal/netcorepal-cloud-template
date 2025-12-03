@@ -28,11 +28,11 @@ public class WebAppFixture : AppFixture<Program>
     private NatsContainer _natsContainer = null!;
 //#endif
 //#if (UseMySql)
-    private readonly MySqlContainer _databaseContainer = null!;
+    private MySqlContainer _databaseContainer = null!;
 //#elif (UseSqlServer)
-    private readonly MsSqlContainer _databaseContainer = null!;
+    private MsSqlContainer _databaseContainer = null!;
 //#elif (UsePostgreSQL)
-    private readonly PostgreSqlContainer _databaseContainer = null!;
+    private PostgreSqlContainer _databaseContainer = null!;
 //#endif
 
     protected override async ValueTask PreSetupAsync()
