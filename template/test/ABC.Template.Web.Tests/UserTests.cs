@@ -1,46 +1,31 @@
 using System.Net;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using ABC.Template.Infrastructure;
 using ABC.Template.Web.Endpoints.UserEndpoints;
-using Microsoft.EntityFrameworkCore;
 using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Tests;
 
-[Collection("web")]
-public class UserTests : IClassFixture<MyWebApplicationFactory>
+[Collection(WebAppTestCollection.Name)]
+public class UserTests(WebAppFixture app) : TestBase<WebAppFixture>
 {
-    private readonly MyWebApplicationFactory _factory;
-
-    private readonly HttpClient _client;
-
-    public UserTests(MyWebApplicationFactory factory)
-    {
-        _factory = factory;
-        _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
-    }
-
-
     [Fact]
     public async Task Login_And_Auth_Test()
     {
         string userName = "testname";
         string password = "testpassword";
         var loginRequest = new LoginRequest(userName, password);
-        var response = await _client.PostAsJsonAsync($"/api/user/login", loginRequest);
-        Assert.True(response.IsSuccessStatusCode);
-        var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ResponseData<string>>();
-        Assert.NotNull(responseData);
-        Assert.NotNull(responseData.Data);
+        var (rsp, res) = await app.Client.POSTAsync<LoginEndpoint, LoginRequest, ResponseData<string>>(loginRequest);
+        
+        Assert.True(rsp.IsSuccessStatusCode);
+        Assert.NotNull(res);
+        Assert.NotNull(res.Data);
 
+        var jwtResponse1 = await app.Client.GETAsync<AuthEndpoint, ResponseData<bool>>();
+        Assert.False(jwtResponse1.Response.IsSuccessStatusCode);
+        Assert.Equal(HttpStatusCode.Unauthorized, jwtResponse1.Response.StatusCode);
 
-        var jwtResponse1 = await _client.GetAsync("/api/user/auth");
-        Assert.False(jwtResponse1.IsSuccessStatusCode);
-        Assert.Equal(HttpStatusCode.Unauthorized, jwtResponse1.StatusCode);
-
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", responseData.Data);
-        var jwtResponse2 = await _client.GetAsync("/api/user/auth");
-        Assert.True(jwtResponse2.IsSuccessStatusCode);
+        app.Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", res.Data);
+        var jwtResponse2 = await app.Client.GETAsync<AuthEndpoint, ResponseData<bool>>();
+        Assert.True(jwtResponse2.Response.IsSuccessStatusCode);
     }
 }
