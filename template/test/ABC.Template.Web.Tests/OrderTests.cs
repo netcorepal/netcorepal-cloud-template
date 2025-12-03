@@ -31,17 +31,17 @@ public class OrderTests(WebAppFixture app) : TestBase<WebAppFixture>
         Assert.True(payRes.Success);
         Assert.True(payRes.Data);
 
-        await Task.Delay(1000); //wait for IntegrationEventHandler
+        await Task.Delay(1000, TestContext.Current.CancellationToken); //wait for IntegrationEventHandler
         
         // Verify order is marked as paid in the database
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var order = await dbContext.Set<Domain.AggregatesModel.OrderAggregate.Order>().FirstOrDefaultAsync(o => o.Id == orderId);
+        var order = await dbContext.Set<Domain.AggregatesModel.OrderAggregate.Order>().FirstOrDefaultAsync(o => o.Id == orderId, TestContext.Current.CancellationToken);
         Assert.NotNull(order);
         Assert.True(order.Paid);
 
         //verify DeliverGoods
-        var goods = await dbContext.DeliverRecords.FirstOrDefaultAsync(o=>o.OrderId==orderId);
+        var goods = await dbContext.DeliverRecords.FirstOrDefaultAsync(o=>o.OrderId==orderId, TestContext.Current.CancellationToken);
         Assert.NotNull(goods);
     }
 

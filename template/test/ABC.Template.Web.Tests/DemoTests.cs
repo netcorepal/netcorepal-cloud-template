@@ -9,7 +9,7 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task HealthCheckTest()
         {
-            var response = await app.Client.GetAsync("/health");
+            var response = await app.Client.GetAsync("/health", TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
         }
 
@@ -26,9 +26,9 @@ namespace ABC.Template.Web.Tests
                        """;
             var content = new StringContent(json);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            var response = await app.Client.PostAsync("/demo/json", content);
+            var response = await app.Client.PostAsync("/demo/json", content, TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadAsStringAsync();
+            var responseData = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.NotNull(responseData);
             Assert.Contains("2021-08-31T15:00:00", responseData);
             Assert.Contains("\"name\":\"myName\"", responseData);
@@ -107,11 +107,11 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task CodeAnalysisTest()
         {
-            var response = await app.Client.GetAsync("/code-analysis");
+            var response = await app.Client.GetAsync("/code-analysis", TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType?.ToString());
             
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.NotNull(content);
             Assert.Contains("<!DOCTYPE html>", content);
         }
