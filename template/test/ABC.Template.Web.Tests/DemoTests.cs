@@ -1,31 +1,15 @@
-using System.Net.Http.Headers;
-using ABC.Template.Infrastructure;
-using ABC.Template.Web.Application.Commands.Demos;
 using ABC.Template.Web.Endpoints.DemoEndpoints;
-using Microsoft.EntityFrameworkCore;
 using NetCorePal.Context;
 using NetCorePal.Extensions.Dto;
-
 namespace ABC.Template.Web.Tests
 {
-    [Collection("web")]
-    public class DemoTests : IClassFixture<MyWebApplicationFactory>
+    [Collection(WebAppTestCollection.Name)]
+    public class DemoTests(WebAppFixture app) : TestBase<WebAppFixture>
     {
-        private readonly MyWebApplicationFactory _factory;
-
-        private readonly HttpClient _client;
-
-        public DemoTests(MyWebApplicationFactory factory)
-        {
-            _factory = factory;
-            _client = factory.WithWebHostBuilder(builder => { builder.ConfigureServices(p => { }); }).CreateClient();
-        }
-
-
         [Fact]
         public async Task HealthCheckTest()
         {
-            var response = await _client.GetAsync("/health");
+            var response = await app.Client.GetAsync("/health", TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
         }
 
@@ -42,9 +26,9 @@ namespace ABC.Template.Web.Tests
                        """;
             var content = new StringContent(json);
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            var response = await _client.PostAsync("/demo/json", content);
+            var response = await app.Client.PostAsync("/demo/json", content, TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadAsStringAsync();
+            var responseData = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.NotNull(responseData);
             Assert.Contains("2021-08-31T15:00:00", responseData);
             Assert.Contains("\"name\":\"myName\"", responseData);
@@ -55,38 +39,30 @@ namespace ABC.Template.Web.Tests
         public async Task Json_ReadFromJson_Test()
         {
             var testGuid = Guid.NewGuid();
-            var json = $$"""
-                       {
-                         "id": "{{testGuid}}",
-                         "name": "myName",
-                         "time": "2021-08-31T15:00:00"
-                       }
-                       """;
-            var content = new StringContent(json);
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            var response = await _client.PostAsync("/demo/json", content);
-            Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ResponseData<JsonResponse>>();
-            Assert.NotNull(responseData);
-            Assert.Equal(DateTime.Parse("2021-08-31 15:00:00"), responseData.Data.Time);
-            Assert.Equal("myName", responseData.Data.Name);
-            Assert.Equal(testGuid, responseData.Data.Id.Id);
+            var request = new JsonRequest(new MyId(testGuid), "myName", DateTime.Parse("2021-08-31 15:00:00"));
+            var (rsp, res) = await app.Client.POSTAsync<JsonEndpoint, JsonRequest, ResponseData<JsonResponse>>(request);
+            
+            Assert.True(rsp.IsSuccessStatusCode);
+            Assert.NotNull(res);
+            Assert.Equal(DateTime.Parse("2021-08-31 15:00:00"), res.Data.Time);
+            Assert.Equal("myName", res.Data.Name);
+            Assert.Equal(testGuid, res.Data.Id.Id);
         }
 
         [Fact]
         public async Task ValidatorTest()
         {
-            var cmd = new ValidatorCommand("", 0);
-            var response = await _client.PostAsNewtonsoftJsonAsync("/demo/validator", cmd);
-            Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ValidatorResponseData>();
-            Assert.NotNull(responseData);
-            Assert.False(responseData.success);
-            Assert.Equal("不能为空", responseData.message);
-            Assert.Equal(400, responseData.code);
-            Assert.NotNull(responseData.errorData);
-            Assert.Equal(2, responseData.errorData.Count());
-            var errors = responseData.errorData.ToList();
+            var request = new ValidatorRequest("", 0);
+            var (rsp, res) = await app.Client.POSTAsync<ValidatorEndpoint, ValidatorRequest, ValidatorResponseData>(request);
+            
+            Assert.True(rsp.IsSuccessStatusCode);
+            Assert.NotNull(res);
+            Assert.False(res.success);
+            Assert.Equal("不能为空", res.message);
+            Assert.Equal(400, res.code);
+            Assert.NotNull(res.errorData);
+            Assert.Equal(2, res.errorData.Count());
+            var errors = res.errorData.ToList();
             Assert.Equal("不能为空", errors[0].errorMessage);
             Assert.Equal("code1", errors[0].errorCode);
             Assert.Equal("name", errors[0].propertyName);
@@ -104,39 +80,38 @@ namespace ABC.Template.Web.Tests
         [Fact]
         public async Task ContextTest()
         {
-            var content = new StringContent("{ }");
-            content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-            content.Headers.Add(TenantContext.ContextKey, "t1");
-            var response = await _factory.CreateClient().PostAsync("/demo/context", content);
-            Assert.True(response.IsSuccessStatusCode);
-            var responseData = await response.Content.ReadFromNewtonsoftJsonAsync<ResponseData<string>>();
-            Assert.NotNull(responseData);
-            Assert.Equal("", responseData.Data);
+            var client = app.CreateClient();
+            client.DefaultRequestHeaders.Add(TenantContext.ContextKey, "t1");
+            var (rsp, res) = await client.POSTAsync<ContextEndpoint, EmptyRequest, ResponseData<string>>(new EmptyRequest());
+            
+            Assert.True(rsp.IsSuccessStatusCode);
+            Assert.NotNull(res);
+            Assert.Equal("", res.Data);
         }
 
         [Fact]
         public async Task LockTest()
         {
-            var task1 = _client.GetAsync("/demo/lock");
-            var task2 = _client.GetAsync("/demo/lock");
+            var task1 = app.Client.GETAsync<LockEndpoint, ResponseData<bool>>();
+            var task2 = app.Client.GETAsync<LockEndpoint, ResponseData<bool>>();
             var results = await Task.WhenAll(task1, task2);
-            Assert.True(results[0].IsSuccessStatusCode);
-            Assert.True(results[1].IsSuccessStatusCode);
-            var result1 = await results[0].Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
-            var result2 = await results[1].Content.ReadFromNewtonsoftJsonAsync<ResponseData<bool>>();
-            Assert.NotNull(result1);
-            Assert.NotNull(result2);
-            Assert.False(result1.Data);
-            Assert.False(result2.Data);
+            
+            Assert.True(results[0].Response.IsSuccessStatusCode);
+            Assert.True(results[1].Response.IsSuccessStatusCode);
+            Assert.NotNull(results[0].Result);
+            Assert.NotNull(results[1].Result);
+            Assert.False(results[0].Result.Data);
+            Assert.False(results[1].Result.Data);
         }
+
         [Fact]
         public async Task CodeAnalysisTest()
         {
-            var response = await _client.GetAsync("/code-analysis");
+            var response = await app.Client.GetAsync("/code-analysis", TestContext.Current.CancellationToken);
             Assert.True(response.IsSuccessStatusCode);
             Assert.Equal("text/html; charset=utf-8", response.Content.Headers.ContentType?.ToString());
             
-            var content = await response.Content.ReadAsStringAsync();
+            var content = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             Assert.NotNull(content);
             Assert.Contains("<!DOCTYPE html>", content);
         }
