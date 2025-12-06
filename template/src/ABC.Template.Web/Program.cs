@@ -219,6 +219,7 @@ try
     {
         x.UseNetCorePalStorage<ApplicationDbContext>();
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
+        x.ConsumerThreadCount = Environment.ProcessorCount;
 <!--#if (UseAspire)-->
 //#if (UseRabbitMQ)
         // When using Aspire, RabbitMQ connection is managed by Aspire
