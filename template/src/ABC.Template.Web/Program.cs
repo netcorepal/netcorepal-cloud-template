@@ -99,15 +99,36 @@ try
 
     // Add services to the container.
 
-    #region 身份认证
+    #region Aspire 客户端集成 / Infrastructure Client Integrations
 
 <!--#if (UseAspire)-->
-    // When using Aspire, Redis connection is managed by Aspire and injected automatically
+    // When using Aspire, infrastructure connections are managed by Aspire
     builder.AddRedisClient("Redis");
+    
+//#if (UsePostgreSQL)
+    builder.AddNpgsqlDataSource("PostgreSQL");
+//#elif (UseMySql)
+    builder.AddMySqlDataSource("MySql");
+//#elif (UseSqlServer)
+    builder.AddSqlServerConnection("SqlServer");
+//#endif
+//#if (UseSqlite)
+    // SQLite doesn't require Aspire integration package
+//#endif
+//#if (UseRabbitMQ)
+    builder.AddRabbitMQClient("rabbitmq");
+//#elif (UseKafka)
+    builder.AddKafkaProducer<string, string>("kafka");
+    builder.AddKafkaConsumer<string, string>("kafka");
+//#endif
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
 <!--#endif-->
+
+    #endregion
+
+    #region 身份认证
     
     // DataProtection - use custom extension that resolves IConnectionMultiplexer from DI
     builder.Services.AddDataProtection()
@@ -161,14 +182,33 @@ try
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
 //#if (UseMySql)
-        options.UseMySql(builder.Configuration.GetConnectionString("MySql"),
+        // Try to read from Aspire connection string first, then fallback to normal connection string
+        var connectionString = builder.Configuration.GetConnectionString("Aspire:Pomelo:EntityFrameworkCore:MySql:MySql");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            connectionString = builder.Configuration.GetConnectionString("MySql");
+        }
+        options.UseMySql(connectionString,
             new MySqlServerVersion(new Version(8, 0, 34)));
 //#elif (UseSqlServer)
-        options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+        // Try to read from Aspire connection string first, then fallback to normal connection string
+        var connectionString = builder.Configuration.GetConnectionString("Aspire:Microsoft:EntityFrameworkCore:SqlServer:SqlServer");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            connectionString = builder.Configuration.GetConnectionString("SqlServer");
+        }
+        options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
+        // Try to read from Aspire connection string first, then fallback to normal connection string
+        var connectionString = builder.Configuration.GetConnectionString("Aspire:Npgsql:EntityFrameworkCore:PostgreSQL:PostgreSQL");
+        if (string.IsNullOrEmpty(connectionString))
+        {
+            connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+        }
+        options.UseNpgsql(connectionString);
 //#elif (UseSqlite)
-        options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+        var connectionString = builder.Configuration.GetConnectionString("Sqlite");
+        options.UseSqlite(connectionString);
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -224,7 +264,13 @@ try
         // When using Aspire, RabbitMQ connection is managed by Aspire
         x.UseRabbitMQ(p =>
         {
-            var connectionString = builder.Configuration.GetConnectionString("rabbitmq");
+            // Try to read from Aspire connection string first
+            var connectionString = builder.Configuration.GetConnectionString("Aspire:RabbitMQ:Client:rabbitmq");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = builder.Configuration.GetConnectionString("rabbitmq");
+            }
+            
             if (!string.IsNullOrEmpty(connectionString))
             {
                 // Parse Aspire-provided connection string
@@ -254,7 +300,13 @@ try
         // When using Aspire, Kafka connection is managed by Aspire
         x.UseKafka(p =>
         {
-            var connectionString = builder.Configuration.GetConnectionString("kafka");
+            // Try to read from Aspire connection string first
+            var connectionString = builder.Configuration.GetConnectionString("Aspire:Confluent:Kafka:kafka");
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                connectionString = builder.Configuration.GetConnectionString("kafka");
+            }
+            
             if (!string.IsNullOrEmpty(connectionString))
             {
                 p.Servers = connectionString;
@@ -266,34 +318,58 @@ try
         });
 //#elif (UseRedisStreams)
         // When using Aspire, Redis connection is managed by Aspire
-        x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+        var redisConnectionString = builder.Configuration.GetConnectionString("Aspire:StackExchange:Redis:Redis");
+        if (string.IsNullOrEmpty(redisConnectionString))
+        {
+            redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+        }
+        x.UseRedis(redisConnectionString!);
 //#elif (UseAzureServiceBus)
+        // Azure Service Bus doesn't have Aspire client integration yet, keep current implementation
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+            var redisConnectionString = builder.Configuration.GetConnectionString("Aspire:StackExchange:Redis:Redis");
+            if (string.IsNullOrEmpty(redisConnectionString))
+            {
+                redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+            }
+            x.UseRedis(redisConnectionString!);
         }
         else
         {
             x.UseAzureServiceBus(p => builder.Configuration.GetSection("AzureServiceBus").Bind(p));
         }
 //#elif (UseAmazonSQS)
+        // Amazon SQS doesn't have Aspire client integration yet, keep current implementation
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+            var redisConnectionString = builder.Configuration.GetConnectionString("Aspire:StackExchange:Redis:Redis");
+            if (string.IsNullOrEmpty(redisConnectionString))
+            {
+                redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+            }
+            x.UseRedis(redisConnectionString!);
         }
         else
         {
             x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
         }
 //#elif (UseNATS)
+        // NATS doesn't have Aspire client integration yet, keep current implementation
         x.UseNATS(p => builder.Configuration.GetSection("NATS").Bind(p));
 //#elif (UsePulsar)
+        // Pulsar doesn't have Aspire client integration yet, keep current implementation
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
         {
-            x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
+            var redisConnectionString = builder.Configuration.GetConnectionString("Aspire:StackExchange:Redis:Redis");
+            if (string.IsNullOrEmpty(redisConnectionString))
+            {
+                redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+            }
+            x.UseRedis(redisConnectionString!);
         }
         else
         {
@@ -383,7 +459,12 @@ try
 
 <!--#if (UseAspire)-->
     // When using Aspire, Redis connection is managed by Aspire
-    builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
+    var hangfireRedisConnectionString = builder.Configuration.GetConnectionString("Aspire:StackExchange:Redis:Redis");
+    if (string.IsNullOrEmpty(hangfireRedisConnectionString))
+    {
+        hangfireRedisConnectionString = builder.Configuration.GetConnectionString("Redis");
+    }
+    builder.Services.AddHangfire(x => { x.UseRedisStorage(hangfireRedisConnectionString); });
 <!--#else-->
     builder.Services.AddHangfire(x => { x.UseRedisStorage(builder.Configuration.GetConnectionString("Redis")); });
 <!--#endif-->
