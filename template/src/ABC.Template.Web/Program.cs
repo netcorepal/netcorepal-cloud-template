@@ -102,25 +102,9 @@ try
     #region Aspire 客户端集成 / Infrastructure Client Integrations
 
 <!--#if (UseAspire)-->
-    // When using Aspire, infrastructure connections are managed by Aspire
+    // When using Aspire, Redis connection is managed by Aspire
+    // Database and message queue connections are integrated by CAP and DbContext
     builder.AddRedisClient("Redis");
-    
-//#if (UsePostgreSQL)
-    builder.AddNpgsqlDataSource("PostgreSQL");
-//#elif (UseMySql)
-    builder.AddMySqlDataSource("MySql");
-//#elif (UseSqlServer)
-    builder.AddSqlServerConnection("SqlServer");
-//#endif
-//#if (UseSqlite)
-    // SQLite doesn't require Aspire integration package
-//#endif
-//#if (UseRabbitMQ)
-    builder.AddRabbitMQClient("rabbitmq");
-//#elif (UseKafka)
-    builder.AddKafkaProducer<string, string>("kafka");
-    builder.AddKafkaConsumer<string, string>("kafka");
-//#endif
 <!--#else-->
     var redis = await ConnectionMultiplexer.ConnectAsync(builder.Configuration.GetConnectionString("Redis")!);
     builder.Services.AddSingleton<IConnectionMultiplexer>(_ => redis);
