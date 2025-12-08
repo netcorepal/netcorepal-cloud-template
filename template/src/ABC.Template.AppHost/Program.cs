@@ -3,6 +3,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 // Add Redis infrastructure
 var redis = builder.AddRedis("Redis");
 
+//#if (!UseSqlite)
 var databasePassword = builder.AddParameter("database-password", secret: true);
 //#if (UseMySql)
 // Add MySQL database infrastructure
@@ -62,7 +63,6 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
     // SQLite doesn't need infrastructure reference
     ;
 //#endif
-
 
 // Add web project with infrastructure dependencies
 builder.AddProject<Projects.ABC_Template_Web>("web")

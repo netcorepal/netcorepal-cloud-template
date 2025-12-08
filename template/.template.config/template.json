@@ -190,7 +190,7 @@
                     "exclude": [
                         "src/ABC.Template.AppHost/**",
                         "src/ABC.Template.ServiceDefaults/**",
-                        "src/ABC.Template.MigrationsService/**"
+                        "src/ABC.Template.MigrationService/**"
                     ]
                 },
                 {

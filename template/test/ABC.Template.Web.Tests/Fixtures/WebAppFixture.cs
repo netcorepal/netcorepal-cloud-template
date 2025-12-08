@@ -16,14 +16,6 @@ using Testcontainers.Redis;
 using Microsoft.AspNetCore.Hosting;
 using ABC.Template.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-//#if (UseMySql)
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-//#elif (UseSqlServer)
-using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure;
-//#elif (UsePostgreSQL)
-using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
-//#endif
 
 namespace ABC.Template.Web.Tests.Fixtures;
 
@@ -161,9 +153,9 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
     private async Task CreateVisualHostAsync(string visualHost)
     {
-        await _rabbitMqContainer.ExecAsync(new string[] { "rabbitmqctl", "add_vhost", visualHost });
-        await _rabbitMqContainer.ExecAsync(new string[]
-            { "rabbitmqctl", "set_permissions", "-p", visualHost, "guest", ".*", ".*", ".*" });
+        await _rabbitMqContainer.ExecAsync(["rabbitmqctl", "add_vhost", visualHost]);
+        await _rabbitMqContainer.ExecAsync(["rabbitmqctl", "set_permissions", "-p", visualHost, "guest", ".*", ".*", ".*"
+        ]);
     }
 //#endif
 
