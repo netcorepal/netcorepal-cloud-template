@@ -58,6 +58,9 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb);
+//#elif (UseSqlite)
+    // SQLite doesn't need infrastructure reference
+    ;
 //#endif
 
 

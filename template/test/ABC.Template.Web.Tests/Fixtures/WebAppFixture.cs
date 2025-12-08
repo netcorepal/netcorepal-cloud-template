@@ -89,7 +89,12 @@ public class WebAppFixture : AppFixture<Program>
         await CreateVisualHostAsync("/");
 //#endif
 //#if(UseAspire)
-        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
+//#if (UseSqlite)
+        var connectionString = $"Data Source=:memory:?cache=shared";
+//#else
+        var connectionString = _databaseContainer.GetConnectionString(); 
+//#endif
+        await CreateDatabaseAsync(connectionString);
 //#endif
     }
 
