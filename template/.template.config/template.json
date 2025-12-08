@@ -189,7 +189,14 @@
                     "condition": "(!UseAspire)",
                     "exclude": [
                         "src/ABC.Template.AppHost/**",
-                        "src/ABC.Template.ServiceDefaults/**"
+                        "src/ABC.Template.ServiceDefaults/**",
+                        "src/ABC.Template.MigrationsService/**"
+                    ]
+                },
+                {
+                    "condition": "(UseAspire)",
+                    "exclude": [
+                        "src/ABC.Template.Infrastructure/DesignTimeApplicationDbContextFactory.cs"
                     ]
                 }
             ]

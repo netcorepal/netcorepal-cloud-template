@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ABC.Template.Web\ABC.Template.Web.csproj" />
+    <ProjectReference Include="..\ABC.Template.MigrationService\ABC.Template.MigrationService.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,6 +14,16 @@ using Testcontainers.Nats;
 //#endif
 using Testcontainers.Redis;
 using Microsoft.AspNetCore.Hosting;
+using ABC.Template.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+//#if (UseMySql)
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+//#elif (UseSqlServer)
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure;
+//#elif (UsePostgreSQL)
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure;
+//#endif
 
 namespace ABC.Template.Web.Tests.Fixtures;
 
@@ -77,6 +87,9 @@ public class WebAppFixture : AppFixture<Program>
 
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
+//#endif
+//#if(UseAspire)
+        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
 
@@ -146,6 +159,32 @@ public class WebAppFixture : AppFixture<Program>
         await _rabbitMqContainer.ExecAsync(new string[] { "rabbitmqctl", "add_vhost", visualHost });
         await _rabbitMqContainer.ExecAsync(new string[]
             { "rabbitmqctl", "set_permissions", "-p", visualHost, "guest", ".*", ".*", ".*" });
+    }
+//#endif
+
+//#if(UseAspire)
+    private static async Task CreateDatabaseAsync(string connectionString)
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<WebAppFixture>());
+        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
+        {
+//#if (UseMySql)
+            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 34)));
+//#elif (UseSqlServer)
+            options.UseSqlServer(connectionString);
+//#elif (UsePostgreSQL)
+            options.UseNpgsql(connectionString);
+//#elif (UseSqlite)
+            options.UseSqlite(connectionString);
+//#endif
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
+        });
+
+        await using var serviceProvider = serviceCollection.BuildServiceProvider();
+        await using var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
     }
 //#endif
 }

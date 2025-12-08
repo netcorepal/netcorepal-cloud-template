@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>NETCOREPAL_FRAMEWORK</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <!--#if (UseMySql)-->
+        <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" />
+        <!--#elif (UseSqlServer)-->
+        <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer"/>
+        <!--#elif (UsePostgreSQL)-->
+        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <!--#endif-->
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj"/>
+        <ProjectReference Include="..\ABC.Template.ServiceDefaults\ABC.Template.ServiceDefaults.csproj"/>
+    </ItemGroup>
+</Project>
