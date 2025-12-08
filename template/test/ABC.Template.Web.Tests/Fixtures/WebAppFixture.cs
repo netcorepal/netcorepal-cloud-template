@@ -80,13 +80,8 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
-//#if(UseAspire)
-//#if (UseSqlite)
-        var connectionString = $"Data Source=:memory:?cache=shared";
-//#else
-        var connectionString = _databaseContainer.GetConnectionString(); 
-//#endif
-        await CreateDatabaseAsync(connectionString);
+//#if((UseAspire && !UseSqlite))
+        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
 
@@ -159,7 +154,7 @@ public class WebAppFixture : AppFixture<Program>
     }
 //#endif
 
-//#if(UseAspire)
+//#if(UseAspire && !UseSqlite)
     private static async Task CreateDatabaseAsync(string connectionString)
     {
         var serviceCollection = new ServiceCollection();

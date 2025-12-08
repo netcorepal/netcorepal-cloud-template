@@ -5,6 +5,7 @@ var redis = builder.AddRedis("Redis");
 
 //#if (!UseSqlite)
 var databasePassword = builder.AddParameter("database-password", secret: true);
+//#endif
 //#if (UseMySql)
 // Add MySQL database infrastructure
 var mysql = builder.AddMySql("Database", password: databasePassword)
@@ -49,6 +50,7 @@ var kafka = builder.AddKafka("kafka")
     .WithKafkaUI();
 //#endif
 
+//#if (!UseSqlite)
 var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService>("migration")
 //#if (UseMySql)
     .WithReference(mysqlDb)
@@ -59,9 +61,7 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb);
-//#elif (UseSqlite)
-    // SQLite doesn't need infrastructure reference
-    ;
+//#endif
 //#endif
 
 // Add web project with infrastructure dependencies
@@ -90,6 +90,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithReference(kafka)
     .WaitFor(kafka)
 //#endif
-    .WaitForCompletion(migrationService);
+//#if (!UseSqlite)
+    .WaitForCompletion(migrationService)
+//#endif
+    ;
 
 await builder.Build().RunAsync();

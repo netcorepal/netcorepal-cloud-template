@@ -14,8 +14,10 @@
     <Project Path="src/ABC.Template.Web/ABC.Template.Web.csproj" />
 <!--#if (UseAspire)-->
     <Project Path="src/ABC.Template.AppHost/ABC.Template.AppHost.csproj" />
-    <Project Path="src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj" />
     <Project Path="src/ABC.Template.ServiceDefaults/ABC.Template.ServiceDefaults.csproj" />
+    <!--#if (Database != "Sqlite")-->
+    <Project Path="src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj" />
+    <!--#endif-->
 <!--#endif-->
   </Folder>
   <Folder Name="/test/">

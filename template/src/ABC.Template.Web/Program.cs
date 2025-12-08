@@ -394,7 +394,7 @@ try
 
 
     var app = builder.Build();
-//#if (!UseAspire)
+//#if (!UseAspire || UseSqlite)
     if (app.Environment.IsDevelopment())
     {
         using var scope = app.Services.CreateScope();

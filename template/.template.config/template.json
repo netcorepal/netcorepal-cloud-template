@@ -189,15 +189,50 @@
                     "condition": "(!UseAspire)",
                     "exclude": [
                         "src/ABC.Template.AppHost/**",
-                        "src/ABC.Template.ServiceDefaults/**",
+                        "src/ABC.Template.ServiceDefaults/**"
+                    ]
+                },
+                {
+                    "condition": "(!UseAspire || Database == \"Sqlite\")",
+                    "exclude": [
                         "src/ABC.Template.MigrationService/**"
                     ]
                 },
                 {
-                    "condition": "(UseAspire)",
+                    "condition": "(UseAspire && Database != \"Sqlite\")",
                     "exclude": [
                         "src/ABC.Template.Infrastructure/DesignTimeApplicationDbContextFactory.cs"
                     ]
+                },
+                {
+                    "condition": "(UseAspire && Database == \"SqlServer\")",
+                    "exclude": [
+                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**"
+                    ],
+                    "rename": {
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer": "src/ABC.Template.MigrationService/Migrations"
+                    }
+                },
+                {
+                    "condition": "(UseAspire && Database == \"MySql\")",
+                    "exclude": [
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**"
+                    ],
+                    "rename": {
+                        "src/ABC.Template.MigrationService/Migrations/MySql": "src/ABC.Template.MigrationService/Migrations"
+                    }
+                },
+                {
+                    "condition": "(UseAspire && Database == \"PostgreSQL\")",
+                    "exclude": [
+                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**"
+                    ],
+                    "rename": {
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL": "src/ABC.Template.MigrationService/Migrations"
+                    }
                 }
             ]
         }

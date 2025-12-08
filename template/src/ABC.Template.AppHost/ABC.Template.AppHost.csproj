@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ABC.Template.Web\ABC.Template.Web.csproj" />
+  <!--#if (Database != "Sqlite")-->
     <ProjectReference Include="..\ABC.Template.MigrationService\ABC.Template.MigrationService.csproj" />
+  <!--#endif-->
   </ItemGroup>
 
   <ItemGroup>
