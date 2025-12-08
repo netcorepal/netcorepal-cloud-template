@@ -29,7 +29,6 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 //#endif
 );
 
-
 //#if (UseMySql)
 builder.EnrichMySqlDbContext<ApplicationDbContext>(
     configureSettings: settings =>

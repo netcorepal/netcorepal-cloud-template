@@ -24,4 +24,8 @@
         <ProjectReference Include="..\ABC.Template.Infrastructure\ABC.Template.Infrastructure.csproj"/>
         <ProjectReference Include="..\ABC.Template.ServiceDefaults\ABC.Template.ServiceDefaults.csproj"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Migrations\"/>
+    </ItemGroup>
 </Project>
