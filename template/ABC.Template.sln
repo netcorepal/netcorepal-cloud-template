@@ -30,7 +30,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.ServiceDefaults", "src/ABC.Template.ServiceDefaults/ABC.Template.ServiceDefaults.csproj", "{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}"
 EndProject
 <!--#if (Database != "Sqlite")-->
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.MigrationService", "src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj" , "{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.MigrationService", "src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj", "{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}"
 EndProject
 <!--#endif-->
 <!--#endif-->
