@@ -80,7 +80,7 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
-//#if((UseAspire && !UseSqlite))
+//#if (UseAspire && !UseSqlite)
         await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
