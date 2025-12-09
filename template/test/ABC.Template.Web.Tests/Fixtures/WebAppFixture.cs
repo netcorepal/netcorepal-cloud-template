@@ -167,8 +167,6 @@ public class WebAppFixture : AppFixture<Program>
             options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
             options.UseNpgsql(connectionString);
-//#elif (UseSqlite)
-            options.UseSqlite(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
