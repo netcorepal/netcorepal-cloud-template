@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-//Enable Docker pubilsher
+//Enable Docker publisher
 builder.AddDockerComposeEnvironment("docker-env")
     .WithDashboard(dashboard =>
     {
