@@ -154,7 +154,7 @@ public class WebAppFixture : AppFixture<Program>
     }
 //#endif
 
-//#if(UseAspire && !UseSqlite)
+//#if (UseAspire && !UseSqlite)
     private static async Task CreateDatabaseAsync(string connectionString)
     {
         var serviceCollection = new ServiceCollection();
