@@ -162,7 +162,7 @@ public class WebAppFixture : AppFixture<Program>
         serviceCollection.AddDbContext<ApplicationDbContext>(options =>
         {
 //#if (UseMySql)
-            options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 34)));
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 //#elif (UseSqlServer)
             options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
