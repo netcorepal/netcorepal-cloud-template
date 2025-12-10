@@ -14,6 +14,8 @@ using Testcontainers.Nats;
 //#endif
 using Testcontainers.Redis;
 using Microsoft.AspNetCore.Hosting;
+using ABC.Template.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace ABC.Template.Web.Tests.Fixtures;
 
@@ -77,6 +79,9 @@ public class WebAppFixture : AppFixture<Program>
 
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
+//#endif
+//#if (UseAspire && !UseSqlite)
+        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
 
@@ -143,9 +148,33 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
     private async Task CreateVisualHostAsync(string visualHost)
     {
-        await _rabbitMqContainer.ExecAsync(new string[] { "rabbitmqctl", "add_vhost", visualHost });
-        await _rabbitMqContainer.ExecAsync(new string[]
-            { "rabbitmqctl", "set_permissions", "-p", visualHost, "guest", ".*", ".*", ".*" });
+        await _rabbitMqContainer.ExecAsync(["rabbitmqctl", "add_vhost", visualHost]);
+        await _rabbitMqContainer.ExecAsync(["rabbitmqctl", "set_permissions", "-p", visualHost, "guest", ".*", ".*", ".*"
+        ]);
+    }
+//#endif
+
+//#if (UseAspire && !UseSqlite)
+    private static async Task CreateDatabaseAsync(string connectionString)
+    {
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<WebAppFixture>());
+        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
+        {
+//#if (UseMySql)
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+//#elif (UseSqlServer)
+            options.UseSqlServer(connectionString);
+//#elif (UsePostgreSQL)
+            options.UseNpgsql(connectionString);
+//#endif
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
+        });
+
+        await using var serviceProvider = serviceCollection.BuildServiceProvider();
+        await using var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
     }
 //#endif
 }

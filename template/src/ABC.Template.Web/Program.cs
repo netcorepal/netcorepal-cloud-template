@@ -394,12 +394,14 @@ try
 
 
     var app = builder.Build();
+//#if (!UseAspire || UseSqlite)
     if (app.Environment.IsDevelopment())
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         await dbContext.Database.EnsureCreatedAsync();
     }
+//#endif
 
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
