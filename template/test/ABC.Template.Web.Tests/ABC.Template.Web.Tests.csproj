@@ -23,6 +23,10 @@
     <PackageReference Include="Testcontainers.PostgreSql" />
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Testcontainers.MsSql" />
+<!--#elif (UseGaussDB)-->
+    <!-- GaussDB uses custom OpenGauss container with base Testcontainers -->
+<!--#elif (UseKingbaseES)-->
+    <!-- KingbaseES uses custom container with base Testcontainers -->
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
     <PackageReference Include="Testcontainers.RabbitMq" />

@@ -4,6 +4,9 @@ using Testcontainers.MySql;
 using Testcontainers.MsSql;
 //#elif (UsePostgreSQL)
 using Testcontainers.PostgreSql;
+//#elif (UseGaussDB || UseKingbaseES)
+using DotNet.Testcontainers.Builders;
+using DotNet.Testcontainers.Containers;
 //#endif
 //#if (UseRabbitMQ)
 using Testcontainers.RabbitMq;
@@ -35,6 +38,8 @@ public class WebAppFixture : AppFixture<Program>
     private MsSqlContainer _databaseContainer = null!;
 //#elif (UsePostgreSQL)
     private PostgreSqlContainer _databaseContainer = null!;
+//#elif (UseGaussDB || UseKingbaseES)
+    private IContainer _databaseContainer = null!;
 //#endif
 
     protected override async ValueTask PreSetupAsync()
@@ -62,6 +67,27 @@ public class WebAppFixture : AppFixture<Program>
             .WithUsername("postgres").WithPassword("123456")
             .WithEnvironment("TZ", "Asia/Shanghai")
             .WithDatabase("postgres").Build();
+//#elif (UseGaussDB)
+        // Create OpenGauss container (GaussDB compatible)
+        _databaseContainer = new ContainerBuilder()
+            .WithImage("opengauss/opengauss:latest")
+            .WithPortBinding(5432, true)
+            .WithEnvironment("GS_PASSWORD", "Test@123")
+            .WithPrivileged(true)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+            .Build();
+//#elif (UseKingbaseES)
+        // Create KingbaseES container
+        _databaseContainer = new ContainerBuilder()
+            .WithImage("apecloud/kingbase:v008r006c009b0014-unit")
+            .WithPortBinding(54321, true)
+            .WithEnvironment("ENABLE_CI", "yes")
+            .WithEnvironment("DB_USER", "system")
+            .WithEnvironment("DB_PASSWORD", "Test@123")
+            .WithEnvironment("DB_MODE", "oracle")
+            .WithPrivileged(true)
+            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(54321))
+            .Build();
 //#endif
 
         var tasks = new List<Task> { _redisContainer.StartAsync() };
@@ -81,7 +107,13 @@ public class WebAppFixture : AppFixture<Program>
         await CreateVisualHostAsync("/");
 //#endif
 //#if (UseAspire && !UseSqlite)
+//#if (UseGaussDB)
+        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+//#elif (UseKingbaseES)
+        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
+//#else
         await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
+//#endif
 //#endif
     }
 
@@ -100,6 +132,12 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
+//#elif (UseGaussDB)
+        a.UseSetting("ConnectionStrings:GaussDB",
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+//#elif (UseKingbaseES)
+        a.UseSetting("ConnectionStrings:KingbaseES",
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -126,6 +164,12 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
+//#elif (UseGaussDB)
+        a.UseSetting("ConnectionStrings:GaussDB",
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+//#elif (UseKingbaseES)
+        a.UseSetting("ConnectionStrings:KingbaseES",
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -167,6 +211,10 @@ public class WebAppFixture : AppFixture<Program>
             options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
             options.UseNpgsql(connectionString);
+//#elif (UseGaussDB)
+            options.UseGaussDB(connectionString);
+//#elif (UseKingbaseES)
+            options.UseKdbndp(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
