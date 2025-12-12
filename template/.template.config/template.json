@@ -53,6 +53,14 @@
                 {
                     "choice": "Sqlite",
                     "description": "Use SQLite"
+                },
+                {
+                    "choice": "GaussDB",
+                    "description": "Use GaussDB"
+                },
+                {
+                    "choice": "KingbaseES",
+                    "description": "Use KingbaseES"
                 }
             ],
             "defaultValue": "MySql"
@@ -143,6 +151,14 @@
             "type": "computed",
             "value": "(Database == \"Sqlite\")"
         },
+        "UseGaussDB": {
+            "type": "computed",
+            "value": "(Database == \"GaussDB\")"
+        },
+        "UseKingbaseES": {
+            "type": "computed",
+            "value": "(Database == \"KingbaseES\")"
+        },
         "UseRabbitMQ": {
             "type": "computed",
             "value": "(MessageQueue == \"RabbitMQ\")"
@@ -208,7 +224,9 @@
                     "condition": "(UseAspire && Database == \"SqlServer\")",
                     "exclude": [
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**"
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
+                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
+                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/SqlServer": "src/ABC.Template.MigrationService/Migrations"
@@ -218,7 +236,9 @@
                     "condition": "(UseAspire && Database == \"MySql\")",
                     "exclude": [
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**"
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
+                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
+                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/MySql": "src/ABC.Template.MigrationService/Migrations"
@@ -228,10 +248,36 @@
                     "condition": "(UseAspire && Database == \"PostgreSQL\")",
                     "exclude": [
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**"
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
+                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
+                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL": "src/ABC.Template.MigrationService/Migrations"
+                    }
+                },
+                {
+                    "condition": "(UseAspire && Database == \"GaussDB\")",
+                    "exclude": [
+                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
+                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
+                    ],
+                    "rename": {
+                        "src/ABC.Template.MigrationService/Migrations/GaussDB": "src/ABC.Template.MigrationService/Migrations"
+                    }
+                },
+                {
+                    "condition": "(UseAspire && Database == \"KingbaseES\")",
+                    "exclude": [
+                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
+                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
+                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
+                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**"
+                    ],
+                    "rename": {
+                        "src/ABC.Template.MigrationService/Migrations/KingbaseES": "src/ABC.Template.MigrationService/Migrations"
                     }
                 }
             ]

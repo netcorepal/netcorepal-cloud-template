@@ -43,6 +43,26 @@ var postgres = builder.AddPostgres("Database", password: databasePassword)
     .WithPgAdmin();
 
 var postgresDb = postgres.AddDatabase("PostgreSQL", "dev");
+//#elif (UseGaussDB)
+// Add GaussDB database infrastructure (PostgreSQL-compatible)
+var gaussdb = builder.AddPostgres("Database", password: databasePassword)
+    // Configure the container to store data in a volume so that it persists across instances.
+    .WithDataVolume(isReadOnly: false)
+    // Keep the container running between app host sessions.
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithPgAdmin();
+
+var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
+//#elif (UseKingbaseES)
+// Add KingbaseES database infrastructure (PostgreSQL-compatible)
+var kingbasees = builder.AddPostgres("Database", password: databasePassword)
+    // Configure the container to store data in a volume so that it persists across instances.
+    .WithDataVolume(isReadOnly: false)
+    // Keep the container running between app host sessions.
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithPgAdmin();
+
+var kingbaseesDb = kingbasees.AddDatabase("KingbaseES", "dev");
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
@@ -69,6 +89,12 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb);
+//#elif (UseGaussDB)
+    .WithReference(gaussdbDb)
+    .WaitFor(gaussdbDb);
+//#elif (UseKingbaseES)
+    .WithReference(kingbaseesDb)
+    .WaitFor(kingbaseesDb);
 //#endif
 //#endif
 
@@ -87,6 +113,12 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb)
+//#elif (UseGaussDB)
+    .WithReference(gaussdbDb)
+    .WaitFor(gaussdbDb)
+//#elif (UseKingbaseES)
+    .WithReference(kingbaseesDb)
+    .WaitFor(kingbaseesDb)
 //#endif
 //#if (UseSqlite)
     // SQLite doesn't need infrastructure reference

@@ -16,6 +16,10 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , IPostgreSqlCapDataStorage
     //#elif (UseSqlite)
     , ISqliteCapDataStorage
+    //#elif (UseGaussDB)
+    , IGaussDBCapDataStorage
+    //#elif (UseKingbaseES)
+    , IKingbaseESCapDataStorage
     //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)

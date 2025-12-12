@@ -34,6 +34,18 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                 });
+            <!--#elif (UseGaussDB)-->
+            options.UseGaussDB("Host=any;Database=any;Username=any;Password=any",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
+            <!--#elif (UseKingbaseES)-->
+            options.UseKdbndp("Host=any;Database=any;Username=any;Password=any",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
             <!--#endif-->
         });
         var provider = services.BuildServiceProvider();

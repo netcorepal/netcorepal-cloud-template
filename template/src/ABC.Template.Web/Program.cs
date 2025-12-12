@@ -169,6 +169,10 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+//#elif (UseGaussDB)
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
+//#elif (UseKingbaseES)
+        options.UseKdbndp(builder.Configuration.GetConnectionString("KingbaseES"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -189,6 +193,10 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+//#elif (UseGaussDB)
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
+//#elif (UseKingbaseES)
+        options.UseKdbndp(builder.Configuration.GetConnectionString("KingbaseES"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
