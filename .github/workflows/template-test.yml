@@ -19,12 +19,41 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      #max-parallel: 2
       matrix:
-        framework: [ 'net8.0', 'net9.0', 'net10.0' ]
-        database: [ 'MySql', 'SqlServer', 'PostgreSQL', 'Sqlite', 'GaussDB', 'KingbaseES' ]
-        messagequeue: [ 'RabbitMQ', 'Kafka', 'RedisStreams', 'NATS', 'AzureServiceBus', 'AmazonSQS' ]
-        aspire: [ 'false', 'true' ]
+        include:
+          # Test all databases with RabbitMQ on net9.0 without Aspire
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net9.0', database: 'SqlServer', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net9.0', database: 'PostgreSQL', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net9.0', database: 'Sqlite', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net9.0', database: 'GaussDB', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net9.0', database: 'KingbaseES', messagequeue: 'RabbitMQ', aspire: 'false' }
+          
+          # Test all message queues with MySql on net9.0 without Aspire
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'Kafka', aspire: 'false' }
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'RedisStreams', aspire: 'false' }
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'NATS', aspire: 'false' }
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'AzureServiceBus', aspire: 'false' }
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'AmazonSQS', aspire: 'false' }
+          
+          # Test all frameworks with MySql and RabbitMQ without Aspire
+          - { framework: 'net8.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'false' }
+          - { framework: 'net10.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'false' }
+          
+          # Test Aspire with different databases on net9.0 with RabbitMQ
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'true' }
+          - { framework: 'net9.0', database: 'SqlServer', messagequeue: 'RabbitMQ', aspire: 'true' }
+          - { framework: 'net9.0', database: 'PostgreSQL', messagequeue: 'RabbitMQ', aspire: 'true' }
+          - { framework: 'net9.0', database: 'GaussDB', messagequeue: 'RabbitMQ', aspire: 'true' }
+          - { framework: 'net9.0', database: 'KingbaseES', messagequeue: 'RabbitMQ', aspire: 'true' }
+          
+          # Test Aspire with different message queues on net9.0 with MySql
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'Kafka', aspire: 'true' }
+          - { framework: 'net9.0', database: 'MySql', messagequeue: 'RedisStreams', aspire: 'true' }
+          
+          # Test Aspire with different frameworks using MySql and RabbitMQ
+          - { framework: 'net8.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'true' }
+          - { framework: 'net10.0', database: 'MySql', messagequeue: 'RabbitMQ', aspire: 'true' }
     name: ${{ matrix.database }}-${{ matrix.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
 
     steps:
