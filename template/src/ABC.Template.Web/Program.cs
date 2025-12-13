@@ -170,9 +170,9 @@ try
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#elif (UseNpgsql)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("GaussDB"));
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseKingbaseES)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("KingbaseES"));
+        options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -194,9 +194,9 @@ try
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#elif (UseNpgsql)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("GaussDB"));
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseKingbaseES)
-        options.UseNpgsql(builder.Configuration.GetConnectionString("KingbaseES"));
+        options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())

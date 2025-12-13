@@ -22,10 +22,10 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.Sqlite"/>
         <!--#elif (UseGaussDB)-->
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <PackageReference Include="DotNetCore.EntityFrameworkCore.GaussDB"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.GaussDB"/>
         <!--#elif (UseKingbaseES)-->
-        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+        <PackageReference Include="DotNetCore.EntityFrameworkCore.KingbaseES"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.KingbaseES"/>
         <!--#endif-->
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore"/>

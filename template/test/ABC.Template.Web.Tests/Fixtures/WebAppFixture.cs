@@ -4,7 +4,7 @@ using Testcontainers.MySql;
 using Testcontainers.MsSql;
 //#elif (UsePostgreSQL)
 using Testcontainers.PostgreSql;
-//#elif (UseNpgsql || UseKingbaseES)
+//#elif (UseGaussDB || UseKingbaseES)
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 //#endif
@@ -38,7 +38,7 @@ public class WebAppFixture : AppFixture<Program>
     private MsSqlContainer _databaseContainer = null!;
 //#elif (UsePostgreSQL)
     private PostgreSqlContainer _databaseContainer = null!;
-//#elif (UseNpgsql || UseKingbaseES)
+//#elif (UseGaussDB || UseKingbaseES)
     private IContainer _databaseContainer = null!;
 //#endif
 
@@ -211,10 +211,10 @@ public class WebAppFixture : AppFixture<Program>
             options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
             options.UseNpgsql(connectionString);
-//#elif (UseNpgsql)
-            options.UseNpgsql(connectionString);
+//#elif (UseGaussDB)
+            options.UseGaussDB(connectionString);
 //#elif (UseKingbaseES)
-            options.UseNpgsql(connectionString);
+            options.UseKingbaseES(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
