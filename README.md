@@ -78,7 +78,7 @@ dotnet new list
 | 参数 | 短参数 | 说明 | 可选值 | 默认值 |
 |------|--------|------|--------|--------|
 | `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net9.0` |
-| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite` | `MySql` |
+| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite`, `GaussDB`, `KingbaseES` | `MySql` |
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 

@@ -43,6 +43,29 @@ var postgres = builder.AddPostgres("Database", password: databasePassword)
     .WithPgAdmin();
 
 var postgresDb = postgres.AddDatabase("PostgreSQL", "dev");
+//#elif (UseGaussDB)
+// Add GaussDB database infrastructure using OpenGauss container (GaussDB compatible)
+var gaussdb = builder.AddContainer("Database", "opengauss/opengauss", "latest")
+    .WithEnvironment("GS_PASSWORD", databasePassword)
+    .WithEndpoint(5432, 5432, "tcp", "gaussdb")
+    .WithBindMount("gaussdb-data", "/var/lib/opengauss")
+    .WithLifetime(ContainerLifetime.Persistent);
+
+var gaussdbDb = builder.AddConnectionString("GaussDB", 
+    $"Host={{Database.bindings.gaussdb.host}};Port={{Database.bindings.gaussdb.port}};Database=dev;Username=gaussdb;Password={{Database.env.GS_PASSWORD}}");
+//#elif (UseKingbaseES)
+// Add KingbaseES database infrastructure using KingbaseES container
+var kingbasees = builder.AddContainer("Database", "apecloud/kingbase", "v008r006c009b0014-unit")
+    .WithEnvironment("ENABLE_CI", "yes")
+    .WithEnvironment("DB_USER", "system")
+    .WithEnvironment("DB_PASSWORD", databasePassword)
+    .WithEnvironment("DB_MODE", "oracle")
+    .WithEndpoint(54321, 54321, "tcp", "kingbasees")
+    .WithBindMount("kingbasees-data", "/home/kingbase/userdata")
+    .WithLifetime(ContainerLifetime.Persistent);
+
+var kingbaseesDb = builder.AddConnectionString("KingbaseES",
+    $"Host={{Database.bindings.kingbasees.host}};Port={{Database.bindings.kingbasees.port}};Database=TEST;Username={{Database.env.DB_USER}};Password={{Database.env.DB_PASSWORD}}");
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
@@ -69,6 +92,12 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb);
+//#elif (UseGaussDB)
+    .WithReference(gaussdbDb)
+    .WaitFor(gaussdbDb);
+//#elif (UseKingbaseES)
+    .WithReference(kingbaseesDb)
+    .WaitFor(kingbaseesDb);
 //#endif
 //#endif
 
@@ -87,6 +116,12 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UsePostgreSQL)
     .WithReference(postgresDb)
     .WaitFor(postgresDb)
+//#elif (UseGaussDB)
+    .WithReference(gaussdbDb)
+    .WaitFor(gaussdbDb)
+//#elif (UseKingbaseES)
+    .WithReference(kingbaseesDb)
+    .WaitFor(kingbaseesDb)
 //#endif
 //#if (UseSqlite)
     // SQLite doesn't need infrastructure reference
