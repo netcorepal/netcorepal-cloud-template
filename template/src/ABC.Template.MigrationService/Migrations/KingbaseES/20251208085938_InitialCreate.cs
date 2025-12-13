@@ -1,10 +1,9 @@
 using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace ABC.Template.MigrationService.Migrations.PostgreSQL
+namespace ABC.Template.MigrationService.Migrations.KingbaseES
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

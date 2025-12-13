@@ -4,12 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ABC.Template.Infrastructure;
 
 #nullable disable
 
-namespace ABC.Template.MigrationService.Migrations.PostgreSQL
+namespace ABC.Template.MigrationService.Migrations.KingbaseES
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20251208085938_InitialCreate")]

@@ -3,12 +3,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ABC.Template.Infrastructure;
 
 #nullable disable
 
-namespace ABC.Template.MigrationService.Migrations.PostgreSQL
+namespace ABC.Template.MigrationService.Migrations.KingbaseES
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
