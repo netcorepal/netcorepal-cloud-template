@@ -26,11 +26,11 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 //#elif (UseSqlite)
     options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
-//#elif (UseGaussDB)
-    options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"), sqlOptions =>
+//#elif (UseNpgsql)
+    options.UseNpgsql(builder.Configuration.GetConnectionString("GaussDB"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
 //#elif (UseKingbaseES)
-    options.UseKdbndp(builder.Configuration.GetConnectionString("KingbaseES"), sqlOptions =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("KingbaseES"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
 //#endif
 );
@@ -53,7 +53,7 @@ builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
     {
         settings.DisableRetry = false;
     });
-//#elif (UseGaussDB)
+//#elif (UseNpgsql)
 builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
     configureSettings: settings =>
     {
