@@ -30,8 +30,8 @@
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="8.0.0" />
     <PackageVersion Include="MySql.EntityFrameworkCore" Version="8.0.5" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
-    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="8.0.0" />
-    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="8.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="8.0.2" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="8.0.1" />
 <!--#elif (Framework == "net9.0")-->
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.7" />
