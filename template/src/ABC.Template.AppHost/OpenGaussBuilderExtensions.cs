@@ -27,7 +27,8 @@ public static class OpenGaussBuilderExtensions
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(name);
 
-        password ??= builder.AddParameter("database-password", secret: true);
+        // Use fixed default password "openGauss@123" if not provided
+        password ??= ParameterResourceBuilderExtensions.CreateDefaultPasswordParameter(builder, $"{name}-password", defaultValue: "openGauss@123");
 
         var resource = new ABC.Template.AppHost.OpenGaussServerResource(name, userName, password);
 

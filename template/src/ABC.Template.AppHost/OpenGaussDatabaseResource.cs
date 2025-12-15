@@ -22,18 +22,9 @@ public class OpenGaussDatabaseResource(string name, string databaseName, OpenGau
     /// <summary>
     /// Gets the connection string expression for the OpenGauss database.
     /// </summary>
-    public ReferenceExpression ConnectionStringExpression
-    {
-        get
-        {
-            var connectionStringBuilder = new DbConnectionStringBuilder
-            {
-                ["Database"] = DatabaseName
-            };
-
-            return ReferenceExpression.Create($"{Parent};{connectionStringBuilder.ToString()}");
-        }
-    }
+    public ReferenceExpression ConnectionStringExpression =>
+        ReferenceExpression.Create(
+            $"Host={Parent.PrimaryEndpoint.Property(EndpointProperty.Host)};Port={Parent.PrimaryEndpoint.Property(EndpointProperty.Port)};Username={Parent.UserNameReference};Password={Parent.PasswordParameter};Database={DatabaseName}");
 
     /// <summary>
     /// Gets the database name.
@@ -65,7 +56,7 @@ public class OpenGaussDatabaseResource(string name, string databaseName, OpenGau
 
     IEnumerable<KeyValuePair<string, ReferenceExpression>> IResourceWithConnectionString.GetConnectionProperties() =>
         Parent.CombineProperties([
-            new("DatabaseName", ReferenceExpression.Create($"{DatabaseName}")),
+            new("Database", ReferenceExpression.Create($"{DatabaseName}")),
             new("Uri", UriExpression),
             new("JdbcConnectionString", JdbcConnectionString),
         ]);
