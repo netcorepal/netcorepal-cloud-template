@@ -67,7 +67,7 @@ public class WebAppFixture : AppFixture<Program>
             .WithUsername("postgres").WithPassword("123456")
             .WithEnvironment("TZ", "Asia/Shanghai")
             .WithDatabase("postgres").Build();
-//#elif (UseNpgsql)
+//#elif (UseGaussDB)
         // Create OpenGauss container (GaussDB compatible)
         _databaseContainer = new ContainerBuilder()
             .WithImage("opengauss/opengauss:latest")
@@ -107,7 +107,7 @@ public class WebAppFixture : AppFixture<Program>
         await CreateVisualHostAsync("/");
 //#endif
 //#if (UseAspire && !UseSqlite)
-//#if (UseNpgsql)
+//#if (UseGaussDB)
         await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
         await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
@@ -132,7 +132,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
-//#elif (UseNpgsql)
+//#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
@@ -164,7 +164,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
-//#elif (UseNpgsql)
+//#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
