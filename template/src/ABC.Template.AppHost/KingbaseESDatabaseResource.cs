@@ -1,4 +1,7 @@
 //#if (UseKingbaseES)
+using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using Aspire.Hosting.ApplicationModel;
 
 namespace ABC.Template.AppHost;
@@ -14,27 +17,57 @@ public class KingbaseESDatabaseResource(string name, string databaseName, Kingba
     /// <summary>
     /// Gets the parent KingbaseES container resource.
     /// </summary>
-    public KingbaseESServerResource Parent { get; } = parent;
+    public KingbaseESServerResource Parent { get; } = parent ?? throw new ArgumentNullException(nameof(parent));
 
     /// <summary>
     /// Gets the connection string expression for the KingbaseES database.
     /// </summary>
-    public ReferenceExpression ConnectionStringExpression =>
-        ReferenceExpression.Create(
-            $"{Parent.ConnectionStringExpression};Database={databaseName}");
+    public ReferenceExpression ConnectionStringExpression
+    {
+        get
+        {
+            var connectionStringBuilder = new DbConnectionStringBuilder
+            {
+                ["Database"] = DatabaseName
+            };
+
+            return ReferenceExpression.Create($"{Parent};{connectionStringBuilder.ToString()}");
+        }
+    }
 
     /// <summary>
     /// Gets the database name.
     /// </summary>
-    public string DatabaseName { get; } = databaseName;
+    public string DatabaseName { get; } = ThrowIfNullOrEmpty(databaseName);
+
+    private static string ThrowIfNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(argument, paramName);
+        return argument;
+    }
 
     /// <summary>
-    /// Gets the connection string for the KingbaseES database.
+    /// Gets the connection URI expression for the KingbaseES database.
     /// </summary>
-    /// <returns>A connection string for the KingbaseES database.</returns>
-    public ValueTask<string?> GetConnectionStringAsync(CancellationToken cancellationToken = default)
-    {
-        return ConnectionStringExpression.GetValueAsync(cancellationToken);
-    }
+    /// <remarks>
+    /// Format: <c>kingbase://{user}:{password}@{host}:{port}/{database}</c>.
+    /// </remarks>
+    public ReferenceExpression UriExpression => Parent.BuildUri(DatabaseName);
+
+    /// <summary>
+    /// Gets the JDBC connection string for the KingbaseES database.
+    /// </summary>
+    /// <remarks>
+    /// <para>Format: <c>jdbc:kingbase8://{host}:{port}/{database}</c>.</para>
+    /// <para>User and password credentials are not included in the JDBC connection string. Use the <see cref="IResourceWithConnectionString.GetConnectionProperties"/> method to access the <c>Username</c> and <c>Password</c> properties.</para>
+    /// </remarks>
+    public ReferenceExpression JdbcConnectionString => Parent.BuildJdbcConnectionString(DatabaseName);
+
+    IEnumerable<KeyValuePair<string, ReferenceExpression>> IResourceWithConnectionString.GetConnectionProperties() =>
+        Parent.CombineProperties([
+            new("DatabaseName", ReferenceExpression.Create($"{DatabaseName}")),
+            new("Uri", UriExpression),
+            new("JdbcConnectionString", JdbcConnectionString),
+        ]);
 }
 //#endif

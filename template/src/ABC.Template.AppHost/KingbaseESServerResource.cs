@@ -109,12 +109,67 @@ public class KingbaseESServerResource : ContainerResource, IResourceWithConnecti
     /// </summary>
     public EndpointReferenceExpression Port => PrimaryEndpoint.Property(EndpointProperty.Port);
 
+    /// <summary>
+    /// Gets the connection URI expression for the KingbaseES server.
+    /// </summary>
+    /// <remarks>
+    /// Format: <c>kingbase://{user}:{password}@{host}:{port}</c>.
+    /// </remarks>
+    public ReferenceExpression UriExpression => BuildUri();
+
+    internal ReferenceExpression BuildUri(string? databaseName = null)
+    {
+        var builder = new ReferenceExpressionBuilder();
+        builder.AppendLiteral("kingbase://");
+        if (UserNameParameter is not null)
+        {
+            builder.Append($"{UserNameParameter:uri}:{PasswordParameter:uri}@{Host}:{Port}");
+        }
+        else
+        {
+            builder.Append($"{DefaultUserName:uri}:{PasswordParameter:uri}@{Host}:{Port}");
+        }
+
+        if (databaseName is not null)
+        {
+            builder.AppendLiteral("/");
+            builder.Append($"{databaseName:uri}");
+        }
+
+        return builder.Build();
+    }
+
+    internal ReferenceExpression BuildJdbcConnectionString(string? databaseName = null)
+    {
+        var builder = new ReferenceExpressionBuilder();
+        builder.AppendLiteral("jdbc:kingbase8://");
+        builder.Append($"{Host}:{Port}");
+
+        if (databaseName is not null)
+        {
+            builder.Append($"/{databaseName:uri}");
+        }
+
+        return builder.Build();
+    }
+
+    /// <summary>
+    /// Gets the JDBC connection string for the KingbaseES server.
+    /// </summary>
+    /// <remarks>
+    /// <para>Format: <c>jdbc:kingbase8://{host}:{port}</c>.</para>
+    /// <para>User and password credentials are not included in the JDBC connection string. Use the <c>Username</c> and <c>Password</c> connection properties to access credentials.</para>
+    /// </remarks>
+    public ReferenceExpression JdbcConnectionString => BuildJdbcConnectionString();
+
     IEnumerable<KeyValuePair<string, ReferenceExpression>> IResourceWithConnectionString.GetConnectionProperties() =>
     [
         new ("Host", ReferenceExpression.Create($"{Host}")),
         new ("Port", ReferenceExpression.Create($"{Port}")),
         new ("Username", ReferenceExpression.Create($"{UserNameReference}")),
         new ("Password", ReferenceExpression.Create($"{PasswordParameter}")),
+        new ("Uri", UriExpression),
+        new ("JdbcConnectionString", JdbcConnectionString),
     ];
 }
 //#endif
