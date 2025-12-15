@@ -29,7 +29,7 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("GaussDB:ValueGenerationStrategy", GaussDBValueGenerationStrategy.IdentityByDefaultColumn),
                     Version = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
@@ -48,7 +48,7 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                        .Annotation("GaussDB:ValueGenerationStrategy", GaussDBValueGenerationStrategy.IdentityByDefaultColumn),
                     Version = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "character varying(400)", maxLength: 400, nullable: false),
                     Group = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
@@ -130,5 +130,13 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
             migrationBuilder.DropTable(
                 name: "order");
         }
+    }
+
+    public enum GaussDBValueGenerationStrategy
+    {
+        None = 0,
+        IdentityByDefaultColumn = 1,
+        IdentityAlwaysColumn = 2,
+        SerialColumn = 3
     }
 }
