@@ -87,7 +87,7 @@ public class KingbaseESServerResource : ContainerResource, IResourceWithConnecti
         return ConnectionStringExpression.GetValueAsync(cancellationToken);
     }
 
-    private readonly Dictionary<string, string> _databases = new Dictionary<string, string>(StringComparers.ResourceName);
+    private readonly Dictionary<string, string> _databases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// A dictionary where the key is the resource name and the value is the database name.
