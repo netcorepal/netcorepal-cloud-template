@@ -169,7 +169,7 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
-//#elif (UseNpgsql)
+//#elif (UseGaussDB)
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseKingbaseES)
         options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));
@@ -193,7 +193,7 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
-//#elif (UseNpgsql)
+//#elif (UseGaussDB)
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseKingbaseES)
         options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));

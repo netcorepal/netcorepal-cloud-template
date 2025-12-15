@@ -108,7 +108,7 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
 //#if (UseAspire && !UseSqlite)
 //#if (UseGaussDB)
-        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
         await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#else
@@ -134,7 +134,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
         a.UseSetting("ConnectionStrings:KingbaseES",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
@@ -166,7 +166,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=postgres;Username=gaussdb;Password=Test@123");
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
 //#elif (UseKingbaseES)
         a.UseSetting("ConnectionStrings:KingbaseES",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
