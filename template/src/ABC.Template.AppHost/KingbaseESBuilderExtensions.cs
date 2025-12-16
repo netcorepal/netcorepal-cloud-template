@@ -20,24 +20,24 @@ public static class KingbaseESBuilderExtensions
     public static IResourceBuilder<ABC.Template.AppHost.KingbaseESServerResource> AddKingbaseES(
         this IDistributedApplicationBuilder builder,
         [ResourceName] string name,
-        ParameterResource? userName = null,
-        ParameterResource? password = null,
+        IResourceBuilder<ParameterResource>? userName = null,
+        IResourceBuilder<ParameterResource>? password = null,
         int? port = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(name);
 
         // Use fixed default password "openGauss@123" if not provided
-        password ??= ParameterResourceBuilderExtensions.CreateDefaultPasswordParameter(builder, $"{name}-password", defaultValue: "openGauss@123");
+        password ??= builder.AddParameter($"{name}-password", "openGauss@123", secret: true);
 
-        var resource = new ABC.Template.AppHost.KingbaseESServerResource(name, userName, password);
+        var resource = new ABC.Template.AppHost.KingbaseESServerResource(name, userName?.Resource, password.Resource);
 
         return builder.AddResource(resource)
                       .WithImage("apecloud/kingbase", "v008r006c009b0014-unit")
                       .WithImageRegistry("docker.io")
                       .WithEnvironment("ENABLE_CI", "yes")
-                      .WithEnvironment("DB_USER", userName is not null ? userName : "system")
-                      .WithEnvironment("DB_PASSWORD", password)
+                      .WithEnvironment("DB_USER", userName is not null ? userName.Resource : "system")
+                      .WithEnvironment("DB_PASSWORD", password.Resource)
                       .WithEnvironment("DB_MODE", "oracle")
                       .WithEndpoint(port: port, targetPort: 54321, name: ABC.Template.AppHost.KingbaseESServerResource.PrimaryEndpointName);
     }

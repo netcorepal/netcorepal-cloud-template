@@ -20,22 +20,22 @@ public static class OpenGaussBuilderExtensions
     public static IResourceBuilder<ABC.Template.AppHost.OpenGaussServerResource> AddOpenGauss(
         this IDistributedApplicationBuilder builder,
         [ResourceName] string name,
-        ParameterResource? userName = null,
-        ParameterResource? password = null,
+        IResourceBuilder<ParameterResource>? userName = null,
+        IResourceBuilder<ParameterResource>? password = null,
         int? port = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(name);
 
         // Use fixed default password "openGauss@123" if not provided
-        password ??= builder.AddParameter($"{name}-password", "openGauss@123", secret: true).Resource;;
+        password ??= builder.AddParameter($"{name}-password", "openGauss@123", secret: true);;
 
-        var resource = new ABC.Template.AppHost.OpenGaussServerResource(name, userName, password);
+        var resource = new ABC.Template.AppHost.OpenGaussServerResource(name, userName?.Resource, password.Resource);
 
         return builder.AddResource(resource)
                       .WithImage("opengauss/opengauss", "latest")
                       .WithImageRegistry("docker.io")
-                      .WithEnvironment("GS_PASSWORD", password)
+                      .WithEnvironment("GS_PASSWORD", password.Resource)
                       .WithEndpoint(port: port, targetPort: 5432, name: ABC.Template.AppHost.OpenGaussServerResource.PrimaryEndpointName);
     }
 
