@@ -54,17 +54,9 @@ builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
         settings.DisableRetry = false;
     });
 //#elif (UseGaussDB)
-builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
-    configureSettings: settings =>
-    {
-        settings.DisableRetry = false;
-    });
+// No Enrich
 //#elif (UseKingbaseES)
-builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
-    configureSettings: settings =>
-    {
-        settings.DisableRetry = false;
-    });
+// No Enrich
 //#endif
 
 var host = builder.Build();
