@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -28,8 +28,7 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
                 name: "CAPPublishedMessage",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Version = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     Content = table.Column<string>(type: "TEXT", nullable: true),
@@ -47,8 +46,7 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
                 name: "CAPReceivedMessage",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<long>(type: "bigint", nullable: false),
                     Version = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
                     Name = table.Column<string>(type: "character varying(400)", maxLength: 400, nullable: false),
                     Group = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
