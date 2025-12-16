@@ -129,4 +129,12 @@ namespace ABC.Template.MigrationService.Migrations.GaussDB
                 name: "order");
         }
     }
+
+    public enum GaussDBValueGenerationStrategy
+    {
+        None = 0,
+        IdentityByDefaultColumn = 1,
+        IdentityAlwaysColumn = 2,
+        SerialColumn = 3
+    }
 }
