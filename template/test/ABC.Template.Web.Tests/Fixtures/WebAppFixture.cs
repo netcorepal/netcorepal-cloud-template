@@ -4,7 +4,9 @@ using Testcontainers.MySql;
 using Testcontainers.MsSql;
 //#elif (UsePostgreSQL)
 using Testcontainers.PostgreSql;
-//#elif (UseGaussDB || UseKingbaseES)
+//#elif (UseGaussDB)
+using Testcontainers.OpenGauss;
+//#elif (UseKingbaseES)
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 //#endif
@@ -69,12 +71,9 @@ public class WebAppFixture : AppFixture<Program>
             .WithDatabase("postgres").Build();
 //#elif (UseGaussDB)
         // Create OpenGauss container (GaussDB compatible)
-        _databaseContainer = new ContainerBuilder()
+        _databaseContainer = new OpenGaussBuilder()
             .WithImage("opengauss/opengauss:latest")
-            .WithPortBinding(5432, true)
-            .WithEnvironment("GS_PASSWORD", "Test@123")
-            .WithPrivileged(true)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
+            .WithPassword("Test@123")
             .Build();
 //#elif (UseKingbaseES)
         // Create KingbaseES container
@@ -112,7 +111,7 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
 //#if (UseAspire && !UseSqlite)
 //#if (UseGaussDB)
-        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
+        await CreateDatabaseAsync(_databaseContainer.GetConnectionString().Replace("Database=postgres", "Database=test"));
 //#elif (UseKingbaseES)
         await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#else
@@ -170,7 +169,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
+            _databaseContainer.GetConnectionString().Replace("Database=postgres", "Database=test"));
 //#elif (UseKingbaseES)
         a.UseSetting("ConnectionStrings:KingbaseES",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
@@ -204,8 +203,7 @@ public class WebAppFixture : AppFixture<Program>
             try
             {
 //#if (UseGaussDB)
-                var port = _databaseContainer.GetMappedPublicPort(5432);
-                var connectionString = $"Host={_databaseContainer.Hostname};Port={port};Database=postgres;Username=gaussdb;Password=Test@123;Timeout=5;";
+                var connectionString = _databaseContainer.GetConnectionString() + ";Timeout=5;";
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
                 optionsBuilder.UseGaussDB(connectionString);
 //#elif (UseKingbaseES)

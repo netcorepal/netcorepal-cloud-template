@@ -24,7 +24,7 @@
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Testcontainers.MsSql" />
 <!--#elif (UseGaussDB)-->
-    <!-- GaussDB uses custom OpenGauss container with base Testcontainers -->
+    <PackageReference Include="NetCorePal.Testcontainers.OpenGauss" />
 <!--#elif (UseKingbaseES)-->
     <!-- KingbaseES uses custom container with base Testcontainers -->
 <!--#endif-->
