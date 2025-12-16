@@ -103,6 +103,10 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
         await Task.WhenAll(tasks);
 
+//#if (UseGaussDB || UseKingbaseES)
+        // Wait for database to be fully initialized
+        await WaitForDatabaseReadyAsync();
+//#endif
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
@@ -188,6 +192,41 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
         a.UseEnvironment("Development");
     }
+
+//#if (UseGaussDB || UseKingbaseES)
+    private async Task WaitForDatabaseReadyAsync()
+    {
+        var maxRetries = 30;
+        var delay = TimeSpan.FromSeconds(1);
+        
+        for (int i = 0; i < maxRetries; i++)
+        {
+            try
+            {
+//#if (UseGaussDB)
+                var port = _databaseContainer.GetMappedPublicPort(5432);
+                var connectionString = $"Host={_databaseContainer.Hostname};Port={port};Database=postgres;Username=gaussdb;Password=Test@123;Timeout=5;";
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseGaussDB(connectionString);
+//#elif (UseKingbaseES)
+                var port = _databaseContainer.GetMappedPublicPort(54321);
+                var connectionString = $"Host={_databaseContainer.Hostname};Port={port};Database=TEST;Username=system;Password=Test@123;Timeout=5;";
+                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+                optionsBuilder.UseKingbaseES(connectionString);
+//#endif
+                
+                await using var context = new ApplicationDbContext(optionsBuilder.Options, null!);
+                await context.Database.CanConnectAsync();
+                return;
+            }
+            catch
+            {
+                if (i == maxRetries - 1) throw;
+                await Task.Delay(delay);
+            }
+        }
+    }
+//#endif
 
 //#if (UseRabbitMQ)
     private async Task CreateVisualHostAsync(string visualHost)
