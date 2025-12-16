@@ -40,7 +40,9 @@ public class WebAppFixture : AppFixture<Program>
     private MsSqlContainer _databaseContainer = null!;
 //#elif (UsePostgreSQL)
     private PostgreSqlContainer _databaseContainer = null!;
-//#elif (UseGaussDB || UseKingbaseES)
+//#elif (UseGaussDB)
+    private OpenGaussContainer _databaseContainer = null!;
+//#elif (UseKingbaseES)
     private IContainer _databaseContainer = null!;
 //#endif
 
