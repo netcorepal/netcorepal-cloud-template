@@ -102,7 +102,7 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
         await Task.WhenAll(tasks);
 
-//#if (UseGaussDB || UseKingbaseES)
+//#if (UseKingbaseES)
         // Wait for database to be fully initialized
         await WaitForDatabaseReadyAsync();
 //#endif
@@ -192,7 +192,7 @@ public class WebAppFixture : AppFixture<Program>
         a.UseEnvironment("Development");
     }
 
-//#if (UseGaussDB || UseKingbaseES)
+//#if (UseKingbaseES)
     private async Task WaitForDatabaseReadyAsync()
     {
         var maxRetries = 30;
@@ -202,16 +202,10 @@ public class WebAppFixture : AppFixture<Program>
         {
             try
             {
-//#if (UseGaussDB)
-                var connectionString = _databaseContainer.GetConnectionString() + ";Timeout=5;";
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseGaussDB(connectionString);
-//#elif (UseKingbaseES)
                 var port = _databaseContainer.GetMappedPublicPort(54321);
                 var connectionString = $"Host={_databaseContainer.Hostname};Port={port};Database=TEST;Username=system;Password=Test@123;Timeout=5;";
                 var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
                 optionsBuilder.UseKingbaseES(connectionString);
-//#endif
                 
                 await using var context = new ApplicationDbContext(optionsBuilder.Options, null!);
                 await context.Database.CanConnectAsync();
