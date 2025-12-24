@@ -40,8 +40,8 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                 });
-            <!--#elif (UseKingbaseES)-->
-            options.UseKingbaseES("Host=any;Database=any;Username=any;Password=any",
+            <!--#elif (UseDMDB)-->
+            options.UseDMDB("Host=any;Database=any;Username=any;Password=any",
                 b =>
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);

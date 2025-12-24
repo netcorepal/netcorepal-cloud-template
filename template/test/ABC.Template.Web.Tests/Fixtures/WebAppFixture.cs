@@ -6,9 +6,8 @@ using Testcontainers.MsSql;
 using Testcontainers.PostgreSql;
 //#elif (UseGaussDB)
 using Testcontainers.OpenGauss;
-//#elif (UseKingbaseES)
-using DotNet.Testcontainers.Builders;
-using DotNet.Testcontainers.Containers;
+//#elif (UseDMDB)
+using Testcontainers.DMDB;
 //#endif
 //#if (UseRabbitMQ)
 using Testcontainers.RabbitMq;
@@ -42,8 +41,8 @@ public class WebAppFixture : AppFixture<Program>
     private PostgreSqlContainer _databaseContainer = null!;
 //#elif (UseGaussDB)
     private OpenGaussContainer _databaseContainer = null!;
-//#elif (UseKingbaseES)
-    private IContainer _databaseContainer = null!;
+//#elif (UseDMDB)
+    private DmdbContainer _databaseContainer = null!;
 //#endif
 
     protected override async ValueTask PreSetupAsync()
@@ -72,22 +71,10 @@ public class WebAppFixture : AppFixture<Program>
             .WithEnvironment("TZ", "Asia/Shanghai")
             .WithDatabase("postgres").Build();
 //#elif (UseGaussDB)
-        // Create OpenGauss container (GaussDB compatible)
         _databaseContainer = new OpenGaussBuilder()
-            .WithImage("opengauss/opengauss:latest")
-            .WithPassword("Test@123")
             .Build();
-//#elif (UseKingbaseES)
-        // Create KingbaseES container
-        _databaseContainer = new ContainerBuilder()
-            .WithImage("apecloud/kingbase:v008r006c009b0014-unit")
-            .WithPortBinding(54321, true)
-            .WithEnvironment("ENABLE_CI", "yes")
-            .WithEnvironment("DB_USER", "system")
-            .WithEnvironment("DB_PASSWORD", "Test@123")
-            .WithEnvironment("DB_MODE", "oracle")
-            .WithPrivileged(true)
-            .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(54321))
+//#elif (UseDMDB)
+        _databaseContainer = new DmdbBuilder()
             .Build();
 //#endif
 
@@ -103,22 +90,11 @@ public class WebAppFixture : AppFixture<Program>
         tasks.Add(_databaseContainer.StartAsync());
 //#endif
         await Task.WhenAll(tasks);
-
-//#if (UseKingbaseES)
-        // Wait for database to be fully initialized
-        await WaitForDatabaseReadyAsync();
-//#endif
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
 //#if (UseAspire && !UseSqlite)
-//#if (UseGaussDB)
-        await CreateDatabaseAsync(_databaseContainer.GetConnectionString().Replace("Database=postgres", "Database=test"));
-//#elif (UseKingbaseES)
-        await CreateDatabaseAsync($"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
-//#else
         await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
-//#endif
 //#endif
     }
 
@@ -140,8 +116,8 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
-//#elif (UseKingbaseES)
-        a.UseSetting("ConnectionStrings:KingbaseES",
+//#elif (UseDMDB)
+        a.UseSetting("ConnectionStrings:DMDB",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
@@ -171,9 +147,9 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString().Replace("Database=postgres", "Database=test"));
-//#elif (UseKingbaseES)
-        a.UseSetting("ConnectionStrings:KingbaseES",
+            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
+//#elif (UseDMDB)
+        a.UseSetting("ConnectionStrings:DMDB",
             $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
@@ -193,34 +169,6 @@ public class WebAppFixture : AppFixture<Program>
 //#endif
         a.UseEnvironment("Development");
     }
-
-//#if (UseKingbaseES)
-    private async Task WaitForDatabaseReadyAsync()
-    {
-        var maxRetries = 30;
-        var delay = TimeSpan.FromSeconds(1);
-        
-        for (int i = 0; i < maxRetries; i++)
-        {
-            try
-            {
-                var port = _databaseContainer.GetMappedPublicPort(54321);
-                var connectionString = $"Host={_databaseContainer.Hostname};Port={port};Database=TEST;Username=system;Password=Test@123;Timeout=5;";
-                var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-                optionsBuilder.UseKingbaseES(connectionString);
-                
-                await using var context = new ApplicationDbContext(optionsBuilder.Options, null!);
-                await context.Database.CanConnectAsync();
-                return;
-            }
-            catch
-            {
-                if (i == maxRetries - 1) throw;
-                await Task.Delay(delay);
-            }
-        }
-    }
-//#endif
 
 //#if (UseRabbitMQ)
     private async Task CreateVisualHostAsync(string visualHost)
@@ -246,8 +194,8 @@ public class WebAppFixture : AppFixture<Program>
             options.UseNpgsql(connectionString);
 //#elif (UseGaussDB)
             options.UseGaussDB(connectionString);
-//#elif (UseKingbaseES)
-            options.UseKingbaseES(connectionString);
+//#elif (UseDMDB)
+            options.UseDMDB(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();

@@ -24,9 +24,9 @@
         <!--#elif (UseGaussDB)-->
         <PackageReference Include="DotNetCore.EntityFrameworkCore.GaussDB"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.GaussDB"/>
-        <!--#elif (UseKingbaseES)-->
-        <PackageReference Include="DotNetCore.EntityFrameworkCore.KingbaseES"/>
-        <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.KingbaseES"/>
+        <!--#elif (UseDMDB)-->
+        <PackageReference Include="DotNetCore.EntityFrameworkCore.DMDB"/>
+        <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.DMDB"/>
         <!--#endif-->
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore"/>
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake"/>

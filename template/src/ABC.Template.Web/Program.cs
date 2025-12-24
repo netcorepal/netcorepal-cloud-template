@@ -171,8 +171,8 @@ try
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#elif (UseGaussDB)
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
-//#elif (UseKingbaseES)
-        options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));
+//#elif (UseDMDB)
+        options.UseDMDB(builder.Configuration.GetConnectionString("DMDB"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -195,8 +195,8 @@ try
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
 //#elif (UseGaussDB)
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
-//#elif (UseKingbaseES)
-        options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"));
+//#elif (UseDMDB)
+        options.UseDMDB(builder.Configuration.GetConnectionString("DMDB"));
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())

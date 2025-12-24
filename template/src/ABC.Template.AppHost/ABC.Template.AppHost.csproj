@@ -22,6 +22,10 @@
     <PackageReference Include="Aspire.Hosting.SqlServer" />
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+<!--#elif (UseGaussDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.OpenGauss" />
+<!--#elif (UseDMDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.DMDB" />
 <!--#endif-->
     <PackageReference Include="Aspire.Hosting.Redis" />
 <!--#if (UseRabbitMQ)-->

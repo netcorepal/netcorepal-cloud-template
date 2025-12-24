@@ -52,15 +52,15 @@ var gaussdb = builder.AddOpenGauss("Database", password: databasePassword)
     .WithLifetime(ContainerLifetime.Persistent);
 
 var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
-//#elif (UseKingbaseES)
-// Add KingbaseES database infrastructure using KingbaseES container
-var kingbasees = builder.AddKingbaseES("Database", password: databasePassword)
+//#elif (UseDMDB)
+// Add DMDB database infrastructure using DMDB container
+var dmdb = builder.AddDMDB("Database", password: databasePassword)
     // Configure the container to store data in a volume so that it persists across instances.
     .WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
     .WithLifetime(ContainerLifetime.Persistent);
 
-var kingbaseesDb = kingbasees.AddDatabase("KingbaseES", "TEST");
+var dmdbDb = dmdb.AddDatabase("DMDB", "TEST");
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
@@ -90,9 +90,9 @@ var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService
 //#elif (UseGaussDB)
     .WithReference(gaussdbDb)
     .WaitFor(gaussdbDb);
-//#elif (UseKingbaseES)
-    .WithReference(kingbaseesDb)
-    .WaitFor(kingbaseesDb);
+//#elif (UseDMDB)
+    .WithReference(dmdbDb)
+    .WaitFor(dmdbDb);
 //#endif
 //#endif
 
@@ -114,9 +114,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UseGaussDB)
     .WithReference(gaussdbDb)
     .WaitFor(gaussdbDb)
-//#elif (UseKingbaseES)
-    .WithReference(kingbaseesDb)
-    .WaitFor(kingbaseesDb)
+//#elif (UseDMDB)
+    .WithReference(dmdbDb)
+    .WaitFor(dmdbDb)
 //#endif
 //#if (UseSqlite)
     // SQLite doesn't need infrastructure reference

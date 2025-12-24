@@ -18,8 +18,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , ISqliteCapDataStorage
     //#elif (UseGaussDB)
     , IGaussDBCapDataStorage
-    //#elif (UseKingbaseES)
-    , IKingbaseESCapDataStorage
+    //#elif (UseDMDB)
+    , IDMDBCapDataStorage
     //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -29,8 +29,8 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
 //#elif (UseGaussDB)
     options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
-//#elif (UseKingbaseES)
-    options.UseKingbaseES(builder.Configuration.GetConnectionString("KingbaseES"), sqlOptions =>
+//#elif (UseDMDB)
+    options.UseDMDB(builder.Configuration.GetConnectionString("DMDB"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
 //#endif
 );
@@ -55,7 +55,7 @@ builder.EnrichNpgsqlDbContext<ApplicationDbContext>(
     });
 //#elif (UseGaussDB)
 // No Enrich
-//#elif (UseKingbaseES)
+//#elif (UseDMDB)
 // No Enrich
 //#endif
 

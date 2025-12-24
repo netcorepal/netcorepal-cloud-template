@@ -59,8 +59,8 @@
                     "description": "Use GaussDB"
                 },
                 {
-                    "choice": "KingbaseES",
-                    "description": "Use KingbaseES"
+                    "choice": "DMDB",
+                    "description": "Use DMDB"
                 }
             ],
             "defaultValue": "MySql"
@@ -155,9 +155,9 @@
             "type": "computed",
             "value": "(Database == \"GaussDB\")"
         },
-        "UseKingbaseES": {
+        "UseDMDB": {
             "type": "computed",
-            "value": "(Database == \"KingbaseES\")"
+            "value": "(Database == \"DMDB\")"
         },
         "UseRabbitMQ": {
             "type": "computed",
@@ -226,7 +226,7 @@
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
                         "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
+                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/SqlServer": "src/ABC.Template.MigrationService/Migrations"
@@ -238,7 +238,7 @@
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
                         "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
                         "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
+                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/MySql": "src/ABC.Template.MigrationService/Migrations"
@@ -250,7 +250,7 @@
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
                         "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
                         "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
+                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL": "src/ABC.Template.MigrationService/Migrations"
@@ -262,14 +262,14 @@
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
                         "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
                         "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/KingbaseES/**"
+                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
                     ],
                     "rename": {
                         "src/ABC.Template.MigrationService/Migrations/GaussDB": "src/ABC.Template.MigrationService/Migrations"
                     }
                 },
                 {
-                    "condition": "(UseAspire && Database == \"KingbaseES\")",
+                    "condition": "(UseAspire && Database == \"DMDB\")",
                     "exclude": [
                         "src/ABC.Template.MigrationService/Migrations/MySql/**",
                         "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
@@ -277,7 +277,7 @@
                         "src/ABC.Template.MigrationService/Migrations/GaussDB/**"
                     ],
                     "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/KingbaseES": "src/ABC.Template.MigrationService/Migrations"
+                        "src/ABC.Template.MigrationService/Migrations/DMDB": "src/ABC.Template.MigrationService/Migrations"
                     }
                 }
             ]
