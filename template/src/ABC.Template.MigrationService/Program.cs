@@ -30,7 +30,7 @@ builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
     options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
 //#elif (UseDMDB)
-    options.UseDMDB(builder.Configuration.GetConnectionString("DMDB"), sqlOptions =>
+    options.UseDm(builder.Configuration.GetConnectionString("DMDB"), sqlOptions =>
         sqlOptions.MigrationsAssembly(assembly.FullName))
 //#endif
 );

@@ -195,7 +195,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseGaussDB)
             options.UseGaussDB(connectionString);
 //#elif (UseDMDB)
-            options.UseDMDB(connectionString);
+            options.UseDm(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();

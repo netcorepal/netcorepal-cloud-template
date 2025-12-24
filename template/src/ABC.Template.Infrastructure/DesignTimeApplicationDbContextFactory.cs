@@ -41,7 +41,7 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                 });
             <!--#elif (UseDMDB)-->
-            options.UseDMDB("Host=any;Database=any;Username=any;Password=any",
+            options.UseDm("Host=any;Database=any;Username=any;Password=any",
                 b =>
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
