@@ -44,6 +44,8 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
+        dotnet-version: |
+            10.0.x
         global-json-file: global.json
         
     - name: Install template locally
