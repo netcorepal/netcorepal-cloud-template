@@ -91,7 +91,11 @@
     <!-- SQLite doesn't require Aspire integration package -->
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
+<!--#if (Framework == "net8.0")-->
     <PackageReference Include="Aspire.RabbitMQ.Client.v7" />
+<!--#else-->
+    <PackageReference Include="Aspire.RabbitMQ.Client" />
+<!--#endif-->
 <!--#elif (UseKafka)-->
     <PackageReference Include="Aspire.Confluent.Kafka" />
 <!--#endif-->
