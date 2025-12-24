@@ -5,11 +5,13 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.1.0-preview.1.2512120809</NetCorePalVersion>
+    <NetCorePalVersion>3.1.0-preview.1.2512240621</NetCorePalVersion>
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
-    <AspireVersion>9.5.2</AspireVersion>
+    <AspireVersion>13.1.0</AspireVersion>
     <OpenTelemetryVersion>1.12.0</OpenTelemetryVersion>
+    <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
+    <NetCorePalAspireVersion>1.0.0-preview.1.2512240724</NetCorePalAspireVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -170,6 +172,8 @@
     <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.OpenTelemetry.Diagnostics" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.DMDB" Version="$(NetCorePalAspireVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.OpenGauss" Version="$(NetCorePalAspireVersion)" />
 
     <!-- Testing packages -->
     <PackageVersion Include="Moq" Version="4.20.72" />
@@ -181,7 +185,9 @@
     <PackageVersion Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.Nats" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
-    <PackageVersion Include="NetCorePal.Testcontainers.OpenGauss" Version="1.0.0-preview.1.2512160845" />
+    <PackageVersion Include="NetCorePal.Testcontainers.DMDB" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.KingbaseES" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.OpenGauss" Version="$(NetCorePalTestcontainerVersion)" />
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />
