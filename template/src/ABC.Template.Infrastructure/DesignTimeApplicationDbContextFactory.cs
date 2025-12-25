@@ -34,6 +34,12 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                 });
+            <!--#elif (UseSqlite)-->
+            options.UseSqlite("Data Source=any.db",
+                b =>
+                {
+                    b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
+                });
             <!--#elif (UseGaussDB)-->
             options.UseGaussDB("Host=any;Database=any;Username=any;Password=any",
                 b =>

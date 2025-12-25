@@ -191,95 +191,93 @@
     "sources": [
         {
             "modifiers": [
-                {
-                    "condition": "(Framework == \"net8.0\")",
-                    "exclude": [ "*.slnx" ]
-                },
-                {
-                    "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")",
-                    "exclude": [
-                        "*.sln"
-                    ]
-                },
-                {
-                    "condition": "(!UseAspire)",
-                    "exclude": [
-                        "src/ABC.Template.AppHost/**",
-                        "src/ABC.Template.ServiceDefaults/**"
-                    ]
-                },
-                {
-                    "condition": "(!UseAspire || Database == \"Sqlite\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/**"
-                    ]
-                },
-                {
-                    "condition": "(UseAspire && Database != \"Sqlite\")",
-                    "exclude": [
-                        "src/ABC.Template.Infrastructure/DesignTimeApplicationDbContextFactory.cs"
-                    ]
-                },
-                {
-                    "condition": "(UseAspire && Database == \"SqlServer\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
-                    ],
-                    "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer": "src/ABC.Template.MigrationService/Migrations"
-                    }
-                },
-                {
-                    "condition": "(UseAspire && Database == \"MySql\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
-                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
-                    ],
-                    "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/MySql": "src/ABC.Template.MigrationService/Migrations"
-                    }
-                },
-                {
-                    "condition": "(UseAspire && Database == \"PostgreSQL\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
-                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**",
-                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
-                    ],
-                    "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL": "src/ABC.Template.MigrationService/Migrations"
-                    }
-                },
-                {
-                    "condition": "(UseAspire && Database == \"GaussDB\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/DMDB/**"
-                    ],
-                    "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/GaussDB": "src/ABC.Template.MigrationService/Migrations"
-                    }
-                },
-                {
-                    "condition": "(UseAspire && Database == \"DMDB\")",
-                    "exclude": [
-                        "src/ABC.Template.MigrationService/Migrations/MySql/**",
-                        "src/ABC.Template.MigrationService/Migrations/SqlServer/**",
-                        "src/ABC.Template.MigrationService/Migrations/PostgreSQL/**",
-                        "src/ABC.Template.MigrationService/Migrations/GaussDB/**"
-                    ],
-                    "rename": {
-                        "src/ABC.Template.MigrationService/Migrations/DMDB": "src/ABC.Template.MigrationService/Migrations"
-                    }
-                }
+                { "condition": "(Framework == \"net8.0\")", "exclude": [ "*.slnx" ] },
+                { "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")", "exclude": [ "*.sln" ] },
+                { "condition": "(!UseAspire)", "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**" ] },
+
+                // SqlServer
+                { "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"SqlServer\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"SqlServer\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"SqlServer\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0/**" ] },
+                { "condition": "(Database != \"SqlServer\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0/**" ] },
+                { "condition": "(Database != \"SqlServer\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0/**" ] },
+
+                // MySql
+                { "condition": "(Database == \"MySql\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"MySql\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"MySql\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"MySql\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0/**" ] },
+                { "condition": "(Database != \"MySql\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0/**" ] },
+                { "condition": "(Database != \"MySql\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0/**" ] },
+
+                // PostgreSQL
+                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0/**" ] },
+                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0/**" ] },
+                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0/**" ] },
+
+                // Sqlite
+                { "condition": "(Database == \"Sqlite\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"Sqlite\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"Sqlite\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"Sqlite\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0/**" ] },
+                { "condition": "(Database != \"Sqlite\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0/**" ] },
+                { "condition": "(Database != \"Sqlite\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0/**" ] },
+
+                // GaussDB
+                { "condition": "(Database == \"GaussDB\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"GaussDB\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"GaussDB\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"GaussDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0/**" ] },
+                { "condition": "(Database != \"GaussDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0/**" ] },
+                { "condition": "(Database != \"GaussDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0/**" ] },
+
+                // DMDB
+                { "condition": "(Database == \"DMDB\" && Framework == \"net8.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"DMDB\" && Framework == \"net9.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database == \"DMDB\" && Framework == \"net10.0\")", "rename": {
+                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+                } },
+                { "condition": "(Database != \"DMDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0/**" ] },
+                { "condition": "(Database != \"DMDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0/**" ] },
+                { "condition": "(Database != \"DMDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ] }
             ]
         }
     ]

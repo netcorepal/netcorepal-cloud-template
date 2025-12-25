@@ -8,11 +8,7 @@
     <NetCorePalVersion>3.1.0-preview.1.2512240621</NetCorePalVersion>
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
-<!--#if (Framework == "net8.0")-->
     <AspireVersion>9.5.2</AspireVersion>
-<!--#else-->
-    <AspireVersion>13.1.0</AspireVersion>
-<!--#endif-->
     <AspireVersion>13.1.0</AspireVersion>
     <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
     <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>

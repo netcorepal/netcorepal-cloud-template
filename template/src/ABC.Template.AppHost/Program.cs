@@ -76,26 +76,6 @@ var kafka = builder.AddKafka("kafka")
     .WithKafkaUI();
 //#endif
 
-//#if (!UseSqlite)
-var migrationService = builder.AddProject<Projects.ABC_Template_MigrationService>("migration")
-//#if (UseMySql)
-    .WithReference(mysqlDb)
-    .WaitFor(mysqlDb);
-//#elif (UseSqlServer)
-    .WithReference(sqlserverDb)
-    .WaitFor(sqlserverDb);
-//#elif (UsePostgreSQL)
-    .WithReference(postgresDb)
-    .WaitFor(postgresDb);
-//#elif (UseGaussDB)
-    .WithReference(gaussdbDb)
-    .WaitFor(gaussdbDb);
-//#elif (UseDMDB)
-    .WithReference(dmdbDb)
-    .WaitFor(dmdbDb);
-//#endif
-//#endif
-
 // Add web project with infrastructure dependencies
 builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithExternalHttpEndpoints()

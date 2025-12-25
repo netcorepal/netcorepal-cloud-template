@@ -115,10 +115,10 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString().Replace("postgres","testdb"));
+            _databaseContainer.GetConnectionString());
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
-            _databaseContainer.GetConnectionString());
+            _databaseContainer.GetConnectionString() + ";schema=testdb;");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -147,10 +147,10 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString().Replace("postgres","testdb"));
+            _databaseContainer.GetConnectionString());
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
-            _databaseContainer.GetConnectionString());
+            _databaseContainer.GetConnectionString() + ";schema=testdb;");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
