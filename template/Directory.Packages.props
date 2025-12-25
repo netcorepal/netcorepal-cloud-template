@@ -9,7 +9,6 @@
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
     <AspireVersion>9.5.2</AspireVersion>
-    <AspireVersion>13.1.0</AspireVersion>
     <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
     <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
     <NetCorePalAspireVersion>1.0.0-preview.1.2512240724</NetCorePalAspireVersion>
