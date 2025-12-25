@@ -14,7 +14,7 @@
     <AspireVersion>13.1.0</AspireVersion>
 <!--#endif-->
     <AspireVersion>13.1.0</AspireVersion>
-    <OpenTelemetryVersion>1.12.0</OpenTelemetryVersion>
+    <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
     <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
     <NetCorePalAspireVersion>1.0.0-preview.1.2512240724</NetCorePalAspireVersion>
   </PropertyGroup>
