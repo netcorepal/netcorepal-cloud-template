@@ -277,7 +277,8 @@
                 } },
                 { "condition": "(Database != \"DMDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0/**" ] },
                 { "condition": "(Database != \"DMDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0/**" ] },
-                { "condition": "(Database != \"DMDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ] }
+                { "condition": "(Database != \"DMDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ] },
+                { "condition": "(Database != \"DMDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ] }
             ]
         }
     ]

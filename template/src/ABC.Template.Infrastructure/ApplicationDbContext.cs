@@ -1,6 +1,9 @@
 ﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+//#if (UseDMDB)
+using Microsoft.EntityFrameworkCore.Storage;
+//#endif
 using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
 using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
@@ -33,6 +36,14 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         base.OnModelCreating(modelBuilder);
     }
 
+
+//#if (UseDMDB)
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.ReplaceService<IRelationalTypeMappingSource, MyDmTypeMappingSource>();
+        base.OnConfiguring(optionsBuilder);
+    }
+//#endif
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
