@@ -115,10 +115,10 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(5432)};Database=test;Username=gaussdb;Password=Test@123");
+            _databaseContainer.GetConnectionString());
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
-            $"Host={_databaseContainer.Hostname};Port={_databaseContainer.GetMappedPublicPort(54321)};Database=TEST;Username=system;Password=Test@123");
+            _databaseContainer.GetConnectionString());
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
