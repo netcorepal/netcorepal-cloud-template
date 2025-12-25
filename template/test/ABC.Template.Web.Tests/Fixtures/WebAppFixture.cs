@@ -94,7 +94,7 @@ public class WebAppFixture : AppFixture<Program>
         await CreateVisualHostAsync("/");
 //#endif
 //#if (UseAspire && !UseSqlite)
-        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
+        //await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
 
@@ -115,7 +115,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString());
+            _databaseContainer.GetConnectionString().Replace("postgres","testdb"));
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
             _databaseContainer.GetConnectionString());
@@ -147,7 +147,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseGaussDB)
         a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString());
+            _databaseContainer.GetConnectionString().Replace("postgres","testdb"));
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
             _databaseContainer.GetConnectionString());
