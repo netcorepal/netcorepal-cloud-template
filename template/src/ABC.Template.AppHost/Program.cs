@@ -54,13 +54,13 @@ var gaussdb = builder.AddOpenGauss("Database", password: databasePassword)
 var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
 //#elif (UseDMDB)
 // Add DMDB database infrastructure using DMDB container
-var dmdb = builder.AddDMDB("Database", password: databasePassword)
+var dmdb = builder.AddDmdb("Database")
     // Configure the container to store data in a volume so that it persists across instances.
     .WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
     .WithLifetime(ContainerLifetime.Persistent);
 
-var dmdbDb = dmdb.AddDatabase("DMDB", "TEST");
+var dmdbDb = dmdb.AddDatabase("DMDB");
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
