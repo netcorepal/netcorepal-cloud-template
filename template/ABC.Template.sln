@@ -29,10 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.AppHost", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.ServiceDefaults", "src/ABC.Template.ServiceDefaults/ABC.Template.ServiceDefaults.csproj", "{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}"
 EndProject
-<!--#if (Database != "Sqlite")-->
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.MigrationService", "src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj", "{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}"
-EndProject
-<!--#endif-->
 <!--#endif-->
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Domain.Tests", "test/ABC.Template.Domain.Tests/ABC.Template.Domain.Tests.csproj", "{77777777-7777-7777-7777-777777777777}"
 EndProject

@@ -108,9 +108,6 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithReference(kafka)
     .WaitFor(kafka)
 //#endif
-//#if (!UseSqlite)
-    .WaitForCompletion(migrationService)
-//#endif
     ;
 
 await builder.Build().RunAsync();
