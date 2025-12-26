@@ -46,8 +46,20 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: |
+            8.0.x
+            9.0.x
             10.0.x
         global-json-file: global.json
+
+    - name: Install Aspire CLI
+      run: |
+        curl -sSL https://aspire.dev/install.sh | bash
+        echo "export PATH=\"$HOME/.aspire/bin:$PATH\"" >> $GITHUB_ENV
+
+    - name: Validation of Aspire CLI
+      run: |
+        export PATH="$HOME/.aspire/bin:$PATH"
+        aspire --version
         
     - name: Install template locally
       run: dotnet new install .
