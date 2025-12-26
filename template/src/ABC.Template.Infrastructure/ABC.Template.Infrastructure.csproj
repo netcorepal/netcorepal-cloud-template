@@ -21,6 +21,12 @@
         <!--#elif (UseSqlite)-->
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.Sqlite"/>
+        <!--#elif (UseGaussDB)-->
+        <PackageReference Include="DotNetCore.EntityFrameworkCore.GaussDB"/>
+        <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.GaussDB"/>
+        <!--#elif (UseDMDB)-->
+        <PackageReference Include="DM.Microsoft.EntityFrameworkCore"/>
+        <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.DMDB"/>
         <!--#endif-->
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore"/>
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake"/>

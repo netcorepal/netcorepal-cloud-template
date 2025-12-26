@@ -5,11 +5,13 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.0.3</NetCorePalVersion>
+    <NetCorePalVersion>3.1.0-preview.1.2512240621</NetCorePalVersion>
     <FastEndpointsVersion>7.0.1</FastEndpointsVersion>
-    <TestcontainersVersion>4.1.0</TestcontainersVersion>
+    <TestcontainersVersion>4.9.0</TestcontainersVersion>
     <AspireVersion>9.5.2</AspireVersion>
-    <OpenTelemetryVersion>1.12.0</OpenTelemetryVersion>
+    <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
+    <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
+    <NetCorePalAspireVersion>1.0.0-preview.1.2512240724</NetCorePalAspireVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,10 +28,13 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.0" />
+    <PackageVersion Include="DM.Microsoft.EntityFrameworkCore" Version="8.0.0.37033" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="8.0.0" />
     <PackageVersion Include="MySql.EntityFrameworkCore" Version="8.0.5" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="8.0.2" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="8.0.1" />
 <!--#elif (Framework == "net9.0")-->
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="9.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.7" />
@@ -44,9 +49,12 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageVersion Include="DM.Microsoft.EntityFrameworkCore" Version="9.0.0.37033" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
     <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="9.0.0" />
 <!--#elif (Framework == "net10.0")-->
     <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="10.0.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.0" />
@@ -60,10 +68,13 @@
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageVersion Include="DM.Microsoft.EntityFrameworkCore" Version="9.0.0.37033" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
     <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
     <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="9.0.0" />
 <!--#endif-->
     <!-- ASP.NET Core and Microsoft packages - framework specific versions -->
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
@@ -130,7 +141,7 @@
 <!--#if (Framework == "net8.0")-->
     <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="9.1.0" />
 <!--#else-->
-    <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.RabbitMQ.Client" Version="$(AspireVersion)" />
 <!--#endif-->
     <PackageVersion Include="Aspire.Confluent.Kafka" Version="$(AspireVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.0.0" />
@@ -153,6 +164,9 @@
     <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.Sqlite" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.DMDB" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.GaussDB" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.KingbaseES" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
@@ -162,6 +176,8 @@
     <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.OpenTelemetry.Diagnostics" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.DMDB" Version="$(NetCorePalAspireVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.OpenGauss" Version="$(NetCorePalAspireVersion)" />
 
     <!-- Testing packages -->
     <PackageVersion Include="Moq" Version="4.20.72" />
@@ -173,6 +189,9 @@
     <PackageVersion Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.Nats" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.DMDB" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.KingbaseES" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.OpenGauss" Version="$(NetCorePalTestcontainerVersion)" />
     <PackageVersion Include="xunit.v3" Version="3.2.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="coverlet.collector" Version="6.0.2" />

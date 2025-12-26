@@ -4,6 +4,10 @@ using Testcontainers.MySql;
 using Testcontainers.MsSql;
 //#elif (UsePostgreSQL)
 using Testcontainers.PostgreSql;
+//#elif (UseGaussDB)
+using Testcontainers.OpenGauss;
+//#elif (UseDMDB)
+using Testcontainers.DMDB;
 //#endif
 //#if (UseRabbitMQ)
 using Testcontainers.RabbitMq;
@@ -35,6 +39,10 @@ public class WebAppFixture : AppFixture<Program>
     private MsSqlContainer _databaseContainer = null!;
 //#elif (UsePostgreSQL)
     private PostgreSqlContainer _databaseContainer = null!;
+//#elif (UseGaussDB)
+    private OpenGaussContainer _databaseContainer = null!;
+//#elif (UseDMDB)
+    private DmdbContainer _databaseContainer = null!;
 //#endif
 
     protected override async ValueTask PreSetupAsync()
@@ -62,6 +70,12 @@ public class WebAppFixture : AppFixture<Program>
             .WithUsername("postgres").WithPassword("123456")
             .WithEnvironment("TZ", "Asia/Shanghai")
             .WithDatabase("postgres").Build();
+//#elif (UseGaussDB)
+        _databaseContainer = new OpenGaussBuilder()
+            .Build();
+//#elif (UseDMDB)
+        _databaseContainer = new DmdbBuilder()
+            .Build();
 //#endif
 
         var tasks = new List<Task> { _redisContainer.StartAsync() };
@@ -76,12 +90,11 @@ public class WebAppFixture : AppFixture<Program>
         tasks.Add(_databaseContainer.StartAsync());
 //#endif
         await Task.WhenAll(tasks);
-
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
 //#if (UseAspire && !UseSqlite)
-        await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
+        //await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
 //#endif
     }
 
@@ -100,6 +113,12 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
+//#elif (UseGaussDB)
+        a.UseSetting("ConnectionStrings:GaussDB",
+            _databaseContainer.GetConnectionString());
+//#elif (UseDMDB)
+        a.UseSetting("ConnectionStrings:DMDB",
+            _databaseContainer.GetConnectionString() + ";schema=testdb;");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -126,6 +145,12 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UsePostgreSQL)
         a.UseSetting("ConnectionStrings:PostgreSQL",
             _databaseContainer.GetConnectionString());
+//#elif (UseGaussDB)
+        a.UseSetting("ConnectionStrings:GaussDB",
+            _databaseContainer.GetConnectionString());
+//#elif (UseDMDB)
+        a.UseSetting("ConnectionStrings:DMDB",
+            _databaseContainer.GetConnectionString() + ";schema=testdb;");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -167,6 +192,10 @@ public class WebAppFixture : AppFixture<Program>
             options.UseSqlServer(connectionString);
 //#elif (UsePostgreSQL)
             options.UseNpgsql(connectionString);
+//#elif (UseGaussDB)
+            options.UseGaussDB(connectionString);
+//#elif (UseDMDB)
+            options.UseDm(connectionString);
 //#endif
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();

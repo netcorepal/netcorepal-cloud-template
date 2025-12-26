@@ -169,6 +169,10 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+//#elif (UseGaussDB)
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
+//#elif (UseDMDB)
+        options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -189,6 +193,10 @@ try
         options.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL"));
 //#elif (UseSqlite)
         options.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"));
+//#elif (UseGaussDB)
+        options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
+//#elif (UseDMDB)
+        options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -394,14 +402,14 @@ try
 
 
     var app = builder.Build();
-//#if (!UseAspire || UseSqlite)
+
     if (app.Environment.IsDevelopment())
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
+        await dbContext.Database.MigrateAsync();
     }
-//#endif
+
 
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.

@@ -1,20 +1,23 @@
+<!--#if (Framework == "net8.0")-->
 <Project Sdk="Microsoft.NET.Sdk">
-
+<!--#else-->
+<Project Sdk="Aspire.AppHost.Sdk/13.1.0">
+<!--#endif-->
+<!--#if (Framework == "net8.0")-->
   <Sdk Name="Aspire.AppHost.Sdk" Version="13.0.2" />
-
+<!--#endif-->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>NETCOREPAL_FRAMEWORK</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+<!--#if (Framework == "net8.0")-->
     <IsAspireHost>true</IsAspireHost>
+<!--#endif-->
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ABC.Template.Web\ABC.Template.Web.csproj" />
-  <!--#if (Database != "Sqlite")-->
-    <ProjectReference Include="..\ABC.Template.MigrationService\ABC.Template.MigrationService.csproj" />
-  <!--#endif-->
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +29,10 @@
     <PackageReference Include="Aspire.Hosting.SqlServer" />
 <!--#elif (UsePostgreSQL)-->
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+<!--#elif (UseGaussDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.OpenGauss" />
+<!--#elif (UseDMDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.DMDB" />
 <!--#endif-->
     <PackageReference Include="Aspire.Hosting.Redis" />
 <!--#if (UseRabbitMQ)-->

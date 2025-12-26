@@ -23,6 +23,10 @@
     <PackageReference Include="Testcontainers.PostgreSql" />
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Testcontainers.MsSql" />
+<!--#elif (UseGaussDB)-->
+    <PackageReference Include="NetCorePal.Testcontainers.OpenGauss" />
+<!--#elif (UseDMDB)-->
+    <PackageReference Include="NetCorePal.Testcontainers.DMDB" />
 <!--#endif-->
 <!--#if (UseRabbitMQ)-->
     <PackageReference Include="Testcontainers.RabbitMq" />

@@ -29,10 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.AppHost", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.ServiceDefaults", "src/ABC.Template.ServiceDefaults/ABC.Template.ServiceDefaults.csproj", "{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}"
 EndProject
-<!--#if (Database != "Sqlite")-->
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.MigrationService", "src/ABC.Template.MigrationService/ABC.Template.MigrationService.csproj", "{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}"
-EndProject
-<!--#endif-->
 <!--#endif-->
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Domain.Tests", "test/ABC.Template.Domain.Tests/ABC.Template.Domain.Tests.csproj", "{77777777-7777-7777-7777-777777777777}"
 EndProject
@@ -67,12 +63,6 @@ Global
 		{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB}.Release|Any CPU.Build.0 = Release|Any CPU
-<!--#if (Database != "Sqlite")-->
-		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Release|Any CPU.Build.0 = Release|Any CPU
-<!--#endif-->
 <!--#endif-->
 		{77777777-7777-7777-7777-777777777777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77777777-7777-7777-7777-777777777777}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -94,9 +84,6 @@ Global
 <!--#if (UseAspire)-->
 		{AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA} = {22222222-2222-2222-2222-222222222222}
 		{BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB} = {22222222-2222-2222-2222-222222222222}
-<!--#if (Database != "Sqlite")-->
-		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC} = {22222222-2222-2222-2222-222222222222}
-<!--#endif-->
 <!--#endif-->
 		{77777777-7777-7777-7777-777777777777} = {33333333-3333-3333-3333-333333333333}
 		{88888888-8888-8888-8888-888888888888} = {33333333-3333-3333-3333-333333333333}
