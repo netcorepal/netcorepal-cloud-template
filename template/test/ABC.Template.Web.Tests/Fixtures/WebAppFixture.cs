@@ -1,12 +1,18 @@
 //#if (UseAspire)
 using Aspire.Hosting;
 using Aspire.Hosting.Testing;
+using Aspire.Hosting.ApplicationModel;
 using Microsoft.AspNetCore.Hosting;
+using System; // 添加 System 命名空间
+using System.Linq; // 添加 System.Linq 命名空间
+
 
 namespace ABC.Template.Web.Tests.Fixtures;
 
 public class WebAppFixture : AppFixture<Program>
 {
+    private IDistributedApplicationTestingBuilder? _appHost;
+
     private DistributedApplication? _app;
 
     protected override async ValueTask PreSetupAsync()
@@ -18,7 +24,7 @@ public class WebAppFixture : AppFixture<Program>
         {
             clientBuilder.AddStandardResilienceHandler();
         });
-        
+        _appHost = appHost;
         _app = await appHost.BuildAsync();
         await _app.StartAsync();
     }
@@ -59,10 +65,8 @@ public class WebAppFixture : AppFixture<Program>
 
     private void SetConnectionString(IWebHostBuilder builder, string resourceName, string configKey, params string[] alternativeNames)
     {
-        var resource = _app!.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals(resourceName, StringComparison.OrdinalIgnoreCase) ||
+        var resource =  (IResourceWithConnectionString)_appHost!.Resources.First(r => r.Name.Equals(resourceName, StringComparison.OrdinalIgnoreCase) ||
                                 alternativeNames.Any(n => r.Name.Equals(n, StringComparison.OrdinalIgnoreCase)));
-        
         if (resource != null)
         {
             // Note: Using GetAwaiter().GetResult() is necessary here because ConfigureApp is synchronous
@@ -75,7 +79,7 @@ public class WebAppFixture : AppFixture<Program>
         }
     }
 
-    protected override async Task TearDownAsync()
+    protected override async ValueTask TearDownAsync()
     {
         if (_app != null)
         {
