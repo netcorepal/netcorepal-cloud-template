@@ -1,4 +1,3 @@
-<!--#if (UseAspire)-->
 var builder = DistributedApplication.CreateBuilder(args);
 
 // Add Redis infrastructure
@@ -50,39 +49,4 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq");
 var kafka = builder.AddKafka("kafka");
 //#endif
 
-// Add web project with infrastructure dependencies
-builder.AddProject<Projects.ABC_Template_Web>("web")
-    .WithExternalHttpEndpoints()
-    .WithHttpHealthCheck("/health")
-    .WithReference(redis)
-    .WaitFor(redis)
-//#if (UseMySql)
-    .WithReference(mysqlDb)
-    .WaitFor(mysqlDb)
-//#elif (UseSqlServer)
-    .WithReference(sqlserverDb)
-    .WaitFor(sqlserverDb)
-//#elif (UsePostgreSQL)
-    .WithReference(postgresDb)
-    .WaitFor(postgresDb)
-//#elif (UseGaussDB)
-    .WithReference(gaussdbDb)
-    .WaitFor(gaussdbDb)
-//#elif (UseDMDB)
-    .WithReference(dmdbDb)
-    .WaitFor(dmdbDb)
-//#endif
-//#if (UseSqlite)
-    // SQLite doesn't need infrastructure reference
-//#endif
-//#if (UseRabbitMQ)
-    .WithReference(rabbitmq)
-    .WaitFor(rabbitmq)
-//#elif (UseKafka)
-    .WithReference(kafka)
-    .WaitFor(kafka)
-//#endif
-    ;
-
 await builder.Build().RunAsync();
-<!--#endif-->
