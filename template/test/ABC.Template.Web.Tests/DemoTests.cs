@@ -4,7 +4,11 @@ using NetCorePal.Extensions.Dto;
 namespace ABC.Template.Web.Tests
 {
     [Collection(WebAppTestCollection.Name)]
+//#if (UseAspire)
+    public class DemoTests(AspireHostAppFixture app)
+//#else
     public class DemoTests(WebAppFixture app) : TestBase<WebAppFixture>
+//#endif
     {
         [Fact]
         public async Task HealthCheckTest()
