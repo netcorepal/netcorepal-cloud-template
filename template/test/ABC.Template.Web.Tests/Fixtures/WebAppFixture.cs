@@ -1,4 +1,145 @@
+//#if (UseAspire)
+using Aspire.Hosting;
+using Aspire.Hosting.Testing;
+using Microsoft.AspNetCore.Hosting;
+
+namespace ABC.Template.Web.Tests.Fixtures;
+
+public class WebAppFixture : AppFixture<Program>
+{
+    private DistributedApplication? _app;
+
+    protected override async ValueTask PreSetupAsync()
+    {
+        var appHost = await DistributedApplicationTestingBuilder
+            .CreateAsync<Projects.ABC_Template_AppHost>();
+        
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        
+        _app = await appHost.BuildAsync();
+        await _app.StartAsync();
+    }
+
+    protected override void ConfigureApp(IWebHostBuilder a)
+    {
+        if (_app == null)
+        {
+            throw new InvalidOperationException("Distributed application not initialized");
+        }
+
+        // Get connection strings from Aspire resources
+        var redisResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("Redis", StringComparison.OrdinalIgnoreCase));
+        if (redisResource != null)
+        {
+            var redisConnectionString = redisResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(redisConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:Redis", redisConnectionString);
+            }
+        }
+
 //#if (UseMySql)
+        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("MySql", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
+        if (dbResource != null)
+        {
+            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(dbConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:MySql", dbConnectionString);
+            }
+        }
+//#elif (UseSqlServer)
+        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("SqlServer", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
+        if (dbResource != null)
+        {
+            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(dbConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:SqlServer", dbConnectionString);
+            }
+        }
+//#elif (UsePostgreSQL)
+        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("PostgreSQL", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
+        if (dbResource != null)
+        {
+            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(dbConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:PostgreSQL", dbConnectionString);
+            }
+        }
+//#elif (UseGaussDB)
+        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("GaussDB", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
+        if (dbResource != null)
+        {
+            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(dbConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:GaussDB", dbConnectionString);
+            }
+        }
+//#elif (UseDMDB)
+        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("DMDB", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
+        if (dbResource != null)
+        {
+            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(dbConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:DMDB", dbConnectionString);
+            }
+        }
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing
+        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
+//#endif
+
+//#if (UseRabbitMQ)
+        var mqResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("rabbitmq", StringComparison.OrdinalIgnoreCase));
+        if (mqResource != null)
+        {
+            var mqConnectionString = mqResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(mqConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:rabbitmq", mqConnectionString);
+            }
+        }
+//#elif (UseKafka)
+        var mqResource = _app.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals("kafka", StringComparison.OrdinalIgnoreCase));
+        if (mqResource != null)
+        {
+            var mqConnectionString = mqResource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(mqConnectionString))
+            {
+                a.UseSetting("ConnectionStrings:kafka", mqConnectionString);
+            }
+        }
+//#endif
+
+        a.UseEnvironment("Development");
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        if (_app != null)
+        {
+            await _app.StopAsync();
+            await _app.DisposeAsync();
+        }
+        await base.DisposeAsync();
+    }
+}
+//#else
 using Testcontainers.MySql;
 //#elif (UseSqlServer)
 using Testcontainers.MsSql;
@@ -93,47 +234,10 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
-//#if (UseAspire && !UseSqlite)
-        //await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
-//#endif
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
     {
-//#if (UseAspire)
-        // When using Aspire, connection strings use resource names
-        a.UseSetting("ConnectionStrings:redis",
-            _redisContainer.GetConnectionString());
-//#if (UseMySql)
-        a.UseSetting("ConnectionStrings:MySql",
-            _databaseContainer.GetConnectionString());
-//#elif (UseSqlServer)
-        a.UseSetting("ConnectionStrings:SqlServer",
-            _databaseContainer.GetConnectionString());
-//#elif (UsePostgreSQL)
-        a.UseSetting("ConnectionStrings:PostgreSQL",
-            _databaseContainer.GetConnectionString());
-//#elif (UseGaussDB)
-        a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString());
-//#elif (UseDMDB)
-        a.UseSetting("ConnectionStrings:DMDB",
-            _databaseContainer.GetConnectionString() + ";schema=testdb;");
-//#elif (UseSqlite)
-        // SQLite uses in-memory database for testing with cache=shared to persist data between connections
-        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
-//#endif
-//#if (UseRabbitMQ)
-        a.UseSetting("ConnectionStrings:rabbitmq",
-            $"amqp://guest:guest@{_rabbitMqContainer.Hostname}:{_rabbitMqContainer.GetMappedPublicPort(5672)}/");
-//#elif (UseKafka)
-        a.UseSetting("ConnectionStrings:kafka", _kafkaContainer.GetBootstrapAddress());
-//#elif (UseNATS)
-        a.UseSetting("NATS:Servers", _natsContainer.GetConnectionString());
-//#elif (UseRedisStreams)
-        // RedisStreams uses the same redis connection string
-//#endif
-//#else
         a.UseSetting("ConnectionStrings:Redis",
             _redisContainer.GetConnectionString());
 //#if (UseMySql)
@@ -166,7 +270,6 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseNATS)
         a.UseSetting("NATS:Servers", _natsContainer.GetConnectionString());
 //#endif
-//#endif
         a.UseEnvironment("Development");
     }
 
@@ -178,32 +281,5 @@ public class WebAppFixture : AppFixture<Program>
         ]);
     }
 //#endif
-
-//#if (UseAspire && !UseSqlite)
-    private static async Task CreateDatabaseAsync(string connectionString)
-    {
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<WebAppFixture>());
-        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
-        {
-//#if (UseMySql)
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-//#elif (UseSqlServer)
-            options.UseSqlServer(connectionString);
-//#elif (UsePostgreSQL)
-            options.UseNpgsql(connectionString);
-//#elif (UseGaussDB)
-            options.UseGaussDB(connectionString);
-//#elif (UseDMDB)
-            options.UseDm(connectionString);
-//#endif
-            options.EnableSensitiveDataLogging();
-            options.EnableDetailedErrors();
-        });
-
-        await using var serviceProvider = serviceCollection.BuildServiceProvider();
-        await using var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-    }
-//#endif
 }
+//#endif
