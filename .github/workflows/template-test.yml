@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       max-parallel: 5
       matrix:
-        framework: [ 'net8.0', 'net9.0', 'net10.0' ]
+        framework: [ 'net10.0', 'net8.0', 'net9.0' ]
         aspire: [ 'true', 'false' ]
         scenario:
           # Test all databases with RabbitMQ
