@@ -22,7 +22,7 @@ jobs:
       max-parallel: 5
       matrix:
         framework: [ 'net8.0', 'net9.0', 'net10.0' ]
-        aspire: [ 'false', 'true' ]
+        aspire: [ 'true', 'false' ]
         scenario:
           # Test all databases with RabbitMQ
           - { database: 'MySql', messagequeue: 'RabbitMQ' }
