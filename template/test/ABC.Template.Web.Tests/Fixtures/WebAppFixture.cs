@@ -26,32 +26,33 @@ public class WebAppFixture : AppFixture<Program>
         });
         _appHost = appHost;
         _app = await appHost.BuildAsync();
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(3));
+        await _app.StartAsync(cts.Token);
 //#if (UseMySql)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql", cts.Token);
 //#elif (UseSqlServer)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("SqlServer");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("SqlServer", cts.Token);
 //#elif (UsePostgreSQL)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("PostgreSQL");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("PostgreSQL", cts.Token);
 //#elif (UseGaussDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("GaussDB");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("GaussDB", cts.Token);
 //#elif (UseDMDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("DMDB");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("DMDB", cts.Token);
 //#endif
 //#if (UseRabbitMQ)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq", cts.Token);
 //#elif (UseKafka)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("kafka");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("kafka", cts.Token);
 //#elif (UseNATS)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("nats");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("nats", cts.Token);
 //#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
         // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
         // Use Redis as fallback for testing
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
 //#elif (UseRedisStreams)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
 //#endif
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
-        await _app.StartAsync();
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)

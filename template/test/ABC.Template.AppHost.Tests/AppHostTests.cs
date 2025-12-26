@@ -14,9 +14,10 @@ public class AppHostTests
 
         // Act & Assert
         await using var app = await appHost.BuildAsync();
-        await app.StartAsync();
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(3));
+        await app.StartAsync(cts.Token);
 
-        await app.ResourceNotifications.WaitForResourceHealthyAsync("web");
+        await app.ResourceNotifications.WaitForResourceHealthyAsync("web", cts.Token);
 
         // Verify the app started successfully
         Assert.NotNull(app);
