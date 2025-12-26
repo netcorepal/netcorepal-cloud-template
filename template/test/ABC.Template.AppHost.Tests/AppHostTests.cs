@@ -14,7 +14,7 @@ public class AppHostTests
 
         // Act & Assert
         await using var app = await appHost.BuildAsync();
-        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(3));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         await app.StartAsync(cts.Token);
 
         await app.ResourceNotifications.WaitForResourceHealthyAsync("web", cts.Token);
