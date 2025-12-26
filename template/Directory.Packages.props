@@ -126,7 +126,7 @@
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
 
     <!-- Aspire packages -->
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.0.2" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.Docker" Version="13.0.2-preview.1.25603.5" />
     <PackageVersion Include="Aspire.Hosting.Testing" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Hosting.MySql" Version="$(AspireVersion)" />

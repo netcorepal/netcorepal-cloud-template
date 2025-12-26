@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
-    <PackageReference Include="Aspire.Hosting.Docker" />
     <!--#if (UseMySql)-->
     <PackageReference Include="Aspire.Hosting.MySql" />
 <!--#elif (UseSqlServer)-->
