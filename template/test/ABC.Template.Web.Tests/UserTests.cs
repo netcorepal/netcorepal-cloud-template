@@ -6,11 +6,7 @@ using NetCorePal.Extensions.Dto;
 namespace ABC.Template.Web.Tests;
 
 [Collection(WebAppTestCollection.Name)]
-//#if (UseAspire)
-public class UserTests(AspireHostAppFixture app)
-//#else
 public class UserTests(WebAppFixture app) : TestBase<WebAppFixture>
-//#endif
 {
     [Fact]
     public async Task Login_And_Auth_Test()

@@ -8,11 +8,7 @@ using NetCorePal.Extensions.Dto;
 namespace ABC.Template.Web.Tests;
 
 [Collection(WebAppTestCollection.Name)]
-//#if (UseAspire)
-public class OrderTests(AspireHostAppFixture app)
-//#else
 public class OrderTests(WebAppFixture app) : TestBase<WebAppFixture>
-//#endif
 {
     [Fact]
     public async Task CreateOrder_And_PayOrder_Test()
@@ -37,7 +33,6 @@ public class OrderTests(WebAppFixture app) : TestBase<WebAppFixture>
 
         await Task.Delay(1000, TestContext.Current.CancellationToken); //wait for IntegrationEventHandler
         
-//#if (!UseAspire)
         // Verify order is marked as paid in the database
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -48,7 +43,6 @@ public class OrderTests(WebAppFixture app) : TestBase<WebAppFixture>
         //verify DeliverGoods
         var goods = await dbContext.DeliverRecords.FirstOrDefaultAsync(o=>o.OrderId==orderId, TestContext.Current.CancellationToken);
         Assert.NotNull(goods);
-//#endif
     }
 
     [Fact]
