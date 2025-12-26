@@ -1,4 +1,3 @@
-<!--#if (UseAspire)-->
 using Aspire.Hosting;
 using Aspire.Hosting.Testing;
 
@@ -117,4 +116,3 @@ public class AppHostTests
     }
 //#endif
 }
-<!--#endif-->

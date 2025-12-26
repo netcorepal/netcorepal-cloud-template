@@ -26,6 +26,31 @@ public class WebAppFixture : AppFixture<Program>
         });
         _appHost = appHost;
         _app = await appHost.BuildAsync();
+//#if (UseMySql)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql");
+//#elif (UseSqlServer)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("SqlServer");
+//#elif (UsePostgreSQL)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("PostgreSQL");
+//#elif (UseGaussDB)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("GaussDB");
+//#elif (UseDMDB)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("DMDB");
+//#endif
+//#if (UseRabbitMQ)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq");
+//#elif (UseKafka)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("kafka");
+//#elif (UseNATS)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("nats");
+//#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
+        // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
+        // Use Redis as fallback for testing
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
+//#elif (UseRedisStreams)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
+//#endif
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis");
         await _app.StartAsync();
     }
 
@@ -40,15 +65,15 @@ public class WebAppFixture : AppFixture<Program>
         SetConnectionString(a, "Redis", "ConnectionStrings:Redis");
 
 //#if (UseMySql)
-        SetConnectionString(a, "MySql", "ConnectionStrings:MySql", "Database");
+        SetConnectionString(a, "MySql", "ConnectionStrings:MySql");
 //#elif (UseSqlServer)
-        SetConnectionString(a, "SqlServer", "ConnectionStrings:SqlServer", "Database");
+        SetConnectionString(a, "SqlServer", "ConnectionStrings:SqlServer");
 //#elif (UsePostgreSQL)
-        SetConnectionString(a, "PostgreSQL", "ConnectionStrings:PostgreSQL", "Database");
+        SetConnectionString(a, "PostgreSQL", "ConnectionStrings:PostgreSQL");
 //#elif (UseGaussDB)
-        SetConnectionString(a, "GaussDB", "ConnectionStrings:GaussDB", "Database");
+        SetConnectionString(a, "GaussDB", "ConnectionStrings:GaussDB");
 //#elif (UseDMDB)
-        SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB", "Database");
+        SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
@@ -58,6 +83,14 @@ public class WebAppFixture : AppFixture<Program>
         SetConnectionString(a, "rabbitmq", "ConnectionStrings:rabbitmq");
 //#elif (UseKafka)
         SetConnectionString(a, "kafka", "ConnectionStrings:kafka");
+//#elif (UseNATS)
+        SetConnectionString(a, "nats", "ConnectionStrings:nats");
+//#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
+        // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
+        // Use Redis as fallback for testing
+        SetConnectionString(a, "Redis", "ConnectionStrings:redis-fallback");
+//#elif (UseRedisStreams)
+        SetConnectionString(a, "Redis", "ConnectionStrings:redis");
 //#endif
 
         a.UseEnvironment("Development");

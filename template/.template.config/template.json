@@ -193,7 +193,7 @@
             "modifiers": [
                 { "condition": "(Framework == \"net8.0\")", "exclude": [ "*.slnx" ] },
                 { "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")", "exclude": [ "*.sln" ] },
-                { "condition": "(!UseAspire)", "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**" ] },
+                { "condition": "(!UseAspire)", "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**", "test/ABC.Template.TestAppHost/**", "ABC.Template.AppHost.Tests/**" ] },
 
                 // SqlServer
                 { "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\")", "rename": {
