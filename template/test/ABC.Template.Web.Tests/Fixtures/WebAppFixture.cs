@@ -75,14 +75,14 @@ public class WebAppFixture : AppFixture<Program>
         }
     }
 
-    public override async ValueTask DisposeAsync()
+    protected override async Task TearDownAsync()
     {
         if (_app != null)
         {
             await _app.StopAsync();
             await _app.DisposeAsync();
         }
-        await base.DisposeAsync();
+        await base.TearDownAsync();
     }
 }
 //#else
