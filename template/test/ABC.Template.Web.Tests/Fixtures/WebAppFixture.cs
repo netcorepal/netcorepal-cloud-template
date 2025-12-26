@@ -12,7 +12,7 @@ public class WebAppFixture : AppFixture<Program>
     protected override async ValueTask PreSetupAsync()
     {
         var appHost = await DistributedApplicationTestingBuilder
-            .CreateAsync<Projects.ABC_Template_AppHost>();
+            .CreateAsync<Projects.ABC_Template_TestAppHost>();
         
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {

@@ -57,7 +57,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\ABC.Template.Web\ABC.Template.Web.csproj" />
 <!--#if (UseAspire)-->
-    <ProjectReference Include="..\..\src\ABC.Template.AppHost\ABC.Template.AppHost.csproj" />
+    <ProjectReference Include="..\ABC.Template.TestAppHost\ABC.Template.TestAppHost.csproj" />
 <!--#endif-->
   </ItemGroup>
 
