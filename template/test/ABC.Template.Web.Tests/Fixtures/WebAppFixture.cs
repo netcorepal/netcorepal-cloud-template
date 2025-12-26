@@ -31,102 +31,48 @@ public class WebAppFixture : AppFixture<Program>
         }
 
         // Get connection strings from Aspire resources
-        var redisResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("Redis", StringComparison.OrdinalIgnoreCase));
-        if (redisResource != null)
-        {
-            var redisConnectionString = redisResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(redisConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:Redis", redisConnectionString);
-            }
-        }
+        SetConnectionString(a, "Redis", "ConnectionStrings:Redis");
 
 //#if (UseMySql)
-        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("MySql", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
-        if (dbResource != null)
-        {
-            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(dbConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:MySql", dbConnectionString);
-            }
-        }
+        SetConnectionString(a, "MySql", "ConnectionStrings:MySql", "Database");
 //#elif (UseSqlServer)
-        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("SqlServer", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
-        if (dbResource != null)
-        {
-            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(dbConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:SqlServer", dbConnectionString);
-            }
-        }
+        SetConnectionString(a, "SqlServer", "ConnectionStrings:SqlServer", "Database");
 //#elif (UsePostgreSQL)
-        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("PostgreSQL", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
-        if (dbResource != null)
-        {
-            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(dbConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:PostgreSQL", dbConnectionString);
-            }
-        }
+        SetConnectionString(a, "PostgreSQL", "ConnectionStrings:PostgreSQL", "Database");
 //#elif (UseGaussDB)
-        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("GaussDB", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
-        if (dbResource != null)
-        {
-            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(dbConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:GaussDB", dbConnectionString);
-            }
-        }
+        SetConnectionString(a, "GaussDB", "ConnectionStrings:GaussDB", "Database");
 //#elif (UseDMDB)
-        var dbResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("DMDB", StringComparison.OrdinalIgnoreCase) || r.Name.Equals("Database", StringComparison.OrdinalIgnoreCase));
-        if (dbResource != null)
-        {
-            var dbConnectionString = dbResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(dbConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:DMDB", dbConnectionString);
-            }
-        }
+        SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB", "Database");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing
         a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
 //#endif
 
 //#if (UseRabbitMQ)
-        var mqResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("rabbitmq", StringComparison.OrdinalIgnoreCase));
-        if (mqResource != null)
-        {
-            var mqConnectionString = mqResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(mqConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:rabbitmq", mqConnectionString);
-            }
-        }
+        SetConnectionString(a, "rabbitmq", "ConnectionStrings:rabbitmq");
 //#elif (UseKafka)
-        var mqResource = _app.Resources.OfType<IResourceWithConnectionString>()
-            .FirstOrDefault(r => r.Name.Equals("kafka", StringComparison.OrdinalIgnoreCase));
-        if (mqResource != null)
-        {
-            var mqConnectionString = mqResource.GetConnectionStringAsync().GetAwaiter().GetResult();
-            if (!string.IsNullOrEmpty(mqConnectionString))
-            {
-                a.UseSetting("ConnectionStrings:kafka", mqConnectionString);
-            }
-        }
+        SetConnectionString(a, "kafka", "ConnectionStrings:kafka");
 //#endif
 
         a.UseEnvironment("Development");
+    }
+
+    private void SetConnectionString(IWebHostBuilder builder, string resourceName, string configKey, params string[] alternativeNames)
+    {
+        var resource = _app!.Resources.OfType<IResourceWithConnectionString>()
+            .FirstOrDefault(r => r.Name.Equals(resourceName, StringComparison.OrdinalIgnoreCase) ||
+                                alternativeNames.Any(n => r.Name.Equals(n, StringComparison.OrdinalIgnoreCase)));
+        
+        if (resource != null)
+        {
+            // Note: Using GetAwaiter().GetResult() is necessary here because ConfigureApp is synchronous
+            // This is safe during test fixture initialization
+            var connectionString = resource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                builder.UseSetting(configKey, connectionString);
+            }
+        }
     }
 
     public override async ValueTask DisposeAsync()
