@@ -86,6 +86,7 @@ public class WebAppFixture : AppFixture<Program>
     }
 }
 //#else
+//#if (UseMySql)
 using Testcontainers.MySql;
 //#elif (UseSqlServer)
 using Testcontainers.MsSql;
