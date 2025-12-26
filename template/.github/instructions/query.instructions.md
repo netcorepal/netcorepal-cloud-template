@@ -103,7 +103,7 @@ public class PagedProductQueryValidator : AbstractValidator<PagedProductQuery>
 
 public class PagedUserQueryHandler(ApplicationDbContext context) : IQueryHandler<PagedProductQuery, PagedData<PagedProductListItemDto>>
 {
-    public async Task<PagedData<ProductListItemDto>> Handle(PagedProductQuery request, CancellationToken cancellationToken)
+    public async Task<PagedData<PagedProductListItemDto>> Handle(PagedProductQuery request, CancellationToken cancellationToken)
     {
         return await context.Products
             // 条件过滤
