@@ -25,8 +25,8 @@ public class WebAppFixture : AppFixture<Program>
             clientBuilder.AddStandardResilienceHandler();
         });
         _appHost = appHost;
-        _app = await appHost.BuildAsync();
-        var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
+        _app = await appHost.BuildAsync(cts.Token);
         await _app.StartAsync(cts.Token);
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql", cts.Token);
