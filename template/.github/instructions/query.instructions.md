@@ -10,6 +10,7 @@ applyTo: "src/ABC.Template.Web/Application/Queries/**/*.cs"
 
 - **查询定义**：
     - 查询实现 `IQuery<TResponse>` 接口。
+    - 分页查询现 `IPagedQuery<TResponse>` 接口
     - 必须为每个查询创建验证器，继承 `AbstractValidator<TQuery>`。
     - 查询处理器实现 `IQueryHandler<TQuery, TResponse>` 接口。
     - 使用 `record` 类型定义查询和 DTO。
@@ -79,9 +80,30 @@ public record UserDto(UserId Id, string Name, string Email);
 ### 分页查询示例
 
 ```csharp
-public class GetProductListQueryHandler(ApplicationDbContext context) : IQueryHandler<GetProductListQuery, PagedData<ProductListItemDto>>
+using ABC.Template.Domain.AggregatesModel.ProductAggregate;
+using ABC.Template.Infrastructure;
+using Microsoft.EntityFrameworkCore; // 必需：用于EF Core扩展方法
+
+namespace ABC.Template.Web.Application.Queries.Products;
+
+public record PagedProductQuery(string? Name = null, CategoryId? CategoryId == null, decimal? MinPrice = null, decimal? MaxPrice = null, bool? IsActive = false, string? SortBy = null, int PageIndex = 1, int PageSize = 50, bool CountTotal = true) : IPagedQuery<PagedProductListItemDto>;
+
+public class PagedProductQueryValidator : AbstractValidator<PagedProductQuery>
 {
-    public async Task<PagedData<ProductListItemDto>> Handle(GetProductListQuery request, CancellationToken cancellationToken)
+    public PagedProductQueryValidator()
+    {
+        RuleFor(query => query.PageIndex)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("页码必须大于或等于1");
+        RuleFor(query => query.PageSize)
+            .InclusiveBetween(1, 100)
+            .WithMessage("每页条数必须在1到100之间");
+    }
+}
+
+public class PagedUserQueryHandler(ApplicationDbContext context) : IQueryHandler<PagedProductQuery, PagedData<PagedProductListItemDto>>
+{
+    public async Task<PagedData<ProductListItemDto>> Handle(PagedProductQuery request, CancellationToken cancellationToken)
     {
         return await context.Products
             // 条件过滤
@@ -96,7 +118,7 @@ public class GetProductListQueryHandler(ApplicationDbContext context) : IQueryHa
             .ThenByIf(request.SortBy == "createTime", x => x.CreateTime, request.Desc)
             .ThenByIf(string.IsNullOrEmpty(request.SortBy), x => x.Id) // 默认排序确保结果稳定
             // 数据投影
-            .Select(p => new ProductListItemDto(
+            .Select(p => new PagedProductListItemDto(
                 p.Id, 
                 p.Name, 
                 p.Price, 
@@ -104,7 +126,7 @@ public class GetProductListQueryHandler(ApplicationDbContext context) : IQueryHa
                 p.IsActive,
                 p.CreateTime))
             // 分页处理
-            .ToPagedDataAsync(request.PageIndex, request.PageSize, cancellationToken: cancellationToken);
+            .ToPagedDataAsync(request, cancellationToken: cancellationToken);
     }
 }
 ```
