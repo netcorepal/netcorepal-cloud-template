@@ -17,15 +17,17 @@ public class WebAppFixture : AppFixture<Program>
 
     protected override async ValueTask PreSetupAsync()
     {
+        Console.WriteLine("Creating distributed application for testing...");
         var appHost = await DistributedApplicationTestingBuilder
             .CreateAsync<Projects.ABC_Template_TestAppHost>();
-        
+        Console.WriteLine("Configuring HTTP client defaults for distributed application testing...");
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
         });
         _appHost = appHost;
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
+        Console.WriteLine("Building distributed application for testing...");
         _app = await appHost.BuildAsync(cts.Token);
         Console.WriteLine("Starting distributed application for testing...");
         await _app.StartAsync(cts.Token);
