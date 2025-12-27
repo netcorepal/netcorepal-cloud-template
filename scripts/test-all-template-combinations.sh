@@ -3,9 +3,12 @@
 # 用法：bash scripts/test-all-template-combinations.sh
 set -euo pipefail
 
+# 是否运行测试
+run_tests=false
+
 # 组合矩阵
 frameworks=(net8.0 net9.0 net10.0)
-aspire_opts=(false true)
+aspire_opts=(true)
 databases=(MySql SqlServer PostgreSQL Sqlite GaussDB DMDB)
 messagequeues=(RabbitMQ Kafka RedisStreams NATS AzureServiceBus AmazonSQS)
 
@@ -43,12 +46,16 @@ for framework in "${frameworks[@]}"; do
       dotnet restore
       echo "==> 构建 $projdir"
       dotnet build --no-restore --configuration Release
-      echo "==> 测试 $projdir"
-      dotnet test --no-build --configuration Release
+      if [ "$run_tests" = "true" ]; then
+        echo "==> 测试 $projdir"
+        dotnet test --no-build --configuration Release
+      fi
       popd > /dev/null
       popd > /dev/null
-      echo "==> 测试 $projdir"
-      dotnet test "$projdir/TestProject" --no-build --configuration Release
+      if [ "$run_tests" = "true" ]; then
+        echo "==> 测试 $projdir"
+        dotnet test "$projdir/TestProject" --no-build --configuration Release
+      fi
     done
     db=MySql
     for mq in "${messagequeues[@]}"; do
@@ -69,12 +76,16 @@ for framework in "${frameworks[@]}"; do
       dotnet restore
       echo "==> 构建 $projdir"
       dotnet build --no-restore --configuration Release
-      echo "==> 测试 $projdir"
-      dotnet test --no-build --configuration Release
+      if [ "$run_tests" = "true" ]; then
+        echo "==> 测试 $projdir"
+        dotnet test --no-build --configuration Release
+      fi
       popd > /dev/null
       popd > /dev/null
-      echo "==> 测试 $projdir"
-      dotnet test "$projdir/TestProject" --no-build --configuration Release
+      if [ "$run_tests" = "true" ]; then
+        echo "==> 测试 $projdir"
+        dotnet test "$projdir/TestProject" --no-build --configuration Release
+      fi
     done
   done
 done

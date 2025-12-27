@@ -18,6 +18,10 @@
 <!--#endif-->
   </Folder>
   <Folder Name="/test/">
+<!--#if (UseAspire)-->
+    <Project Path="test/ABC.Template.AppHost.Tests/ABC.Template.AppHost.Tests.csproj" />
+    <Project Path="test/ABC.Template.TestAppHost/ABC.Template.TestAppHost.csproj" />
+<!--#endif-->
     <Project Path="test/ABC.Template.Domain.Tests/ABC.Template.Domain.Tests.csproj" />
     <Project Path="test/ABC.Template.Infrastructure.Tests/ABC.Template.Infrastructure.Tests.csproj" />
     <Project Path="test/ABC.Template.Web.Tests/ABC.Template.Web.Tests.csproj" />

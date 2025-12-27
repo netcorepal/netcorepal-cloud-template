@@ -1,3 +1,133 @@
+//#if (UseAspire)
+using Aspire.Hosting;
+using Aspire.Hosting.Testing;
+using Aspire.Hosting.ApplicationModel;
+using Microsoft.AspNetCore.Hosting;
+using System; // 添加 System 命名空间
+using System.Linq; // 添加 System.Linq 命名空间
+
+
+namespace ABC.Template.Web.Tests.Fixtures;
+
+public class WebAppFixture : AppFixture<Program>
+{
+    private IDistributedApplicationTestingBuilder? _appHost;
+
+    private DistributedApplication? _app;
+
+    protected override async ValueTask PreSetupAsync()
+    {
+        Console.WriteLine("Creating distributed application for testing...");
+        var appHost = await DistributedApplicationTestingBuilder
+            .CreateAsync<Projects.ABC_Template_TestAppHost>();
+        Console.WriteLine("Configuring HTTP client defaults for distributed application testing...");
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
+        _appHost = appHost;
+        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
+        Console.WriteLine("Building distributed application for testing...");
+        _app = await appHost.BuildAsync(cts.Token);
+        Console.WriteLine("Starting distributed application for testing...");
+        await _app.StartAsync(cts.Token);
+        Console.WriteLine("Distributed application started.");
+//#if (UseMySql)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+//#elif (UseSqlServer)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+//#elif (UsePostgreSQL)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+//#elif (UseGaussDB)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+//#elif (UseDMDB)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+//#endif
+//#if (UseRabbitMQ)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq", cts.Token);
+//#elif (UseKafka)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("kafka", cts.Token);
+//#elif (UseNATS)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("nats", cts.Token);
+//#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
+        // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
+        // Use Redis as fallback for testing
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+//#elif (UseRedisStreams)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+//#endif
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+    }
+
+    protected override void ConfigureApp(IWebHostBuilder a)
+    {
+        if (_app == null)
+        {
+            throw new InvalidOperationException("Distributed application not initialized");
+        }
+
+        // Get connection strings from Aspire resources
+        SetConnectionString(a, "Redis", "ConnectionStrings:Redis");
+
+//#if (UseMySql)
+        SetConnectionString(a, "MySql", "ConnectionStrings:MySql");
+//#elif (UseSqlServer)
+        SetConnectionString(a, "SqlServer", "ConnectionStrings:SqlServer");
+//#elif (UsePostgreSQL)
+        SetConnectionString(a, "PostgreSQL", "ConnectionStrings:PostgreSQL");
+//#elif (UseGaussDB)
+        SetConnectionString(a, "GaussDB", "ConnectionStrings:GaussDB");
+//#elif (UseDMDB)
+        SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB");
+//#elif (UseSqlite)
+        // SQLite uses in-memory database for testing
+        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
+//#endif
+
+//#if (UseRabbitMQ)
+        SetConnectionString(a, "rabbitmq", "ConnectionStrings:rabbitmq");
+//#elif (UseKafka)
+        SetConnectionString(a, "kafka", "ConnectionStrings:kafka");
+//#elif (UseNATS)
+        SetConnectionString(a, "nats", "ConnectionStrings:nats");
+//#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
+        // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
+        // Use Redis as fallback for testing
+        SetConnectionString(a, "Redis", "ConnectionStrings:redis-fallback");
+//#elif (UseRedisStreams)
+        SetConnectionString(a, "Redis", "ConnectionStrings:redis");
+//#endif
+
+        a.UseEnvironment("Development");
+    }
+
+    private void SetConnectionString(IWebHostBuilder builder, string resourceName, string configKey, params string[] alternativeNames)
+    {
+        var resource =  (IResourceWithConnectionString)_appHost!.Resources.First(r => r.Name.Equals(resourceName, StringComparison.OrdinalIgnoreCase) ||
+                                alternativeNames.Any(n => r.Name.Equals(n, StringComparison.OrdinalIgnoreCase)));
+        if (resource != null)
+        {
+            // Note: Using GetAwaiter().GetResult() is necessary here because ConfigureApp is synchronous
+            // This is safe during test fixture initialization
+            var connectionString = resource.GetConnectionStringAsync().GetAwaiter().GetResult();
+            if (!string.IsNullOrEmpty(connectionString))
+            {
+                builder.UseSetting(configKey, connectionString);
+            }
+        }
+    }
+
+    protected override async ValueTask TearDownAsync()
+    {
+        if (_app != null)
+        {
+            await _app.StopAsync();
+            await _app.DisposeAsync();
+        }
+        await base.TearDownAsync();
+    }
+}
+//#else
 //#if (UseMySql)
 using Testcontainers.MySql;
 //#elif (UseSqlServer)
@@ -93,47 +223,10 @@ public class WebAppFixture : AppFixture<Program>
 //#if (UseRabbitMQ)
         await CreateVisualHostAsync("/");
 //#endif
-//#if (UseAspire && !UseSqlite)
-        //await CreateDatabaseAsync(_databaseContainer.GetConnectionString());
-//#endif
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
     {
-//#if (UseAspire)
-        // When using Aspire, connection strings use resource names
-        a.UseSetting("ConnectionStrings:redis",
-            _redisContainer.GetConnectionString());
-//#if (UseMySql)
-        a.UseSetting("ConnectionStrings:MySql",
-            _databaseContainer.GetConnectionString());
-//#elif (UseSqlServer)
-        a.UseSetting("ConnectionStrings:SqlServer",
-            _databaseContainer.GetConnectionString());
-//#elif (UsePostgreSQL)
-        a.UseSetting("ConnectionStrings:PostgreSQL",
-            _databaseContainer.GetConnectionString());
-//#elif (UseGaussDB)
-        a.UseSetting("ConnectionStrings:GaussDB",
-            _databaseContainer.GetConnectionString());
-//#elif (UseDMDB)
-        a.UseSetting("ConnectionStrings:DMDB",
-            _databaseContainer.GetConnectionString() + ";schema=testdb;");
-//#elif (UseSqlite)
-        // SQLite uses in-memory database for testing with cache=shared to persist data between connections
-        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
-//#endif
-//#if (UseRabbitMQ)
-        a.UseSetting("ConnectionStrings:rabbitmq",
-            $"amqp://guest:guest@{_rabbitMqContainer.Hostname}:{_rabbitMqContainer.GetMappedPublicPort(5672)}/");
-//#elif (UseKafka)
-        a.UseSetting("ConnectionStrings:kafka", _kafkaContainer.GetBootstrapAddress());
-//#elif (UseNATS)
-        a.UseSetting("NATS:Servers", _natsContainer.GetConnectionString());
-//#elif (UseRedisStreams)
-        // RedisStreams uses the same redis connection string
-//#endif
-//#else
         a.UseSetting("ConnectionStrings:Redis",
             _redisContainer.GetConnectionString());
 //#if (UseMySql)
@@ -166,7 +259,6 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseNATS)
         a.UseSetting("NATS:Servers", _natsContainer.GetConnectionString());
 //#endif
-//#endif
         a.UseEnvironment("Development");
     }
 
@@ -178,32 +270,5 @@ public class WebAppFixture : AppFixture<Program>
         ]);
     }
 //#endif
-
-//#if (UseAspire && !UseSqlite)
-    private static async Task CreateDatabaseAsync(string connectionString)
-    {
-        var serviceCollection = new ServiceCollection();
-        serviceCollection.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<WebAppFixture>());
-        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
-        {
-//#if (UseMySql)
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-//#elif (UseSqlServer)
-            options.UseSqlServer(connectionString);
-//#elif (UsePostgreSQL)
-            options.UseNpgsql(connectionString);
-//#elif (UseGaussDB)
-            options.UseGaussDB(connectionString);
-//#elif (UseDMDB)
-            options.UseDm(connectionString);
-//#endif
-            options.EnableSensitiveDataLogging();
-            options.EnableDetailedErrors();
-        });
-
-        await using var serviceProvider = serviceCollection.BuildServiceProvider();
-        await using var dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-        await dbContext.Database.EnsureCreatedAsync();
-    }
-//#endif
 }
+//#endif

@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ABC.Template.Web\ABC.Template.Web.csproj" />
+    <ProjectReference Include="..\..\src\ABC.Template.Web\ABC.Template.Web.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.Hosting.AppHost" />
-    <PackageReference Include="Aspire.Hosting.Docker" />
-    <!--#if (UseMySql)-->
+<!--#if (UseMySql)-->
     <PackageReference Include="Aspire.Hosting.MySql" />
 <!--#elif (UseSqlServer)-->
     <PackageReference Include="Aspire.Hosting.SqlServer" />
