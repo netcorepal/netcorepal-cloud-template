@@ -27,8 +27,9 @@ public class WebAppFixture : AppFixture<Program>
         _appHost = appHost;
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         _app = await appHost.BuildAsync(cts.Token);
-        return;
+        Console.WriteLine("Starting distributed application for testing...");
         await _app.StartAsync(cts.Token);
+        Console.WriteLine("Distributed application started.");
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql", cts.Token);
 //#elif (UseSqlServer)
