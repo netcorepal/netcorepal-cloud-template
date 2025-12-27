@@ -32,17 +32,16 @@ public class WebAppFixture : AppFixture<Program>
         Console.WriteLine("Starting distributed application for testing...");
         await _app.StartAsync(cts.Token);
         Console.WriteLine("Distributed application started.");
-        return;
 //#if (UseMySql)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
 //#elif (UseSqlServer)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("SqlServer", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
 //#elif (UsePostgreSQL)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("PostgreSQL", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
 //#elif (UseGaussDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("GaussDB", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
 //#elif (UseDMDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("DMDB", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
 //#endif
 //#if (UseRabbitMQ)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq", cts.Token);
