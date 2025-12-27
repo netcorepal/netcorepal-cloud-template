@@ -10,7 +10,7 @@ public class AppHostTests
     {
         // Arrange
         var appHost = await DistributedApplicationTestingBuilder
-            .CreateAsync<Projects.ABC_Template_AppHost>();
+            .CreateAsync<Projects.ABC_Template_AppHost>(TestContext.Current.CancellationToken);
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         // Act & Assert
         await using var app = await appHost.BuildAsync(cts.Token);
@@ -22,6 +22,6 @@ public class AppHostTests
         // Verify the app started successfully
         Assert.NotNull(app);
         
-        await app.StopAsync();
+        await app.StopAsync(TestContext.Current.CancellationToken);
     }
 }
