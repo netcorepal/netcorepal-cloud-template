@@ -32,7 +32,6 @@ public class WebAppFixture : AppFixture<Program>
         Console.WriteLine("Starting distributed application for testing...");
         await _app.StartAsync(cts.Token);
         Console.WriteLine("Distributed application started.");
-        await Task.Delay(120000);
         return;
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync("MySql", cts.Token);
