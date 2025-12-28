@@ -75,6 +75,9 @@ public class WebAppFixture : AppFixture<Program>
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         _app = await builder.BuildAsync(cts.Token);
         await _app.StartAsync(cts.Token);
+
+        await Task.Delay(60000); //wait for all resources to be ready
+        return;
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UseSqlServer)
