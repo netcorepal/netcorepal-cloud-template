@@ -132,7 +132,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseKafka)
         SetConnectionString(a, "kafka", "ConnectionStrings:kafka");
 //#elif (UseNATS)
-        SetConnectionString(a, "nats", "ConnectionStrings:nats");
+        SetConnectionString(a, "Nats", "ConnectionStrings:Nats");
 //#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
         // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
         // Use Redis as fallback for testing
@@ -300,7 +300,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseKafka)
         a.UseSetting("Kafka:BootstrapServers", _kafkaContainer.GetBootstrapAddress());
 //#elif (UseNATS)
-        a.UseSetting("NATS:Servers", _natsContainer.GetConnectionString());
+        a.UseSetting("ConnectionStrings:Nats", _natsContainer.GetConnectionString());
 //#endif
         a.UseEnvironment("Development");
     }

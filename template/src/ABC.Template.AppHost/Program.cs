@@ -74,6 +74,9 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq")
 // Add Kafka message queue infrastructure
 var kafka = builder.AddKafka("kafka")
     .WithKafkaUI();
+//#elif (UseNATS)
+// Add NATS message queue infrastructure
+var nats = builder.AddNATS("Nats");
 //#endif
 
 // Add web project with infrastructure dependencies
@@ -107,6 +110,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UseKafka)
     .WithReference(kafka)
     .WaitFor(kafka)
+//#elif (UseNATS)
+    .WithReference(nats)
+    .WaitFor(nats)
 //#endif
     ;
 
