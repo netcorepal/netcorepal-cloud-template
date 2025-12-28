@@ -124,7 +124,8 @@ public class WebAppFixture : AppFixture<Program>
         SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing
-        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
+        var fileName = $"testdb{Guid.NewGuid():N}";
+        a.UseSetting("ConnectionStrings:Sqlite", $"Data Source=file:{fileName}?mode=memory&cache=shared");
 //#endif
 
 //#if (UseRabbitMQ)
@@ -289,7 +290,8 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString() + ";schema=testdb;");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
-        a.UseSetting("ConnectionStrings:Sqlite", "Data Source=:memory:?cache=shared");
+        var fileName = $"testdb{Guid.NewGuid():N}";
+        a.UseSetting("ConnectionStrings:Sqlite", $"Data Source=file:{fileName}?mode=memory&cache=shared");
 //#endif
 //#if (UseRabbitMQ)
         a.UseSetting("RabbitMQ:Port", _rabbitMqContainer.GetMappedPublicPort(5672).ToString());

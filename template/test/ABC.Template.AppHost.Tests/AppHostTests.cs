@@ -5,7 +5,7 @@ namespace ABC.Template.AppHost.Tests;
 
 public class AppHostTests
 {
-    //[Fact]
+    [Fact]
     public async Task AppHost_Should_Start_Successfully()
     {
         // Arrange
