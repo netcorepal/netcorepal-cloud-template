@@ -64,7 +64,7 @@ public class WebAppFixture : AppFixture<Program>
         var kafka = builder.AddKafka("kafka");
         //#elif (UseNATS)
         // Add NATS message queue infrastructure
-        var nats = builder.AddNATS("nats");
+        var nats = builder.AddNats("nats");
         //#endif
         
         builder.Services.ConfigureHttpClientDefaults(clientBuilder =>
@@ -76,7 +76,7 @@ public class WebAppFixture : AppFixture<Program>
         _app = await builder.BuildAsync(cts.Token);
         await _app.StartAsync(cts.Token);
 
-        await Task.Delay(60000); //wait for all resources to be ready
+        await Task.Delay(120000); //wait for all resources to be ready
         return;
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
