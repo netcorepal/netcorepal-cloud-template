@@ -62,6 +62,9 @@ public class WebAppFixture : AppFixture<Program>
         //#elif (UseKafka)
         // Add Kafka message queue infrastructure
         var kafka = builder.AddKafka("kafka");
+        //#elif (UseNATS)
+        // Add NATS message queue infrastructure
+        var nats = builder.AddNATS("nats");
         //#endif
         
         builder.Services.ConfigureHttpClientDefaults(clientBuilder =>

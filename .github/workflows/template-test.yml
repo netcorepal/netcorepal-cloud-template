@@ -100,8 +100,8 @@ jobs:
         cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Run tests - this must succeed
         if ! dotnet test --no-build --configuration Release \
-          --verbosity detailed \
-          --logger "console;verbosity=detailed"; then
+          --verbosity normal \
+          --logger "console;verbosity=normal"; then
           echo "❌ TESTS FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
           exit 1
         fi  
