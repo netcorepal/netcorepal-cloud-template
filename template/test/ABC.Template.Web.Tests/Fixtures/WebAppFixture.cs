@@ -17,46 +17,86 @@ public class WebAppFixture : AppFixture<Program>
 
     protected override async ValueTask PreSetupAsync()
     {
-        Console.WriteLine("Creating distributed application for testing...");
-        var appHost = await DistributedApplicationTestingBuilder
+        var builder = await DistributedApplicationTestingBuilder
             .CreateAsync<Projects.ABC_Template_TestAppHost>();
-        Console.WriteLine("Configuring HTTP client defaults for distributed application testing...");
-        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        // Add Redis infrastructure
+        var redis = builder.AddRedis("Redis");
+
+        //#if (!UseSqlite)
+        var databasePassword = builder.AddParameter("database-password", value: "123456@Abc", secret: true);
+        //#endif
+        //#if (UseMySql)
+        // Add MySQL database infrastructure
+        var mysql = builder.AddMySql("Database", password: databasePassword);
+
+        var database =mysql.AddDatabase("MySql", "test");
+        //#elif (UseSqlServer)
+        // Add SQL Server database infrastructure
+        var sqlserver = builder.AddSqlServer("Database", password: databasePassword);
+
+        var database = sqlserver.AddDatabase("SqlServer", "test");
+        //#elif (UsePostgreSQL)
+        // Add PostgreSQL database infrastructure
+        var postgres = builder.AddPostgres("Database", password: databasePassword);
+
+        var database = postgres.AddDatabase("PostgreSQL", "test");
+        //#elif (UseGaussDB)
+        // Add GaussDB database infrastructure using OpenGauss container (GaussDB compatible)
+        var gaussdb = builder.AddOpenGauss("Database", password: databasePassword);
+
+        var database = gaussdb.AddDatabase("GaussDB", "test");
+        //#elif (UseDMDB)
+        // Add DMDB database infrastructure using DMDB container
+        var dmdb = builder.AddDmdb("Database")
+            .WithDataVolume(isReadOnly: false);
+
+        var database = dmdb.AddDatabase("DMDB");
+        //#endif
+        //#if (UseSqlite)
+        // SQLite is a file-based database and doesn't require container infrastructure
+        //#endif
+
+        //#if (UseRabbitMQ)
+        // Add RabbitMQ message queue infrastructure
+        var rabbitmq = builder.AddRabbitMQ("rabbitmq");
+        //#elif (UseKafka)
+        // Add Kafka message queue infrastructure
+        var kafka = builder.AddKafka("kafka");
+        //#endif
+        
+        builder.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
         });
-        _appHost = appHost;
+        _appHost = builder;
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
-        Console.WriteLine("Building distributed application for testing...");
-        _app = await appHost.BuildAsync(cts.Token);
-        Console.WriteLine("Starting distributed application for testing...");
+        _app = await builder.BuildAsync(cts.Token);
         await _app.StartAsync(cts.Token);
-        Console.WriteLine("Distributed application started.");
 //#if (UseMySql)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UseSqlServer)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UsePostgreSQL)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UseGaussDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UseDMDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Database", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#endif
 //#if (UseRabbitMQ)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("rabbitmq", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cts.Token);
 //#elif (UseKafka)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("kafka", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(kafka.Resource.Name, cts.Token);
 //#elif (UseNATS)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("nats", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(nats.Resource.Name, cts.Token);
 //#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
         // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
         // Use Redis as fallback for testing
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
 //#elif (UseRedisStreams)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
 //#endif
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync("Redis", cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
