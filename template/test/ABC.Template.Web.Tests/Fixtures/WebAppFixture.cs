@@ -99,7 +99,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseRedisStreams)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
 //#endif
-        //await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)

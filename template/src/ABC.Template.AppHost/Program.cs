@@ -76,7 +76,7 @@ var kafka = builder.AddKafka("kafka")
     .WithKafkaUI();
 //#elif (UseNATS)
 // Add NATS message queue infrastructure
-var nats = builder.AddNATS("Nats");
+var nats = builder.AddNats("Nats");
 //#endif
 
 // Add web project with infrastructure dependencies

@@ -297,7 +297,7 @@ try
             x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
         }
 //#elif (UseNATS)
-        x.UseNATS(p => builder.Configuration.GetConnectionString("Nats")!);
+        x.UseNATS(builder.Configuration.GetConnectionString("Nats")!);
 //#elif (UsePulsar)
         // In development, use RedisStreams as fallback for testing
         if (builder.Environment.IsDevelopment())
@@ -335,7 +335,7 @@ try
             x.UseAmazonSQS(p => builder.Configuration.GetSection("AmazonSQS").Bind(p));
         }
 //#elif (UseNATS)
-        x.UseNATS(p => builder.Configuration.GetConnectionString("Nats")!);
+        x.UseNATS(builder.Configuration.GetConnectionString("Nats")!);
 //#elif (UseRedisStreams)
         x.UseRedis(builder.Configuration.GetConnectionString("Redis")!);
 //#elif (UsePulsar)
