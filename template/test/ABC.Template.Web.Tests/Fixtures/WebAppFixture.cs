@@ -75,9 +75,6 @@ public class WebAppFixture : AppFixture<Program>
         var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
         _app = await builder.BuildAsync(cts.Token);
         await _app.StartAsync(cts.Token);
-
-        await Task.Delay(120000); //wait for all resources to be ready
-        return;
 //#if (UseMySql)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#elif (UseSqlServer)
@@ -89,6 +86,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseDMDB)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#endif
+        return;
 //#if (UseRabbitMQ)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cts.Token);
 //#elif (UseKafka)
