@@ -86,7 +86,6 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseDMDB)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
 //#endif
-        return;
 //#if (UseRabbitMQ)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cts.Token);
 //#elif (UseKafka)
@@ -100,7 +99,7 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseRedisStreams)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
 //#endif
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
+        //await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
