@@ -11,12 +11,14 @@ namespace ABC.Template.Web.Tests.Fixtures;
 
 public class WebAppFixture : AppFixture<Program>
 {
+    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(120);
     private IDistributedApplicationTestingBuilder? _appHost;
 
     private DistributedApplication? _app;
 
     protected override async ValueTask PreSetupAsync()
     {
+        var cancellationToken = TestContext.Current.CancellationToken;
         var builder = await DistributedApplicationTestingBuilder
             .CreateAsync<Projects.ABC_Template_TestAppHost>();
         // Add Redis infrastructure
@@ -72,34 +74,33 @@ public class WebAppFixture : AppFixture<Program>
             clientBuilder.AddStandardResilienceHandler();
         });
         _appHost = builder;
-        var cts = new CancellationTokenSource(TimeSpan.FromMinutes(10));
-        _app = await builder.BuildAsync(cts.Token);
-        await _app.StartAsync(cts.Token);
+        _app = await builder.BuildAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
+        await _app.StartAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#if (UseMySql)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseSqlServer)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UsePostgreSQL)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseGaussDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseDMDB)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#endif
 //#if (UseRabbitMQ)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseKafka)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(kafka.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(kafka.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseNATS)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(nats.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(nats.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseAzureServiceBus || UseAmazonSQS || UsePulsar)
         // Azure Service Bus, Amazon SQS, and Pulsar are not available in local testing environment
         // Use Redis as fallback for testing
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseRedisStreams)
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#endif
-        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cts.Token);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(redis.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
     }
 
     protected override void ConfigureApp(IWebHostBuilder a)
