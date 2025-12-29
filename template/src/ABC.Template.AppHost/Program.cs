@@ -12,7 +12,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var redis = builder.AddRedis("Redis");
 
 //#if (!UseSqlite)
-var databasePassword = builder.AddParameter("database-password", secret: true);
+var databasePassword = builder.AddParameter("database-password", value:"1234@Dev", secret: true);
 //#endif
 //#if (UseMySql)
 // Add MySQL database infrastructure
@@ -45,12 +45,12 @@ var postgres = builder.AddPostgres("Database", password: databasePassword)
 var postgresDb = postgres.AddDatabase("PostgreSQL", "dev");
 //#elif (UseGaussDB)
 // Add GaussDB database infrastructure using OpenGauss container (GaussDB compatible)
-var gaussdb = builder.AddOpenGauss("Database", password: databasePassword);
+var gaussdb = builder.AddOpenGauss("Database", password: databasePassword)
     // Configure the container to store data in a volume so that it persists across instances.
     //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    //.WithLifetime(ContainerLifetime.Persistent);
-
+    //.WithLifetime(ContainerLifetime.Persistent)
+    .WithPgAdmin();
 var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
 //#elif (UseDMDB)
 // Add DMDB database infrastructure using DMDB container
