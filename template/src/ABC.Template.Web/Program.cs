@@ -39,43 +39,6 @@ try
     
     // Add service defaults & Aspire client integrations.
     builder.AddServiceDefaults();
-    
-    // Configure Serilog to send logs to OpenTelemetry when Aspire is enabled
-    builder.Host.UseSerilog((context, services, loggerConfiguration) =>
-    {
-        loggerConfiguration
-            .ReadFrom.Configuration(context.Configuration)
-            .ReadFrom.Services(services)
-            .Enrich.WithClientIp()
-            .Enrich.FromLogContext();
-        
-        var otlpEndpoint = context.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-        if (!string.IsNullOrWhiteSpace(otlpEndpoint))
-        {
-            // Send logs to OpenTelemetry when OTLP endpoint is configured (Aspire Dashboard)
-            loggerConfiguration.WriteTo.OpenTelemetry(options =>
-            {
-                options.Endpoint = otlpEndpoint;
-                // Aspire uses HTTP/Protobuf for logs by default
-                var protocol = context.Configuration["OTEL_EXPORTER_OTLP_PROTOCOL"];
-                options.Protocol = protocol?.ToLowerInvariant() switch
-                {
-                    "grpc" => Serilog.Sinks.OpenTelemetry.OtlpProtocol.Grpc,
-                    "http/protobuf" => Serilog.Sinks.OpenTelemetry.OtlpProtocol.HttpProtobuf,
-                    _ => Serilog.Sinks.OpenTelemetry.OtlpProtocol.HttpProtobuf // Default to HTTP/Protobuf
-                };
-                options.ResourceAttributes = new Dictionary<string, object>
-                {
-                    ["service.name"] = context.Configuration["OTEL_SERVICE_NAME"] ?? context.HostingEnvironment.ApplicationName
-                };
-            });
-        }
-        else
-        {
-            // Fallback to console logging when OTLP is not configured
-            loggerConfiguration.WriteTo.Console(new JsonFormatter());
-        }
-    });
 <!--#else-->
     builder.Host.UseSerilog();
 <!--#endif-->

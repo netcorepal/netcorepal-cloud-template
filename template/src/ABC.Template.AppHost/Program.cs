@@ -54,7 +54,7 @@ var gaussdb = builder.AddOpenGauss("Database", password: databasePassword)
 var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
 //#elif (UseDMDB)
 // Add DMDB database infrastructure using DMDB container
-var dmdb = builder.AddDmdb("Database");
+var dmdb = builder.AddDmdb("Database", userName: null, databasePassword, databasePassword);
     // Configure the container to store data in a volume so that it persists across instances.
     //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
