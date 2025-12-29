@@ -10,7 +10,7 @@ applyTo: "src/ABC.Template.Web/Application/Queries/**/*.cs"
 
 - **查询定义**：
     - 查询实现 `IQuery<TResponse>` 接口。
-    - 分页查询现 `IPagedQuery<TResponse>` 接口
+    - 分页查询实现 `IPagedQuery<TResponse>` 接口
     - 必须为每个查询创建验证器，继承 `AbstractValidator<TQuery>`。
     - 查询处理器实现 `IQueryHandler<TQuery, TResponse>` 接口。
     - 使用 `record` 类型定义查询和 DTO。
