@@ -20,8 +20,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        framework: [ 'net8.0', 'net9.0', 'net10.0' ]
-        aspire: [ 'false', 'true' ]
+        framework: [ 'net10.0', 'net8.0', 'net9.0' ]
+        aspire: [ 'true', 'false' ]
         scenario:
           # Test all databases with RabbitMQ
           - { database: 'MySql', messagequeue: 'RabbitMQ' }
@@ -45,8 +45,24 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: |
+            8.0.x
+            9.0.x
             10.0.x
         global-json-file: global.json
+
+    - name: Install SSL Certificates
+      run: |
+        dotnet dev-certs https --trust
+
+    - name: Install Aspire CLI
+      run: |
+        curl -sSL https://aspire.dev/install.sh | bash
+        echo "export PATH=\"$HOME/.aspire/bin:$PATH\"" >> $GITHUB_ENV
+
+    - name: Validation of Aspire CLI
+      run: |
+        export PATH="$HOME/.aspire/bin:$PATH"
+        aspire --version
         
     - name: Install template locally
       run: dotnet new install .
@@ -87,7 +103,9 @@ jobs:
       run: |
         cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
         # Run tests - this must succeed
-        if ! dotnet test --no-build --configuration Release --verbosity normal; then
+        if ! dotnet test --no-build --configuration Release \
+          --verbosity normal \
+          --logger "console;verbosity=normal"; then
           echo "❌ TESTS FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
           exit 1
         fi  

@@ -1,18 +1,8 @@
-<!--#if (Framework == "net8.0")-->
-<Project Sdk="Microsoft.NET.Sdk">
-<!--#else-->
 <Project Sdk="Aspire.AppHost.Sdk/13.1.0">
-<!--#endif-->
-<!--#if (Framework == "net8.0")-->
-  <Sdk Name="Aspire.AppHost.Sdk" Version="13.0.2" />
-<!--#endif-->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>NETCOREPAL_FRAMEWORK</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-<!--#if (Framework == "net8.0")-->
-    <IsAspireHost>true</IsAspireHost>
-<!--#endif-->
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -39,6 +29,8 @@
     <PackageReference Include="Aspire.Hosting.RabbitMQ" />
 <!--#elif (UseKafka)-->
     <PackageReference Include="Aspire.Hosting.Kafka" />
+<!--#elif (UseNATS)-->
+    <PackageReference Include="Aspire.Hosting.NATS" />
 <!--#endif-->
   </ItemGroup>
 

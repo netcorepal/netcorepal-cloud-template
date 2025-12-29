@@ -80,13 +80,6 @@
 <!--#if (UseAspire)-->
     <!-- Aspire client integrations for infrastructure resources -->
     <PackageReference Include="Aspire.StackExchange.Redis" />
-<!--#if (UseMySql)-->
-    <PackageReference Include="Aspire.Pomelo.EntityFrameworkCore.MySql" />
-<!--#elif (UseSqlServer)-->
-    <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
-<!--#elif (UsePostgreSQL)-->
-    <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-<!--#endif-->
 <!--#if (UseSqlite)-->
     <!-- SQLite doesn't require Aspire integration package -->
 <!--#endif-->

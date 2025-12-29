@@ -36,6 +36,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.Web.Tests", "test/ABC.Template.Web.Tests/ABC.Template.Web.Tests.csproj", "{99999999-9999-9999-9999-999999999999}"
 EndProject
+<!--#if (UseAspire)-->
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.TestAppHost", "test/ABC.Template.TestAppHost/ABC.Template.TestAppHost.csproj", "{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABC.Template.AppHost.Tests", "test/ABC.Template.AppHost.Tests/ABC.Template.AppHost.Tests.csproj", "{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD}"
+EndProject
+<!--#endif-->
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,6 +82,16 @@ Global
 		{99999999-9999-9999-9999-999999999999}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99999999-9999-9999-9999-999999999999}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99999999-9999-9999-9999-999999999999}.Release|Any CPU.Build.0 = Release|Any CPU
+<!--#if (UseAspire)-->
+		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD}.Release|Any CPU.Build.0 = Release|Any CPU
+<!--#endif-->
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{44444444-4444-4444-4444-444444444444} = {22222222-2222-2222-2222-222222222222}
@@ -88,5 +104,9 @@ Global
 		{77777777-7777-7777-7777-777777777777} = {33333333-3333-3333-3333-333333333333}
 		{88888888-8888-8888-8888-888888888888} = {33333333-3333-3333-3333-333333333333}
 		{99999999-9999-9999-9999-999999999999} = {33333333-3333-3333-3333-333333333333}
+<!--#if (UseAspire)-->
+		{CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC} = {33333333-3333-3333-3333-333333333333}
+		{DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD} = {33333333-3333-3333-3333-333333333333}
+<!--#endif-->
 	EndGlobalSection
 EndGlobal

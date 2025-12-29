@@ -1,45 +1,45 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 //Enable Docker publisher
-builder.AddDockerComposeEnvironment("docker-env")
-    .WithDashboard(dashboard =>
-    {
-        dashboard.WithHostPort(8080)
-            .WithForwardedHeaders(enabled: true);
-    });
+// builder.AddDockerComposeEnvironment("docker-env")
+//     .WithDashboard(dashboard =>
+//     {
+//         dashboard.WithHostPort(8080)
+//             .WithForwardedHeaders(enabled: true);
+//     });
 
 // Add Redis infrastructure
 var redis = builder.AddRedis("Redis");
 
 //#if (!UseSqlite)
-var databasePassword = builder.AddParameter("database-password", secret: true);
+var databasePassword = builder.AddParameter("database-password", value:"1234@Dev", secret: true);
 //#endif
 //#if (UseMySql)
 // Add MySQL database infrastructure
 var mysql = builder.AddMySql("Database", password: databasePassword)
     // Configure the container to store data in a volume so that it persists across instances.
-    .WithDataVolume(isReadOnly: false)
+    //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    .WithLifetime(ContainerLifetime.Persistent)
+    //.WithLifetime(ContainerLifetime.Persistent)
     .WithPhpMyAdmin();
 
 var mysqlDb = mysql.AddDatabase("MySql", "dev");
 //#elif (UseSqlServer)
 // Add SQL Server database infrastructure
-var sqlserver = builder.AddSqlServer("Database", password: databasePassword)
+var sqlserver = builder.AddSqlServer("Database", password: databasePassword);
     // Configure the container to store data in a volume so that it persists across instances.
-    .WithDataVolume(isReadOnly: false)
+    //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    .WithLifetime(ContainerLifetime.Persistent);
+    //.WithLifetime(ContainerLifetime.Persistent);
 
 var sqlserverDb = sqlserver.AddDatabase("SqlServer", "dev");
 //#elif (UsePostgreSQL)
 // Add PostgreSQL database infrastructure
 var postgres = builder.AddPostgres("Database", password: databasePassword)
     // Configure the container to store data in a volume so that it persists across instances.
-    .WithDataVolume(isReadOnly: false)
+    //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    .WithLifetime(ContainerLifetime.Persistent)
+    //.WithLifetime(ContainerLifetime.Persistent)
     .WithPgAdmin();
 
 var postgresDb = postgres.AddDatabase("PostgreSQL", "dev");
@@ -47,18 +47,18 @@ var postgresDb = postgres.AddDatabase("PostgreSQL", "dev");
 // Add GaussDB database infrastructure using OpenGauss container (GaussDB compatible)
 var gaussdb = builder.AddOpenGauss("Database", password: databasePassword)
     // Configure the container to store data in a volume so that it persists across instances.
-    .WithDataVolume(isReadOnly: false)
+    //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    .WithLifetime(ContainerLifetime.Persistent);
-
+    //.WithLifetime(ContainerLifetime.Persistent)
+    .WithPgAdmin();
 var gaussdbDb = gaussdb.AddDatabase("GaussDB", "dev");
 //#elif (UseDMDB)
 // Add DMDB database infrastructure using DMDB container
-var dmdb = builder.AddDmdb("Database")
+var dmdb = builder.AddDmdb("Database", userName: null, databasePassword, databasePassword);
     // Configure the container to store data in a volume so that it persists across instances.
-    .WithDataVolume(isReadOnly: false)
+    //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
-    .WithLifetime(ContainerLifetime.Persistent);
+    //.WithLifetime(ContainerLifetime.Persistent);
 
 var dmdbDb = dmdb.AddDatabase("DMDB");
 //#endif
@@ -74,6 +74,9 @@ var rabbitmq = builder.AddRabbitMQ("rabbitmq")
 // Add Kafka message queue infrastructure
 var kafka = builder.AddKafka("kafka")
     .WithKafkaUI();
+//#elif (UseNATS)
+// Add NATS message queue infrastructure
+var nats = builder.AddNats("Nats");
 //#endif
 
 // Add web project with infrastructure dependencies
@@ -107,6 +110,9 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
 //#elif (UseKafka)
     .WithReference(kafka)
     .WaitFor(kafka)
+//#elif (UseNATS)
+    .WithReference(nats)
+    .WaitFor(nats)
 //#endif
     ;
 

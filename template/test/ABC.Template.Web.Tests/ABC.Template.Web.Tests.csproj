@@ -16,6 +16,28 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" />
     <PackageReference Include="Moq" />
+<!--#if (UseAspire)-->
+    <PackageReference Include="Aspire.Hosting.Testing" />
+<!--#if (UseMySql)-->
+    <PackageReference Include="Aspire.Hosting.MySql" />
+<!--#elif (UseSqlServer)-->
+    <PackageReference Include="Aspire.Hosting.SqlServer" />
+<!--#elif (UsePostgreSQL)-->
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+<!--#elif (UseGaussDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.OpenGauss" />
+<!--#elif (UseDMDB)-->
+    <PackageReference Include="NetCorePal.Aspire.Hosting.DMDB" />
+<!--#endif-->
+    <PackageReference Include="Aspire.Hosting.Redis" />
+<!--#if (UseRabbitMQ)-->
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" />
+<!--#elif (UseKafka)-->
+    <PackageReference Include="Aspire.Hosting.Kafka" />
+<!--#elif (UseNATS)-->
+    <PackageReference Include="Aspire.Hosting.NATS" />
+<!--#endif-->
+<!--#else-->
     <PackageReference Include="Testcontainers" />
 <!--#if (UseMySql)-->
     <PackageReference Include="Testcontainers.MySql" />
@@ -36,6 +58,7 @@
     <PackageReference Include="Testcontainers.Nats" />
 <!--#endif-->
     <PackageReference Include="Testcontainers.Redis" />
+<!--#endif-->
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.CodeAnalysis" />
     <PackageReference Include="xunit.v3" />
@@ -52,6 +75,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ABC.Template.Web\ABC.Template.Web.csproj" />
+<!--#if (UseAspire)-->
+    <ProjectReference Include="..\ABC.Template.TestAppHost\ABC.Template.TestAppHost.csproj" />
+<!--#endif-->
   </ItemGroup>
 
 </Project>
