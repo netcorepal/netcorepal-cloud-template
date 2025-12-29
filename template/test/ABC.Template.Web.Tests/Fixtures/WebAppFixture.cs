@@ -287,7 +287,7 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
-            _databaseContainer.GetConnectionString() + ";schema=testdb;");
+            _databaseContainer.GetConnectionString());
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
         var fileName = $"testdb{Guid.NewGuid():N}";
