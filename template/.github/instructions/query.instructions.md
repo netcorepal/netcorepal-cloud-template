@@ -101,7 +101,7 @@ public class PagedProductQueryValidator : AbstractValidator<PagedProductQuery>
     }
 }
 
-public class PagedUserQueryHandler(ApplicationDbContext context) : IQueryHandler<PagedProductQuery, PagedData<PagedProductListItemDto>>
+public class PagedProductQueryHandler(ApplicationDbContext context) : IQueryHandler<PagedProductQuery, PagedData<PagedProductListItemDto>>
 {
     public async Task<PagedData<PagedProductListItemDto>> Handle(PagedProductQuery request, CancellationToken cancellationToken)
     {
