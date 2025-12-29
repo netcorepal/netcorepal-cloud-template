@@ -49,8 +49,7 @@ public class WebAppFixture : AppFixture<Program>
         var database = gaussdb.AddDatabase("GaussDB", "test");
         //#elif (UseDMDB)
         // Add DMDB database infrastructure using DMDB container
-        var dmdb = builder.AddDmdb("Database")
-            .WithDataVolume(isReadOnly: false);
+        var dmdb = builder.AddDmdb("Database", userName: null, databasePassword, databasePassword);
 
         var database = dmdb.AddDatabase("DMDB");
         //#endif
