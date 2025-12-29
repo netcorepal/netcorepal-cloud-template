@@ -1,12 +1,12 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 //Enable Docker publisher
-builder.AddDockerComposeEnvironment("docker-env")
-    .WithDashboard(dashboard =>
-    {
-        dashboard.WithHostPort(8080)
-            .WithForwardedHeaders(enabled: true);
-    });
+// builder.AddDockerComposeEnvironment("docker-env")
+//     .WithDashboard(dashboard =>
+//     {
+//         dashboard.WithHostPort(8080)
+//             .WithForwardedHeaders(enabled: true);
+//     });
 
 // Add Redis infrastructure
 var redis = builder.AddRedis("Redis");
