@@ -50,6 +50,10 @@ jobs:
             10.0.x
         global-json-file: global.json
 
+    - name: Install SSL Certificates
+      run: |
+        dotnet dev-certs https --trust
+
     - name: Install Aspire CLI
       run: |
         curl -sSL https://aspire.dev/install.sh | bash
