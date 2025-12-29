@@ -86,7 +86,7 @@ using Microsoft.EntityFrameworkCore; // 必需：用于EF Core扩展方法
 
 namespace ABC.Template.Web.Application.Queries.Products;
 
-public record PagedProductQuery(string? Name = null, CategoryId? CategoryId == null, decimal? MinPrice = null, decimal? MaxPrice = null, bool? IsActive = false, string? SortBy = null, int PageIndex = 1, int PageSize = 50, bool CountTotal = true) : IPagedQuery<PagedProductListItemDto>;
+public record PagedProductQuery(string? Name = null, CategoryId? CategoryId = null, decimal? MinPrice = null, decimal? MaxPrice = null, bool? IsActive = false, string? SortBy = null, int PageIndex = 1, int PageSize = 50, bool CountTotal = true) : IPagedQuery<PagedProductListItemDto>;
 
 public class PagedProductQueryValidator : AbstractValidator<PagedProductQuery>
 {
