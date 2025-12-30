@@ -18,8 +18,8 @@ namespace TestProject.Infrastructure.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "10.0.0");
 
-            // MongoDB collections will be created automatically by the MongoDB EF Core provider
-            // based on the entity configurations in ApplicationDbContext
+            // Entity configurations in ApplicationDbContext define MongoDB collection structure
+            // Collections are created automatically when accessed with proper entity mappings
 #pragma warning restore 612, 618
         }
     }

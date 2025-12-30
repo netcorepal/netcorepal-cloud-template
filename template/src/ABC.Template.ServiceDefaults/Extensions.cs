@@ -87,7 +87,7 @@ public static class Extensions
                 tracing.AddSource("Npgsql");
 //#elif (UseMongoDB)
                 // Add MongoDB tracing instrumentation
-                tracing.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
+                tracing.AddSource("MongoDB.Driver.Core.Events");
 //#endif
             });
 

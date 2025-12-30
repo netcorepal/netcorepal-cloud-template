@@ -11,8 +11,9 @@ namespace TestProject.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // MongoDB EF Core provider automatically creates collections
-            // No explicit schema creation is needed
+            // MongoDB EF Core provider automatically creates collections based on entity configurations
+            // Entity configurations in ApplicationDbContext define the collection and document structure
+            // No SQL DDL statements are needed for schema creation
         }
 
         /// <inheritdoc />
