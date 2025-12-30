@@ -23,6 +23,8 @@
     <PackageReference Include="NetCorePal.Aspire.Hosting.OpenGauss" />
 <!--#elif (UseDMDB)-->
     <PackageReference Include="NetCorePal.Aspire.Hosting.DMDB" />
+<!--#elif (UseMongoDB)-->
+    <PackageReference Include="Aspire.Hosting.MongoDB" />
 <!--#endif-->
     <PackageReference Include="Aspire.Hosting.Redis" />
 <!--#if (UseRabbitMQ)-->

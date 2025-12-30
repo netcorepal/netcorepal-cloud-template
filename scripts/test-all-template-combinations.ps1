@@ -13,7 +13,7 @@ $run_tests = -not $NoTests
 # 组合矩阵
 $frameworks = @("net8.0", "net9.0", "net10.0")
 $aspire_opts = @($true)
-$databases = @("MySql", "SqlServer", "PostgreSQL", "Sqlite", "GaussDB", "DMDB")
+$databases = @("MySql", "SqlServer", "PostgreSQL", "Sqlite", "GaussDB", "DMDB", "MongoDB")
 $messagequeues = @("RabbitMQ", "Kafka", "RedisStreams", "NATS", "AzureServiceBus", "AmazonSQS")
 
 Write-Host "==> 安装本地模板..."
