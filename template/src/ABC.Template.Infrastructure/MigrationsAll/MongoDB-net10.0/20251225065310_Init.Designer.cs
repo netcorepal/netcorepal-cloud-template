@@ -16,7 +16,7 @@ namespace TestProject.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0");
+                .HasAnnotation("ProductVersion", "10.0.0");
 
             // MongoDB collections will be created automatically by the MongoDB EF Core provider
             // based on the entity configurations in ApplicationDbContext
