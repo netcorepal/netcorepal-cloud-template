@@ -136,6 +136,8 @@ try
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseDMDB)
         options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
+//#elif (UseMongoDB)
+        options.UseMongoDB(builder.Configuration.GetConnectionString("MongoDB")!, "ABC_Template");
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -160,6 +162,8 @@ try
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseDMDB)
         options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
+//#elif (UseMongoDB)
+        options.UseMongoDB(builder.Configuration.GetConnectionString("MongoDB")!, "ABC_Template");
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())

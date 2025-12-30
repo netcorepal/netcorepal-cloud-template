@@ -85,6 +85,9 @@ public static class Extensions
                 // Add PostgreSQL tracing instrumentation
                 // Npgsql.OpenTelemetry automatically enables tracing when the package is referenced
                 tracing.AddSource("Npgsql");
+//#elif (UseMongoDB)
+                // Add MongoDB tracing instrumentation
+                tracing.AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources");
 //#endif
             });
 

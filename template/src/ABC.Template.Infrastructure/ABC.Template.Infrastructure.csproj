@@ -27,6 +27,9 @@
         <!--#elif (UseDMDB)-->
         <PackageReference Include="DM.Microsoft.EntityFrameworkCore"/>
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.DMDB"/>
+        <!--#elif (UseMongoDB)-->
+        <PackageReference Include="MongoDB.EntityFrameworkCore"/>
+        <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MongoDB"/>
         <!--#endif-->
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore"/>
         <PackageReference Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake"/>
