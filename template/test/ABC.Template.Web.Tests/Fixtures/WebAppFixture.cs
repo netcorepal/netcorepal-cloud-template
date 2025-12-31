@@ -52,6 +52,12 @@ public class WebAppFixture : AppFixture<Program>
         var dmdb = builder.AddDmdb("Database", userName: null, databasePassword, databasePassword);
 
         var database = dmdb.AddDatabase("DMDB");
+        //#elif (UseMongoDB)
+        // Add MongoDB database infrastructure
+        var mongo = builder.AddMongoDB("Database")
+                   .WithMongoExpress();
+
+        var mongodb = mongo.AddDatabase("MongoDB");
         //#endif
         //#if (UseSqlite)
         // SQLite is a file-based database and doesn't require container infrastructure
@@ -85,6 +91,8 @@ public class WebAppFixture : AppFixture<Program>
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseDMDB)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
+//#elif (UseMongoDB)
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(mongodb.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#endif
 //#if (UseRabbitMQ)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
@@ -122,6 +130,8 @@ public class WebAppFixture : AppFixture<Program>
         SetConnectionString(a, "GaussDB", "ConnectionStrings:GaussDB");
 //#elif (UseDMDB)
         SetConnectionString(a, "DMDB", "ConnectionStrings:DMDB");
+//#elif (UseMongoDB)
+        SetConnectionString(a, "MongoDB", "ConnectionStrings:MongoDB");
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing
         var fileName = $"testdb{Guid.NewGuid():N}";
@@ -182,6 +192,8 @@ using Testcontainers.PostgreSql;
 using Testcontainers.OpenGauss;
 //#elif (UseDMDB)
 using Testcontainers.DMDB;
+//#elif (UseMongoDB)
+using Testcontainers.MongoDb;
 //#endif
 //#if (UseRabbitMQ)
 using Testcontainers.RabbitMq;
@@ -217,6 +229,8 @@ public class WebAppFixture : AppFixture<Program>
     private OpenGaussContainer _databaseContainer = null!;
 //#elif (UseDMDB)
     private DmdbContainer _databaseContainer = null!;
+//#elif (UseMongoDB)
+    private MongoDbContainer _databaseContainer = null!;
 //#endif
 
     protected override async ValueTask PreSetupAsync()
@@ -250,6 +264,13 @@ public class WebAppFixture : AppFixture<Program>
 //#elif (UseDMDB)
         _databaseContainer = new DmdbBuilder()
             .Build();
+//#elif (UseMongoDB)
+        _databaseContainer = new MongoDbBuilder()
+        .WithImage("mongo:8.0")
+        .WithReplicaSet("rs0")
+        .WithUsername("admin")
+        .WithPassword("guest")
+        .Build();
 //#endif
 
         var tasks = new List<Task> { _redisContainer.StartAsync() };
@@ -287,6 +308,9 @@ public class WebAppFixture : AppFixture<Program>
             _databaseContainer.GetConnectionString());
 //#elif (UseDMDB)
         a.UseSetting("ConnectionStrings:DMDB",
+            _databaseContainer.GetConnectionString());
+//#elif (UseMongoDB)
+        a.UseSetting("ConnectionStrings:MongoDB",
             _databaseContainer.GetConnectionString());
 //#elif (UseSqlite)
         // SQLite uses in-memory database for testing with cache=shared to persist data between connections
