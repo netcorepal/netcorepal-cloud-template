@@ -2,9 +2,31 @@
 
 ## 环境准备
 
-### 推荐方式：使用初始化脚本
+### 使用 Aspire（推荐）
 
-项目提供了完整的基础设施初始化脚本，支持快速搭建开发环境：
+如果您的项目启用了 Aspire 支持（使用 `--UseAspire` 参数创建），只需要 Docker 环境即可，无需手动配置各种基础设施服务。
+
+```bash
+# 仅需确保 Docker 环境运行
+docker version
+
+# 直接运行 AppHost 项目，Aspire 会自动管理所有依赖服务
+cd src/ABC.Template.AppHost
+dotnet run
+```
+
+Aspire 会自动为您：
+- 启动和管理数据库容器（MySQL、SQL Server、PostgreSQL、MongoDB 等）
+- 启动和管理消息队列容器（RabbitMQ、Kafka、NATS 等）
+- 启动和管理 Redis 容器
+- 提供统一的 Aspire Dashboard 界面查看所有服务状态
+- 自动配置服务间的连接字符串和依赖关系
+
+访问 Aspire Dashboard（通常在 http://localhost:15888）可以查看和管理所有服务。
+
+### 推荐方式：使用初始化脚本（不使用 Aspire 时）
+
+如果您没有启用 Aspire，项目提供了完整的基础设施初始化脚本，支持快速搭建开发环境：
 
 #### 使用 Docker Compose（推荐）
 ```bash
