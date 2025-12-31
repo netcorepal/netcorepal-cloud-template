@@ -29,8 +29,8 @@ for db in "${DATABASES[@]}"; do
     echo "==> 清理 $PRJ_DIR ..."
     rm -rf "$PRJ_DIR"
     echo "==> dotnet new 生成 $db $fw 项目..."
-    dotnet new netcorepal-web -n TestProject -F $fw -D $db -M RabbitMQ --output "$PRJ_DIR"
-    INFRA_DIR="$PRJ_DIR/src/TestProject.Infrastructure"
+    dotnet new netcorepal-web -n ABC.Template -F $fw -D $db -M RabbitMQ --output "$PRJ_DIR"
+    INFRA_DIR="$PRJ_DIR/src/ABC.Template.Infrastructure"
     # 递归清理 dotnet new 生成的 Migrations 目录，避免模板污染
     rm -rf "$INFRA_DIR/Migrations"
     echo "==> dotnet restore..."

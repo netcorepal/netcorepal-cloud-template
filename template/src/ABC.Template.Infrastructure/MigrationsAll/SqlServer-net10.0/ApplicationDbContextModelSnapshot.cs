@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TestProject.Infrastructure;
+using ABC.Template.Infrastructure;
 
 #nullable disable
 
-namespace TestProject.Infrastructure.Migrations
+namespace ABC.Template.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -124,7 +124,7 @@ namespace TestProject.Infrastructure.Migrations
                     b.ToTable("CAPReceivedMessage", (string)null);
                 });
 
-            modelBuilder.Entity("TestProject.Domain.AggregatesModel.DeliverAggregate.DeliverRecord", b =>
+            modelBuilder.Entity("ABC.Template.Domain.AggregatesModel.DeliverAggregate.DeliverRecord", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -137,7 +137,7 @@ namespace TestProject.Infrastructure.Migrations
                     b.ToTable("deliverrecord", (string)null);
                 });
 
-            modelBuilder.Entity("TestProject.Domain.AggregatesModel.OrderAggregate.Order", b =>
+            modelBuilder.Entity("ABC.Template.Domain.AggregatesModel.OrderAggregate.Order", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
