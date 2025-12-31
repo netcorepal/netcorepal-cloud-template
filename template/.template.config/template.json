@@ -30,7 +30,7 @@
                     "description": "Target .NET 10.0"
                 }
             ],
-            "defaultValue": "net9.0",
+            "defaultValue": "net10.0",
             "replaces": "NETCOREPAL_FRAMEWORK"
         },
         "Database": {
@@ -61,6 +61,10 @@
                 {
                     "choice": "DMDB",
                     "description": "Use DMDB"
+                },
+                {
+                    "choice": "MongoDB",
+                    "description": "Use MongoDB"
                 }
             ],
             "defaultValue": "MySql"
@@ -158,6 +162,10 @@
         "UseDMDB": {
             "type": "computed",
             "value": "(Database == \"DMDB\")"
+        },
+        "UseMongoDB": {
+            "type": "computed",
+            "value": "(Database == \"MongoDB\")"
         },
         "UseRabbitMQ": {
             "type": "computed",
@@ -278,7 +286,10 @@
                 { "condition": "(Database != \"DMDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0/**" ] },
                 { "condition": "(Database != \"DMDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0/**" ] },
                 { "condition": "(Database != \"DMDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ] },
-                { "condition": "(Database != \"DMDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ] }
+                { "condition": "(Database != \"DMDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ] },
+
+                // MongoDB
+                { "condition": "(Database == \"MongoDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll" ] }
             ]
         }
     ]

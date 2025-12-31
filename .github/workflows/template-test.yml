@@ -30,6 +30,7 @@ jobs:
           - { database: 'Sqlite', messagequeue: 'RabbitMQ' }
           - { database: 'GaussDB', messagequeue: 'RabbitMQ' }
           - { database: 'DMDB', messagequeue: 'RabbitMQ' }
+          - { database: 'MongoDB', messagequeue: 'RabbitMQ' }
           
           # Test all message queues with MySql (RabbitMQ already covered above)
           - { database: 'MySql', messagequeue: 'Kafka' }

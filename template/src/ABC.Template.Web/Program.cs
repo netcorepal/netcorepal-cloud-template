@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
 using NetCorePal.Extensions.CodeAnalysis;
+//#if (UseMongoDB)
+using NetCorePal.Extensions.DistributedTransactions.CAP.MongoDB;
+//#endif
 
 <!--#if (UseAspire)-->
 // Create a minimal logger for startup
@@ -136,6 +139,8 @@ try
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseDMDB)
         options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
+//#elif (UseMongoDB)
+        options.UseMongoDB(builder.Configuration.GetConnectionString("MongoDB")!, "ABC_Template");
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -160,6 +165,8 @@ try
         options.UseGaussDB(builder.Configuration.GetConnectionString("GaussDB"));
 //#elif (UseDMDB)
         options.UseDm(builder.Configuration.GetConnectionString("DMDB")!);
+//#elif (UseMongoDB)
+        options.UseMongoDB(builder.Configuration.GetConnectionString("MongoDB")!, "ABC_Template");
 //#endif
         // 仅在开发环境启用敏感数据日志，防止生产环境泄露敏感信息
         if (builder.Environment.IsDevelopment())
@@ -188,7 +195,11 @@ try
 
     builder.Services.AddCap(x =>
     {
+//#if (UseMongoDB)
+        x.UseMongoDBNetCorePalStorage<ApplicationDbContext>();
+//#else
         x.UseNetCorePalStorage<ApplicationDbContext>();
+//#endif
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.ConsumerThreadCount = Environment.ProcessorCount;
 <!--#if (UseAspire)-->
@@ -370,7 +381,11 @@ try
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+<!--#if (UseMongoDB)-->
+        await dbContext.Database.EnsureCreatedAsync();
+<!--#else-->
         await dbContext.Database.MigrateAsync();
+<!--#endif-->
     }
 
 

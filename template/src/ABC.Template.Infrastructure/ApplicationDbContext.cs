@@ -23,6 +23,8 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , IGaussDBCapDataStorage
     //#elif (UseDMDB)
     , IDMDBCapDataStorage
+    //#elif (UseMongoDB)
+    , IMongoDBCapDataStorage
     //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -9,7 +9,7 @@ run_tests=false
 # 组合矩阵
 frameworks=(net8.0 net9.0 net10.0)
 aspire_opts=(true)
-databases=(MySql SqlServer PostgreSQL Sqlite GaussDB DMDB)
+databases=(MySql SqlServer PostgreSQL Sqlite GaussDB DMDB MongoDB)
 messagequeues=(RabbitMQ Kafka RedisStreams NATS AzureServiceBus AmazonSQS)
 
 # 只用RabbitMQ测所有数据库，其余消息队列只测MySql

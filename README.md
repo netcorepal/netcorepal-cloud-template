@@ -37,7 +37,7 @@ dotnet new install NetCorePal.Template
 dotnet new install NetCorePal.Template::<package-version>"
 
 # 例如
-dotnet new install NetCorePal.Template::3.0.0
+dotnet new install NetCorePal.Template::3.1.0
 ```
 
 安装Nightly版本
@@ -77,15 +77,15 @@ dotnet new list
 
 | 参数 | 短参数 | 说明 | 可选值 | 默认值 |
 |------|--------|------|--------|--------|
-| `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net9.0` |
-| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite`, `GaussDB`, `DMDB` | `MySql` |
+| `--Framework` | `-F` | 目标 .NET 框架版本 | `net8.0`, `net9.0`, `net10.0` | `net10.0` |
+| `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite`, `GaussDB`, `DMDB`, `MongoDB` | `MySql` |
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 
 #### 使用示例
 
 ```shell
-# 使用默认配置（.NET 9.0 + MySQL + RabbitMQ）
+# 使用默认配置（.NET 10.0 + MySQL + RabbitMQ）
 dotnet new netcorepal-web -n My.Project.Name
 
 # 使用 .NET 8.0 框架
@@ -105,6 +105,11 @@ dotnet new netcorepal-web -n My.Project.Name --Database PostgreSQL
 dotnet new netcorepal-web -n My.Project.Name --Database Sqlite
 # 或使用短参数
 dotnet new netcorepal-web -n My.Project.Name -D Sqlite
+
+# 使用 MongoDB 数据库（NoSQL 文档数据库）
+dotnet new netcorepal-web -n My.Project.Name --Database MongoDB
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -D MongoDB
 
 # 使用 Kafka 消息队列
 dotnet new netcorepal-web -n My.Project.Name --MessageQueue Kafka
@@ -391,6 +396,9 @@ netcorepal-codeanalysis generate --output architecture.html
   + [x] MySql
   + [x] PostgreSql
   + [x] Sqlite
+  + [x] GaussDB
+  + [x] DMDB
+  + [x] MongoDB
 + 消息队列
   + [x] RabbitMQ
   + [x] Kafka
