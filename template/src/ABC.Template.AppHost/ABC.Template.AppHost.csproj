@@ -25,6 +25,8 @@
     <PackageReference Include="NetCorePal.Aspire.Hosting.DMDB" />
 <!--#elif (UseMongoDB)-->
     <PackageReference Include="Aspire.Hosting.MongoDB" />
+    <PackageReference Include="NetCorePal.Aspire.Hosting.MongoDB" />
+    <PackageReference Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" />
 <!--#endif-->
     <PackageReference Include="Aspire.Hosting.Redis" />
 <!--#if (UseRabbitMQ)-->

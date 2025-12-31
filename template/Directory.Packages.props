@@ -11,7 +11,7 @@
     <AspireVersion>13.1.0</AspireVersion>
     <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
     <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
-    <NetCorePalAspireVersion>1.0.0</NetCorePalAspireVersion>
+    <NetCorePalAspireVersion>1.1.0-preview.1.2512310525</NetCorePalAspireVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -144,6 +144,7 @@
     <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspireVersion)" />
     <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" Version="13.0.0" />
 <!--#if (Framework == "net8.0")-->
     <PackageVersion Include="Aspire.RabbitMQ.Client.v7" Version="9.1.0" />
 <!--#else-->
@@ -185,12 +186,14 @@
     <PackageVersion Include="NetCorePal.OpenTelemetry.Diagnostics" Version="$(NetCorePalVersion)" />
     <PackageVersion Include="NetCorePal.Aspire.Hosting.DMDB" Version="$(NetCorePalAspireVersion)" />
     <PackageVersion Include="NetCorePal.Aspire.Hosting.OpenGauss" Version="$(NetCorePalAspireVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.MongoDB" Version="$(NetCorePalAspireVersion)" />
 
     <!-- Testing packages -->
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.MySql" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MongoDb" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.MsSql" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.RabbitMq" Version="$(TestcontainersVersion)" />
     <PackageVersion Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />

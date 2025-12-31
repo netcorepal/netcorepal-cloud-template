@@ -19,6 +19,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
 using NetCorePal.Extensions.CodeAnalysis;
+//#if (UseMongoDB)
+using NetCorePal.Extensions.DistributedTransactions.CAP.MongoDB;
+//#endif
 
 <!--#if (UseAspire)-->
 // Create a minimal logger for startup
@@ -192,7 +195,11 @@ try
 
     builder.Services.AddCap(x =>
     {
+//#if (UseMongoDB)
+        x.UseMongoDBNetCorePalStorage<ApplicationDbContext>();
+//#else
         x.UseNetCorePalStorage<ApplicationDbContext>();
+//#endif
         x.JsonSerializerOptions.AddNetCorePalJsonConverters();
         x.ConsumerThreadCount = Environment.ProcessorCount;
 <!--#if (UseAspire)-->
@@ -374,7 +381,11 @@ try
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+<!--#if (UseMongoDB)-->
+        await dbContext.Database.EnsureCreatedAsync();
+<!--#else-->
         await dbContext.Database.MigrateAsync();
+<!--#endif-->
     }
 
 

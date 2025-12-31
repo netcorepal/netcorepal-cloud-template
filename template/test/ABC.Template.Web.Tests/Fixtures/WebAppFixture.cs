@@ -54,10 +54,11 @@ public class WebAppFixture : AppFixture<Program>
         var database = dmdb.AddDatabase("DMDB");
         //#elif (UseMongoDB)
         // Add MongoDB database infrastructure
-        var mongo = builder.AddMongoDB("Database")
-                   .WithMongoExpress();
+        var mongo = builder.AddMongoDB("Database", password: databasePassword).WithReplicaSet();
 
-        var mongodb = mongo.AddDatabase("MongoDB");
+        var mongodb = mongo.AddDatabase("s1");
+        var mongoReplicaSet = builder
+            .AddMongoReplicaSet("MongoDB", mongodb.Resource);
         //#endif
         //#if (UseSqlite)
         // SQLite is a file-based database and doesn't require container infrastructure
@@ -93,6 +94,7 @@ public class WebAppFixture : AppFixture<Program>
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(database.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#elif (UseMongoDB)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(mongodb.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
+        await _app.ResourceNotifications.WaitForResourceHealthyAsync(mongoReplicaSet.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 //#endif
 //#if (UseRabbitMQ)
         await _app.ResourceNotifications.WaitForResourceHealthyAsync(rabbitmq.Resource.Name, cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);

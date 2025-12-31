@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.." # 保证脚本运行时在仓库根目录
 
 
 # 数据库类型
-DATABASES=(MySql SqlServer PostgreSQL Sqlite GaussDB DMDB MongoDB)
+DATABASES=(MongoDB)
 # dotnet 版本
 FRAMEWORKS=(net8.0 net9.0 net10.0)
 

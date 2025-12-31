@@ -63,14 +63,17 @@ var dmdb = builder.AddDmdb("Database", userName: null, databasePassword, databas
 var dmdbDb = dmdb.AddDatabase("DMDB");
 //#elif (UseMongoDB)
 // Add MongoDB database infrastructure
-var mongodb = builder.AddMongoDB("Database", port: 27017)
+var mongodb = builder.AddMongoDB("Database", password: databasePassword)
+    .WithReplicaSet()
     // Configure the container to store data in a volume so that it persists across instances.
     //.WithDataVolume(isReadOnly: false)
     // Keep the container running between app host sessions.
     //.WithLifetime(ContainerLifetime.Persistent)
-    .WithMongoExpress();
+    .WithDbGate();
 
-var mongodbDb = mongodb.AddDatabase("MongoDB", "ABC_Template");
+var mongoDatabase = mongodb.AddDatabase("s1");
+var mongoReplicaSet = builder
+            .AddMongoReplicaSet("MongoDB", mongoDatabase.Resource);
 //#endif
 //#if (UseSqlite)
 // SQLite is a file-based database and doesn't require container infrastructure
@@ -111,8 +114,10 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithReference(dmdbDb)
     .WaitFor(dmdbDb)
 //#elif (UseMongoDB)
-    .WithReference(mongodbDb)
-    .WaitFor(mongodbDb)
+    .WithReference(mongoDatabase)
+    .WithReference(mongoReplicaSet)
+    .WaitFor(mongoDatabase)
+    .WaitFor(mongoReplicaSet)
 //#endif
 //#if (UseSqlite)
     // SQLite doesn't need infrastructure reference
