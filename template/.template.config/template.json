@@ -30,7 +30,7 @@
                     "description": "Target .NET 10.0"
                 }
             ],
-            "defaultValue": "net9.0",
+            "defaultValue": "net10.0",
             "replaces": "NETCOREPAL_FRAMEWORK"
         },
         "Database": {
@@ -289,18 +289,7 @@
                 { "condition": "(Database != \"DMDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ] },
 
                 // MongoDB
-                { "condition": "(Database == \"MongoDB\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"MongoDB\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"MongoDB\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"MongoDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net8.0/**" ] },
-                { "condition": "(Database != \"MongoDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net9.0/**" ] },
-                { "condition": "(Database != \"MongoDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MongoDB-net10.0/**" ] }
+                { "condition": "(Database == \"MongoDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll" ] }
             ]
         }
     ]
