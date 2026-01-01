@@ -66,7 +66,7 @@ public class WebAppFixture : AppFixture<Program>
 
         //#if (UseRabbitMQ)
         // Add RabbitMQ message queue infrastructure
-        var rabbitmqPassword = builder.AddParameter("rabbitmq-password", value: "guest", secret: false);
+        var rabbitmqPassword = builder.AddParameter("rabbitmq-password", value: "guest", secret: true);
         var rabbitmq = builder.AddRabbitMQ("rabbitmq", password: rabbitmqPassword);
         //#elif (UseKafka)
         // Add Kafka message queue infrastructure
