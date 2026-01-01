@@ -9,7 +9,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 //     });
 
 // Add Redis infrastructure
-var redis = builder.AddRedis("Redis");
+var redis = builder.AddRedis("Redis").WithRedisInsight();
 
 //#if (!UseSqlite)
 var databasePassword = builder.AddParameter("database-password", value:"1234@Dev", secret: true);
