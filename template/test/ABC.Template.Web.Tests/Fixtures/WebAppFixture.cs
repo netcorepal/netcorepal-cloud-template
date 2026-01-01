@@ -20,7 +20,7 @@ public class WebAppFixture : AppFixture<Program>
     {
         var cancellationToken = TestContext.Current.CancellationToken;
         var builder = await DistributedApplicationTestingBuilder
-            .CreateAsync<Projects.ABC_Template_TestAppHost>();
+            .CreateAsync<Projects.ABC_Template_TestAppHost>(cancellationToken);
         // Add Redis infrastructure
         var redis = builder.AddRedis("Redis");
 

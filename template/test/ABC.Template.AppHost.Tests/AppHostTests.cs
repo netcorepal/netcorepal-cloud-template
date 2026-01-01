@@ -13,7 +13,7 @@ public class AppHostTests
         // Arrange
         var cancellationToken = TestContext.Current.CancellationToken;
         var appHost = await DistributedApplicationTestingBuilder
-            .CreateAsync<Projects.ABC.Template_AppHost>(TestContext.Current.CancellationToken);
+            .CreateAsync<Projects.ABC_Template_AppHost>(cancellationToken);
         // Act & Assert
         await using var app = await appHost.BuildAsync(cancellationToken)
             .WaitAsync(DefaultTimeout, cancellationToken);
