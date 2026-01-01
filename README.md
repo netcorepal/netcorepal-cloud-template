@@ -23,21 +23,21 @@
 
     `Docker Desktop`下载地址： <https://www.docker.com/products/docker-desktop/>
 
-3. 如果使用 Aspire（使用 `--UseAspire` 参数创建项目时），需要安装 Aspire 工作负载。
+3. 如果使用 Aspire（使用 `--UseAspire` 参数创建项目时），需要配置 Aspire 环境。请按以下步骤操作：
 
-    安装 Aspire 工作负载：
+    **步骤 1：安装 Aspire SDK**
+
+    访问 [Aspire CLI 安装指南](https://aspire.dev/get-started/install-cli/) 按照官方文档安装 Aspire SDK。
+
+    **步骤 2：更新工作负载**
 
     ```shell
     dotnet workload update
-    dotnet workload install aspire
     ```
 
-    更多详细信息请参考：[Aspire CLI 安装指南](https://aspire.dev/get-started/install-cli/)
-
-    配置 HTTPS 开发证书（首次使用时需要）：
+    **步骤 3：信任 HTTPS 开发证书**
 
     ```shell
-    # 信任开发证书（用于 HTTPS 通信）
     dotnet dev-certs https --trust
     ```
 
