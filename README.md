@@ -15,13 +15,39 @@
 
 ## 前提条件
 
-1. 安装`.NET 9.0 SDK`或更高版本。
+1. 安装`.NET 10 SDK`（必需）。根据创建项目时选择的目标框架版本（`--Framework` 参数），您可能还需要安装对应的 SDK 版本：
+
+    - 使用 `--Framework net8.0` 时：需要安装 `.NET 8.0 SDK`
+    - 使用 `--Framework net9.0` 时：需要安装 `.NET 9.0 SDK`
+    - 使用 `--Framework net10.0` 时：仅需 `.NET 10 SDK`（默认）
 
     SDK下载地址： <https://dot.net/download>
 
 2. 拥有`Docker`环境，用于自动化单元测试和集成测试。
 
-    `Docker Desktop`下载地址： <https://www.docker.com/products/docker-desktop/>
+    推荐工具：
+    
+    - **Docker Desktop**： <https://www.docker.com/products/docker-desktop/>
+    - **Rancher Desktop**： <https://github.com/rancher-sandbox/rancher-desktop>
+    - **OrbStack**： <https://orbstack.dev/download>
+
+3. 如果使用 Aspire（使用 `--UseAspire` 参数创建项目时），需要配置 Aspire 环境。请按以下步骤操作：
+
+    **步骤 1：安装 Aspire SDK**
+
+    访问 [Aspire CLI 安装指南](https://aspire.dev/get-started/install-cli/) 按照官方文档安装 Aspire SDK。
+
+    **步骤 2：更新工作负载**
+
+    ```shell
+    dotnet workload update
+    ```
+
+    **步骤 3：信任 HTTPS 开发证书**
+
+    ```shell
+    dotnet dev-certs https --trust
+    ```
 
 ## 如何使用
 
