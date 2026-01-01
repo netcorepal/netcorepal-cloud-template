@@ -41,11 +41,6 @@
     dotnet dev-certs https --trust
     ```
 
-    > **注意**：
-    > - 在 macOS 和 Windows 上，`--trust` 参数会提示您授权信任证书
-    > - 在 Linux 上，`--trust` 参数不受支持，需要手动信任证书，具体方法取决于您的发行版
-    > - 如果遇到证书问题，可以使用 `dotnet dev-certs https --clean` 清理后重新生成
-
 ## 如何使用
 
 安装模板
