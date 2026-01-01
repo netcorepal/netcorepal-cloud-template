@@ -15,7 +15,11 @@
 
 ## 前提条件
 
-1. 安装`.NET 9.0 SDK`或更高版本。
+1. 安装`.NET 10 SDK`（必需）。根据创建项目时选择的目标框架版本（`--Framework` 参数），您可能还需要安装对应的 SDK 版本：
+
+    - 使用 `--Framework net8.0` 时：需要安装 `.NET 8.0 SDK`
+    - 使用 `--Framework net9.0` 时：需要安装 `.NET 9.0 SDK`
+    - 使用 `--Framework net10.0` 时：仅需 `.NET 10 SDK`（默认）
 
     SDK下载地址： <https://dot.net/download>
 
