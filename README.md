@@ -25,7 +25,11 @@
 
 2. 拥有`Docker`环境，用于自动化单元测试和集成测试。
 
-    `Docker Desktop`下载地址： <https://www.docker.com/products/docker-desktop/>
+    推荐工具：
+    
+    - **Docker Desktop**： <https://www.docker.com/products/docker-desktop/>
+    - **Rancher Desktop**： <https://github.com/rancher-sandbox/rancher-desktop>
+    - **OrbStack**： <https://orbstack.dev/download>
 
 3. 如果使用 Aspire（使用 `--UseAspire` 参数创建项目时），需要配置 Aspire 环境。请按以下步骤操作：
 
