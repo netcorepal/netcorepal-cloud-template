@@ -32,6 +32,8 @@
     dotnet workload install aspire
     ```
 
+    更多详细信息请参考：[Aspire CLI 安装指南](https://aspire.dev/get-started/install-cli/)
+
     配置 HTTPS 开发证书（首次使用时需要）：
 
     ```shell
