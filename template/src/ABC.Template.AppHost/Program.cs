@@ -81,7 +81,8 @@ var mongoReplicaSet = builder
 
 //#if (UseRabbitMQ)
 // Add RabbitMQ message queue infrastructure
-var rabbitmq = builder.AddRabbitMQ("rabbitmq")
+var rabbitmqPassword = builder.AddParameter("rabbitmq-password", value: "guest", secret: false);
+var rabbitmq = builder.AddRabbitMQ("rabbitmq", password: rabbitmqPassword)
     .WithManagementPlugin();
 //#elif (UseKafka)
 // Add Kafka message queue infrastructure
