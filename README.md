@@ -107,6 +107,7 @@ dotnet new list
 | `--Database` | `-D` | 数据库提供程序 | `MySql`, `SqlServer`, `PostgreSQL`, `Sqlite`, `GaussDB`, `DMDB`, `MongoDB` | `MySql` |
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
+| `--IncludeCopilotInstructions` | `-I` | 是否包含 Copilot 指令文件 | `true`, `false` | `true` |
 
 #### 使用示例
 
@@ -158,6 +159,11 @@ dotnet new netcorepal-web -n My.Project.Name -U
 
 # 组合使用 Aspire 与其他选项
 dotnet new netcorepal-web -n My.Project.Name -F net9.0 -D PostgreSQL -U
+
+# 排除 Copilot 指令文件（不包含 .github 目录中的 copilot-instructions）
+dotnet new netcorepal-web -n My.Project.Name --IncludeCopilotInstructions false
+# 或使用短参数
+dotnet new netcorepal-web -n My.Project.Name -I false
 ```
 
 > **提示：** 创建项目后，请根据选择的数据库和消息队列配置，使用对应的基础设施初始化脚本来启动所需的服务。详细说明请参考生成项目中的 `scripts/README.md` 文件。
