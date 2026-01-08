@@ -111,11 +111,11 @@
             "defaultValue": "false",
             "description": "Enable Aspire Dashboard support for observability and orchestration"
         },
-        "IncludeGitHubFiles": {
+        "IncludeCopilotInstructions": {
             "type": "parameter",
             "datatype": "bool",
             "defaultValue": "true",
-            "description": "Include .github directory in the generated template"
+            "description": "Include Copilot instructions files (.github directory) in the generated template"
         },
         "SdkVersion": {
             "type": "generated",
@@ -205,7 +205,7 @@
     "sources": [
         {
             "modifiers": [
-                { "condition": "(!IncludeGitHubFiles)", "exclude": [ ".github/**" ] },
+                { "condition": "(!IncludeCopilotInstructions)", "exclude": [ ".github/**" ] },
                 { "condition": "(Framework == \"net8.0\")", "exclude": [ "*.slnx" ] },
                 { "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")", "exclude": [ "*.sln" ] },
                 { "condition": "(!UseAspire)", "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**", "test/ABC.Template.TestAppHost/**", "test/ABC.Template.AppHost.Tests/**" ] },
