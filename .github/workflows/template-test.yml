@@ -340,3 +340,102 @@ jobs:
     - name: Uninstall template
       run: dotnet new uninstall .
       if: always()
+  template-test-copilot-instructions:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [ 'net10.0', 'net9.0' ]
+        include-copilot: [ 'true', 'false' ]
+    name: CopilotInstructions-${{ matrix.framework }}-include-${{ matrix.include-copilot }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+        global-json-file: global.json
+
+    - name: Install template locally
+      run: dotnet new install .
+      
+    - name: Generate project from template with IncludeCopilotInstructions=${{ matrix.include-copilot }}
+      run: |
+        mkdir -p test-projects/copilot-test-${{ matrix.framework }}-${{ matrix.include-copilot }}
+        cd test-projects/copilot-test-${{ matrix.framework }}-${{ matrix.include-copilot }}
+        if [ "${{ matrix.include-copilot }}" == "true" ]; then
+          dotnet new netcorepal-web -n CopilotTestProject -F ${{ matrix.framework }} --IncludeCopilotInstructions true
+        else
+          dotnet new netcorepal-web -n CopilotTestProject -F ${{ matrix.framework }} --IncludeCopilotInstructions false
+        fi
+        
+    - name: Verify .github directory presence/absence
+      run: |
+        cd test-projects/copilot-test-${{ matrix.framework }}-${{ matrix.include-copilot }}/CopilotTestProject
+        if [ "${{ matrix.include-copilot }}" == "true" ]; then
+          echo "Verifying .github directory is present when IncludeCopilotInstructions=true"
+          if [ -d ".github" ]; then
+            echo "✅ .github directory found as expected"
+            # Verify copilot-instructions.md exists
+            if [ -f ".github/copilot-instructions.md" ]; then
+              echo "✅ copilot-instructions.md found"
+            else
+              echo "❌ copilot-instructions.md not found"
+              exit 1
+            fi
+            # Verify instructions directory exists
+            if [ -d ".github/instructions" ]; then
+              echo "✅ instructions directory found"
+              INSTRUCTION_COUNT=$(find .github/instructions -name "*.instructions.md" | wc -l)
+              echo "Found $INSTRUCTION_COUNT instruction files"
+              if [ "$INSTRUCTION_COUNT" -gt 0 ]; then
+                echo "✅ Instruction files found in .github/instructions"
+              else
+                echo "❌ No instruction files found in .github/instructions"
+                exit 1
+              fi
+            else
+              echo "❌ instructions directory not found"
+              exit 1
+            fi
+          else
+            echo "❌ .github directory not found when IncludeCopilotInstructions=true"
+            exit 1
+          fi
+        else
+          echo "Verifying .github directory is absent when IncludeCopilotInstructions=false"
+          if [ -d ".github" ]; then
+            echo "❌ .github directory found when it should be excluded"
+            ls -la .github/
+            exit 1
+          else
+            echo "✅ .github directory correctly excluded"
+          fi
+        fi
+        
+    - name: Restore dependencies for generated project
+      run: |
+        cd test-projects/copilot-test-${{ matrix.framework }}-${{ matrix.include-copilot }}/CopilotTestProject
+        if ! dotnet restore --ignore-failed-sources; then
+          echo "❌ RESTORE FAILED for CopilotTestProject with IncludeCopilotInstructions=${{ matrix.include-copilot }}"
+          exit 1
+        fi
+        
+    - name: Build generated project
+      run: |
+        cd test-projects/copilot-test-${{ matrix.framework }}-${{ matrix.include-copilot }}/CopilotTestProject
+        if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
+          echo "❌ BUILD FAILED for CopilotTestProject with IncludeCopilotInstructions=${{ matrix.include-copilot }}"
+          echo "Build logs:"
+          dotnet build --no-restore --configuration Release --verbosity normal
+          exit 1
+        fi
+        echo "✅ BUILD SUCCEEDED for CopilotTestProject with IncludeCopilotInstructions=${{ matrix.include-copilot }}"
+        
+    - name: Uninstall template
+      run: dotnet new uninstall .
+      if: always()
