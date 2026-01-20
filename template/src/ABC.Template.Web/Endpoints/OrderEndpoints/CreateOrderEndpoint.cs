@@ -1,3 +1,4 @@
+//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.Commands.Orders;
 using FastEndpoints;
@@ -21,3 +22,4 @@ public class CreateOrderEndpoint(IMediator mediator) : Endpoint<CreateOrderReque
         await Send.OkAsync(id.AsResponseData(), cancellation: ct);
     }
 }
+//#endif

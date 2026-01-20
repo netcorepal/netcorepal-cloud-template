@@ -1,4 +1,5 @@
-﻿using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+﻿//#if (UseDemoCode)
+using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using NetCorePal.Extensions.Primitives;
@@ -17,3 +18,4 @@ public class DeliverGoodsCommandHandler(IDeliverRecordRepository deliverRecordRe
         return Task.FromResult(record.Id);
     }
 }
+//#endif

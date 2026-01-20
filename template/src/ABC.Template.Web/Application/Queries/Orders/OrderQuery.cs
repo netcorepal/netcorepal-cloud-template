@@ -1,3 +1,4 @@
+//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,3 +20,4 @@ public class OrderQueryHandler(ApplicationDbContext applicationDbContext)
         return result ?? throw new KnownException("Order not found");
     }
 }
+//#endif

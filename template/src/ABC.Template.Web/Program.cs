@@ -9,6 +9,9 @@ using FluentValidation.AspNetCore;
 using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
+//#if (UseAdmin)
+using ABC.Template.Web.Utils;
+//#endif
 using FastEndpoints;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -91,6 +94,26 @@ try
 
     #endregion
 
+//#if (UseAdmin)
+    #region CORS
+
+    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
+        ?? new[] { "http://localhost:5666", "http://localhost:5173", "http://localhost:3000" };
+    
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
+    });
+
+    #endregion
+//#endif
+
     #region Controller
 
     builder.Services.AddControllers().AddNetCorePalSystemTextJson();
@@ -115,6 +138,13 @@ try
     builder.Services.AddKnownExceptionErrorModelInterceptor();
 
     #endregion
+
+//#if (UseAdmin)
+    #region Query
+    // 自动注册所有实现 IQuery 接口的查询类
+    builder.Services.AddQueries(Assembly.GetExecutingAssembly());
+    #endregion
+//#endif
 
     #region 基础设施
 
@@ -399,7 +429,11 @@ try
 
     app.UseStaticFiles();
     //app.UseHttpsRedirection();
+//#if (UseAdmin)
+    app.UseCors(); // CORS 必须在 UseRouting 之前
+//#endif
     app.UseRouting();
+    app.UseAuthentication(); // Authentication 必须在 Authorization 之前
     app.UseAuthorization();
 
     app.MapControllers();
@@ -423,15 +457,23 @@ try
     // Code analysis endpoint
     app.MapGet("/code-analysis", () =>
     {
+        var assemblies = new List<Assembly> { typeof(Program).Assembly, typeof(ApplicationDbContext).Assembly };
+//#if (UseDemoCode)
+        assemblies.Add(typeof(ABC.Template.Domain.AggregatesModel.OrderAggregate.Order).Assembly);
+//#endif
+//#if (UseAdmin)
+        assemblies.Add(typeof(ABC.Template.Domain.AggregatesModel.UserAggregate.User).Assembly);
+//#endif
         var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
-            CodeFlowAnalysisHelper.GetResultFromAssemblies(typeof(Program).Assembly,
-                typeof(ApplicationDbContext).Assembly,
-                typeof(ABC.Template.Domain.AggregatesModel.OrderAggregate.Order).Assembly)
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(assemblies.ToArray())
         );
         return Results.Content(html, "text/html; charset=utf-8");
     });
     
     app.UseHangfireDashboard();
+//#if (UseAdmin)
+    app.SeedDatabase();
+//#endif
     await app.RunAsync();
 }
 catch (Exception ex)

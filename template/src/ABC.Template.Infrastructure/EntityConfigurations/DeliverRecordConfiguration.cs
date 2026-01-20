@@ -1,4 +1,5 @@
-﻿using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+﻿//#if (UseDemoCode)
+using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations
 {
@@ -13,3 +14,4 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
     }
 
 }
+//#endif

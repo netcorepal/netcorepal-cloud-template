@@ -108,6 +108,8 @@ dotnet new list
 | `--MessageQueue` | `-M` | 消息队列提供程序 | `RabbitMQ`, `Kafka`, `AzureServiceBus`, `AmazonSQS`, `NATS`, `RedisStreams`, `Pulsar` | `RabbitMQ` |
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 | `--IncludeCopilotInstructions` | `-I` | 是否包含 Copilot 指令文件 | `true`, `false` | `true` |
+| `--UseAdmin` | | 是否包含 Admin 功能（用户、角色、部门管理、权限系统、前端） | `true`, `false` | `false` |
+| `--UseDemoCode` | | 是否包含演示代码（OrderAggregate、DeliverAggregate） | `true`, `false` | `false` |
 
 #### 使用示例
 
@@ -167,6 +169,31 @@ dotnet new netcorepal-web -n My.Project.Name -I false
 ```
 
 > **提示：** 创建项目后，请根据选择的数据库和消息队列配置，使用对应的基础设施初始化脚本来启动所需的服务。详细说明请参考生成项目中的 `scripts/README.md` 文件。
+
+### 关于 Admin 功能
+
+当启用 `--UseAdmin` 选项时，模板会包含以下功能：
+
++ **用户管理**：用户的创建、更新、删除、查询等功能
++ **角色管理**：角色的创建、更新、删除、权限分配等功能
++ **部门管理**：部门的创建、更新、删除、树形结构管理等功能
++ **权限系统**：基于角色的权限控制（RBAC），支持权限码定义和验证
++ **JWT 认证**：完整的 JWT Token 认证和刷新 Token 机制
++ **前端界面**：基于 Vue 3 + Vben Admin 的管理后台界面
+
+启用 Admin 功能后，系统会自动创建默认的管理员账户（用户名：`admin`，密码：`123456`）。
+
+### 关于演示代码
+
+当启用 `--UseDemoCode` 选项时，模板会包含以下演示代码：
+
++ **OrderAggregate**：订单聚合根示例，展示领域驱动设计（DDD）的基本用法
++ **DeliverAggregate**：配送记录聚合根示例
++ **领域事件**：OrderCreatedDomainEvent、OrderPaidDomainEvent 等
++ **集成事件**：OrderPaidIntegrationEvent 等
++ **相关测试**：OrderTests、DemoTests 等
+
+演示代码主要用于学习和参考，展示如何使用 NetCorePal 框架构建 DDD 应用。
 
 ### 关于 Aspire Dashboard
 

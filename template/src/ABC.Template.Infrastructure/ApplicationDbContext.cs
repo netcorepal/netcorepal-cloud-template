@@ -1,11 +1,18 @@
-﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 //#if (UseDMDB)
 using Microsoft.EntityFrameworkCore.Storage;
 //#endif
 using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
+//#if (UseDemoCode)
+using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+//#endif
+//#if (UseAdmin)
+using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using ABC.Template.Domain.AggregatesModel.RoleAggregate;
+using ABC.Template.Domain.AggregatesModel.DeptAggregate;
+//#endif
 
 namespace ABC.Template.Infrastructure;
 
@@ -53,6 +60,17 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         base.ConfigureConventions(configurationBuilder);
     }
 
+//#if (UseDemoCode)
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
+//#endif
+
+//#if (UseAdmin)
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<Dept> Depts => Set<Dept>();
+    public DbSet<UserDept> UserDepts => Set<UserDept>();
+//#endif
 }

@@ -1,4 +1,5 @@
-﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+﻿//#if (UseDemoCode)
+using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 
 namespace ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
@@ -16,4 +17,5 @@ public class DeliverRecord : Entity<DeliverRecordId>, IAggregateRoot
 
     public OrderId OrderId { get; private set; } = default!;
 }
+//#endif
 

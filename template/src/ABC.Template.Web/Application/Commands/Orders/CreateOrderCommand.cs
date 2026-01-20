@@ -1,3 +1,4 @@
+//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.Repositories;
 
@@ -25,3 +26,4 @@ public class CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger
         return order.Id;
     }
 }
+//#endif

@@ -1,3 +1,4 @@
+//#if (UseDemoCode)
 using ABC.Template.Domain.DomainEvents;
 using ABC.Template.Web.Application.Commands.Delivers;
 
@@ -10,3 +11,4 @@ public class OrderCreatedDomainEventHandlerForDeliverGoods(IMediator mediator) :
         return mediator.Send(new DeliverGoodsCommand(notification.Order.Id), cancellationToken);
     }
 }
+//#endif

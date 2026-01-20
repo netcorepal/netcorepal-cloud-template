@@ -1,3 +1,4 @@
+//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure.Repositories;
 
@@ -23,3 +24,4 @@ public class PayOrderCommandHandler(IOrderRepository orderRepository) : ICommand
         order.OrderPaid();
     }
 }
+//#endif

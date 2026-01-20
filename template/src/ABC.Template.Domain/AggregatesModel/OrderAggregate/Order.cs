@@ -1,4 +1,5 @@
-﻿using ABC.Template.Domain.DomainEvents;
+﻿//#if (UseDemoCode)
+using ABC.Template.Domain.DomainEvents;
 using NetCorePal.Extensions.Domain;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -50,3 +51,4 @@ public partial class Order : Entity<OrderId>, IAggregateRoot
         }
     }
 }
+//#endif
