@@ -439,3 +439,231 @@ jobs:
     - name: Uninstall template
       run: dotnet new uninstall .
       if: always()
+
+  template-test-admin-demo-params:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [ 'net8.0', 'net9.0', 'net10.0' ]
+        use-admin: [ 'true', 'false' ]
+        use-demo-code: [ 'true', 'false' ]
+    name: UseAdmin-${{ matrix.use-admin }}-UseDemoCode-${{ matrix.use-demo-code }}-${{ matrix.framework }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+            8.0.x
+            9.0.x
+            10.0.x
+        global-json-file: global.json
+
+    - name: Install SSL Certificates
+      run: |
+        dotnet dev-certs https --trust
+
+    - name: Install template locally
+      run: dotnet new install .
+      
+    - name: Generate project from template with UseAdmin=${{ matrix.use-admin }} and UseDemoCode=${{ matrix.use-demo-code }}
+      run: |
+        mkdir -p test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}
+        dotnet new netcorepal-web -n AdminDemoTestProject -F ${{ matrix.framework }} -D MySql -M RabbitMQ --UseAdmin ${{ matrix.use-admin }} --UseDemoCode ${{ matrix.use-demo-code }}
+        
+    - name: Restore dependencies for generated project
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        if ! dotnet restore --ignore-failed-sources; then
+          echo "❌ RESTORE FAILED for UseAdmin=${{ matrix.use-admin }}, UseDemoCode=${{ matrix.use-demo-code }}"
+          exit 1
+        fi
+        
+    - name: Build generated project
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
+          echo "❌ BUILD FAILED for UseAdmin=${{ matrix.use-admin }}, UseDemoCode=${{ matrix.use-demo-code }}"
+          echo "Build logs:"
+          dotnet build --no-restore --configuration Release --verbosity normal
+          exit 1
+        fi
+        echo "✅ BUILD SUCCEEDED for UseAdmin=${{ matrix.use-admin }}, UseDemoCode=${{ matrix.use-demo-code }}"
+        
+    - name: Verify UseAdmin parameter - Admin files presence/absence
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        if [ "${{ matrix.use-admin }}" == "true" ]; then
+          echo "Verifying Admin files are present when UseAdmin=true"
+          # Check for Admin domain aggregates
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/UserAggregate" ]; then
+            echo "✅ UserAggregate found"
+          else
+            echo "❌ UserAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/RoleAggregate" ]; then
+            echo "✅ RoleAggregate found"
+          else
+            echo "❌ RoleAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/DeptAggregate" ]; then
+            echo "✅ DeptAggregate found"
+          else
+            echo "❌ DeptAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          # Check for Admin endpoints
+          if [ -d "src/AdminDemoTestProject.Web/Endpoints/Identity/Admin" ]; then
+            echo "✅ Admin endpoints directory found"
+          else
+            echo "❌ Admin endpoints directory not found when UseAdmin=true"
+            exit 1
+          fi
+          # Check for frontend
+          if [ -d "src/frontend" ]; then
+            echo "✅ Frontend directory found"
+          else
+            echo "❌ Frontend directory not found when UseAdmin=true"
+            exit 1
+          fi
+          # Check for AppPermissions
+          if [ -d "src/AdminDemoTestProject.Web/AppPermissions" ]; then
+            echo "✅ AppPermissions directory found"
+          else
+            echo "❌ AppPermissions directory not found when UseAdmin=true"
+            exit 1
+          fi
+        else
+          echo "Verifying Admin files are absent when UseAdmin=false"
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/UserAggregate" ]; then
+            echo "❌ UserAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ UserAggregate correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/RoleAggregate" ]; then
+            echo "❌ RoleAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ RoleAggregate correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/DeptAggregate" ]; then
+            echo "❌ DeptAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ DeptAggregate correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Web/Endpoints/Identity/Admin" ]; then
+            echo "❌ Admin endpoints directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ Admin endpoints directory correctly excluded"
+          fi
+          if [ -d "src/frontend" ]; then
+            echo "❌ Frontend directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ Frontend directory correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Web/AppPermissions" ]; then
+            echo "❌ AppPermissions directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ AppPermissions directory correctly excluded"
+          fi
+        fi
+        
+    - name: Verify UseDemoCode parameter - Demo files presence/absence
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        if [ "${{ matrix.use-demo-code }}" == "true" ]; then
+          echo "Verifying Demo code files are present when UseDemoCode=true"
+          # Check for Demo domain aggregates
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/OrderAggregate" ]; then
+            echo "✅ OrderAggregate found"
+          else
+            echo "❌ OrderAggregate not found when UseDemoCode=true"
+            exit 1
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/DeliverAggregate" ]; then
+            echo "✅ DeliverAggregate found"
+          else
+            echo "❌ DeliverAggregate not found when UseDemoCode=true"
+            exit 1
+          fi
+          # Check for Demo endpoints
+          if [ -d "src/AdminDemoTestProject.Web/Endpoints/OrderEndpoints" ]; then
+            echo "✅ OrderEndpoints directory found"
+          else
+            echo "❌ OrderEndpoints directory not found when UseDemoCode=true"
+            exit 1
+          fi
+        else
+          echo "Verifying Demo code files are absent when UseDemoCode=false"
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/OrderAggregate" ]; then
+            echo "❌ OrderAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ OrderAggregate correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Domain/AggregatesModel/DeliverAggregate" ]; then
+            echo "❌ DeliverAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ DeliverAggregate correctly excluded"
+          fi
+          if [ -d "src/AdminDemoTestProject.Web/Endpoints/OrderEndpoints" ]; then
+            echo "❌ OrderEndpoints directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ OrderEndpoints directory correctly excluded"
+          fi
+        fi
+        
+    - name: Verify conditional compilation in shared files
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        echo "Verifying conditional compilation directives in shared files"
+        # Check Program.cs for conditional compilation
+        if grep -q "//#if (UseAdmin)" src/AdminDemoTestProject.Web/Program.cs; then
+          echo "✅ Found UseAdmin conditional compilation in Program.cs"
+        else
+          echo "⚠️  No UseAdmin conditional compilation found in Program.cs (may be expected)"
+        fi
+        if grep -q "//#if (UseDemoCode)" src/AdminDemoTestProject.Web/Program.cs; then
+          echo "✅ Found UseDemoCode conditional compilation in Program.cs"
+        else
+          echo "⚠️  No UseDemoCode conditional compilation found in Program.cs (may be expected)"
+        fi
+        # Check ApplicationDbContext.cs for conditional compilation
+        if grep -q "//#if (UseAdmin)" src/AdminDemoTestProject.Infrastructure/ApplicationDbContext.cs; then
+          echo "✅ Found UseAdmin conditional compilation in ApplicationDbContext.cs"
+        else
+          echo "⚠️  No UseAdmin conditional compilation found in ApplicationDbContext.cs (may be expected)"
+        fi
+        if grep -q "//#if (UseDemoCode)" src/AdminDemoTestProject.Infrastructure/ApplicationDbContext.cs; then
+          echo "✅ Found UseDemoCode conditional compilation in ApplicationDbContext.cs"
+        else
+          echo "⚠️  No UseDemoCode conditional compilation found in ApplicationDbContext.cs (may be expected)"
+        fi
+        
+    - name: Run tests for generated project
+      if: ${{ inputs.include-tests }}
+      run: |
+        cd test-projects/admin-demo-${{ matrix.use-admin }}-${{ matrix.use-demo-code }}-${{ matrix.framework }}/AdminDemoTestProject
+        if ! dotnet test --no-build --configuration Release \
+          --verbosity normal \
+          --logger "console;verbosity=normal"; then
+          echo "❌ TESTS FAILED for UseAdmin=${{ matrix.use-admin }}, UseDemoCode=${{ matrix.use-demo-code }}"
+          exit 1
+        fi  
+        echo "✅ TESTS SUCCEEDED for UseAdmin=${{ matrix.use-admin }}, UseDemoCode=${{ matrix.use-demo-code }}"
+        
+    - name: Uninstall template
+      run: dotnet new uninstall .
+      if: always()
