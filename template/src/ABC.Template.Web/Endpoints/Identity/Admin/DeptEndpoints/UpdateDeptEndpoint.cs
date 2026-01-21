@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,4 +45,3 @@ public class UpdateDeptEndpoint(IMediator mediator) : Endpoint<UpdateDeptRequest
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

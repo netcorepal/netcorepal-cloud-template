@@ -1,4 +1,3 @@
-//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Infrastructure;
 using ABC.Template.Web.Application.Queries.Orders;
@@ -86,4 +85,3 @@ public class OrderTests(WebAppFixture app) : TestBase<WebAppFixture>
         Assert.Equal(orderId, getRes.Data.Id);
     }
 }
-//#endif

@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 namespace ABC.Template.Web.AppPermissions;
 
 /// <summary>
@@ -37,4 +36,4 @@ public static class PermissionCodes
     public const string AllApiAccess = nameof(AllApiAccess);
     #endregion
 }
-//#endif
+

@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Web.Application.Queries;
@@ -28,4 +27,4 @@ public class GetAllUsersEndpoint(UserQuery userQuery) : Endpoint<UserQueryInput,
         await Send.OkAsync(result.AsResponseData(), cancellation: ct);
     }
 }
-//#endif
+

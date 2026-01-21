@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Infrastructure.Repositories;
@@ -35,4 +34,3 @@ public class ActivateRoleCommandHandler(IRoleRepository roleRepository) : IComma
         role.Activate();
     }
 }
-//#endif

@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Infrastructure.Repositories;
@@ -37,4 +36,3 @@ public class CreateDeptCommandHandler(IDeptRepository deptRepository) : ICommand
         return dept.Id;
     }
 }
-//#endif

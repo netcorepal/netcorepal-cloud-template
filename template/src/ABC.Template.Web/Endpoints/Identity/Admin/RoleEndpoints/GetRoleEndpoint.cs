@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -45,4 +44,4 @@ public class GetRoleEndpoint(RoleQuery roleQuery) : Endpoint<GetRoleRequest, Res
         }
     }
 }
-//#endif
+

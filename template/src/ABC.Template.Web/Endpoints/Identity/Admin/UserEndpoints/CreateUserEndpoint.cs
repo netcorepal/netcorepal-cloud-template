@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,4 +70,3 @@ public class CreateUserEndpoint(IMediator mediator, RoleQuery roleQuery) : Endpo
         await Send.OkAsync(response.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

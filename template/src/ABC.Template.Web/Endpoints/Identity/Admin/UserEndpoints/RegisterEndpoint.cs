@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -70,4 +69,4 @@ public class RegisterEndpoint(IMediator mediator, RoleQuery roleQuery) : Endpoin
         await Send.OkAsync(response.AsResponseData(), cancellation: ct);
     }
 }
-//#endif
+

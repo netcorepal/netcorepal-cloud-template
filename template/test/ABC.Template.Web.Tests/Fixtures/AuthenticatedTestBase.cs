@@ -1,4 +1,3 @@
-ï»¿//#if (UseAdmin)
 using System.Net.Http.Headers;
 using NetCorePal.Extensions.Dto;
 using ABC.Template.Web.Endpoints.Identity.Admin.UserEndpoints;
@@ -6,35 +5,34 @@ using ABC.Template.Web.Endpoints.Identity.Admin.UserEndpoints;
 namespace ABC.Template.Web.Tests.Fixtures;
 
 /// <summary>
-/// æä¾›è®¤è¯åŠŸèƒ½çš„æµ‹è¯•åŸºç±»
+/// Ìá¹©ÈÏÖ¤¹¦ÄÜµÄ²âÊÔ»ùÀà
 /// </summary>
 public abstract class AuthenticatedTestBase<TFixture>(TFixture fixture) : TestBase<TFixture> where TFixture : WebAppFixture
 {
     /// <summary>
-    /// æš´éœ²Fixtureå±æ€§ä¾›å­ç±»ä½¿ç”¨
+    /// ±©Â¶FixtureÊôĞÔ¹©×ÓÀàÊ¹ÓÃ
     /// </summary>
     protected TFixture Fixture => fixture;
 
     /// <summary>
-    /// è·å–å¸¦è®¤è¯çš„HttpClient
+    /// »ñÈ¡´øÈÏÖ¤µÄHttpClient
     /// </summary>
     protected async Task<HttpClient> GetAuthenticatedClientAsync()
     {
         var client = fixture.CreateClient();
         
-        // ç™»å½•è·å–token
+        // µÇÂ¼»ñÈ¡token
         var loginRequest = new LoginRequest("admin", "123456");
         var (_, loginResponse) = await client.POSTAsync<LoginEndpoint, LoginRequest, ResponseData<LoginResponse>>(loginRequest);
         
         if (loginResponse?.Data == null)
         {
-            throw new InvalidOperationException("ç™»å½•å¤±è´¥ï¼Œæ— æ³•è·å–token");
+            throw new InvalidOperationException("µÇÂ¼Ê§°Ü£¬ÎŞ·¨»ñÈ¡token");
         }
         
-        // è®¾ç½®Authorization header
+        // ÉèÖÃAuthorization header
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loginResponse.Data.Token);
         
         return client;
     }
 }
-//#endif

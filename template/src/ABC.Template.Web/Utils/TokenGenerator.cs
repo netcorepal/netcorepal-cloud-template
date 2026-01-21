@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using System.Security.Cryptography;
 
 namespace ABC.Template.Web.Utils;
@@ -22,4 +21,4 @@ public static class TokenGenerator
         return Convert.ToBase64String(randomNumber);
     }
 }
-//#endif
+

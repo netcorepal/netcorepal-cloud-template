@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using System.Security.Claims;
 using System.Text.Json;
 using FastEndpoints;
@@ -93,4 +92,3 @@ public class LoginEndpoint(IMediator mediator, UserQuery userQuery, IJwtProvider
         return claims;
     }
 }
-//#endif

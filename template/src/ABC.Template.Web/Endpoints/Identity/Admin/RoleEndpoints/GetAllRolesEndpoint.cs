@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Web.Application.Queries;
@@ -27,4 +26,4 @@ public class GetAllRolesEndpoint(RoleQuery roleQuery) : Endpoint<RoleQueryInput,
         await Send.OkAsync(roleInfo.AsResponseData(), cancellation: ct);
     }
 }
-//#endif
+

@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
@@ -52,4 +51,4 @@ public class CreateUserCommandHandler(IUserRepository userRepository) : ICommand
         return user.Id;
     }
 }
-//#endif
+

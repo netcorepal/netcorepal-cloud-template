@@ -1,5 +1,4 @@
-﻿//#if (UseDemoCode)
-using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+﻿using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
 
 namespace ABC.Template.Infrastructure.Repositories;
 
@@ -10,5 +9,4 @@ public interface IDeliverRecordRepository : IRepository<DeliverRecord, DeliverRe
 public class DeliverRecordRepository(ApplicationDbContext context) : RepositoryBase<DeliverRecord, DeliverRecordId, ApplicationDbContext>(context), IDeliverRecordRepository
 {
 }
-//#endif
 

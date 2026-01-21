@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 namespace ABC.Template.Domain.AggregatesModel.RoleAggregate;
 
 public class RolePermission
@@ -30,4 +29,3 @@ public class RolePermission
         PermissionDescription = permissionDescription;
     }
 }
-//#endif

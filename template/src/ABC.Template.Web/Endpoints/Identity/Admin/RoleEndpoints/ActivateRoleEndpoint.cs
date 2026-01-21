@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -35,4 +34,3 @@ public class ActivateRoleEndpoint(IMediator mediator) : Endpoint<ActivateRoleReq
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

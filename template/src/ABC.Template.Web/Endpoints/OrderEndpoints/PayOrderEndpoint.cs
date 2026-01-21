@@ -1,4 +1,3 @@
-//#if (UseDemoCode)
 using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using ABC.Template.Web.Application.Commands.Orders;
 using FastEndpoints;
@@ -21,4 +20,3 @@ public class PayOrderEndpoint(IMediator mediator) : Endpoint<PayOrderRequest, Re
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

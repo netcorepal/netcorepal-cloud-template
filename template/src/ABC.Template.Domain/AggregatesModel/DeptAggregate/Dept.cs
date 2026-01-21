@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using System.ComponentModel.DataAnnotations.Schema;
 using ABC.Template.Domain.DomainEvents.DeptEvents;
 using ABC.Template.Domain;
@@ -194,4 +193,3 @@ public class Dept : Entity<DeptId>, IAggregateRoot
         return Name;
     }
 }
-//#endif

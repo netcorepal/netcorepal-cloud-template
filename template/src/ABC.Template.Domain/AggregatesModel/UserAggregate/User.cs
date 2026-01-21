@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 
@@ -175,4 +174,3 @@ public class User : Entity<UserId>, IAggregateRoot
         UpdateTime = new UpdateTime(now);
     }
 }
-//#endif

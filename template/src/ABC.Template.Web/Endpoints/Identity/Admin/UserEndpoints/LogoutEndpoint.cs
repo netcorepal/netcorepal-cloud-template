@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using System.Security.Claims;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,4 +52,3 @@ public class LogoutEndpoint(IMediator mediator) : EndpointWithoutRequest<Respons
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

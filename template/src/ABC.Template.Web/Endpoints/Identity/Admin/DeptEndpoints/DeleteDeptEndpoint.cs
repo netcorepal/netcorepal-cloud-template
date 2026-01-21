@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,4 +41,3 @@ public class DeleteDeptEndpoint(IMediator mediator) : Endpoint<DeleteDeptRequest
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

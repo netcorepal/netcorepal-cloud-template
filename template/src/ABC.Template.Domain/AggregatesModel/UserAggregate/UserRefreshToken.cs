@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -40,4 +39,3 @@ public class UserRefreshToken : Entity<UserRefreshTokenId>
         IsRevoked = true;
     }
 }
-//#endif

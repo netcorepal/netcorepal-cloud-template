@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Domain;
 
@@ -62,4 +61,3 @@ public class UserDept
         DeptName = deptName;
     }
 }
-//#endif

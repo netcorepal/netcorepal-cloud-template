@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using System.Collections.Immutable;
 
 namespace ABC.Template.Web.AppPermissions;
@@ -67,4 +66,4 @@ public static class PermissionDefinitionContext
     /// </summary>
     public static IReadOnlyList<AppPermissionGroup> PermissionGroups => Groups.Values.ToImmutableList();
 }
-//#endif
+

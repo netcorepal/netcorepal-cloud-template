@@ -10,7 +10,6 @@ public sealed class ErrorCodes
         
     }
 
-//#if (UseAdmin)
     #region 用户相关错误 (100xxx)
 
     /// <summary>
@@ -112,5 +111,4 @@ public sealed class ErrorCodes
     public const int ChildDeptCannotBeEmpty = 120007;
     
     #endregion
-//#endif
 }

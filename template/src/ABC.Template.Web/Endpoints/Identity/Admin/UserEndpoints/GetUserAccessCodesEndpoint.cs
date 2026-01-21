@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using System.Security.Claims;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,4 +54,3 @@ public class GetUserAccessCodesEndpoint(RoleQuery roleQuery, UserQuery userQuery
         await Send.OkAsync(permissionCodes.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

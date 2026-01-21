@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Web.Application.Queries;
@@ -34,4 +33,3 @@ public class GetDeptTreeEndpoint(DeptQuery deptQuery) : Endpoint<GetDeptTreeRequ
         await Send.OkAsync(tree.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

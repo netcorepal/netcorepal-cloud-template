@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -157,4 +156,4 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
             .ToPagedDataAsync(query, cancellationToken);
     }
 }
-//#endif
+

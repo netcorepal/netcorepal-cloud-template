@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -40,4 +39,4 @@ public class GetUserEndpoint(UserQuery userQuery) : Endpoint<GetUserRequest, Res
         }
     }
 }
-//#endif
+

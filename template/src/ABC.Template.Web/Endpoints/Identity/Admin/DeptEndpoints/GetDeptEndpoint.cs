@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
@@ -68,4 +67,3 @@ public class GetDeptEndpoint(DeptQuery deptQuery) : Endpoint<GetDeptRequest, Res
         }
     }
 }
-//#endif

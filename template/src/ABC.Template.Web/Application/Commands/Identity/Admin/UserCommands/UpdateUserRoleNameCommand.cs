@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -40,4 +39,3 @@ public class UpdateUserRoleNameCommandHandler(IUserRepository userRepository) : 
         return user.Id;
     }
 }
-//#endif

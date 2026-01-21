@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Infrastructure.Repositories;
@@ -33,4 +32,3 @@ public class UpdateDeptCommandHandler(IDeptRepository deptRepository) : ICommand
         dept.UpdateInfo(request.Name, request.Remark, request.ParentId, request.Status);
     }
 }
-//#endif

@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -40,7 +39,7 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
 
-        // 配置 User 与 UserDept 的一对一关系
+        // 配置 User �?UserDept 的一对一关系
         builder.HasOne(au => au.Dept)
             .WithOne()
             .HasForeignKey<UserDept>(ud => ud.UserId)
@@ -100,4 +99,3 @@ internal class UserRefreshTokenConfiguration : IEntityTypeConfiguration<UserRefr
         builder.Property(x => x.ExpiresTime).IsRequired();
     }
 }
-//#endif

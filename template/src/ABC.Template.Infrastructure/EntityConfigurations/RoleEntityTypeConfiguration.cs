@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -47,4 +46,3 @@ internal class RolePermissionEntityTypeConfiguration : IEntityTypeConfiguration<
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
-//#endif

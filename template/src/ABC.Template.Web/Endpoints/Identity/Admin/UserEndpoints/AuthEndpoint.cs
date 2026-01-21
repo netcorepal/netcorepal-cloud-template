@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;
@@ -15,4 +14,3 @@ public class AuthEndpoint : EndpointWithoutRequest<ResponseData<bool>>
         return Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
-//#endif

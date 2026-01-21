@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
@@ -37,4 +36,4 @@ public class PasswordResetCommandHandler(IUserRepository userRepository) : IComm
         return user.Id;
     }
 }
-//#endif
+

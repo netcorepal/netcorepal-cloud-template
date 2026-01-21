@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using Microsoft.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Infrastructure;
@@ -34,4 +33,3 @@ public class DeleteDeptCommandHandler(IDeptRepository deptRepository, Applicatio
         dept.SoftDelete();
     }
 }
-//#endif

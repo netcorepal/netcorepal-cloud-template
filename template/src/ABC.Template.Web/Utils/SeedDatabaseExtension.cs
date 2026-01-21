@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -141,4 +140,4 @@ public static class SeedDatabaseExtension
         return app;
     }
 }
-//#endif
+

@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using Microsoft.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 
@@ -197,4 +196,3 @@ public class DeptQuery(ApplicationDbContext applicationDbContext) : IQuery
         public List<DeptTreeNode> Children { get; set; } = new();
     }
 }
-//#endif

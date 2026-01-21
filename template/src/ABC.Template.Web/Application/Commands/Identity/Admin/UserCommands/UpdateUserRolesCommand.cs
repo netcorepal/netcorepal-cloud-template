@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
@@ -43,4 +42,4 @@ public class UpdateUserRolesCommandHandler(IUserRepository userRepository) : ICo
         user.UpdateRoles(roles);
     }
 }
-//#endif
+

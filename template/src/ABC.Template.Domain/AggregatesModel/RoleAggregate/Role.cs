@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.DomainEvents.RoleEvents;
 using ABC.Template.Domain;
 
@@ -87,4 +86,3 @@ public class Role : Entity<RoleId>, IAggregateRoot
         return Permissions.Any(p => p.PermissionCode == permissionCode);
     }
 }
-//#endif

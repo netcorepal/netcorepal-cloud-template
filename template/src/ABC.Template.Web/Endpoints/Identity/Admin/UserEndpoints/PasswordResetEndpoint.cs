@@ -1,4 +1,3 @@
-﻿//#if (UseAdmin)
 using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -44,4 +43,4 @@ public class PasswordResetEndpoint(IMediator mediator) : Endpoint<PasswordResetR
         await Send.OkAsync(response.AsResponseData(), cancellation: ct);
     }
 }
-//#endif
+

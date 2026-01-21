@@ -1,4 +1,3 @@
-//#if (UseDemoCode)
 using ABC.Template.Web.Endpoints.DemoEndpoints;
 using NetCorePal.Context;
 using NetCorePal.Extensions.Dto;
@@ -118,4 +117,3 @@ namespace ABC.Template.Web.Tests
         }
     }
 }
-//#endif

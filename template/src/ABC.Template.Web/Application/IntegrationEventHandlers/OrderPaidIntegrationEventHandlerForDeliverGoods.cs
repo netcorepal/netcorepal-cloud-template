@@ -1,4 +1,3 @@
-//#if (UseDemoCode)
 using ABC.Template.Web.Application.Commands.Delivers;
 using ABC.Template.Web.Application.IntegrationEvents;
 
@@ -12,4 +11,3 @@ public class OrderPaidIntegrationEventHandlerForDeliverGoods(IMediator mediator)
         _ = await mediator.Send(cmd, cancellationToken);
     }
 }
-//#endif

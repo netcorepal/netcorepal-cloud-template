@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.DomainEvents.DeptEvents;
 using ABC.Template.Web.Application.Commands.Identity.Admin.UserCommands;
 using ABC.Template.Web.Application.Queries;
@@ -27,4 +26,3 @@ public class DeptInfoChangedDomainEventHandlerForUpdateUserDeptName(IMediator me
         }
     }
 }
-//#endif

@@ -1,4 +1,3 @@
-//#if (UseDemoCode)
 using ABC.Template.Domain.DomainEvents;
 using ABC.Template.Web.Application.IntegrationEvents;
 
@@ -12,4 +11,3 @@ public class OrderPaidIntegrationEventConverter
         return new OrderPaidIntegrationEvent(domainEvent.Order.Id);
     }
 }
-//#endif

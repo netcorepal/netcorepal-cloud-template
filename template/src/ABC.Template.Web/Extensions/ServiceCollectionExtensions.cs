@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using ABC.Template.Web.Application.Queries;
@@ -30,4 +29,3 @@ public static class ServiceCollectionExtensions
         return services;
     }
 }
-//#endif

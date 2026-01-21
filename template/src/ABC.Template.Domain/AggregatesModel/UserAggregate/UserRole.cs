@@ -1,4 +1,3 @@
-//#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -22,4 +21,3 @@ public class UserRole
         RoleName = roleName;
     }
 }
-//#endif

@@ -1,5 +1,4 @@
-﻿//#if (UseDemoCode)
-using ABC.Template.Domain.AggregatesModel.OrderAggregate;
+﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 
 namespace ABC.Template.Infrastructure.EntityConfigurations
 {
@@ -17,4 +16,3 @@ namespace ABC.Template.Infrastructure.EntityConfigurations
     }
 
 }
-//#endif
