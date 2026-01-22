@@ -406,8 +406,8 @@ try
 
     var app = builder.Build();
 
-    // 在开发或测试环境中执行数据库迁移
-    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Testing")
+    // 在非生产环境中执行数据库迁移（包括开发、测试、Staging等环境）
+    if (!app.Environment.IsProduction())
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -420,8 +420,8 @@ try
 
 //#if (UseAdmin)
     // SeedDatabase 必须在数据库迁移之后执行，确保表已创建
-    // 在开发/测试环境中，如果 SeedDatabase 失败，应该抛出异常以便发现问题
-    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Testing")
+    // 在非生产环境中，如果 SeedDatabase 失败，应该抛出异常以便发现问题
+    if (!app.Environment.IsProduction())
     {
         try
         {
