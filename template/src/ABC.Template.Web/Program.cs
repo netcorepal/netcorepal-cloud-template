@@ -6,9 +6,6 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
-//#if (UseDemoCode)
-using ABC.Template.Web.Application.IntegrationEventHandlers;
-//#endif
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
 //#if (UseAdmin)
@@ -473,9 +470,6 @@ try
     app.MapGet("/code-analysis", () =>
     {
         var assemblies = new List<Assembly> { typeof(Program).Assembly, typeof(ApplicationDbContext).Assembly };
-//#if (UseDemoCode)
-        assemblies.Add(typeof(ABC.Template.Domain.AggregatesModel.OrderAggregate.Order).Assembly);
-//#endif
 //#if (UseAdmin)
         assemblies.Add(typeof(ABC.Template.Domain.AggregatesModel.UserAggregate.User).Assembly);
 //#endif

@@ -109,7 +109,6 @@ dotnet new list
 | `--UseAspire` | `-U` | 启用 Aspire Dashboard 支持 | `true`, `false` | `false` |
 | `--IncludeCopilotInstructions` | `-I` | 是否包含 Copilot 指令文件 | `true`, `false` | `true` |
 | `--UseAdmin` | | 是否包含 Admin 功能（用户、角色、部门管理、权限系统、前端） | `true`, `false` | `false` |
-| `--UseDemoCode` | | 是否包含演示代码（OrderAggregate、DeliverAggregate） | `true`, `false` | `false` |
 
 #### 使用示例
 
@@ -182,18 +181,6 @@ dotnet new netcorepal-web -n My.Project.Name -I false
 + **前端界面**：基于 Vue 3 + Vben Admin 的管理后台界面
 
 启用 Admin 功能后，系统会自动创建默认的管理员账户（用户名：`admin`，密码：`123456`）。
-
-### 关于演示代码
-
-当启用 `--UseDemoCode` 选项时，模板会包含以下演示代码：
-
-+ **OrderAggregate**：订单聚合根示例，展示领域驱动设计（DDD）的基本用法
-+ **DeliverAggregate**：配送记录聚合根示例
-+ **领域事件**：OrderCreatedDomainEvent、OrderPaidDomainEvent 等
-+ **集成事件**：OrderPaidIntegrationEvent 等
-+ **相关测试**：OrderTests、DemoTests 等
-
-演示代码主要用于学习和参考，展示如何使用 NetCorePal 框架构建 DDD 应用。
 
 ### 关于 Aspire Dashboard
 

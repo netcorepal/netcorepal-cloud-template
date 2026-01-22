@@ -1,13 +1,9 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 //#if (UseDMDB)
 using Microsoft.EntityFrameworkCore.Storage;
 //#endif
 using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
-//#if (UseDemoCode)
-using ABC.Template.Domain.AggregatesModel.OrderAggregate;
-using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
-//#endif
 //#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -59,11 +55,6 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         ConfigureStronglyTypedIdValueConverter(configurationBuilder);
         base.ConfigureConventions(configurationBuilder);
     }
-
-//#if (UseDemoCode)
-    public DbSet<Order> Orders => Set<Order>();
-    public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
-//#endif
 
 //#if (UseAdmin)
     public DbSet<User> Users => Set<User>();

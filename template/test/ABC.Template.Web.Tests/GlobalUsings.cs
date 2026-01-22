@@ -7,6 +7,6 @@ global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using NetCorePal.Extensions.NewtonsoftJson;
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
-//#if (UseAdmin || UseDemoCode)
+//#if (UseAdmin)
 global using ABC.Template.Domain;
 //#endif

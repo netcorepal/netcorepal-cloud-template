@@ -12,38 +12,53 @@ DATABASES=(MySql SqlServer PostgreSQL Sqlite GaussDB DMDB)
 FRAMEWORKS=(net8.0 net9.0 net10.0)
 
 TEMPLATE_ROOT="$(pwd)"
-INFRA_MIGRATIONS_PATH="$TEMPLATE_ROOT/template/src/ABC.Template.Infrastructure/Migrations"
+INFRA_MIGRATIONS_PATH="$TEMPLATE_ROOT/template/src/ABC.Template.Infrastructure/MigrationsAll"
 TMP_ROOT="$(mktemp -d /tmp/netcorepal-migrations-XXXXXXXX)"
 
-# 1. 生成前清空 Migrations 目录
+# 1. 生成前清空 MigrationsAll 目录
 echo "==> 清空 $INFRA_MIGRATIONS_PATH ..."
 rm -rf "$INFRA_MIGRATIONS_PATH"
 mkdir -p "$INFRA_MIGRATIONS_PATH"
 
 MIGRATION_NAME=Init
 
+# Generate migrations for both UseAdmin=true and UseAdmin=false
 for db in "${DATABASES[@]}"; do
   for fw in "${FRAMEWORKS[@]}"; do
-    PRJ_DIR="$TMP_ROOT/${db}-${fw}"
-    OUTDIR="$INFRA_MIGRATIONS_PATH/${db}-${fw}"
-    echo "==> 清理 $PRJ_DIR ..."
-    rm -rf "$PRJ_DIR"
-    echo "==> dotnet new 生成 $db $fw 项目..."
-    dotnet new netcorepal-web -n ABC.Template -F $fw -D $db -M RabbitMQ --output "$PRJ_DIR"
-    INFRA_DIR="$PRJ_DIR/src/ABC.Template.Infrastructure"
-    # 递归清理 dotnet new 生成的 Migrations 目录，避免模板污染
-    rm -rf "$INFRA_DIR/Migrations"
-    echo "==> dotnet restore..."
-    (cd "$PRJ_DIR" && dotnet restore)
-    echo "==> dotnet build..."
-    (cd "$PRJ_DIR" && dotnet build --no-restore)
-    echo "==> 清理目标迁移目录..."
-    rm -rf "$OUTDIR"
-    echo "==> 生成迁移 $MIGRATION_NAME..."
-    (cd "$INFRA_DIR" && dotnet ef migrations add $MIGRATION_NAME --output-dir Migrations)
-    mkdir -p "$OUTDIR"
-    cp -r "$INFRA_DIR"/Migrations/* "$OUTDIR"/
-    echo "==> $db $fw 迁移已拷贝到 $OUTDIR"
+    for useAdmin in false true; do
+      if [ "$useAdmin" = "true" ]; then
+        ADMIN_SUFFIX="-admin"
+        ADMIN_PARAM="--UseAdmin true"
+      else
+        ADMIN_SUFFIX=""
+        ADMIN_PARAM=""
+      fi
+      
+      PRJ_DIR="$TMP_ROOT/${db}-${fw}${ADMIN_SUFFIX}"
+      OUTDIR="$INFRA_MIGRATIONS_PATH/${db}-${fw}${ADMIN_SUFFIX}"
+      echo "==> 清理 $PRJ_DIR ..."
+      rm -rf "$PRJ_DIR"
+      echo "==> dotnet new 生成 $db $fw 项目 (UseAdmin=$useAdmin)..."
+      if [ "$useAdmin" = "true" ]; then
+        dotnet new netcorepal-web -n ABC.Template -F $fw -D $db -M RabbitMQ --UseAdmin true --output "$PRJ_DIR"
+      else
+        dotnet new netcorepal-web -n ABC.Template -F $fw -D $db -M RabbitMQ --output "$PRJ_DIR"
+      fi
+      INFRA_DIR="$PRJ_DIR/src/ABC.Template.Infrastructure"
+      # 递归清理 dotnet new 生成的 Migrations 目录，避免模板污染
+      rm -rf "$INFRA_DIR/Migrations"
+      echo "==> dotnet restore..."
+      (cd "$PRJ_DIR" && dotnet restore)
+      echo "==> dotnet build..."
+      (cd "$PRJ_DIR" && dotnet build --no-restore)
+      echo "==> 清理目标迁移目录..."
+      rm -rf "$OUTDIR"
+      echo "==> 生成迁移 $MIGRATION_NAME..."
+      (cd "$INFRA_DIR" && dotnet ef migrations add $MIGRATION_NAME --output-dir Migrations)
+      mkdir -p "$OUTDIR"
+      cp -r "$INFRA_DIR"/Migrations/* "$OUTDIR"/
+      echo "==> $db $fw UseAdmin=$useAdmin 迁移已拷贝到 $OUTDIR"
+    done
   done
 done
 
