@@ -6,7 +6,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
+//#if (UseDemoCode)
 using ABC.Template.Web.Application.IntegrationEventHandlers;
+//#endif
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
 //#if (UseAdmin)
