@@ -474,7 +474,14 @@ try
     
     app.UseHangfireDashboard();
 //#if (UseAdmin)
-    app.SeedDatabase();
+    try
+    {
+        app.SeedDatabase();
+    }
+    catch (Exception ex)
+    {
+        Log.Warning(ex, "Failed to seed database, continuing anyway");
+    }
 //#endif
     await app.RunAsync();
 }
