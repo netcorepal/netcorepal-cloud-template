@@ -81,12 +81,20 @@ public static class SeedDatabaseExtension
             dbContext.Depts.Add(dept);
             dbContext.SaveChanges();
 
-            var deptId = dbContext.Depts.First(r => r.Name == "研发").Id;
+            var deptId = dbContext.Depts.FirstOrDefault(r => r.Name == "研发")?.Id;
+            if (deptId == null)
+            {
+                throw new InvalidOperationException("无法找到部门'研发'，请确保部门已正确创建");
+            }
             var childGroup = new Dept("Net", "第一个子节点", deptId, 1);
             dbContext.Depts.Add(childGroup);
             dbContext.SaveChanges();
 
-            var childGroupId = dbContext.Depts.First(r => r.Name == "Net").Id;
+            var childGroupId = dbContext.Depts.FirstOrDefault(r => r.Name == "Net")?.Id;
+            if (childGroupId == null)
+            {
+                throw new InvalidOperationException("无法找到部门'Net'，请确保部门已正确创建");
+            }
             var childIndividual = new Dept("C#", "第一个子节点的子节点", childGroupId, 1);
             dbContext.Depts.Add(childIndividual);
             dbContext.SaveChanges();
@@ -95,8 +103,19 @@ public static class SeedDatabaseExtension
         // 初始化管理员用户
         if (!dbContext.Users.Any(u => u.Name == "admin"))
         {
-            var dept = dbContext.Depts.First(r => r.Name == "研发");
-            var adminRole = dbContext.Roles.First(r => r.Name == "管理员");
+            var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
+            var adminRole = dbContext.Roles.FirstOrDefault(r => r.Name == "管理员");
+            
+            if (dept == null)
+            {
+                throw new InvalidOperationException("无法找到部门'研发'，请确保部门已正确初始化");
+            }
+            
+            if (adminRole == null)
+            {
+                throw new InvalidOperationException("无法找到角色'管理员'，请确保角色已正确初始化");
+            }
+            
             var adminUser = new User(
                 "admin",
                 "13800138000",
@@ -118,8 +137,19 @@ public static class SeedDatabaseExtension
         // 初始化测试用户
         if (!dbContext.Users.Any(u => u.Name == "test"))
         {
-            var dept = dbContext.Depts.First(r => r.Name == "研发");
-            var userRole = dbContext.Roles.First(r => r.Name == "普通用户");
+            var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
+            var userRole = dbContext.Roles.FirstOrDefault(r => r.Name == "普通用户");
+            
+            if (dept == null)
+            {
+                throw new InvalidOperationException("无法找到部门'研发'，请确保部门已正确初始化");
+            }
+            
+            if (userRole == null)
+            {
+                throw new InvalidOperationException("无法找到角色'普通用户'，请确保角色已正确初始化");
+            }
+            
             var testUser = new User(
                 "test",
                 "13800138001",

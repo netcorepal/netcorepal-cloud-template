@@ -420,6 +420,19 @@ try
 <!--#endif-->
     }
 
+//#if (UseAdmin)
+    // SeedDatabase 必须在数据库迁移之后执行，确保表已创建
+    // 在开发/测试环境中，如果 SeedDatabase 失败，应该抛出异常以便发现问题
+    try
+    {
+        app.SeedDatabase();
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Failed to seed database in {Environment} environment", app.Environment.EnvironmentName);
+        throw; // 重新抛出异常，确保测试能够发现数据库种子数据问题
+    }
+//#endif
 
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
@@ -473,11 +486,6 @@ try
     });
     
     app.UseHangfireDashboard();
-//#if (UseAdmin)
-    // SeedDatabase 必须在应用程序启动前完成，确保管理员用户存在
-    // 在开发/测试环境中，如果 SeedDatabase 失败，应该抛出异常
-    app.SeedDatabase();
-//#endif
     await app.RunAsync();
 }
 catch (Exception ex)
