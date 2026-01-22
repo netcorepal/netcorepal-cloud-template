@@ -239,7 +239,6 @@
                     "src/ABC.Template.Web/Endpoints/Identity/**",
                     "src/ABC.Template.Web/Utils/SeedDatabaseExtension.cs",
                     "src/ABC.Template.Web/Utils/PasswordHasher.cs",
-                    "src/ABC.Template.Web/Utils/AppConfiguration.cs",
                     "src/ABC.Template.Web/Utils/TokenGenerator.cs",
                     "src/ABC.Template.Web/Extensions/ServiceCollectionExtensions.cs",
                     "test/ABC.Template.Web.Tests/UserTests.cs",
