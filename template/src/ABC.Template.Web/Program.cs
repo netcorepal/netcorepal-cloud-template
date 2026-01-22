@@ -8,9 +8,7 @@ using StackExchange.Redis;
 using FluentValidation.AspNetCore;
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
-//#if (UseAdmin)
 using ABC.Template.Web.Utils;
-//#endif
 using FastEndpoints;
 using Serilog;
 using Serilog.Formatting.Json;
