@@ -1,3 +1,4 @@
+//#if (UseAspire)
 using Aspire.Hosting;
 using Aspire.Hosting.Testing;
 using Aspire.Hosting.ApplicationModel;
@@ -342,3 +343,4 @@ public class WebAppFixture : AppFixture<Program>
     }
 //#endif
 }
+//#endif
