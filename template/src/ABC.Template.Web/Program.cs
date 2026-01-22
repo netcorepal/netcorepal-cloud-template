@@ -474,14 +474,9 @@ try
     
     app.UseHangfireDashboard();
 //#if (UseAdmin)
-    try
-    {
-        app.SeedDatabase();
-    }
-    catch (Exception ex)
-    {
-        Log.Warning(ex, "Failed to seed database, continuing anyway");
-    }
+    // SeedDatabase 必须在应用程序启动前完成，确保管理员用户存在
+    // 在开发/测试环境中，如果 SeedDatabase 失败，应该抛出异常
+    app.SeedDatabase();
 //#endif
     await app.RunAsync();
 }
