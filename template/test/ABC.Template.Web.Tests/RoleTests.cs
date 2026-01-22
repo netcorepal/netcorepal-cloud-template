@@ -12,16 +12,16 @@ namespace ABC.Template.Web.Tests;
 public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>(app)
 {
     /// <summary>
-    /// ÇåÀí²âÊÔÊı¾İ
+    /// æ¸…ç†æµ‹è¯•æ•°æ®
     /// </summary>
     private async Task CleanupTestDataAsync()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        // É¾³ıËùÓĞ²âÊÔ½ÇÉ«£¨Í¨¹ıÃû³ÆÇ°×ºÊ¶±ğ£©
+        // åˆ é™¤æ‰€æœ‰æµ‹è¯•è§’è‰²ï¼ˆé€šè¿‡åç§°å‰ç¼€è¯†åˆ«ï¼‰
         var testRoles = await dbContext.Roles
-            .Where(r => r.Name.StartsWith("²âÊÔ½ÇÉ«") || r.Name.StartsWith("TestRole"))
+            .Where(r => r.Name.StartsWith("æµ‹è¯•è§’è‰²") || r.Name.StartsWith("TestRole"))
             .ToListAsync(TestContext.Current.CancellationToken);
         
         foreach (var role in testRoles)
@@ -39,8 +39,8 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
-        var description = "²âÊÔ½ÇÉ«ÃèÊö";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
+        var description = "æµ‹è¯•è§’è‰²æè¿°";
         var permissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit };
         
         try
@@ -69,17 +69,17 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         
         try
         {
-            // ÏÈ´´½¨Ò»¸ö½ÇÉ«
-            var request1 = new CreateRoleRequest(roleName, "ÃèÊö1", permissionCodes);
+            // å…ˆåˆ›å»ºä¸€ä¸ªè§’è‰²
+            var request1 = new CreateRoleRequest(roleName, "æè¿°1", permissionCodes);
             await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(request1);
             
-            // Act - ³¢ÊÔ´´½¨Í¬Ãû½ÇÉ«
-            var request2 = new CreateRoleRequest(roleName, "ÃèÊö2", permissionCodes);
+            // Act - å°è¯•åˆ›å»ºåŒåè§’è‰²
+            var request2 = new CreateRoleRequest(roleName, "æè¿°2", permissionCodes);
             var (response, result) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(request2);
             
             // Assert
@@ -100,7 +100,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var permissionCodes = new[] { PermissionCodes.UserView };
         
         // Act
-        var request = new CreateRoleRequest("", "ÃèÊö", permissionCodes);
+        var request = new CreateRoleRequest("", "æè¿°", permissionCodes);
         var (response, result) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(request);
         
         // Assert
@@ -117,14 +117,14 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
@@ -171,21 +171,21 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
-        var updatedName = $"¸üĞÂºóµÄ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
+        var updatedName = $"æ›´æ–°åçš„è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         var updatedPermissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit, PermissionCodes.UserDelete };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "Ô­Ê¼ÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "åŸå§‹æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
             // Act
-            var request = new UpdateRoleInfoRequest(roleId, updatedName, "¸üĞÂºóµÄÃèÊö", updatedPermissionCodes);
+            var request = new UpdateRoleInfoRequest(roleId, updatedName, "æ›´æ–°åçš„æè¿°", updatedPermissionCodes);
             var (response, result) = await client.PUTAsync<UpdateRoleEndpoint, UpdateRoleInfoRequest, ResponseData<bool>>(request);
             
             // Assert
@@ -194,14 +194,14 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤¸üĞÂ³É¹¦
+            // éªŒè¯æ›´æ–°æˆåŠŸ
             var getRequest = new GetRoleRequest(roleId);
             var (getResponse, getResult) = await client.GETAsync<GetRoleEndpoint, GetRoleRequest, ResponseData<RoleQueryDto?>>(getRequest);
             Assert.True(getResponse.IsSuccessStatusCode);
             Assert.NotNull(getResult?.Data);
             Assert.Equal(roleId, getResult.Data.RoleId);
             Assert.Equal(updatedName, getResult.Data.Name);
-            Assert.Equal("¸üĞÂºóµÄÃèÊö", getResult.Data.Description);
+            Assert.Equal("æ›´æ–°åçš„æè¿°", getResult.Data.Description);
             Assert.Equal(3, getResult.Data.PermissionCodes.Count());
         }
         finally
@@ -219,7 +219,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var permissionCodes = new[] { PermissionCodes.UserView };
         
         // Act
-        var request = new UpdateRoleInfoRequest(nonExistentId, "ĞÂÃû³Æ", "ĞÂÃèÊö", permissionCodes);
+        var request = new UpdateRoleInfoRequest(nonExistentId, "æ–°åç§°", "æ–°æè¿°", permissionCodes);
         var (response, result) = await client.PUTAsync<UpdateRoleEndpoint, UpdateRoleInfoRequest, ResponseData<bool>>(request);
         
         // Assert
@@ -236,14 +236,14 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
@@ -258,10 +258,10 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤½ÇÉ«ÒÑ±»ÈíÉ¾³ı
+            // éªŒè¯è§’è‰²å·²è¢«è½¯åˆ é™¤
             var getRequest = new GetRoleRequest(roleId);
             var (getResponse, _) = await client.GETAsync<GetRoleEndpoint, GetRoleRequest, ResponseData<RoleQueryDto?>>(getRequest);
-            Assert.False(getResponse.IsSuccessStatusCode); // ÈíÉ¾³ıºó²éÑ¯²»µ½
+            Assert.False(getResponse.IsSuccessStatusCode); // è½¯åˆ é™¤åæŸ¥è¯¢ä¸åˆ°
         }
         finally
         {
@@ -295,22 +295,22 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
-            // ÏÈÍ£ÓÃ½ÇÉ«
+            // å…ˆåœç”¨è§’è‰²
             var deactivateRequest = new DeactivateRoleRequest(roleId);
             await client.PUTAsync<DeactivateRoleEndpoint, DeactivateRoleRequest, ResponseData<bool>>(deactivateRequest);
             
-            // Act - ¼¤»î½ÇÉ«
+            // Act - æ¿€æ´»è§’è‰²
             var request = new ActivateRoleRequest(roleId);
             var (response, result) = await client.PUTAsync<ActivateRoleEndpoint, ActivateRoleRequest, ResponseData<bool>>(request);
             
@@ -320,7 +320,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤½ÇÉ«ÒÑ¼¤»î
+            // éªŒè¯è§’è‰²å·²æ¿€æ´»
             var getRequest = new GetRoleRequest(roleId);
             var (getResponse, getResult) = await client.GETAsync<GetRoleEndpoint, GetRoleRequest, ResponseData<RoleQueryDto?>>(getRequest);
             Assert.True(getResponse.IsSuccessStatusCode);
@@ -338,18 +338,18 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«£¨Ä¬ÈÏ¼¤»î£©
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²ï¼ˆé»˜è®¤æ¿€æ´»ï¼‰
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
-            // Act - ³¢ÊÔ¼¤»îÒÑ¼¤»îµÄ½ÇÉ«
+            // Act - å°è¯•æ¿€æ´»å·²æ¿€æ´»çš„è§’è‰²
             var request = new ActivateRoleRequest(roleId);
             var (response, result) = await client.PUTAsync<ActivateRoleEndpoint, ActivateRoleRequest, ResponseData<bool>>(request);
             
@@ -372,18 +372,18 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
-            // Act - Í£ÓÃ½ÇÉ«
+            // Act - åœç”¨è§’è‰²
             var request = new DeactivateRoleRequest(roleId);
             var (response, result) = await client.PUTAsync<DeactivateRoleEndpoint, DeactivateRoleRequest, ResponseData<bool>>(request);
             
@@ -393,7 +393,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤½ÇÉ«ÒÑÍ£ÓÃ
+            // éªŒè¯è§’è‰²å·²åœç”¨
             var getRequest = new GetRoleRequest(roleId);
             var (getResponse, getResult) = await client.GETAsync<GetRoleEndpoint, GetRoleRequest, ResponseData<RoleQueryDto?>>(getRequest);
             Assert.True(getResponse.IsSuccessStatusCode);
@@ -411,22 +411,22 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"²âÊÔ½ÇÉ«_{Guid.NewGuid():N}";
+        var roleName = $"æµ‹è¯•è§’è‰²_{Guid.NewGuid():N}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
         try
         {
-            // ´´½¨²âÊÔ½ÇÉ«
-            var createRequest = new CreateRoleRequest(roleName, "²âÊÔÃèÊö", permissionCodes);
+            // åˆ›å»ºæµ‹è¯•è§’è‰²
+            var createRequest = new CreateRoleRequest(roleName, "æµ‹è¯•æè¿°", permissionCodes);
             var (_, createResult) = await client.POSTAsync<CreateRoleEndpoint, CreateRoleRequest, ResponseData<CreateRoleResponse>>(createRequest);
             roleId = createResult!.Data!.RoleId;
             
-            // ÏÈÍ£ÓÃ½ÇÉ«
+            // å…ˆåœç”¨è§’è‰²
             var deactivateRequest1 = new DeactivateRoleRequest(roleId);
             await client.PUTAsync<DeactivateRoleEndpoint, DeactivateRoleRequest, ResponseData<bool>>(deactivateRequest1);
             
-            // Act - ³¢ÊÔÍ£ÓÃÒÑÍ£ÓÃµÄ½ÇÉ«
+            // Act - å°è¯•åœç”¨å·²åœç”¨çš„è§’è‰²
             var request = new DeactivateRoleRequest(roleId);
             var (response, result) = await client.PUTAsync<DeactivateRoleEndpoint, DeactivateRoleRequest, ResponseData<bool>>(request);
             

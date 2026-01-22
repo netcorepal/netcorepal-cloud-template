@@ -3,6 +3,7 @@ using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure;
 using ABC.Template.Web.AppPermissions;
+using Serilog;
 
 namespace ABC.Template.Web.Utils;
 
@@ -20,11 +21,14 @@ public static class SeedDatabaseExtension
     /// <returns>应用程序构建器</returns>
     internal static IApplicationBuilder SeedDatabase(this IApplicationBuilder app)
     {
-        using var serviceScope = app.ApplicationServices.CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        try
+        {
+            Log.Information("开始初始化数据库种子数据...");
+            using var serviceScope = app.ApplicationServices.CreateScope();
+            var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        // 初始化角色和权限
-        if (!dbContext.Roles.Any())
+            // 初始化角色和权限
+            if (!dbContext.Roles.Any())
         {
             var adminPermissions = new List<RolePermission>
             {
@@ -167,7 +171,14 @@ public static class SeedDatabaseExtension
             dbContext.SaveChanges();
         }
 
-        return app;
+            Log.Information("数据库种子数据初始化完成");
+            return app;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "数据库种子数据初始化失败");
+            throw;
+        }
     }
 }
 

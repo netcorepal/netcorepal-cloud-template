@@ -13,38 +13,38 @@ namespace ABC.Template.Web.Tests;
 public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>(app)
 {
     /// <summary>
-    /// »ñÈ¡ÖÖ×ÓÊı¾İÖĞµÄ½ÇÉ«ID£¨¹ÜÀíÔ±½ÇÉ«£©
+    /// è·å–ç§å­æ•°æ®ä¸­çš„è§’è‰²IDï¼ˆç®¡ç†å‘˜è§’è‰²ï¼‰
     /// </summary>
     private async Task<RoleId> GetAdminRoleIdAsync()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "¹ÜÀíÔ±", TestContext.Current.CancellationToken);
-        return role?.Id ?? throw new InvalidOperationException("ÕÒ²»µ½¹ÜÀíÔ±½ÇÉ«");
+        var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "ç®¡ç†å‘˜", TestContext.Current.CancellationToken);
+        return role?.Id ?? throw new InvalidOperationException("æ‰¾ä¸åˆ°ç®¡ç†å‘˜è§’è‰²");
     }
 
     /// <summary>
-    /// »ñÈ¡ÖÖ×ÓÊı¾İÖĞµÄ²¿ÃÅID£¨ÑĞ·¢²¿ÃÅ£©
+    /// è·å–ç§å­æ•°æ®ä¸­çš„éƒ¨é—¨IDï¼ˆç ”å‘éƒ¨é—¨ï¼‰
     /// </summary>
     private async Task<DeptId> GetDeptIdAsync()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        var dept = await dbContext.Depts.FirstOrDefaultAsync(d => d.Name == "ÑĞ·¢", TestContext.Current.CancellationToken);
-        return dept?.Id ?? throw new InvalidOperationException("ÕÒ²»µ½ÑĞ·¢²¿ÃÅ");
+        var dept = await dbContext.Depts.FirstOrDefaultAsync(d => d.Name == "ç ”å‘", TestContext.Current.CancellationToken);
+        return dept?.Id ?? throw new InvalidOperationException("æ‰¾ä¸åˆ°ç ”å‘éƒ¨é—¨");
     }
 
     /// <summary>
-    /// ÇåÀí²âÊÔÊı¾İ
+    /// æ¸…ç†æµ‹è¯•æ•°æ®
     /// </summary>
     private async Task CleanupTestDataAsync()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        // É¾³ıËùÓĞ²âÊÔÓÃ»§£¨Í¨¹ıÓÃ»§ÃûÇ°×ºÊ¶±ğ£©
+        // åˆ é™¤æ‰€æœ‰æµ‹è¯•ç”¨æˆ·ï¼ˆé€šè¿‡ç”¨æˆ·åå‰ç¼€è¯†åˆ«ï¼‰
         var testUsers = await dbContext.Users
-            .Where(u => u.Name.StartsWith("²âÊÔÓÃ»§") || u.Name.StartsWith("TestUser"))
+            .Where(u => u.Name.StartsWith("æµ‹è¯•ç”¨æˆ·") || u.Name.StartsWith("TestUser"))
             .ToListAsync(TestContext.Current.CancellationToken);
         
         foreach (var user in testUsers)
@@ -62,7 +62,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"²âÊÔÓÃ»§_{Guid.NewGuid():N}";
+        var userName = $"æµ‹è¯•ç”¨æˆ·_{Guid.NewGuid():N}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -75,12 +75,12 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 email,
                 "123456",
                 "13800138000",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             var (response, result) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(request);
@@ -105,41 +105,41 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"²âÊÔÓÃ»§_{Guid.NewGuid():N}";
+        var userName = $"æµ‹è¯•ç”¨æˆ·_{Guid.NewGuid():N}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
         
         try
         {
-            // ÏÈ´´½¨Ò»¸öÓÃ»§
+            // å…ˆåˆ›å»ºä¸€ä¸ªç”¨æˆ·
             var request1 = new CreateUserRequest(
                 userName,
                 email,
                 "123456",
                 "13800138000",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(request1);
             
-            // Act - ³¢ÊÔ´´½¨Í¬ÃûÓÃ»§
+            // Act - å°è¯•åˆ›å»ºåŒåç”¨æˆ·
             var request2 = new CreateUserRequest(
                 userName,
                 $"{userName}2@test.com",
                 "123456",
                 "13800138001",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             var (response, result) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(request2);
@@ -168,12 +168,12 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             "test@test.com",
             "123456",
             "13800138000",
-            "²âÊÔÕæÊµĞÕÃû",
+            "æµ‹è¯•çœŸå®å§“å",
             1,
-            "ÄĞ",
+            "ç”·",
             DateTimeOffset.Now.AddYears(-25),
             deptId,
-            "ÑĞ·¢",
+            "ç ”å‘",
             new[] { roleId }
         );
         var (response, result) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(request);
@@ -192,7 +192,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"²âÊÔÓÃ»§_{Guid.NewGuid():N}";
+        var userName = $"æµ‹è¯•ç”¨æˆ·_{Guid.NewGuid():N}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -200,18 +200,18 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         
         try
         {
-            // ´´½¨²âÊÔÓÃ»§
+            // åˆ›å»ºæµ‹è¯•ç”¨æˆ·
             var createRequest = new CreateUserRequest(
                 userName,
                 email,
                 "123456",
                 "13800138000",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             var (createResponse, createResult) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(createRequest);
@@ -260,27 +260,27 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"²âÊÔÓÃ»§_{Guid.NewGuid():N}";
+        var userName = $"æµ‹è¯•ç”¨æˆ·_{Guid.NewGuid():N}";
         var email = $"{userName}@test.com";
-        var updatedName = $"¸üĞÂºóµÄÓÃ»§_{Guid.NewGuid():N}";
+        var updatedName = $"æ›´æ–°åçš„ç”¨æˆ·_{Guid.NewGuid():N}";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
         UserId userId;
         
         try
         {
-            // ´´½¨²âÊÔÓÃ»§
+            // åˆ›å»ºæµ‹è¯•ç”¨æˆ·
             var createRequest = new CreateUserRequest(
                 userName,
                 email,
                 "123456",
                 "13800138000",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             var (_, createResult) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(createRequest);
@@ -292,14 +292,14 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 updatedName,
                 $"{updatedName}@test.com",
                 "13900139000",
-                "¸üĞÂºóµÄÕæÊµĞÕÃû",
+                "æ›´æ–°åçš„çœŸå®å§“å",
                 1,
-                "Å®",
+                "å¥³",
                 30,
                 DateTimeOffset.Now.AddYears(-30),
                 deptId,
-                "ÑĞ·¢",
-                "" // ²»¸üĞÂÃÜÂë
+                "ç ”å‘",
+                "" // ä¸æ›´æ–°å¯†ç 
             );
             var (response, result) = await client.PUTAsync<UpdateUserEndpoint, UpdateUserRequest, ResponseData<UpdateUserResponse>>(request);
             
@@ -310,7 +310,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.NotNull(result.Data);
             Assert.Equal(updatedName, result.Data.Name);
             
-            // ÑéÖ¤¸üĞÂ³É¹¦
+            // éªŒè¯æ›´æ–°æˆåŠŸ
             var getRequest = new GetUserRequest(userId);
             var (getResponse, getResult) = await client.GETAsync<GetUserEndpoint, GetUserRequest, ResponseData<UserInfoQueryDto?>>(getRequest);
             Assert.True(getResponse.IsSuccessStatusCode);
@@ -334,16 +334,16 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         // Act
         var request = new UpdateUserRequest(
             nonExistentId,
-            "ĞÂÃû³Æ",
+            "æ–°åç§°",
             "new@test.com",
             "13800138000",
-            "ÕæÊµĞÕÃû",
+            "çœŸå®å§“å",
             1,
-            "ÄĞ",
+            "ç”·",
             25,
             DateTimeOffset.Now.AddYears(-25),
             deptId,
-            "ÑĞ·¢",
+            "ç ”å‘",
             ""
         );
         var (response, result) = await client.PUTAsync<UpdateUserEndpoint, UpdateUserRequest, ResponseData<UpdateUserResponse>>(request);
@@ -362,7 +362,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"²âÊÔÓÃ»§_{Guid.NewGuid():N}";
+        var userName = $"æµ‹è¯•ç”¨æˆ·_{Guid.NewGuid():N}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -370,18 +370,18 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         
         try
         {
-            // ´´½¨²âÊÔÓÃ»§
+            // åˆ›å»ºæµ‹è¯•ç”¨æˆ·
             var createRequest = new CreateUserRequest(
                 userName,
                 email,
                 "123456",
                 "13800138000",
-                "²âÊÔÕæÊµĞÕÃû",
+                "æµ‹è¯•çœŸå®å§“å",
                 1,
-                "ÄĞ",
+                "ç”·",
                 DateTimeOffset.Now.AddYears(-25),
                 deptId,
-                "ÑĞ·¢",
+                "ç ”å‘",
                 new[] { roleId }
             );
             var (_, createResult) = await client.POSTAsync<CreateUserEndpoint, CreateUserRequest, ResponseData<CreateUserResponse>>(createRequest);
@@ -398,10 +398,10 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤ÓÃ»§ÒÑ±»ÈíÉ¾³ı
+            // éªŒè¯ç”¨æˆ·å·²è¢«è½¯åˆ é™¤
             var getRequest = new GetUserRequest(userId);
             var (getResponse, _) = await client.GETAsync<GetUserEndpoint, GetUserRequest, ResponseData<UserInfoQueryDto?>>(getRequest);
-            Assert.False(getResponse.IsSuccessStatusCode); // ÈíÉ¾³ıºó²éÑ¯²»µ½
+            Assert.False(getResponse.IsSuccessStatusCode); // è½¯åˆ é™¤åæŸ¥è¯¢ä¸åˆ°
         }
         finally
         {

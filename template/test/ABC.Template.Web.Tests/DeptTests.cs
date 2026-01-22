@@ -7,14 +7,15 @@ using NetCorePal.Extensions.Dto;
 
 namespace ABC.Template.Web.Tests;
 
+
 [Collection(WebAppTestCollection.Name)]
 public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>(app)
 {
 
     /// <summary>
-    /// ´´½¨²âÊÔ²¿ÃÅ
+    /// åˆ›å»ºæµ‹è¯•éƒ¨é—¨
     /// </summary>
-    protected async Task<DeptId> CreateTestDeptAsync(HttpClient client, string name, string remark = "²âÊÔ±¸×¢", DeptId? parentId = null, int status = 1)
+    protected async Task<DeptId> CreateTestDeptAsync(HttpClient client, string name, string remark = "æµ‹è¯•å¤‡æ³¨", DeptId? parentId = null, int status = 1)
     {
         var request = new CreateDeptRequest(name, remark, parentId, status);
         var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
@@ -28,16 +29,16 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     }
 
     /// <summary>
-    /// ÇåÀí²âÊÔÊı¾İ
+    /// æ¸…ç†æµ‹è¯•æ•°æ®
     /// </summary>
     protected async Task CleanupTestDataAsync()
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
-        // É¾³ıËùÓĞ²âÊÔ²¿ÃÅ£¨Í¨¹ıÃû³ÆÇ°×ºÊ¶±ğ£©
+        // åˆ é™¤æ‰€æœ‰æµ‹è¯•éƒ¨é—¨ï¼ˆé€šè¿‡åç§°å‰ç¼€è¯†åˆ«ï¼‰
         var testDepts = await dbContext.Depts
-            .Where(d => d.Name.StartsWith("²âÊÔ²¿ÃÅ") || d.Name.StartsWith("TestDept"))
+            .Where(d => d.Name.StartsWith("æµ‹è¯•éƒ¨é—¨") || d.Name.StartsWith("TestDept"))
             .ToListAsync(TestContext.Current.CancellationToken);
         
         foreach (var dept in testDepts)
@@ -55,12 +56,12 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
             // Act
-            var request = new CreateDeptRequest(deptName, "²âÊÔ±¸×¢", null, 1);
+            var request = new CreateDeptRequest(deptName, "æµ‹è¯•å¤‡æ³¨", null, 1);
             var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
             
             // Assert
@@ -68,7 +69,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.NotNull(result);
             Assert.NotNull(result.Data);
             Assert.Equal(deptName, result.Data.Name);
-            Assert.Equal("²âÊÔ±¸×¢", result.Data.Remark);
+            Assert.Equal("æµ‹è¯•å¤‡æ³¨", result.Data.Remark);
             Assert.NotEqual(default(DeptId), result.Data.Id);
         }
         finally
@@ -82,16 +83,16 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"²âÊÔ²¿ÃÅ_¸¸_{Guid.NewGuid():N}";
-        var childDeptName = $"²âÊÔ²¿ÃÅ_×Ó_{Guid.NewGuid():N}";
+        var parentDeptName = $"æµ‹è¯•éƒ¨é—¨_çˆ¶_{Guid.NewGuid():N}";
+        var childDeptName = $"æµ‹è¯•éƒ¨é—¨_å­_{Guid.NewGuid():N}";
         
         try
         {
-            // ÏÈ´´½¨¸¸²¿ÃÅ
+            // å…ˆåˆ›å»ºçˆ¶éƒ¨é—¨
             var parentId = await CreateTestDeptAsync(client, parentDeptName);
             
-            // Act - ´´½¨×Ó²¿ÃÅ
-            var request = new CreateDeptRequest(childDeptName, "×Ó²¿ÃÅ±¸×¢", parentId, 1);
+            // Act - åˆ›å»ºå­éƒ¨é—¨
+            var request = new CreateDeptRequest(childDeptName, "å­éƒ¨é—¨å¤‡æ³¨", parentId, 1);
             var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
             
             // Assert
@@ -111,15 +112,15 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
-            // ÏÈ´´½¨Ò»¸ö²¿ÃÅ
+            // å…ˆåˆ›å»ºä¸€ä¸ªéƒ¨é—¨
             await CreateTestDeptAsync(client, deptName);
             
-            // Act - ³¢ÊÔ´´½¨Í¬Ãû²¿ÃÅ
-            var request = new CreateDeptRequest(deptName, "ÖØ¸´Ãû³Æ²âÊÔ", null, 1);
+            // Act - å°è¯•åˆ›å»ºåŒåéƒ¨é—¨
+            var request = new CreateDeptRequest(deptName, "é‡å¤åç§°æµ‹è¯•", null, 1);
             var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
             
             // Assert
@@ -139,7 +140,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var client = await GetAuthenticatedClientAsync();
         
         // Act
-        var request = new CreateDeptRequest("", "±¸×¢", null, 1);
+        var request = new CreateDeptRequest("", "å¤‡æ³¨", null, 1);
         var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
         
         // Assert
@@ -152,10 +153,10 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         // Act
-        var request = new CreateDeptRequest(deptName, "±¸×¢", null, 2); // ÎŞĞ§µÄ×´Ì¬Öµ
+        var request = new CreateDeptRequest(deptName, "å¤‡æ³¨", null, 2); // æ— æ•ˆçš„çŠ¶æ€å€¼
         var (response, result) = await client.POSTAsync<CreateDeptEndpoint, CreateDeptRequest, ResponseData<CreateDeptResponse>>(request);
         
         // Assert
@@ -172,7 +173,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         DeptId deptId;
         
         try
@@ -217,10 +218,10 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         // Arrange
         var client = await GetAuthenticatedClientAsync();
         
-        // Act - Ê¹ÓÃÎŞĞ§µÄID¸ñÊ½£¨Í¨¹ıURL´«µİ£©
+        // Act - ä½¿ç”¨æ— æ•ˆçš„IDæ ¼å¼ï¼ˆé€šè¿‡URLä¼ é€’ï¼‰
         var response = await client.GetAsync("/api/admin/dept/invalid-id", TestContext.Current.CancellationToken);
         
-        // Assert - ¶ÔÓÚÂ·ÓÉ´íÎó£¬Ö±½Ó¼ì²éHTTP×´Ì¬Âë
+        // Assert - å¯¹äºè·¯ç”±é”™è¯¯ï¼Œç›´æ¥æ£€æŸ¥HTTPçŠ¶æ€ç 
         Assert.False(response.IsSuccessStatusCode);
     }
 
@@ -233,14 +234,14 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"²âÊÔ²¿ÃÅ_¸¸_{Guid.NewGuid():N}";
-        var childDeptName = $"²âÊÔ²¿ÃÅ_×Ó_{Guid.NewGuid():N}";
+        var parentDeptName = $"æµ‹è¯•éƒ¨é—¨_çˆ¶_{Guid.NewGuid():N}";
+        var childDeptName = $"æµ‹è¯•éƒ¨é—¨_å­_{Guid.NewGuid():N}";
         
         try
         {
-            // ´´½¨¸¸×Ó²¿ÃÅ
+            // åˆ›å»ºçˆ¶å­éƒ¨é—¨
             var parentId = await CreateTestDeptAsync(client, parentDeptName);
-            await CreateTestDeptAsync(client, childDeptName, "×Ó²¿ÃÅ", parentId, 1);
+            await CreateTestDeptAsync(client, childDeptName, "å­éƒ¨é—¨", parentId, 1);
             
             // Act
             var request = new GetDeptTreeRequest(false);
@@ -251,12 +252,12 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.NotNull(result);
             Assert.NotNull(result.Data);
             
-            // ÑéÖ¤Ê÷½á¹¹°üº¬´´½¨µÄ²¿ÃÅ
+            // éªŒè¯æ ‘ç»“æ„åŒ…å«åˆ›å»ºçš„éƒ¨é—¨
             var allDepts = FlattenTree(result.Data);
             Assert.Contains(allDepts, d => d.Name == parentDeptName);
             Assert.Contains(allDepts, d => d.Name == childDeptName);
             
-            // ÑéÖ¤¸¸×Ó¹ØÏµ
+            // éªŒè¯çˆ¶å­å…³ç³»
             var parent = allDepts.FirstOrDefault(d => d.Name == parentDeptName);
             Assert.NotNull(parent);
             var child = allDepts.FirstOrDefault(d => d.Name == childDeptName);
@@ -274,20 +275,20 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var activeDeptName = $"²âÊÔ²¿ÃÅ_¼¤»î_{Guid.NewGuid():N}";
-        var inactiveDeptName = $"²âÊÔ²¿ÃÅ_Í£ÓÃ_{Guid.NewGuid():N}";
+        var activeDeptName = $"æµ‹è¯•éƒ¨é—¨_æ¿€æ´»_{Guid.NewGuid():N}";
+        var inactiveDeptName = $"æµ‹è¯•éƒ¨é—¨_åœç”¨_{Guid.NewGuid():N}";
         
         try
         {
-            // ´´½¨¼¤»îºÍÍ£ÓÃµÄ²¿ÃÅ
-            await CreateTestDeptAsync(client, activeDeptName, "¼¤»î²¿ÃÅ", null, 1);
-            var inactiveId = await CreateTestDeptAsync(client, inactiveDeptName, "Í£ÓÃ²¿ÃÅ", null, 0);
+            // åˆ›å»ºæ¿€æ´»å’Œåœç”¨çš„éƒ¨é—¨
+            await CreateTestDeptAsync(client, activeDeptName, "æ¿€æ´»éƒ¨é—¨", null, 1);
+            var inactiveId = await CreateTestDeptAsync(client, inactiveDeptName, "åœç”¨éƒ¨é—¨", null, 0);
             
-            // Act - ²»°üº¬·Ç¼¤»î²¿ÃÅ
+            // Act - ä¸åŒ…å«éæ¿€æ´»éƒ¨é—¨
             var requestExcludeInactive = new GetDeptTreeRequest(false);
             var (response1, result1) = await client.GETAsync<GetDeptTreeEndpoint, GetDeptTreeRequest, ResponseData<IEnumerable<DeptTreeDto>>>(requestExcludeInactive);
             
-            // Act - °üº¬·Ç¼¤»î²¿ÃÅ
+            // Act - åŒ…å«éæ¿€æ´»éƒ¨é—¨
             var requestIncludeInactive = new GetDeptTreeRequest(true);
             var (response2, result2) = await client.GETAsync<GetDeptTreeEndpoint, GetDeptTreeRequest, ResponseData<IEnumerable<DeptTreeDto>>>(requestIncludeInactive);
             
@@ -298,11 +299,11 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             var treeExcludeInactive = FlattenTree(result1?.Data ?? Enumerable.Empty<DeptTreeDto>());
             var treeIncludeInactive = FlattenTree(result2?.Data ?? Enumerable.Empty<DeptTreeDto>());
             
-            // ÅÅ³ı·Ç¼¤»îÊ±²»Ó¦°üº¬Í£ÓÃ²¿ÃÅ
+            // æ’é™¤éæ¿€æ´»æ—¶ä¸åº”åŒ…å«åœç”¨éƒ¨é—¨
             Assert.DoesNotContain(treeExcludeInactive, d => d.Name == inactiveDeptName);
             Assert.Contains(treeExcludeInactive, d => d.Name == activeDeptName);
             
-            // °üº¬·Ç¼¤»îÊ±Ó¦°üº¬Í£ÓÃ²¿ÃÅ
+            // åŒ…å«éæ¿€æ´»æ—¶åº”åŒ…å«åœç”¨éƒ¨é—¨
             Assert.Contains(treeIncludeInactive, d => d.Name == inactiveDeptName);
             Assert.Contains(treeIncludeInactive, d => d.Name == activeDeptName);
         }
@@ -313,7 +314,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     }
 
     /// <summary>
-    /// Õ¹Æ½Ê÷½á¹¹ÎªÁĞ±í
+    /// å±•å¹³æ ‘ç»“æ„ä¸ºåˆ—è¡¨
     /// </summary>
     private static List<DeptTreeDto> FlattenTree(IEnumerable<DeptTreeDto> tree)
     {
@@ -338,15 +339,15 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
-        var updatedName = $"¸üĞÂºóµÄ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
+        var updatedName = $"æ›´æ–°åçš„éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
-            var deptId = await CreateTestDeptAsync(client, deptName, "Ô­Ê¼±¸×¢");
+            var deptId = await CreateTestDeptAsync(client, deptName, "åŸå§‹å¤‡æ³¨");
             
             // Act
-            var request = new UpdateDeptRequest(deptId, updatedName, "¸üĞÂºóµÄ±¸×¢", new DeptId(0), 1);
+            var request = new UpdateDeptRequest(deptId, updatedName, "æ›´æ–°åçš„å¤‡æ³¨", new DeptId(0), 1);
             var (response, result) = await client.PUTAsync<UpdateDeptEndpoint, UpdateDeptRequest, ResponseData<bool>>(request);
             
             // Assert
@@ -355,13 +356,13 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤¸üĞÂ³É¹¦
+            // éªŒè¯æ›´æ–°æˆåŠŸ
             var getRequest = new GetDeptRequest(deptId);
             var (getResponse, getResult) = await client.GETAsync<GetDeptEndpoint, GetDeptRequest, ResponseData<GetDeptResponse?>>(getRequest);
             Assert.True(getResponse.IsSuccessStatusCode);
             Assert.NotNull(getResult?.Data);
             Assert.Equal(updatedName, getResult.Data.Name);
-            Assert.Equal("¸üĞÂºóµÄ±¸×¢", getResult.Data.Remark);
+            Assert.Equal("æ›´æ–°åçš„å¤‡æ³¨", getResult.Data.Remark);
         }
         finally
         {
@@ -377,7 +378,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var nonExistentId = new DeptId(999999999);
         
         // Act
-        var request = new UpdateDeptRequest(nonExistentId, "ĞÂÃû³Æ", "ĞÂ±¸×¢", new DeptId(0), 1);
+        var request = new UpdateDeptRequest(nonExistentId, "æ–°åç§°", "æ–°å¤‡æ³¨", new DeptId(0), 1);
             var (response, result) = await client.PUTAsync<UpdateDeptEndpoint, UpdateDeptRequest, ResponseData<bool>>(request);
             
             // Assert
@@ -390,14 +391,14 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
             var deptId = await CreateTestDeptAsync(client, deptName);
             
             // Act
-            var request = new UpdateDeptRequest(deptId, "", "±¸×¢", new DeptId(0), 1);
+            var request = new UpdateDeptRequest(deptId, "", "å¤‡æ³¨", new DeptId(0), 1);
             var (response, result) = await client.PUTAsync<UpdateDeptEndpoint, UpdateDeptRequest, ResponseData<bool>>(request);
             
             // Assert
@@ -415,14 +416,14 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
             var deptId = await CreateTestDeptAsync(client, deptName);
             
             // Act
-            var request = new UpdateDeptRequest(deptId, "ĞÂÃû³Æ", "±¸×¢", new DeptId(0), 2); // ÎŞĞ§µÄ×´Ì¬Öµ
+            var request = new UpdateDeptRequest(deptId, "æ–°åç§°", "å¤‡æ³¨", new DeptId(0), 2); // æ— æ•ˆçš„çŠ¶æ€å€¼
             var (response, result) = await client.PUTAsync<UpdateDeptEndpoint, UpdateDeptRequest, ResponseData<bool>>(request);
             
             // Assert
@@ -444,13 +445,13 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"²âÊÔ²¿ÃÅ_{Guid.NewGuid():N}";
+        var deptName = $"æµ‹è¯•éƒ¨é—¨_{Guid.NewGuid():N}";
         
         try
         {
             var deptId = await CreateTestDeptAsync(client, deptName);
             
-            // Act - Ê¹ÓÃURLÂ·¾¶²ÎÊıµ÷ÓÃDELETE
+            // Act - ä½¿ç”¨URLè·¯å¾„å‚æ•°è°ƒç”¨DELETE
             var response = await client.DeleteAsync($"/api/admin/dept/{deptId}", TestContext.Current.CancellationToken);
             var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseData<bool>>(responseContent);
@@ -461,10 +462,10 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             Assert.True(result.Success);
             Assert.True(result.Data);
             
-            // ÑéÖ¤²¿ÃÅÒÑ±»ÈíÉ¾³ı
+            // éªŒè¯éƒ¨é—¨å·²è¢«è½¯åˆ é™¤
             var getRequest = new GetDeptRequest(deptId);
             var (getResponse, getResult) = await client.GETAsync<GetDeptEndpoint, GetDeptRequest, ResponseData<GetDeptResponse?>>(getRequest);
-            Assert.False(getResponse.IsSuccessStatusCode); // ÈíÉ¾³ıºó²éÑ¯²»µ½
+            Assert.False(getResponse.IsSuccessStatusCode); // è½¯åˆ é™¤åæŸ¥è¯¢ä¸åˆ°
         }
         finally
         {
@@ -477,16 +478,16 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"²âÊÔ²¿ÃÅ_¸¸_{Guid.NewGuid():N}";
-        var childDeptName = $"²âÊÔ²¿ÃÅ_×Ó_{Guid.NewGuid():N}";
+        var parentDeptName = $"æµ‹è¯•éƒ¨é—¨_çˆ¶_{Guid.NewGuid():N}";
+        var childDeptName = $"æµ‹è¯•éƒ¨é—¨_å­_{Guid.NewGuid():N}";
         
         try
         {
-            // ´´½¨¸¸×Ó²¿ÃÅ
+            // åˆ›å»ºçˆ¶å­éƒ¨é—¨
             var parentId = await CreateTestDeptAsync(client, parentDeptName);
-            await CreateTestDeptAsync(client, childDeptName, "×Ó²¿ÃÅ", parentId, 1);
+            await CreateTestDeptAsync(client, childDeptName, "å­éƒ¨é—¨", parentId, 1);
             
-            // Act - ³¢ÊÔÉ¾³ıÓĞ×Ó²¿ÃÅµÄ¸¸²¿ÃÅ
+            // Act - å°è¯•åˆ é™¤æœ‰å­éƒ¨é—¨çš„çˆ¶éƒ¨é—¨
             var response = await client.DeleteAsync($"/api/admin/dept/{parentId}", TestContext.Current.CancellationToken);
             var responseContent = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
             var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseData<bool>>(responseContent);
