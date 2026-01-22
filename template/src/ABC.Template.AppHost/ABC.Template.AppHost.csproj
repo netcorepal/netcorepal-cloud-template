@@ -36,9 +36,9 @@
 <!--#elif (UseNATS)-->
     <PackageReference Include="Aspire.Hosting.NATS" />
 <!--#endif-->
-//#if (UseAdmin)
+<!--#if (UseAdmin)-->
     <PackageReference Include="Aspire.Hosting.JavaScript" />
-//#endif
+<!--#endif-->
   </ItemGroup>
 
 </Project>
