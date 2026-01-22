@@ -406,7 +406,8 @@ try
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
+    // 在开发或测试环境中执行数据库迁移
+    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Testing")
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -420,14 +421,17 @@ try
 //#if (UseAdmin)
     // SeedDatabase 必须在数据库迁移之后执行，确保表已创建
     // 在开发/测试环境中，如果 SeedDatabase 失败，应该抛出异常以便发现问题
-    try
+    if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName == "Testing")
     {
-        app.SeedDatabase();
-    }
-    catch (Exception ex)
-    {
-        Log.Error(ex, "Failed to seed database in {Environment} environment", app.Environment.EnvironmentName);
-        throw; // 重新抛出异常，确保测试能够发现数据库种子数据问题
+        try
+        {
+            app.SeedDatabase();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to seed database in {Environment} environment", app.Environment.EnvironmentName);
+            throw; // 重新抛出异常，确保测试能够发现数据库种子数据问题
+        }
     }
 //#endif
 
