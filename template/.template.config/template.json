@@ -279,7 +279,13 @@
             "test/ABC.Template.Web.Tests/Fixtures/AuthenticatedTestBase.cs"
           ]
         },
-
+        {
+            "description": "Include turbo-run bin directory which is otherwise excluded by default",
+            "condition": "(UseAdmin)",
+            "include": [
+                "src/frontend/scripts/turbo-run/bin/**"
+            ]
+        },
         // SqlServer
         {
           "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\" && UseAdmin)",
