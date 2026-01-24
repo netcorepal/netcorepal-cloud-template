@@ -3,6 +3,7 @@ using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure;
 using ABC.Template.Web.AppPermissions;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace ABC.Template.Web.Utils;
@@ -28,7 +29,11 @@ public static class SeedDatabaseExtension
             var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
             // 初始化角色和权限
+//#if (UseMongoDB)
+            if (!dbContext.Roles.IgnoreAutoIncludes().Any())
+//#else
             if (!dbContext.Roles.Any())
+//#endif
         {
             var adminPermissions = new List<RolePermission>
             {
@@ -105,10 +110,18 @@ public static class SeedDatabaseExtension
         }
 
         // 初始化管理员用户
+//#if (UseMongoDB)
+        // MongoDB 不支持对跨集合导航使用 Include，User 配置了 Roles/Dept 的 AutoInclude，此处用 IgnoreAutoIncludes 避免种子查询报错
+        if (!dbContext.Users.IgnoreAutoIncludes().Any(u => u.Name == "admin"))
+        {
+            var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
+            var adminRole = dbContext.Roles.IgnoreAutoIncludes().FirstOrDefault(r => r.Name == "管理员");
+//#else
         if (!dbContext.Users.Any(u => u.Name == "admin"))
         {
             var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
             var adminRole = dbContext.Roles.FirstOrDefault(r => r.Name == "管理员");
+//#endif
             
             if (dept == null)
             {
@@ -139,10 +152,17 @@ public static class SeedDatabaseExtension
         }
 
         // 初始化测试用户
+//#if (UseMongoDB)
+        if (!dbContext.Users.IgnoreAutoIncludes().Any(u => u.Name == "test"))
+        {
+            var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
+            var userRole = dbContext.Roles.IgnoreAutoIncludes().FirstOrDefault(r => r.Name == "普通用户");
+//#else
         if (!dbContext.Users.Any(u => u.Name == "test"))
         {
             var dept = dbContext.Depts.FirstOrDefault(r => r.Name == "研发");
             var userRole = dbContext.Roles.FirstOrDefault(r => r.Name == "普通用户");
+//#endif
             
             if (dept == null)
             {

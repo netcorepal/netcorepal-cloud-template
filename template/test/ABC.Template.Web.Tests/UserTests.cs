@@ -19,7 +19,14 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         using var scope = Fixture.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//#if (UseMongoDB)
+        // MongoDB 不支持跨集合导航的 AutoInclude，使用 IgnoreAutoIncludes 避免报错
+        var role = await dbContext.Roles
+            .IgnoreAutoIncludes()
+            .FirstOrDefaultAsync(r => r.Name == "管理员", TestContext.Current.CancellationToken);
+//#else
         var role = await dbContext.Roles.FirstOrDefaultAsync(r => r.Name == "管理员", TestContext.Current.CancellationToken);
+//#endif
         return role?.Id ?? throw new InvalidOperationException("找不到管理员角色");
     }
 
@@ -43,9 +50,17 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
         // 删除所有测试用户（通过用户名前缀识别）
+//#if (UseMongoDB)
+        // MongoDB 不支持跨集合导航的 AutoInclude，使用 IgnoreAutoIncludes 避免报错
+        var testUsers = await dbContext.Users
+            .IgnoreAutoIncludes()
+            .Where(u => u.Name.StartsWith("测试用户") || u.Name.StartsWith("TestUser"))
+            .ToListAsync(TestContext.Current.CancellationToken);
+//#else
         var testUsers = await dbContext.Users
             .Where(u => u.Name.StartsWith("测试用户") || u.Name.StartsWith("TestUser"))
             .ToListAsync(TestContext.Current.CancellationToken);
+//#endif
         
         foreach (var user in testUsers)
         {

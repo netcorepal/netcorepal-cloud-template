@@ -1,8 +1,12 @@
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
+using ABC.Template.Infrastructure;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Domain;
+//#if (UseMongoDB)
+using Microsoft.EntityFrameworkCore;
+//#endif
 
 namespace ABC.Template.Web.Application.Commands.Identity.Admin.RoleCommands;
 
@@ -30,6 +34,39 @@ public class UpdateRoleInfoCommandValidator : AbstractValidator<UpdateRoleInfoCo
 /// <summary>
 /// 更新角色信息命令处理器
 /// </summary>
+//#if (UseMongoDB)
+/// MongoDB 不支持通过导航属性保存跨集合实体，需要直接操作 RolePermissions 集合
+public class UpdateRoleInfoCommandHandler(IRoleRepository roleRepository, ApplicationDbContext dbContext) : ICommandHandler<UpdateRoleInfoCommand>
+{
+    public async Task Handle(UpdateRoleInfoCommand request, CancellationToken cancellationToken)
+    {
+        var role = await roleRepository.GetAsync(request.RoleId, cancellationToken) ??
+                   throw new KnownException($"未找到角色，RoleId = {request.RoleId}", ErrorCodes.RoleNotFound);
+        role.UpdateRoleInfo(request.Name, request.Description);
+
+        var permissionCodes = request.PermissionCodes.ToList();
+        var existingPermissions = await dbContext.RolePermissions
+            .Where(rp => rp.RoleId == request.RoleId)
+            .ToListAsync(cancellationToken);
+
+        var existingPermissionMap = existingPermissions.ToDictionary(p => p.PermissionCode);
+        var targetPermissionCodes = permissionCodes.ToHashSet();
+
+        foreach (var permissionToRemove in existingPermissions.Where(ep => !targetPermissionCodes.Contains(ep.PermissionCode)).ToList())
+        {
+            dbContext.RolePermissions.Remove(permissionToRemove);
+        }
+
+        var existingPermissionCodes = existingPermissionMap.Keys.ToHashSet();
+        foreach (var pc in permissionCodes.Where(pc => !existingPermissionCodes.Contains(pc)))
+        {
+            var permissionToAdd = new RolePermission(pc);
+            await dbContext.RolePermissions.AddAsync(permissionToAdd, cancellationToken);
+            dbContext.Entry(permissionToAdd).Property(nameof(RolePermission.RoleId)).CurrentValue = request.RoleId;
+        }
+    }
+}
+//#else
 public class UpdateRoleInfoCommandHandler(IRoleRepository roleRepository) : ICommandHandler<UpdateRoleInfoCommand>
 {
     public async Task Handle(UpdateRoleInfoCommand request, CancellationToken cancellationToken)
@@ -38,9 +75,9 @@ public class UpdateRoleInfoCommandHandler(IRoleRepository roleRepository) : ICom
                    throw new KnownException($"未找到角色，RoleId = {request.RoleId}", ErrorCodes.RoleNotFound);
         role.UpdateRoleInfo(request.Name, request.Description);
 
-        // 更新角色权限
         var permissions = request.PermissionCodes.Select(perm => new RolePermission(perm));
         role.UpdateRolePermissions(permissions);
     }
 }
+//#endif
 

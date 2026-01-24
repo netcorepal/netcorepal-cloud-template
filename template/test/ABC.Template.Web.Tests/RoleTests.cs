@@ -20,9 +20,17 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         
         // 删除所有测试角色（通过名称前缀识别）
+//#if (UseMongoDB)
+        // MongoDB 不支持跨集合导航的 AutoInclude，使用 IgnoreAutoIncludes 避免报错
+        var testRoles = await dbContext.Roles
+            .IgnoreAutoIncludes()
+            .Where(r => r.Name.StartsWith("测试角色") || r.Name.StartsWith("TestRole"))
+            .ToListAsync(TestContext.Current.CancellationToken);
+//#else
         var testRoles = await dbContext.Roles
             .Where(r => r.Name.StartsWith("测试角色") || r.Name.StartsWith("TestRole"))
             .ToListAsync(TestContext.Current.CancellationToken);
+//#endif
         
         foreach (var role in testRoles)
         {

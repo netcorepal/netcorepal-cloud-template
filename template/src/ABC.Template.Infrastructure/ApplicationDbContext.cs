@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 //#if (UseDMDB)
 using Microsoft.EntityFrameworkCore.Storage;
 //#endif
+//#if (UseMongoDB)
+using Microsoft.EntityFrameworkCore.Infrastructure;
+//#endif
 using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
 //#if (UseAdmin)
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -47,6 +50,16 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     {
         optionsBuilder.ReplaceService<IRelationalTypeMappingSource, MyDmTypeMappingSource>();
         base.OnConfiguring(optionsBuilder);
+    }
+//#elif (UseMongoDB)
+    /// <summary>
+    /// 单机 MongoDB 不支持事务，禁用自动事务以避免 SaveChanges 报错。
+    /// 生产环境若使用副本集，可移除此配置以启用事务保证一致性。
+    /// </summary>
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
     }
 //#endif
 

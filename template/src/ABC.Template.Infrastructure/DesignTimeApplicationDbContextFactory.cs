@@ -52,6 +52,8 @@ public class DesignTimeApplicationDbContextFactory: IDesignTimeDbContextFactory<
                 {
                     b.MigrationsAssembly(typeof(DesignTimeApplicationDbContextFactory).Assembly.FullName);
                 });
+            <!--#elif (UseMongoDB)-->
+            options.UseMongoDB("mongodb://localhost:27017/any", "any");
             <!--#endif-->
         });
         var provider = services.BuildServiceProvider();

@@ -60,4 +60,23 @@ public class UserDept
 
         DeptName = deptName;
     }
+
+//#if (UseMongoDB)
+    /// <summary>
+    /// 更新部门信息（部门ID和部门名称）
+    /// MongoDB 下 UpdateUser 直接操作 UserDepts 集合时使用，用于就地更新已有 UserDept。
+    /// </summary>
+    /// <param name="deptId">新的部门ID</param>
+    /// <param name="deptName">新的部门名称</param>
+    public void UpdateDept(DeptId deptId, string deptName)
+    {
+        if (string.IsNullOrWhiteSpace(deptName))
+        {
+            throw new KnownException("部门名称不能为空", ErrorCodes.DeptNameCannotBeEmpty);
+        }
+
+        DeptId = deptId;
+        DeptName = deptName;
+    }
+//#endif
 }

@@ -26,6 +26,22 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
     private const string UserCacheKeyPrefix = "user:";
     private static readonly TimeSpan UserCacheExpiry = TimeSpan.FromMinutes(10);
 
+//#if (UseMongoDB)
+    /// <summary>
+    /// 根据刷新令牌获取用户ID
+    /// MongoDB 不支持 SelectMany 跨集合导航，改为直接查询 RefreshTokens 集合
+    /// </summary>
+    public async Task<UserId> GetUserIdByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
+    {
+        var userId = await applicationDbContext.Set<UserRefreshToken>()
+            .AsNoTracking()
+            .Where(t => t.Token == refreshToken)
+            .Select(t => t.UserId)
+            .SingleOrDefaultAsync(cancellationToken);
+
+        return userId ?? throw new KnownException("无效的令牌", ErrorCodes.InvalidToken);
+    }
+//#else
     public async Task<UserId> GetUserIdByRefreshTokenAsync(string refreshToken, CancellationToken cancellationToken)
     {
         return await UserSet.AsNoTracking()
@@ -35,6 +51,7 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
                    .SingleOrDefaultAsync(cancellationToken)
                ?? throw new KnownException("无效的令牌", ErrorCodes.InvalidToken);
     }
+//#endif
 
     public async Task<bool> DoesUserExist(string username, CancellationToken cancellationToken)
     {
@@ -65,6 +82,57 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
         {
             entry.AbsoluteExpirationRelativeToNow = UserCacheExpiry;
             
+//#if (UseMongoDB)
+            // MongoDB 不支持在 Select 中投影跨集合导航，拆为多次查询
+            var user = await UserSet
+                .IgnoreAutoIncludes()
+                .AsNoTracking()
+                .Where(u => u.Id == userId)
+                .Select(u => new
+                {
+                    u.Id,
+                    u.Name,
+                    u.Phone,
+                    u.RealName,
+                    u.Status,
+                    u.Email,
+                    u.CreatedAt,
+                    u.Gender,
+                    u.Age,
+                    u.BirthDate
+                })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (user == null)
+                return null;
+
+            var roles = await applicationDbContext.UserRoles
+                .AsNoTracking()
+                .Where(ur => ur.UserId == userId)
+                .Select(ur => ur.RoleName)
+                .ToListAsync(cancellationToken);
+
+            var dept = await applicationDbContext.UserDepts
+                .AsNoTracking()
+                .Where(ud => ud.UserId == userId)
+                .Select(ud => new { ud.DeptId, ud.DeptName })
+                .FirstOrDefaultAsync(cancellationToken);
+
+            return new UserInfoQueryDto(
+                user.Id,
+                user.Name,
+                user.Phone,
+                roles,
+                user.RealName,
+                user.Status,
+                user.Email,
+                user.CreatedAt,
+                user.Gender,
+                user.Age,
+                user.BirthDate,
+                dept?.DeptId,
+                dept?.DeptName ?? string.Empty);
+//#else
             return await UserSet.AsNoTracking()
                 .Where(u => u.Id == userId)
                 .Select(au => new UserInfoQueryDto(
@@ -82,9 +150,25 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
                     au.Dept != null ? au.Dept.DeptId : null,
                     au.Dept != null ? au.Dept.DeptName : string.Empty))
                 .FirstOrDefaultAsync(cancellationToken);
+//#endif
         });
     }
 
+//#if (UseMongoDB)
+    /// <summary>
+    /// 根据角色ID获取所有用户ID列表
+    /// MongoDB 不支持在 Where 中使用跨集合导航，改为先查 UserRoles，再获取 UserIds
+    /// </summary>
+    public async Task<List<UserId>> GetUserIdsByRoleIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
+    {
+        return await applicationDbContext.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.RoleId == roleId)
+            .Select(ur => ur.UserId)
+            .Distinct()
+            .ToListAsync(cancellationToken);
+    }
+//#else
     public async Task<List<UserId>> GetUserIdsByRoleIdAsync(RoleId roleId, CancellationToken cancellationToken = default)
     {
         return await UserSet.AsNoTracking()
@@ -92,6 +176,7 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
             .Select(u => u.Id)
             .ToListAsync(cancellationToken);
     }
+//#endif
 
     /// <summary>
     /// 根据部门ID获取所有用户ID列表
@@ -99,6 +184,17 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
     /// <param name="deptId">部门ID</param>
     /// <param name="cancellationToken">取消令牌</param>
     /// <returns>属于指定部门的所有用户ID列表</returns>
+//#if (UseMongoDB)
+    /// MongoDB 不支持在 Where 中使用跨集合导航，改为直接查 UserDepts
+    public async Task<List<UserId>> GetUserIdsByDeptIdAsync(DeptId deptId, CancellationToken cancellationToken = default)
+    {
+        return await applicationDbContext.UserDepts
+            .AsNoTracking()
+            .Where(ud => ud.DeptId == deptId)
+            .Select(ud => ud.UserId)
+            .ToListAsync(cancellationToken);
+    }
+//#else
     public async Task<List<UserId>> GetUserIdsByDeptIdAsync(DeptId deptId, CancellationToken cancellationToken = default)
     {
         return await UserSet.AsNoTracking()
@@ -106,7 +202,56 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
             .Select(u => u.Id)
             .ToListAsync(cancellationToken);
     }
+//#endif
 
+//#if (UseMongoDB)
+    /// <summary>
+    /// 获取登录用用户信息。MongoDB 不支持在 Select 中投影跨集合导航 u.Roles，
+    /// 故拆为两次查询：先查 User 基础字段，再按 UserId 查 UserRoles。
+    /// </summary>
+    public async Task<UserLoginInfoQueryDto?> GetUserInfoForLoginAsync(string name, CancellationToken cancellationToken)
+    {
+        var user = await UserSet
+            .IgnoreAutoIncludes()
+            .AsNoTracking()
+            .Where(u => u.Name == name)
+            .Select(u => new { u.Id, u.Name, u.Email, u.PasswordHash })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (user == null)
+            return null;
+
+        var roles = await applicationDbContext.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.UserId == user.Id)
+            .ToListAsync(cancellationToken);
+
+        return new UserLoginInfoQueryDto(user.Id, user.Name, user.Email, user.PasswordHash, roles);
+    }
+
+    /// <summary>
+    /// 按 UserId 获取登录用用户信息。同上，避免投影 u.Roles，拆为两次查询。
+    /// </summary>
+    public async Task<UserLoginInfoQueryDto?> GetUserInfoForLoginByIdAsync(UserId userId, CancellationToken cancellationToken)
+    {
+        var user = await UserSet
+            .IgnoreAutoIncludes()
+            .AsNoTracking()
+            .Where(u => u.Id == userId)
+            .Select(u => new { u.Id, u.Name, u.Email, u.PasswordHash })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (user == null)
+            return null;
+
+        var roles = await applicationDbContext.UserRoles
+            .AsNoTracking()
+            .Where(ur => ur.UserId == user.Id)
+            .ToListAsync(cancellationToken);
+
+        return new UserLoginInfoQueryDto(user.Id, user.Name, user.Email, user.PasswordHash, roles);
+    }
+//#else
     public async Task<UserLoginInfoQueryDto?> GetUserInfoForLoginAsync(string name, CancellationToken cancellationToken)
     {
         return await UserSet
@@ -122,7 +267,98 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
             .Select(u => new UserLoginInfoQueryDto(u.Id, u.Name, u.Email, u.PasswordHash, u.Roles))
             .FirstOrDefaultAsync(cancellationToken);
     }
+//#endif
 
+//#if (UseMongoDB)
+    /// <summary>
+    /// 获取所有用户（分页）
+    /// MongoDB 不支持在 Select 中投影跨集合导航，拆为多次查询
+    /// </summary>
+    public async Task<PagedData<UserInfoQueryDto>> GetAllUsersAsync(UserQueryInput query, CancellationToken cancellationToken)
+    {
+        var queryable = UserSet
+            .IgnoreAutoIncludes()
+            .AsNoTracking();
+
+        if (!string.IsNullOrWhiteSpace(query.Keyword))
+        {
+            queryable = queryable.Where(u => u.Name.Contains(query.Keyword!) || u.Email.Contains(query.Keyword!));
+        }
+
+        if (query.Status.HasValue)
+        {
+            queryable = queryable.Where(u => u.Status == query.Status);
+        }
+
+        var pagedUsers = await queryable
+            .OrderByDescending(u => u.Id)
+            .Select(u => new
+            {
+                u.Id,
+                u.Name,
+                u.Phone,
+                u.RealName,
+                u.Status,
+                u.Email,
+                u.CreatedAt,
+                u.Gender,
+                u.Age,
+                u.BirthDate
+            })
+            .ToPagedDataAsync(query, cancellationToken);
+
+        if (pagedUsers.Items == null || !pagedUsers.Items.Any())
+        {
+            return new PagedData<UserInfoQueryDto>(
+                Enumerable.Empty<UserInfoQueryDto>(),
+                pagedUsers.Total,
+                pagedUsers.PageIndex,
+                pagedUsers.PageSize);
+        }
+
+        var userIds = pagedUsers.Items.Select(u => u.Id).ToList();
+
+        var allRoles = await applicationDbContext.UserRoles
+            .AsNoTracking()
+            .Where(ur => userIds.Contains(ur.UserId))
+            .ToListAsync(cancellationToken);
+        var rolesByUserId = allRoles
+            .GroupBy(ur => ur.UserId)
+            .ToDictionary(g => g.Key, g => g.Select(ur => ur.RoleName).ToList());
+
+        var allDepts = await applicationDbContext.UserDepts
+            .AsNoTracking()
+            .Where(ud => userIds.Contains(ud.UserId))
+            .ToListAsync(cancellationToken);
+        var deptByUserId = allDepts
+            .ToDictionary(ud => ud.UserId, ud => new { ud.DeptId, ud.DeptName });
+
+        var userInfoDtos = pagedUsers.Items.Select(u =>
+        {
+            var dept = deptByUserId.GetValueOrDefault(u.Id);
+            return new UserInfoQueryDto(
+                u.Id,
+                u.Name,
+                u.Phone,
+                rolesByUserId.GetValueOrDefault(u.Id, []),
+                u.RealName,
+                u.Status,
+                u.Email,
+                u.CreatedAt,
+                u.Gender,
+                u.Age,
+                u.BirthDate,
+                dept?.DeptId,
+                dept?.DeptName ?? string.Empty);
+        }).ToList();
+
+        return new PagedData<UserInfoQueryDto>(
+            userInfoDtos,
+            pagedUsers.Total,
+            pagedUsers.PageIndex,
+            pagedUsers.PageSize);
+    }
+//#else
     public async Task<PagedData<UserInfoQueryDto>> GetAllUsersAsync(UserQueryInput query, CancellationToken cancellationToken)
     {
         var queryable = UserSet.AsNoTracking();
@@ -155,5 +391,6 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
                 u.Dept != null ? u.Dept.DeptName : string.Empty))
             .ToPagedDataAsync(query, cancellationToken);
     }
+//#endif
 }
 

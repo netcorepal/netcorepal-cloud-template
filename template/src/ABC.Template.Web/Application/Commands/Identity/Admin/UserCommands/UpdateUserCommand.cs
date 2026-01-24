@@ -1,8 +1,12 @@
 using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
+using ABC.Template.Infrastructure;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Domain;
+//#if (UseMongoDB)
+using Microsoft.EntityFrameworkCore;
+//#endif
 
 namespace ABC.Template.Web.Application.Commands.Identity.Admin.UserCommands;
 
@@ -26,6 +30,42 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 /// <summary>
 /// 更新用户命令处理器
 /// </summary>
+//#if (UseMongoDB)
+/// MongoDB 不支持通过导航属性保存跨集合实体，需要直接操作 UserDepts 集合
+public class UpdateUserCommandHandler(IUserRepository userRepository, ApplicationDbContext dbContext) : ICommandHandler<UpdateUserCommand, UserId>
+{
+    public async Task<UserId> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    {
+        var user = await userRepository.GetAsync(request.UserId, cancellationToken) ??
+                   throw new KnownException($"未找到用户，UserId = {request.UserId}", ErrorCodes.UserNotFound);
+
+        user.UpdateUserInfo(request.Name, request.Phone, request.RealName, request.Status, request.Email, request.Gender, request.BirthDate);
+
+        if (!string.IsNullOrEmpty(request.PasswordHash))
+        {
+            user.UpdatePassword(request.PasswordHash);
+        }
+
+        if (request.DeptId != new DeptId(0) && !string.IsNullOrEmpty(request.DeptName))
+        {
+            var existingDept = await dbContext.UserDepts
+                .FirstOrDefaultAsync(ud => ud.UserId == request.UserId, cancellationToken);
+
+            if (existingDept != null)
+            {
+                existingDept.UpdateDept(request.DeptId, request.DeptName);
+            }
+            else
+            {
+                var newDept = new UserDept(user.Id, request.DeptId, request.DeptName);
+                await dbContext.UserDepts.AddAsync(newDept, cancellationToken);
+            }
+        }
+
+        return user.Id;
+    }
+}
+//#else
 public class UpdateUserCommandHandler(IUserRepository userRepository) : ICommandHandler<UpdateUserCommand, UserId>
 {
     public async Task<UserId> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -35,13 +75,11 @@ public class UpdateUserCommandHandler(IUserRepository userRepository) : ICommand
 
         user.UpdateUserInfo(request.Name, request.Phone, request.RealName, request.Status, request.Email, request.Gender, request.BirthDate);
 
-        // 如果提供了新密码，则更新密码
         if (!string.IsNullOrEmpty(request.PasswordHash))
         {
             user.UpdatePassword(request.PasswordHash);
         }
 
-        // 分配部门
         if (request.DeptId != new DeptId(0) && !string.IsNullOrEmpty(request.DeptName))
         {
             var dept = new UserDept(user.Id, request.DeptId, request.DeptName);
@@ -51,4 +89,5 @@ public class UpdateUserCommandHandler(IUserRepository userRepository) : ICommand
         return user.Id;
     }
 }
+//#endif
 
