@@ -1,4 +1,4 @@
-namespace ABC.Template.Web.Application.Hubs;
+﻿namespace ABC.Template.Web.Application.Hubs;
 
 public interface IChatClient
 {

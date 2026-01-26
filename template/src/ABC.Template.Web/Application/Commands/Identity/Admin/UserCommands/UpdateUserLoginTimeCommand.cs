@@ -1,4 +1,4 @@
-using ABC.Template.Domain.AggregatesModel.UserAggregate;
+﻿using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Domain;
 
@@ -17,4 +17,3 @@ public class UpdateUserLoginTimeCommandHandler(IUserRepository userRepository) :
         user.SetUserRefreshToken(request.RefreshToken);
     }
 }
-

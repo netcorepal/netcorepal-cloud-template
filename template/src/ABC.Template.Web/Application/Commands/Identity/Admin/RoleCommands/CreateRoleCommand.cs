@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;
@@ -31,4 +31,3 @@ public class CreateRoleCommandHandler(IRoleRepository roleRepository) : ICommand
         return role.Id;
     }
 }
-

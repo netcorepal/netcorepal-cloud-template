@@ -1,4 +1,4 @@
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 
 namespace ABC.Template.Web.AppPermissions;
 
@@ -70,4 +70,3 @@ public sealed class AppPermission
         return child;
     }
 }
-

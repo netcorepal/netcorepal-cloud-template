@@ -1,4 +1,4 @@
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
@@ -71,4 +71,3 @@ public class GetUserProfileEndpoint(UserQuery userQuery) : Endpoint<GetUserProfi
         await Send.OkAsync(response.AsResponseData(), cancellation: ct);
     }
 }
-

@@ -1,4 +1,4 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NetCorePal.Extensions.Dto;

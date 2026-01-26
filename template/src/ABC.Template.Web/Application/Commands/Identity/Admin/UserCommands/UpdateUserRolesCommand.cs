@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;
@@ -42,4 +42,3 @@ public class UpdateUserRolesCommandHandler(IUserRepository userRepository) : ICo
         user.UpdateRoles(roles);
     }
 }
-

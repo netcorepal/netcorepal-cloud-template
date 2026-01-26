@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Infrastructure;
 using ABC.Template.Infrastructure.Repositories;

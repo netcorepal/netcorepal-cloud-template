@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 //#if (UseAdmin)
 using ABC.Template.Web.Application.Queries;

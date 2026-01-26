@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -53,4 +53,3 @@ public static class PasswordHasher
         return HashPassword(password, salt) == hash;
     }
 }
-

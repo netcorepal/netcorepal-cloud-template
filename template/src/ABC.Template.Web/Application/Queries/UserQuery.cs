@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -393,4 +393,3 @@ public class UserQuery(ApplicationDbContext applicationDbContext, IMemoryCache m
     }
 //#endif
 }
-

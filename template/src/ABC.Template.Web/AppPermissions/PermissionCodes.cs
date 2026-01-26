@@ -1,4 +1,4 @@
-namespace ABC.Template.Web.AppPermissions;
+﻿namespace ABC.Template.Web.AppPermissions;
 
 /// <summary>
 /// 权限常量定义
@@ -36,4 +36,3 @@ public static class PermissionCodes
     public const string AllApiAccess = nameof(AllApiAccess);
     #endregion
 }
-

@@ -1,4 +1,4 @@
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Web.Application.Queries;
@@ -39,4 +39,3 @@ public class GetUserEndpoint(UserQuery userQuery) : Endpoint<GetUserRequest, Res
         }
     }
 }
-

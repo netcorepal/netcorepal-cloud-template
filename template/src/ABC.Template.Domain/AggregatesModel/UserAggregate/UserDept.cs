@@ -1,4 +1,4 @@
-using ABC.Template.Domain.AggregatesModel.DeptAggregate;
+﻿﻿using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -61,7 +61,7 @@ public class UserDept
         DeptName = deptName;
     }
 
-//#if (UseMongoDB)
+    //#if (UseMongoDB)
     /// <summary>
     /// 更新部门信息（部门ID和部门名称）
     /// MongoDB 下 UpdateUser 直接操作 UserDepts 集合时使用，用于就地更新已有 UserDept。
@@ -78,5 +78,5 @@ public class UserDept
         DeptId = deptId;
         DeptName = deptName;
     }
-//#endif
+    //#endif
 }

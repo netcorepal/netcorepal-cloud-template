@@ -1,4 +1,4 @@
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.AppPermissions;
@@ -27,4 +27,3 @@ public class GetAllUsersEndpoint(UserQuery userQuery) : Endpoint<UserQueryInput,
         await Send.OkAsync(result.AsResponseData(), cancellation: ct);
     }
 }
-

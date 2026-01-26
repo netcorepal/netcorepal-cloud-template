@@ -1,4 +1,4 @@
-using FluentValidation;
+﻿using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Domain;
@@ -35,4 +35,3 @@ public class DeleteUserCommandHandler(IUserRepository userRepository) : ICommand
         user.SoftDelete();
     }
 }
-
