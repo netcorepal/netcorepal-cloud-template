@@ -25,14 +25,15 @@ public record CreateDeptRequest(string Name, string Remark, DeptId? ParentId, in
 public record CreateDeptResponse(DeptId Id, string Name, string Remark);
 
 /// <summary>
-/// 创建部门的API端点
-/// 该端点用于在系统中创建新的部门，支持层级结构
+/// 创建部门
 /// </summary>
-[Tags("Depts")]
+/// <param name="mediator"></param>
 public class CreateDeptEndpoint(IMediator mediator) : Endpoint<CreateDeptRequest, ResponseData<CreateDeptResponse>>
 {
     public override void Configure()
     {
+        Tags("Depts");
+        Description(b => b.AutoTagOverride("Depts"));
         Post("/api/admin/dept");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.DeptCreate);

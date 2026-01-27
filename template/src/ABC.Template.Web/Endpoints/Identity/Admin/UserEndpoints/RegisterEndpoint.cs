@@ -35,14 +35,16 @@ public record RegisterRequest(string Name, string Email, string Password, string
 public record RegisterResponse(UserId UserId, string Name, string Email);
 
 /// <summary>
-/// 用户注册的API端点
-/// 该端点用于在系统中创建新的用户账户，支持角色分配和组织单位设置
+/// 用户注册
 /// </summary>
-[Tags("Users")]
+/// <param name="mediator"></param>
+/// <param name="roleQuery"></param>
 public class RegisterEndpoint(IMediator mediator, RoleQuery roleQuery) : Endpoint<RegisterRequest, ResponseData<RegisterResponse>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Post("/api/admin/user/register");
         AllowAnonymous();
     }

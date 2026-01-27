@@ -24,14 +24,15 @@ public record CreateRoleRequest(string Name, string Description, IEnumerable<str
 public record CreateRoleResponse(RoleId RoleId, string Name, string Description);
 
 /// <summary>
-/// 创建角色的API端点
-/// 该端点用于在系统中创建新的角色，并分配相应的权限
+/// 创建角色
 /// </summary>
-[Tags("Roles")]
+/// <param name="mediator"></param>
 public class CreateRoleEndpoint(IMediator mediator) : Endpoint<CreateRoleRequest, ResponseData<CreateRoleResponse>>
 {
     public override void Configure()
     {
+        Tags("Roles");
+        Description(b => b.AutoTagOverride("Roles"));
         Post("/api/admin/roles");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.RoleCreate);

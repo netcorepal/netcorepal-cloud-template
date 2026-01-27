@@ -14,14 +14,15 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.RoleEndpoints;
 public record DeactivateRoleRequest(RoleId RoleId);
 
 /// <summary>
-/// 停用角色的API端点
-/// 该端点用于停用已激活的角色
+/// 停用角色
 /// </summary>
-[Tags("Roles")]
+/// <param name="mediator"></param>
 public class DeactivateRoleEndpoint(IMediator mediator) : Endpoint<DeactivateRoleRequest, ResponseData<bool>>
 {
     public override void Configure()
     {
+        Tags("Roles");
+        Description(b => b.AutoTagOverride("Roles"));
         Put("/api/admin/roles/deactivate");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.RoleEdit);

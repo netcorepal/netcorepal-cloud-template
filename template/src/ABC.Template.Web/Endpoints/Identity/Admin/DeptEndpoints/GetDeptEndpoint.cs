@@ -24,16 +24,16 @@ public record GetDeptRequest(DeptId Id);
 public record GetDeptResponse(DeptId Id, string Name, string Remark, DeptId ParentId, int Status, DateTimeOffset CreatedAt);
 
 /// <summary>
-/// 获取单个部门的API端点
-/// 该端点用于根据ID查询特定部门的详细信息
+/// 获取部门
 /// </summary>
-[Tags("Depts")]
+/// <param name="deptQuery"></param>
 public class GetDeptEndpoint(DeptQuery deptQuery) : Endpoint<GetDeptRequest, ResponseData<GetDeptResponse>>
 {
    
     public override void Configure()
     {
-      
+        Tags("Depts");
+        Description(b => b.AutoTagOverride("Depts"));
         Get("/api/admin/dept/{id}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.DeptView);

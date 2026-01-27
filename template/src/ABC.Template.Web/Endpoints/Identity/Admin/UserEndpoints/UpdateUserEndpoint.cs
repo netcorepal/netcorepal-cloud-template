@@ -35,14 +35,15 @@ public record UpdateUserRequest(UserId UserId, string Name, string Email, string
 public record UpdateUserResponse(UserId UserId, string Name, string Email);
 
 /// <summary>
-/// 更新用户信息的API端点
-/// 该端点用于修改现有用户的基本信息，包括个人信息、组织单位和密码
+/// 更新用户
 /// </summary>
-[Tags("Users")]
+/// <param name="mediator"></param>
 public class UpdateUserEndpoint(IMediator mediator) : Endpoint<UpdateUserRequest, ResponseData<UpdateUserResponse>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Put("/api/admin/user/update");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserEdit);

@@ -18,12 +18,25 @@ public record LoginRequest(string Username, string Password);
 
 public record LoginResponse(string Token, string RefreshToken, UserId UserId, string Name, string Email, string Roles, IEnumerable<string> PermissionCodes, DateTimeOffset TokenExpiryTime);
 
-[Tags("Users")]
-[HttpPost("/api/admin/user/login")]
-[AllowAnonymous]
+/// <summary>
+/// 用户登录
+/// </summary>
+/// <param name="mediator"></param>
+/// <param name="userQuery"></param>
+/// <param name="jwtProvider"></param>
+/// <param name="appConfiguration"></param>
+/// <param name="roleQuery"></param>
 public class LoginEndpoint(IMediator mediator, UserQuery userQuery, IJwtProvider jwtProvider, IOptions<AppConfiguration> appConfiguration, RoleQuery roleQuery) : Endpoint<LoginRequest, ResponseData<LoginResponse>>
 {
     private const string PermissionClaimType = "permissions";
+
+    public override void Configure()
+    {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
+        Post("/api/admin/user/login");
+        AllowAnonymous();
+    }
 
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
     {

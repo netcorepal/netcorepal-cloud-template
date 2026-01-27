@@ -13,15 +13,16 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.RoleEndpoints;
 public record GetRoleRequest(RoleId Id);
 
 /// <summary>
-/// 获取角色信息的API端点
-/// 该端点用于根据角色ID查询角色的详细信息，包括权限列表
+/// 获取角色
 /// </summary>
-[Tags("Roles")]
+/// <param name="roleQuery"></param>
 public class GetRoleEndpoint(RoleQuery roleQuery) : Endpoint<GetRoleRequest, ResponseData<RoleQueryDto>>
 {
 
     public override void Configure()
     {
+        Tags("Roles");
+        Description(b => b.AutoTagOverride("Roles"));
         Get("/api/admin/roles/{id}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.RoleView);

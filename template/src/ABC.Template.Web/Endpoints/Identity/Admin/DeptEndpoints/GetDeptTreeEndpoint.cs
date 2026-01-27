@@ -12,15 +12,16 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.DeptEndpoints;
 public record GetDeptTreeRequest(bool IncludeInactive = false);
 
 /// <summary>
-/// 获取部门树的API端点
-/// 该端点用于查询系统中的部门树形结构
+/// 获取部门树
 /// </summary>
-[Tags("Depts")]
+/// <param name="deptQuery"></param>
 public class GetDeptTreeEndpoint(DeptQuery deptQuery) : Endpoint<GetDeptTreeRequest, ResponseData<IEnumerable<DeptTreeDto>>>
 {
     
     public override void Configure()
     {
+        Tags("Depts");
+        Description(b => b.AutoTagOverride("Depts"));
         Get("/api/admin/dept/tree");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.DeptView);

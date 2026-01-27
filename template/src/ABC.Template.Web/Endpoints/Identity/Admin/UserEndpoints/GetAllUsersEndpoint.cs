@@ -6,15 +6,16 @@ using ABC.Template.Web.AppPermissions;
 namespace ABC.Template.Web.Endpoints.Identity.Admin.UserEndpoints;
 
 /// <summary>
-/// 获取所有用户信息的API端点
-/// 该端点用于查询系统中的所有用户信息，支持分页、筛选和搜索
+/// 获取所有用户
 /// </summary>
-[Tags("Users")]
+/// <param name="userQuery"></param>
 public class GetAllUsersEndpoint(UserQuery userQuery) : Endpoint<UserQueryInput, ResponseData<PagedData<UserInfoQueryDto>>>
 {
   
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Get("/api/admin/users");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserView);

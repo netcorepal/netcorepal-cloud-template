@@ -23,14 +23,16 @@ public record UpdateUserRolesRequest(UserId UserId, IEnumerable<RoleId> RoleIds)
 public record UpdateUserRolesResponse(UserId UserId);
 
 /// <summary>
-/// 更新用户角色的API端点
-/// 该端点用于修改指定用户的角色分配，支持批量角色分配
+/// 更新用户角色
 /// </summary>
-[Tags("Users")]
+/// <param name="mediator"></param>
+/// <param name="roleQuery"></param>
 public class UpdateUserRolesEndpoint(IMediator mediator, RoleQuery roleQuery) : Endpoint<UpdateUserRolesRequest, ResponseData<UpdateUserRolesResponse>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Put("/api/admin/users/update-roles");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserRoleAssign);

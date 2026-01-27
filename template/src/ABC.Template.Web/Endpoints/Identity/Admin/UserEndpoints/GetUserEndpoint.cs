@@ -13,14 +13,15 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.UserEndpoints;
 public record GetUserRequest(UserId Id);
 
 /// <summary>
-/// 获取用户信息的API端点
-/// 该端点用于根据用户ID查询用户的详细信息
+/// 获取用户
 /// </summary>
-[Tags("Users")]
+/// <param name="userQuery"></param>
 public class GetUserEndpoint(UserQuery userQuery) : Endpoint<GetUserRequest, ResponseData<UserInfoQueryDto>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Get("/api/admin/users/{id}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserView);

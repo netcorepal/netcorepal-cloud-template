@@ -9,13 +9,15 @@ using Serilog;
 namespace ABC.Template.Web.Endpoints.Identity.Admin.UserEndpoints;
 
 /// <summary>
-/// 用户退出登录端点
+/// 用户退出登录
 /// </summary>
-[Tags("Users")]
+/// <param name="mediator"></param>
 public class LogoutEndpoint(IMediator mediator) : EndpointWithoutRequest<ResponseData<bool>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Post("/api/admin/auth/logout");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         AllowAnonymous(); // 允许匿名访问，因为token可能已过期

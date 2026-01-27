@@ -33,14 +33,15 @@ public record GetUserProfileRequest(UserId UserId);
 public record UserProfileResponse(UserId UserId, string Name, string Phone, IEnumerable<string> Roles, string RealName, int Status, string Email, DateTimeOffset CreatedAt, string Gender, int Age, DateTimeOffset BirthDate, DeptId? DeptId, string DeptName);
 
 /// <summary>
-/// 获取用户资料的API端点
-/// 该端点用于根据用户ID查询用户的详细资料信息，包括基本信息、角色、状态和组织单位等
+/// 获取用户资料
 /// </summary>
-[Tags("Users")]
+/// <param name="userQuery"></param>
 public class GetUserProfileEndpoint(UserQuery userQuery) : Endpoint<GetUserProfileRequest, ResponseData<UserProfileResponse?>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Get("/api/admin/user/profile/{userId}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserView);

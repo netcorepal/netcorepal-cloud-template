@@ -14,14 +14,15 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.DeptEndpoints;
 public record DeleteDeptRequest(DeptId Id);
 
 /// <summary>
-/// 删除部门的API端点
-/// 该端点用于删除指定的部门（软删除）
+/// 删除部门
 /// </summary>
-[Tags("Depts")]
+/// <param name="mediator"></param>
 public class DeleteDeptEndpoint(IMediator mediator) : Endpoint<DeleteDeptRequest, ResponseData<bool>>
 {
     public override void Configure()
     {
+        Tags("Depts");
+        Description(b => b.AutoTagOverride("Depts"));
         Delete("/api/admin/dept/{id}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.DeptDelete);

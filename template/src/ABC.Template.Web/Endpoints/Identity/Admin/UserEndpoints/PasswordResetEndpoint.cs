@@ -21,14 +21,15 @@ public record PasswordResetRequest(UserId UserId);
 public record PasswordResetResponse(UserId UserId);
 
 /// <summary>
-/// 密码重置的API端点
-/// 该端点用于重置指定用户的密码为默认密码（123456）
+/// 密码重置
 /// </summary>
-[Tags("Users")]
+/// <param name="mediator"></param>
 public class PasswordResetEndpoint(IMediator mediator) : Endpoint<PasswordResetRequest, ResponseData<PasswordResetResponse>>
 {
     public override void Configure()
     {
+        Tags("Users");
+        Description(b => b.AutoTagOverride("Users"));
         Put("/api/admin/user/password-reset");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.UserEdit);

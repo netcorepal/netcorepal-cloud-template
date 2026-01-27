@@ -14,14 +14,15 @@ namespace ABC.Template.Web.Endpoints.Identity.Admin.RoleEndpoints;
 public record DeleteRoleRequest(RoleId RoleId);
 
 /// <summary>
-/// 删除角色的API端点
-/// 该端点用于从系统中删除指定的角色（软删除）
+/// 删除角色
 /// </summary>
-[Tags("Roles")]
+/// <param name="mediator"></param>
 public class DeleteRoleEndpoint(IMediator mediator) : Endpoint<DeleteRoleRequest, ResponseData<bool>>
 {
     public override void Configure()
     {
+        Tags("Roles");
+        Description(b => b.AutoTagOverride("Roles"));
         Delete("/api/admin/roles/{roleId}");
         AuthSchemes(JwtBearerDefaults.AuthenticationScheme);
         Permissions(PermissionCodes.AllApiAccess, PermissionCodes.RoleDelete);
