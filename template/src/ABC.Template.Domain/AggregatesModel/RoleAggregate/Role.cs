@@ -1,4 +1,4 @@
-﻿using ABC.Template.Domain.DomainEvents.RoleEvents;
+using ABC.Template.Domain.DomainEvents.RoleEvents;
 using ABC.Template.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.RoleAggregate;

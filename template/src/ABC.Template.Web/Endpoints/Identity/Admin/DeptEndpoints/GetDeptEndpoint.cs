@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Web.Application.Queries;

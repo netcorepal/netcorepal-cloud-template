@@ -1,4 +1,4 @@
-﻿using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using ABC.Template.Domain.AggregatesModel.UserAggregate;
 //#if (UseMongoDB)
 using Microsoft.EntityFrameworkCore;
 //#endif

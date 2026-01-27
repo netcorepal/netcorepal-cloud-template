@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -44,3 +44,4 @@ public class UpdateRoleEndpoint(IMediator mediator) : Endpoint<UpdateRoleInfoReq
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
+

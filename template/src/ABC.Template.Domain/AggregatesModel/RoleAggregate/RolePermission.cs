@@ -1,4 +1,4 @@
-﻿namespace ABC.Template.Domain.AggregatesModel.RoleAggregate;
+namespace ABC.Template.Domain.AggregatesModel.RoleAggregate;
 
 public class RolePermission
 {

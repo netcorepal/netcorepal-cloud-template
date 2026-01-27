@@ -1,4 +1,4 @@
-﻿﻿using MediatR;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 //#if (UseDMDB)
 using Microsoft.EntityFrameworkCore.Storage;
@@ -31,7 +31,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , IDMDBCapDataStorage
     //#elif (UseMongoDB)
     , IMongoDBCapDataStorage
-//#endif
+    //#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,13 +45,13 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     }
 
 
-    //#if (UseDMDB)
+//#if (UseDMDB)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.ReplaceService<IRelationalTypeMappingSource, MyDmTypeMappingSource>();
         base.OnConfiguring(optionsBuilder);
     }
-    //#elif (UseMongoDB)
+//#elif (UseMongoDB)
     /// <summary>
     /// 单机 MongoDB 不支持事务，禁用自动事务以避免 SaveChanges 报错。
     /// 生产环境若使用副本集，可移除此配置以启用事务保证一致性。
@@ -61,7 +61,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         base.OnConfiguring(optionsBuilder);
         Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
     }
-    //#endif
+//#endif
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
@@ -69,12 +69,12 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         base.ConfigureConventions(configurationBuilder);
     }
 
-    //#if (UseAdmin)
+//#if (UseAdmin)
     public DbSet<User> Users => Set<User>();
     public DbSet<Role> Roles => Set<Role>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<Dept> Depts => Set<Dept>();
     public DbSet<UserDept> UserDepts => Set<UserDept>();
-    //#endif
+//#endif
 }

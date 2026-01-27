@@ -1,4 +1,4 @@
-﻿using ABC.Template.Domain.AggregatesModel.DeptAggregate;
+using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Infrastructure;
@@ -201,3 +201,4 @@ public static class SeedDatabaseExtension
         }
     }
 }
+

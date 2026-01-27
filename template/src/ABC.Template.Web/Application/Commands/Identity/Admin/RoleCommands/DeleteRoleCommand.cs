@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Domain;
@@ -43,3 +43,4 @@ public class DeleteRoleCommandHandler(IRoleRepository roleRepository) : ICommand
         role.SoftDelete();
     }
 }
+

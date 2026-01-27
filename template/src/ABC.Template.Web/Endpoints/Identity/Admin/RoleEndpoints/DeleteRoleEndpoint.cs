@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
@@ -35,3 +35,4 @@ public class DeleteRoleEndpoint(IMediator mediator) : Endpoint<DeleteRoleRequest
         await Send.OkAsync(true.AsResponseData(), cancellation: ct);
     }
 }
+

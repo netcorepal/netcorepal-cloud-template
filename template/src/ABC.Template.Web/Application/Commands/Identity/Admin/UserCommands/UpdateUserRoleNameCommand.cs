@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Infrastructure.Repositories;

@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Text.Json;
 using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;

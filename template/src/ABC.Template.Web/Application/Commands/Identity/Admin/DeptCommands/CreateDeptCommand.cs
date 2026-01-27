@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;

@@ -1,4 +1,4 @@
-﻿namespace ABC.Template.Domain;
+namespace ABC.Template.Domain;
 
 /// <summary>
 /// 错误码定义

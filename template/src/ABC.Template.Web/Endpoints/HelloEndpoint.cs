@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using Microsoft.AspNetCore.Authorization;
 using NetCorePal.Extensions.Dto;
 

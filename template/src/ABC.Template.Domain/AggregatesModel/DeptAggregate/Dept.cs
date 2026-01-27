@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using ABC.Template.Domain.DomainEvents.DeptEvents;
 using ABC.Template.Domain;
 

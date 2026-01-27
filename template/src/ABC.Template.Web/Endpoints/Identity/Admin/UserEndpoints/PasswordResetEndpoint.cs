@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
@@ -43,3 +43,4 @@ public class PasswordResetEndpoint(IMediator mediator) : Endpoint<PasswordResetR
         await Send.OkAsync(response.AsResponseData(), cancellation: ct);
     }
 }
+

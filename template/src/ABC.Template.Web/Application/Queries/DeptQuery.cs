@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ABC.Template.Domain.AggregatesModel.DeptAggregate;
 
 namespace ABC.Template.Web.Application.Queries;

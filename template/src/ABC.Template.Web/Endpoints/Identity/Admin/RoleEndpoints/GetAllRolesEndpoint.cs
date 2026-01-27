@@ -1,4 +1,4 @@
-﻿using FastEndpoints;
+using FastEndpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Web.AppPermissions;
@@ -26,3 +26,4 @@ public class GetAllRolesEndpoint(RoleQuery roleQuery) : Endpoint<RoleQueryInput,
         await Send.OkAsync(roleInfo.AsResponseData(), cancellation: ct);
     }
 }
+

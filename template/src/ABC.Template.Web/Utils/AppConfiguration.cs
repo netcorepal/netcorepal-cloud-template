@@ -1,4 +1,4 @@
-﻿namespace ABC.Template.Web.Utils;
+namespace ABC.Template.Web.Utils;
 
 public class AppConfiguration
 {
@@ -15,3 +15,4 @@ public class AppConfiguration
     /// </summary>
     public string JwtAudience { get; set; } = "netcorepal";
 }
+

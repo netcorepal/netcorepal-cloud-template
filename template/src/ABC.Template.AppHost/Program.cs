@@ -1,4 +1,4 @@
-﻿var builder = DistributedApplication.CreateBuilder(args);
+var builder = DistributedApplication.CreateBuilder(args);
 
 //Enable Docker publisher
 // builder.AddDockerComposeEnvironment("docker-env")

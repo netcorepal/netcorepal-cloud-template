@@ -1,4 +1,4 @@
-﻿﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;
 
@@ -39,6 +39,7 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
 
+        // é…�ç½® User ä¸?UserDept çš„ä¸€å¯¹ä¸€å…³ç³»
         builder.HasOne(au => au.Dept)
             .WithOne()
             .HasForeignKey<UserDept>(ud => ud.UserId)
@@ -55,7 +56,7 @@ internal class UserDeptEntityTypeConfiguration : IEntityTypeConfiguration<UserDe
 
         builder.HasKey(ud => ud.UserId);
 
-        //#if (UseMongoDB)
+//#if (UseMongoDB)
         // MongoDB 要求主键必须映射到 _id 元素
         builder.Property(ud => ud.UserId)
             .HasElementName("_id");
@@ -66,16 +67,17 @@ internal class UserDeptEntityTypeConfiguration : IEntityTypeConfiguration<UserDe
 
         // 注意：不能为主键字段（映射到 _id）创建索引，因为 MongoDB 的 _id 字段已经有默认的唯一索引
         builder.HasIndex(ud => ud.DeptId);
-        //#else
+//#else
         builder.Property(ud => ud.UserId);
         builder.Property(ud => ud.DeptId);
         builder.Property(ud => ud.DeptName).HasMaxLength(100);
         builder.Property(ud => ud.AssignedAt)
             .IsRequired();
 
+        // ç´¢å¼•
         builder.HasIndex(ud => ud.UserId);
         builder.HasIndex(ud => ud.DeptId);
-        //#endif
+//#endif
     }
 }
 

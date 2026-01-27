@@ -1,4 +1,4 @@
-﻿using ABC.Template.Domain;
+using ABC.Template.Domain;
 
 namespace ABC.Template.Domain.AggregatesModel.UserAggregate;
 
