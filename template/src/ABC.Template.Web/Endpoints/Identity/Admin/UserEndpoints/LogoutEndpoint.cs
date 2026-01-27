@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using NetCorePal.Extensions.Dto;
 using ABC.Template.Domain.AggregatesModel.UserAggregate;

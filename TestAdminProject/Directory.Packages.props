@@ -1,0 +1,153 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Third-party package versions -->
+    <NetCorePalVersion>3.1.0</NetCorePalVersion>
+    <FastEndpointsVersion>7.1.1</FastEndpointsVersion>
+    <TestcontainersVersion>4.9.0</TestcontainersVersion>
+    <AspireVersion>13.1.0</AspireVersion>
+    <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
+    <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
+    <NetCorePalAspireVersion>1.1.0</NetCorePalAspireVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="10.0.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Feishu" Version="9.0.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
+
+    <!-- Database providers - framework specific versions -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageVersion Include="DM.Microsoft.EntityFrameworkCore" Version="9.0.0.37033" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
+    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="9.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="9.0.0" />
+    <PackageVersion Include="MongoDB.EntityFrameworkCore" Version="9.0.3" />
+    <!-- ASP.NET Core and Microsoft packages - framework specific versions -->
+    <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageVersion Include="Microsoft.CodeAnalysis" Version="4.12.0" />
+
+    <!-- CAP packages for .NET 9.0+ -->
+    <PackageVersion Include="DotNetCore.CAP.Dashboard" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RabbitMQ" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Kafka" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AzureServiceBus" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.AmazonSQS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.NATS" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.RedisStreams" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.Pulsar" Version="8.4.1" />
+    <PackageVersion Include="DotNetCore.CAP.OpenTelemetry" Version="8.4.1" />
+
+    <!-- FastEndpoints -->
+    <PackageVersion Include="FastEndpoints" Version="$(FastEndpointsVersion)" />
+    <PackageVersion Include="FastEndpoints.Swagger" Version="$(FastEndpointsVersion)" />
+    <PackageVersion Include="FastEndpoints.Swagger.Swashbuckle" Version="2.3.0" />
+
+    
+    <!-- Other packages -->
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="Hangfire.AspNetCore" Version="1.8.17" />
+    <PackageVersion Include="Hangfire.Redis.StackExchange" Version="1.9.4" />
+    <PackageVersion Include="prometheus-net.AspNetCore" Version="8.2.1" />
+    <PackageVersion Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
+    <PackageVersion Include="Refit.HttpClientFactory" Version="8.0.0" />
+    <PackageVersion Include="Refit.Newtonsoft.Json" Version="8.0.0" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Enrichers.ClientInfo" Version="2.1.2" />
+    <PackageVersion Include="Serilog.Sinks.OpenTelemetry" Version="4.1.0" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.9.32" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+
+    <!-- Aspire packages -->
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.Docker" Version="13.1.0-preview.1.25616.3" />
+    <PackageVersion Include="Aspire.Hosting.Testing" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.MySql" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.MongoDB" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.Redis" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.Kafka" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.NATS" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Hosting.JavaScript" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.StackExchange.Redis" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Pomelo.EntityFrameworkCore.MySql" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="$(AspireVersion)" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MongoDB.Extensions" Version="13.0.0" />
+    <PackageVersion Include="Aspire.RabbitMQ.Client" Version="$(AspireVersion)" />
+    <PackageVersion Include="Aspire.Confluent.Kafka" Version="$(AspireVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.1.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="$(OpenTelemetryVersion)" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.13.0-beta.1" />
+    <PackageVersion Include="Npgsql.OpenTelemetry" Version="8.0.8" />
+
+    <!-- NetCorePal packages -->
+    <PackageVersion Include="NetCorePal.Context.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Context.CAP" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Context.Shared" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.AspNetCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.CodeAnalysis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedLocks.Redis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.SqlServer" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.PostgreSQL" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.Sqlite" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.DMDB" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.MongoDB" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.GaussDB" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.DistributedTransactions.CAP.KingbaseES" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Domain.Abstractions" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Jwt.StackExchangeRedis" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MicrosoftServiceDiscovery" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.MultiEnv" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.NewtonsoftJson" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Primitives" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Extensions.Repository.EntityFrameworkCore.Snowflake" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.OpenTelemetry.Diagnostics" Version="$(NetCorePalVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.DMDB" Version="$(NetCorePalAspireVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.OpenGauss" Version="$(NetCorePalAspireVersion)" />
+    <PackageVersion Include="NetCorePal.Aspire.Hosting.MongoDB" Version="$(NetCorePalAspireVersion)" />
+
+    <!-- Testing packages -->
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Testcontainers" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MySql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MongoDb" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.MsSql" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.RabbitMq" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.Kafka" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.Nats" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="Testcontainers.Redis" Version="$(TestcontainersVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.DMDB" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.KingbaseES" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="NetCorePal.Testcontainers.OpenGauss" Version="$(NetCorePalTestcontainerVersion)" />
+    <PackageVersion Include="xunit.v3" Version="3.2.1" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+    <PackageVersion Include="FastEndpoints.Testing" Version="$(FastEndpointsVersion)" />
+
+    <!-- Code analysis -->
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="10.3.0.106239" />
+  </ItemGroup>
+</Project>

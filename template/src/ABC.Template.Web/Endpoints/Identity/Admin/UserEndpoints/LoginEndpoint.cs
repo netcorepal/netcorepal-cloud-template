@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text.Json;
 using FastEndpoints;
+using FastEndpoints.Swagger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using NetCorePal.Extensions.Dto;

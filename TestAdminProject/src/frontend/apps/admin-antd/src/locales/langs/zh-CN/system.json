@@ -1,0 +1,49 @@
+{
+  "title": "系统管理",
+  "dept": {
+    "list": "部门列表",
+    "createTime": "创建时间",
+    "deptName": "部门名称",
+    "name": "部门",
+    "operation": "操作",
+    "parentDept": "上级部门",
+    "remark": "备注",
+    "status": "状态",
+    "title": "部门管理"
+  },
+  "role": {
+    "title": "角色管理",
+    "list": "角色列表",
+    "name": "角色",
+    "roleName": "角色名称",
+    "id": "角色ID",
+    "status": "状态",
+    "remark": "备注",
+    "createTime": "创建时间",
+    "operation": "操作",
+    "permissions": "权限",
+    "setPermissions": "授权"
+  },
+  "user": {
+    "title": "用户管理",
+    "list": "用户列表",
+    "name": "用户",
+    "userName": "用户名",
+    "realName": "真实姓名",
+    "email": "邮箱",
+    "phone": "手机号",
+    "gender": "性别",
+    "male": "男",
+    "female": "女",
+    "other": "其他",
+    "age": "年龄",
+    "birthDate": "出生日期",
+    "dept": "部门",
+    "roles": "角色",
+    "status": "状态",
+    "password": "密码",
+    "createTime": "创建时间",
+    "operation": "操作",
+    "keyword": "关键词"
+  }
+}
