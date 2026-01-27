@@ -56,7 +56,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -83,8 +83,8 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"测试部门_父_{Guid.NewGuid():N}";
-        var childDeptName = $"测试部门_子_{Guid.NewGuid():N}";
+        var parentDeptName = $"测试部门_父_{Guid.NewGuid().ToString("N")[..8]}";
+        var childDeptName = $"测试部门_子_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -112,7 +112,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -153,7 +153,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         // Act
         var request = new CreateDeptRequest(deptName, "备注", null, 2); // 无效的状态值
@@ -173,7 +173,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         DeptId deptId;
         
         try
@@ -234,8 +234,8 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"测试部门_父_{Guid.NewGuid():N}";
-        var childDeptName = $"测试部门_子_{Guid.NewGuid():N}";
+        var parentDeptName = $"测试部门_父_{Guid.NewGuid().ToString("N")[..8]}";
+        var childDeptName = $"测试部门_子_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -275,8 +275,8 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var activeDeptName = $"测试部门_激活_{Guid.NewGuid():N}";
-        var inactiveDeptName = $"测试部门_停用_{Guid.NewGuid():N}";
+        var activeDeptName = $"测试部门_激活_{Guid.NewGuid().ToString("N")[..8]}";
+        var inactiveDeptName = $"测试部门_停用_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -339,8 +339,8 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
-        var updatedName = $"更新后的部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
+        var updatedName = $"更新后的部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -391,7 +391,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -416,7 +416,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -445,7 +445,7 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var deptName = $"测试部门_{Guid.NewGuid():N}";
+        var deptName = $"测试部门_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {
@@ -478,8 +478,8 @@ public class DeptTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var parentDeptName = $"测试部门_父_{Guid.NewGuid():N}";
-        var childDeptName = $"测试部门_子_{Guid.NewGuid():N}";
+        var parentDeptName = $"测试部门_父_{Guid.NewGuid().ToString("N")[..8]}";
+        var childDeptName = $"测试部门_子_{Guid.NewGuid().ToString("N")[..8]}";
         
         try
         {

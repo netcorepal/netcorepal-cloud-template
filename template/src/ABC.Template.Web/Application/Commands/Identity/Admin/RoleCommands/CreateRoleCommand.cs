@@ -2,6 +2,7 @@ using FluentValidation;
 using ABC.Template.Domain.AggregatesModel.RoleAggregate;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;
+using ABC.Template.Web.AppPermissions;
 
 namespace ABC.Template.Web.Application.Commands.Identity.Admin.RoleCommands;
 
@@ -22,7 +23,11 @@ public class CreateRoleCommandHandler(IRoleRepository roleRepository) : ICommand
 {
     public async Task<RoleId> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
-        var permissions = request.PermissionCodes.Select(perm => new RolePermission(perm));
+        var permissions = request.PermissionCodes.Select(perm =>
+        {
+            var (name, description) = PermissionMapper.GetPermissionInfo(perm);
+            return new RolePermission(perm, name, description);
+        });
 
         var role = new Role(request.Name, request.Description, permissions);
 

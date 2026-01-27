@@ -4,6 +4,7 @@ using ABC.Template.Infrastructure;
 using ABC.Template.Infrastructure.Repositories;
 using ABC.Template.Web.Application.Queries;
 using ABC.Template.Domain;
+using ABC.Template.Web.AppPermissions;
 //#if (UseMongoDB)
 using Microsoft.EntityFrameworkCore;
 //#endif
@@ -60,7 +61,8 @@ public class UpdateRoleInfoCommandHandler(IRoleRepository roleRepository, Applic
         var existingPermissionCodes = existingPermissionMap.Keys.ToHashSet();
         foreach (var pc in permissionCodes.Where(pc => !existingPermissionCodes.Contains(pc)))
         {
-            var permissionToAdd = new RolePermission(pc);
+            var (name, description) = PermissionMapper.GetPermissionInfo(pc);
+            var permissionToAdd = new RolePermission(pc, name, description);
             await dbContext.RolePermissions.AddAsync(permissionToAdd, cancellationToken);
             dbContext.Entry(permissionToAdd).Property(nameof(RolePermission.RoleId)).CurrentValue = request.RoleId;
         }
@@ -75,7 +77,11 @@ public class UpdateRoleInfoCommandHandler(IRoleRepository roleRepository) : ICom
                    throw new KnownException($"未找到角色，RoleId = {request.RoleId}", ErrorCodes.RoleNotFound);
         role.UpdateRoleInfo(request.Name, request.Description);
 
-        var permissions = request.PermissionCodes.Select(perm => new RolePermission(perm));
+        var permissions = request.PermissionCodes.Select(perm =>
+        {
+            var (name, description) = PermissionMapper.GetPermissionInfo(perm);
+            return new RolePermission(perm, name, description);
+        });
         role.UpdateRolePermissions(permissions);
     }
 }

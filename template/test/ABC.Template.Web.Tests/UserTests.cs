@@ -77,7 +77,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"测试用户_{Guid.NewGuid():N}";
+        var userName = $"测试用户_{Guid.NewGuid().ToString("N")[..8]}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -120,7 +120,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"测试用户_{Guid.NewGuid():N}";
+        var userName = $"测试用户_{Guid.NewGuid().ToString("N")[..8]}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -207,7 +207,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"测试用户_{Guid.NewGuid():N}";
+        var userName = $"测试用户_{Guid.NewGuid().ToString("N")[..8]}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
@@ -275,9 +275,9 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"测试用户_{Guid.NewGuid():N}";
+        var userName = $"测试用户_{Guid.NewGuid().ToString("N")[..8]}";
         var email = $"{userName}@test.com";
-        var updatedName = $"更新后的用户_{Guid.NewGuid():N}";
+        var updatedName = $"更新后的用户_{Guid.NewGuid().ToString("N")[..8]}";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();
         UserId userId;
@@ -377,7 +377,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var userName = $"测试用户_{Guid.NewGuid():N}";
+        var userName = $"测试用户_{Guid.NewGuid().ToString("N")[..8]}";
         var email = $"{userName}@test.com";
         var roleId = await GetAdminRoleIdAsync();
         var deptId = await GetDeptIdAsync();

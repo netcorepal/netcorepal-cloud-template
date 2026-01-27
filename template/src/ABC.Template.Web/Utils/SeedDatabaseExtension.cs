@@ -35,44 +35,61 @@ public static class SeedDatabaseExtension
             if (!dbContext.Roles.Any())
 //#endif
         {
-            var adminPermissions = new List<RolePermission>
+            var adminPermissionCodes = new[]
             {
                 // 父权限码（用于菜单和路由权限控制）
-                new RolePermission(PermissionCodes.UserManagement, "用户管理", "用户管理"),
-                new RolePermission(PermissionCodes.RoleManagement, "角色管理", "角色管理"),
-                new RolePermission(PermissionCodes.DeptManagement, "部门管理", "部门管理"),
+                PermissionCodes.UserManagement,
+                PermissionCodes.RoleManagement,
+                PermissionCodes.DeptManagement,
 
                 // 用户管理权限
-                new RolePermission(PermissionCodes.UserCreate, "创建用户", "创建新用户"),
-                new RolePermission(PermissionCodes.UserView, "查看用户", "查看用户信息"),
-                new RolePermission(PermissionCodes.UserEdit, "更新用户", "更新用户信息"),
-                new RolePermission(PermissionCodes.UserDelete, "删除用户", "删除用户"),
-                new RolePermission(PermissionCodes.UserRoleAssign, "分配用户角色", "分配用户角色权限"),
-                new RolePermission(PermissionCodes.UserResetPassword, "重置用户密码", "重置用户密码"),
+                PermissionCodes.UserCreate,
+                PermissionCodes.UserView,
+                PermissionCodes.UserEdit,
+                PermissionCodes.UserDelete,
+                PermissionCodes.UserRoleAssign,
+                PermissionCodes.UserResetPassword,
 
                 // 角色管理权限
-                new RolePermission(PermissionCodes.RoleCreate, "创建角色", "创建新角色"),
-                new RolePermission(PermissionCodes.RoleView, "查看角色", "查看角色信息"),
-                new RolePermission(PermissionCodes.RoleEdit, "更新角色", "更新角色信息"),
-                new RolePermission(PermissionCodes.RoleDelete, "删除角色", "删除角色"),
-                new RolePermission(PermissionCodes.RoleUpdatePermissions, "更新角色权限", "更新角色的权限"),
+                PermissionCodes.RoleCreate,
+                PermissionCodes.RoleView,
+                PermissionCodes.RoleEdit,
+                PermissionCodes.RoleDelete,
+                PermissionCodes.RoleUpdatePermissions,
 
                 // 部门管理权限
-                new RolePermission(PermissionCodes.DeptCreate, "创建部门", "创建部门"),
-                new RolePermission(PermissionCodes.DeptView, "查看部门", "查看部门信息"),
-                new RolePermission(PermissionCodes.DeptEdit, "更新部门", "更新部门信息"),
-                new RolePermission(PermissionCodes.DeptDelete, "删除部门", "删除部门"),
+                PermissionCodes.DeptCreate,
+                PermissionCodes.DeptView,
+                PermissionCodes.DeptEdit,
+                PermissionCodes.DeptDelete,
 
                 // 所有接口访问权限
-                new RolePermission(PermissionCodes.AllApiAccess, "所有接口访问权限", "所有接口访问权限"),
+                PermissionCodes.AllApiAccess,
             };
 
-            var userPermissions = new List<RolePermission>
+            var adminPermissions = adminPermissionCodes.Select(code =>
             {
-                new RolePermission(PermissionCodes.UserView, "查看用户", "查看用户信息"),
-                new RolePermission(PermissionCodes.UserEdit, "更新用户", "更新自己的用户信息"),
-                new RolePermission(PermissionCodes.AllApiAccess, "所有接口访问权限", "所有接口访问权限"),
+                var (name, description) = PermissionMapper.GetPermissionInfo(code);
+                return new RolePermission(code, name, description);
+            }).ToList();
+
+            var userPermissionCodes = new[]
+            {
+                PermissionCodes.UserView,
+                PermissionCodes.UserEdit,
+                PermissionCodes.AllApiAccess,
             };
+
+            var userPermissions = userPermissionCodes.Select(code =>
+            {
+                var (name, description) = PermissionMapper.GetPermissionInfo(code);
+                // 对于 UserEdit，使用特殊描述
+                if (code == PermissionCodes.UserEdit)
+                {
+                    description = "更新自己的用户信息";
+                }
+                return new RolePermission(code, name, description);
+            }).ToList();
 
             var adminRole = new Role("管理员", "系统管理员", adminPermissions);
             var userRole = new Role("普通用户", "普通用户", userPermissions);

@@ -47,7 +47,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var description = "测试角色描述";
         var permissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit };
         
@@ -77,7 +77,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         
         try
@@ -125,7 +125,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit };
         RoleId roleId;
         
@@ -179,8 +179,8 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
-        var updatedName = $"更新后的角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
+        var updatedName = $"更新后的角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         var updatedPermissionCodes = new[] { PermissionCodes.UserView, PermissionCodes.UserEdit, PermissionCodes.UserDelete };
         RoleId roleId;
@@ -244,7 +244,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
@@ -303,7 +303,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
@@ -346,7 +346,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
@@ -380,7 +380,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
@@ -419,7 +419,7 @@ public class RoleTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
     {
         // Arrange
         var client = await GetAuthenticatedClientAsync();
-        var roleName = $"测试角色_{Guid.NewGuid():N}";
+        var roleName = $"测试角色_{Guid.NewGuid().ToString("N")[..8]}";
         var permissionCodes = new[] { PermissionCodes.UserView };
         RoleId roleId;
         
