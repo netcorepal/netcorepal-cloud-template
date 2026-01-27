@@ -22,7 +22,7 @@ public class Role : Entity<RoleId>, IAggregateRoot
 
     public Role(string name, string description, IEnumerable<RolePermission> permissions)
     {
-        CreatedAt = DateTimeOffset.Now;
+        CreatedAt =DateTimeOffset.UtcNow;
         Name = name;
         Description = description;
         Permissions = new List<RolePermission>(permissions);

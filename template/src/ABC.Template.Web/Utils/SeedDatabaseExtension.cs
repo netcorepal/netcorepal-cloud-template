@@ -142,7 +142,7 @@ public static class SeedDatabaseExtension
                 1,
                 "admin@example.com",
                 "男",
-                DateTimeOffset.Now.AddYears(-30) // 假设管理员年龄为30岁
+               DateTimeOffset.UtcNow.AddYears(-30) // 假设管理员年龄为30岁
             );
 
             // 设置部门关系
@@ -183,7 +183,7 @@ public static class SeedDatabaseExtension
                 1,
                 "test@example.com",
                 "女",
-                DateTimeOffset.Now.AddYears(-25) // 假设测试用户年龄为25岁
+               DateTimeOffset.UtcNow.AddYears(-25) // 假设测试用户年龄为25岁
             );
 
             testUser.AssignDept(new UserDept(testUser.Id, dept.Id, dept.Name));

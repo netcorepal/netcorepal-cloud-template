@@ -93,7 +93,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }
@@ -136,7 +136,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }
@@ -152,7 +152,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }
@@ -186,7 +186,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             "测试真实姓名",
             1,
             "男",
-            DateTimeOffset.Now.AddYears(-25),
+           DateTimeOffset.UtcNow.AddYears(-25),
             deptId,
             "研发",
             new[] { roleId }
@@ -224,7 +224,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }
@@ -293,7 +293,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }
@@ -311,7 +311,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 1,
                 "女",
                 30,
-                DateTimeOffset.Now.AddYears(-30),
+               DateTimeOffset.UtcNow.AddYears(-30),
                 deptId,
                 "研发",
                 "" // 不更新密码
@@ -356,7 +356,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
             1,
             "男",
             25,
-            DateTimeOffset.Now.AddYears(-25),
+           DateTimeOffset.UtcNow.AddYears(-25),
             deptId,
             "研发",
             ""
@@ -394,7 +394,7 @@ public class UserTests(WebAppFixture app) : AuthenticatedTestBase<WebAppFixture>
                 "测试真实姓名",
                 1,
                 "男",
-                DateTimeOffset.Now.AddYears(-25),
+               DateTimeOffset.UtcNow.AddYears(-25),
                 deptId,
                 "研发",
                 new[] { roleId }

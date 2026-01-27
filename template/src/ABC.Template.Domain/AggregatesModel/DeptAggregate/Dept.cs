@@ -74,7 +74,7 @@ public class Dept : Entity<DeptId>, IAggregateRoot
     /// <param name="status">状态（0=禁用，1=启用）</param>
     public Dept(string name, string remark, DeptId parentId, int status)
     {
-        CreatedAt = DateTimeOffset.Now;
+        CreatedAt =DateTimeOffset.UtcNow;
         Name = name;
         Remark = remark;
         ParentId = parentId;

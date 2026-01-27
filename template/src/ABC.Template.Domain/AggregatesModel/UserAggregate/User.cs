@@ -35,7 +35,7 @@ public class User : Entity<UserId>, IAggregateRoot
 
     public User(string name, string phone, string password, IEnumerable<UserRole> roles, string realName, int status, string email, string gender, DateTimeOffset birthDate)
     {
-        CreatedAt = DateTimeOffset.Now;
+        CreatedAt =DateTimeOffset.UtcNow;
         Name = name;
         Phone = phone;
         PasswordHash = password;
@@ -75,7 +75,7 @@ public class User : Entity<UserId>, IAggregateRoot
 
     public static int CalculateAge(DateTimeOffset birthDate)
     {
-        var today = DateTimeOffset.Now.Date;
+        var today =DateTimeOffset.UtcNow.Date;
         int age = today.Year - birthDate.Year;
         if (birthDate.Date > today.AddYears(-age))
         {

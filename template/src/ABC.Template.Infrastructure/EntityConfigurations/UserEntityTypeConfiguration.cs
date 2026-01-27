@@ -39,7 +39,6 @@ internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey("UserId")
             .OnDelete(DeleteBehavior.Cascade);
 
-        // é…�ç½® User ä¸?UserDept çš„ä¸€å¯¹ä¸€å…³ç³»
         builder.HasOne(au => au.Dept)
             .WithOne()
             .HasForeignKey<UserDept>(ud => ud.UserId)

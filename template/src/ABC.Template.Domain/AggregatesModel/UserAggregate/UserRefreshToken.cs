@@ -13,7 +13,7 @@ public class UserRefreshToken : Entity<UserRefreshTokenId>
     public UserRefreshToken(string token)
     {
         Token = token;
-        CreatedTime = DateTimeOffset.Now;
+        CreatedTime =DateTimeOffset.UtcNow;
         ExpiresTime = CreatedTime.AddDays(1);
     }
 
@@ -28,7 +28,7 @@ public class UserRefreshToken : Entity<UserRefreshTokenId>
     {
         if (IsUsed ||
             IsRevoked ||
-            ExpiresTime < DateTimeOffset.Now)
+            ExpiresTime <DateTimeOffset.UtcNow)
             throw new KnownException("无效的刷新令牌", ErrorCodes.InvalidRefreshToken);
 
         IsUsed = true;
