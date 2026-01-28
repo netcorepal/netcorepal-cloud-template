@@ -240,6 +240,9 @@ cd netcorepal-cloud-template
 `dotnet new install` 支持直接从包含模板的源码目录安装，无需构建和打包：
 
 ```bash
+# 建议先清理旧文件以避免冲突
+git clean -fdX
+
 # 在项目根目录直接安装（推荐）
 dotnet new install . --force
 ```
