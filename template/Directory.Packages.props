@@ -5,13 +5,13 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.1.0</NetCorePalVersion>
+    <NetCorePalVersion>3.2.1</NetCorePalVersion>
     <FastEndpointsVersion>7.1.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
     <AspireVersion>13.1.0</AspireVersion>
     <OpenTelemetryVersion>1.14.0</OpenTelemetryVersion>
-    <NetCorePalTestcontainerVersion>1.0.1</NetCorePalTestcontainerVersion>
-    <NetCorePalAspireVersion>1.1.0</NetCorePalAspireVersion>
+    <NetCorePalTestcontainerVersion>1.0.5</NetCorePalTestcontainerVersion>
+    <NetCorePalAspireVersion>1.1.2</NetCorePalAspireVersion>
   </PropertyGroup>
 
   <ItemGroup>
