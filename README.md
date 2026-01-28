@@ -428,7 +428,7 @@ netcorepal-codeanalysis generate --output architecture.html
 + [代码流分析文档](https://netcorepal.github.io/netcorepal-cloud-framework/zh/code-analysis/code-flow-analysis/)
 + [代码分析工具文档](https://netcorepal.github.io/netcorepal-cloud-framework/zh/code-analysis/code-analysis-tools/)
 
-## 支持特性（WIP）
+## 支持特性
 
 + 文件存储
   + [x] 本地文件
@@ -440,10 +440,9 @@ netcorepal-codeanalysis generate --output architecture.html
   + [ ] Apollo
   + [ ] AgileConfig
 + 数据库
-  + [x] InMemory
   + [x] SqlServer
   + [x] MySql
-  + [x] PostgreSql
+  + [x] PostgreSQL
   + [x] Sqlite
   + [x] GaussDB
   + [x] DMDB
@@ -451,6 +450,7 @@ netcorepal-codeanalysis generate --output architecture.html
 + 消息队列
   + [x] RabbitMQ
   + [x] Kafka
+  + [x] NATS
   + [x] RedisStreams
   + [x] AzureServiceBus
   + [x] AmazonSQS
@@ -473,4 +473,6 @@ netcorepal-codeanalysis generate --output architecture.html
 + 缓存中间件
   + [x] Redis
 + 熔断限流
-  + [ ] Polly
+  + [x] Polly
+
+备注：未打勾表示该模板未集成该特性，但可手动添加。
