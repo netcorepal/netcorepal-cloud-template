@@ -94,7 +94,7 @@ var nats = builder.AddNats("Nats");
 //#endif
 
 // Add web project with infrastructure dependencies
-builder.AddProject<Projects.ABC_Template_Web>("web")
+var web = builder.AddProject<Projects.ABC_Template_Web>("web")
     .WithExternalHttpEndpoints()
     .WithHttpHealthCheck("/health")
     .WithReference(redis)
@@ -134,5 +134,17 @@ builder.AddProject<Projects.ABC_Template_Web>("web")
     .WaitFor(nats)
 //#endif
     ;
+
+//#if (UseAdmin)
+// Add frontend project
+var frontend = builder.AddJavaScriptApp("frontend", "../frontend")
+    .WithPnpm()
+    .WithDeveloperCertificateTrust(true)
+    .WithHttpEndpoint(port: 5666, env: "VITE_PORT", name: "http", isProxied: false)
+    .WithExternalHttpEndpoints()
+    .WithEnvironment("VITE_API_BASE", web.GetEndpoint("http"))
+    .WithReference(web)
+    .WaitFor(web);
+//#endif
 
 await builder.Build().RunAsync();

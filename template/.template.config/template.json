@@ -1,303 +1,673 @@
 {
-    "$schema": "http://json.schemastore.org/template",
-    "author": "NetCorePal",
-    "classifications": [ "Web" ],
-    "tags": {
-        "language": "C#",
-        "type": "project"
-    },
-    "identity": "NetCorePal.Web",
-    "name": "NetCorePal Cloud Web Application",
-    "shortName": "netcorepal-web",
-    "sourceName": "ABC.Template",
-    "preferNameDirectory": true,
-    "symbols": {
-        "Framework": {
-            "type": "parameter",
-            "description": "The target framework for the project",
-            "datatype": "choice",
-            "choices": [
-                {
-                    "choice": "net8.0",
-                    "description": "Target .NET 8.0"
-                },
-                {
-                    "choice": "net9.0",
-                    "description": "Target .NET 9.0"
-                },
-                {
-                    "choice": "net10.0",
-                    "description": "Target .NET 10.0"
-                }
-            ],
-            "defaultValue": "net10.0",
-            "replaces": "NETCOREPAL_FRAMEWORK"
-        },
-        "Database": {
-            "type": "parameter",
-            "description": "The database provider to use",
-            "datatype": "choice",
-            "choices": [
-                {
-                    "choice": "SqlServer",
-                    "description": "Use Microsoft SQL Server"
-                },
-                {
-                    "choice": "MySql",
-                    "description": "Use MySQL with Pomelo provider"
-                },
-                {
-                    "choice": "PostgreSQL",
-                    "description": "Use PostgreSQL"
-                },
-                {
-                    "choice": "Sqlite",
-                    "description": "Use SQLite"
-                },
-                {
-                    "choice": "GaussDB",
-                    "description": "Use GaussDB"
-                },
-                {
-                    "choice": "DMDB",
-                    "description": "Use DMDB"
-                },
-                {
-                    "choice": "MongoDB",
-                    "description": "Use MongoDB"
-                }
-            ],
-            "defaultValue": "MySql"
-        },
-        "MessageQueue": {
-            "type": "parameter",
-            "description": "The message queue provider to use with CAP",
-            "datatype": "choice",
-            "choices": [
-                {
-                    "choice": "RabbitMQ",
-                    "description": "Use RabbitMQ"
-                },
-                {
-                    "choice": "Kafka",
-                    "description": "Use Apache Kafka"
-                },
-                {
-                    "choice": "AzureServiceBus",
-                    "description": "Use Azure Service Bus"
-                },
-                {
-                    "choice": "AmazonSQS",
-                    "description": "Use Amazon SQS"
-                },
-                {
-                    "choice": "NATS",
-                    "description": "Use NATS"
-                },
-                {
-                    "choice": "RedisStreams",
-                    "description": "Use Redis Streams"
-                },
-                {
-                    "choice": "Pulsar",
-                    "description": "Use Apache Pulsar"
-                }
-            ],
-            "defaultValue": "RabbitMQ"
-        },
-        "UseAspire": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "false",
-            "description": "Enable Aspire Dashboard support for observability and orchestration"
-        },
-        "IncludeCopilotInstructions": {
-            "type": "parameter",
-            "datatype": "bool",
-            "defaultValue": "true",
-            "description": "Include Copilot instructions files (.github directory) in the generated template"
-        },
-        "SdkVersion": {
-            "type": "generated",
-            "generator": "switch",
-            "dataType": "string",
-            "parameters": {
-                "cases": [
-                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0.100" },
-                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0.100" },
-                    { "condition": "(Framework == \"net10.0\")", "value": "10.0.100" }
-                ],
-                "defaultValue": "9.0.100"
-            },
-            "replaces": "NETCOREPAL_SDK_VERSION"
-        },
-        "DockerFramework": {
-            "type": "generated",
-            "generator": "switch",
-            "dataType": "string",
-            "parameters": {
-                "cases": [
-                    { "condition": "(Framework == \"net8.0\")",  "value": "8.0" },
-                    { "condition": "(Framework == \"net9.0\")",  "value": "9.0" },
-                    { "condition": "(Framework == \"net10.0\")", "value": "10.0" }
-                ],
-                "defaultValue": "9.0"
-            },
-            "replaces": "NETCOREPAL_DOCKER_FRAMEWORK"
-        },
-        "UseSqlServer": {
-            "type": "computed",
-            "value": "(Database == \"SqlServer\")"
-        },
-        "UseMySql": {
-            "type": "computed",
-            "value": "(Database == \"MySql\")"
-        },
-        "UsePostgreSQL": {
-            "type": "computed",
-            "value": "(Database == \"PostgreSQL\")"
-        },
-        "UseSqlite": {
-            "type": "computed",
-            "value": "(Database == \"Sqlite\")"
-        },
-        "UseGaussDB": {
-            "type": "computed",
-            "value": "(Database == \"GaussDB\")"
-        },
-        "UseDMDB": {
-            "type": "computed",
-            "value": "(Database == \"DMDB\")"
-        },
-        "UseMongoDB": {
-            "type": "computed",
-            "value": "(Database == \"MongoDB\")"
-        },
-        "UseRabbitMQ": {
-            "type": "computed",
-            "value": "(MessageQueue == \"RabbitMQ\")"
-        },
-        "UseKafka": {
-            "type": "computed",
-            "value": "(MessageQueue == \"Kafka\")"
-        },
-        "UseAzureServiceBus": {
-            "type": "computed",
-            "value": "(MessageQueue == \"AzureServiceBus\")"
-        },
-        "UseAmazonSQS": {
-            "type": "computed",
-            "value": "(MessageQueue == \"AmazonSQS\")"
-        },
-        "UseNATS": {
-            "type": "computed",
-            "value": "(MessageQueue == \"NATS\")"
-        },
-        "UseRedisStreams": {
-            "type": "computed",
-            "value": "(MessageQueue == \"RedisStreams\")"
-        },
-        "UsePulsar": {
-            "type": "computed",
-            "value": "(MessageQueue == \"Pulsar\")"
-        }
-    },
-    "sources": [
+  "$schema": "http://json.schemastore.org/template",
+  "author": "NetCorePal",
+  "classifications": [ "Web" ],
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "identity": "NetCorePal.Web",
+  "name": "NetCorePal Cloud Web Application",
+  "shortName": "netcorepal-web",
+  "sourceName": "ABC.Template",
+  "preferNameDirectory": true,
+  "symbols": {
+    "Framework": {
+      "type": "parameter",
+      "description": "The target framework for the project",
+      "datatype": "choice",
+      "choices": [
         {
-            "modifiers": [
-                { "condition": "(!IncludeCopilotInstructions)", "exclude": [ ".github/**" ] },
-                { "condition": "(Framework == \"net8.0\")", "exclude": [ "*.slnx" ] },
-                { "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")", "exclude": [ "*.sln" ] },
-                { "condition": "(!UseAspire)", "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**", "test/ABC.Template.TestAppHost/**", "test/ABC.Template.AppHost.Tests/**" ] },
-
-                // SqlServer
-                { "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"SqlServer\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"SqlServer\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"SqlServer\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0/**" ] },
-                { "condition": "(Database != \"SqlServer\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0/**" ] },
-                { "condition": "(Database != \"SqlServer\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0/**" ] },
-
-                // MySql
-                { "condition": "(Database == \"MySql\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"MySql\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"MySql\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"MySql\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0/**" ] },
-                { "condition": "(Database != \"MySql\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0/**" ] },
-                { "condition": "(Database != \"MySql\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0/**" ] },
-
-                // PostgreSQL
-                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"PostgreSQL\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0/**" ] },
-                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0/**" ] },
-                { "condition": "(Database != \"PostgreSQL\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0/**" ] },
-
-                // Sqlite
-                { "condition": "(Database == \"Sqlite\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"Sqlite\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"Sqlite\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"Sqlite\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0/**" ] },
-                { "condition": "(Database != \"Sqlite\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0/**" ] },
-                { "condition": "(Database != \"Sqlite\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0/**" ] },
-
-                // GaussDB
-                { "condition": "(Database == \"GaussDB\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"GaussDB\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"GaussDB\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"GaussDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0/**" ] },
-                { "condition": "(Database != \"GaussDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0/**" ] },
-                { "condition": "(Database != \"GaussDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0/**" ] },
-
-                // DMDB
-                { "condition": "(Database == \"DMDB\" && Framework == \"net8.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"DMDB\" && Framework == \"net9.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database == \"DMDB\" && Framework == \"net10.0\")", "rename": {
-                    "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
-                } },
-                { "condition": "(Database != \"DMDB\" || Framework != \"net8.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0/**" ] },
-                { "condition": "(Database != \"DMDB\" || Framework != \"net9.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0/**" ] },
-                { "condition": "(Database != \"DMDB\" || Framework != \"net10.0\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ] },
-                { "condition": "(Database != \"DMDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ] },
-
-                // MongoDB
-                { "condition": "(Database == \"MongoDB\")", "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll" ] }
-            ]
+          "choice": "net8.0",
+          "description": "Target .NET 8.0"
+        },
+        {
+          "choice": "net9.0",
+          "description": "Target .NET 9.0"
+        },
+        {
+          "choice": "net10.0",
+          "description": "Target .NET 10.0"
         }
-    ]
+      ],
+      "defaultValue": "net10.0",
+      "replaces": "NETCOREPAL_FRAMEWORK"
+    },
+    "Database": {
+      "type": "parameter",
+      "description": "The database provider to use",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "SqlServer",
+          "description": "Use Microsoft SQL Server"
+        },
+        {
+          "choice": "MySql",
+          "description": "Use MySQL with Pomelo provider"
+        },
+        {
+          "choice": "PostgreSQL",
+          "description": "Use PostgreSQL"
+        },
+        {
+          "choice": "Sqlite",
+          "description": "Use SQLite"
+        },
+        {
+          "choice": "GaussDB",
+          "description": "Use GaussDB"
+        },
+        {
+          "choice": "DMDB",
+          "description": "Use DMDB"
+        },
+        {
+          "choice": "MongoDB",
+          "description": "Use MongoDB"
+        }
+      ],
+      "defaultValue": "MySql"
+    },
+    "MessageQueue": {
+      "type": "parameter",
+      "description": "The message queue provider to use with CAP",
+      "datatype": "choice",
+      "choices": [
+        {
+          "choice": "RabbitMQ",
+          "description": "Use RabbitMQ"
+        },
+        {
+          "choice": "Kafka",
+          "description": "Use Apache Kafka"
+        },
+        {
+          "choice": "AzureServiceBus",
+          "description": "Use Azure Service Bus"
+        },
+        {
+          "choice": "AmazonSQS",
+          "description": "Use Amazon SQS"
+        },
+        {
+          "choice": "NATS",
+          "description": "Use NATS"
+        },
+        {
+          "choice": "RedisStreams",
+          "description": "Use Redis Streams"
+        },
+        {
+          "choice": "Pulsar",
+          "description": "Use Apache Pulsar"
+        }
+      ],
+      "defaultValue": "RabbitMQ"
+    },
+    "UseAspire": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Enable Aspire Dashboard support for observability and orchestration"
+    },
+    "IncludeCopilotInstructions": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Include Copilot instructions files (.github directory) in the generated template"
+    },
+    "UseAdmin": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "false",
+      "description": "Include Admin functionality (user, role, department management, permissions, and frontend)"
+    },
+    "SdkVersion": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(Framework == \"net8.0\")",
+            "value": "8.0.100"
+          },
+          {
+            "condition": "(Framework == \"net9.0\")",
+            "value": "9.0.100"
+          },
+          {
+            "condition": "(Framework == \"net10.0\")",
+            "value": "10.0.100"
+          }
+        ],
+        "defaultValue": "9.0.100"
+      },
+      "replaces": "NETCOREPAL_SDK_VERSION"
+    },
+    "DockerFramework": {
+      "type": "generated",
+      "generator": "switch",
+      "dataType": "string",
+      "parameters": {
+        "cases": [
+          {
+            "condition": "(Framework == \"net8.0\")",
+            "value": "8.0"
+          },
+          {
+            "condition": "(Framework == \"net9.0\")",
+            "value": "9.0"
+          },
+          {
+            "condition": "(Framework == \"net10.0\")",
+            "value": "10.0"
+          }
+        ],
+        "defaultValue": "9.0"
+      },
+      "replaces": "NETCOREPAL_DOCKER_FRAMEWORK"
+    },
+    "UseSqlServer": {
+      "type": "computed",
+      "value": "(Database == \"SqlServer\")"
+    },
+    "UseMySql": {
+      "type": "computed",
+      "value": "(Database == \"MySql\")"
+    },
+    "UsePostgreSQL": {
+      "type": "computed",
+      "value": "(Database == \"PostgreSQL\")"
+    },
+    "UseSqlite": {
+      "type": "computed",
+      "value": "(Database == \"Sqlite\")"
+    },
+    "UseGaussDB": {
+      "type": "computed",
+      "value": "(Database == \"GaussDB\")"
+    },
+    "UseDMDB": {
+      "type": "computed",
+      "value": "(Database == \"DMDB\")"
+    },
+    "UseMongoDB": {
+      "type": "computed",
+      "value": "(Database == \"MongoDB\")"
+    },
+    "UseRabbitMQ": {
+      "type": "computed",
+      "value": "(MessageQueue == \"RabbitMQ\")"
+    },
+    "UseKafka": {
+      "type": "computed",
+      "value": "(MessageQueue == \"Kafka\")"
+    },
+    "UseAzureServiceBus": {
+      "type": "computed",
+      "value": "(MessageQueue == \"AzureServiceBus\")"
+    },
+    "UseAmazonSQS": {
+      "type": "computed",
+      "value": "(MessageQueue == \"AmazonSQS\")"
+    },
+    "UseNATS": {
+      "type": "computed",
+      "value": "(MessageQueue == \"NATS\")"
+    },
+    "UseRedisStreams": {
+      "type": "computed",
+      "value": "(MessageQueue == \"RedisStreams\")"
+    },
+    "UsePulsar": {
+      "type": "computed",
+      "value": "(MessageQueue == \"Pulsar\")"
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!IncludeCopilotInstructions)",
+          "exclude": [ ".github/**" ]
+        },
+        {
+          "condition": "(Framework == \"net8.0\")",
+          "exclude": [ "*.slnx" ]
+        },
+        {
+          "condition": "(Framework == \"net9.0\" || Framework == \"net10.0\")",
+          "exclude": [ "*.sln" ]
+        },
+        {
+          "condition": "(!UseAspire)",
+          "exclude": [ "src/ABC.Template.AppHost/**", "src/ABC.Template.ServiceDefaults/**", "test/ABC.Template.TestAppHost/**", "test/ABC.Template.AppHost.Tests/**" ]
+        },
+        {
+          "condition": "(!UseAdmin)",
+          "exclude": [
+            "src/frontend/**",
+            "src/ABC.Template.Domain/AggregatesModel/UserAggregate/**",
+            "src/ABC.Template.Domain/AggregatesModel/RoleAggregate/**",
+            "src/ABC.Template.Domain/AggregatesModel/DeptAggregate/**",
+            "src/ABC.Template.Domain/DomainEvents/RoleEvents.cs",
+            "src/ABC.Template.Domain/DomainEvents/DeptEvents/**",
+            "src/ABC.Template.Domain/ErrorCodes.cs",
+            "src/ABC.Template.Infrastructure/EntityConfigurations/UserEntityTypeConfiguration.cs",
+            "src/ABC.Template.Infrastructure/EntityConfigurations/RoleEntityTypeConfiguration.cs",
+            "src/ABC.Template.Infrastructure/EntityConfigurations/DeptEntityTypeConfiguration.cs",
+            "src/ABC.Template.Infrastructure/Repositories/UserRepository.cs",
+            "src/ABC.Template.Infrastructure/Repositories/RoleRepository.cs",
+            "src/ABC.Template.Infrastructure/Repositories/DeptRepository.cs",
+            "src/ABC.Template.Web/AppPermissions/**",
+            "src/ABC.Template.Web/Application/Commands/Identity/**",
+            "src/ABC.Template.Web/Application/Queries/UserQuery.cs",
+            "src/ABC.Template.Web/Application/Queries/RoleQuery.cs",
+            "src/ABC.Template.Web/Application/Queries/DeptQuery.cs",
+            "src/ABC.Template.Web/Application/DomainEventHandlers/DeptInfoChangedDomainEventHandlerForUpdateUserDeptName.cs",
+            "src/ABC.Template.Web/Application/DomainEventHandlers/RoleInfoChangedDomainEventHandlerForUpdateUserRoleName.cs",
+            "src/ABC.Template.Web/Endpoints/Identity/**",
+            "src/ABC.Template.Web/Utils/SeedDatabaseExtension.cs",
+            "src/ABC.Template.Web/Utils/PasswordHasher.cs",
+            "src/ABC.Template.Web/Utils/TokenGenerator.cs",
+            "src/ABC.Template.Web/Extensions/ServiceCollectionExtensions.cs",
+            "test/ABC.Template.Web.Tests/UserTests.cs",
+            "test/ABC.Template.Web.Tests/RoleTests.cs",
+            "test/ABC.Template.Web.Tests/DeptTests.cs",
+            "test/ABC.Template.Web.Tests/Fixtures/AuthenticatedTestBase.cs"
+          ]
+        },
+        {
+            "description": "Include turbo-run bin directory which is otherwise excluded by default",
+            "condition": "(UseAdmin)",
+            "include": [
+                "src/frontend/scripts/turbo-run/bin/**"
+            ]
+        },
+        // SqlServer
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"SqlServer\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"SqlServer\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/SqlServer-net10.0-admin/**" ]
+        },
+
+        // MySql
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"MySql\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"MySql\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/MySql-net10.0-admin/**" ]
+        },
+
+        // PostgreSQL
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"PostgreSQL\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"PostgreSQL\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/PostgreSQL-net10.0-admin/**" ]
+        },
+
+        // Sqlite
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"Sqlite\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"Sqlite\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/Sqlite-net10.0-admin/**" ]
+        },
+
+        // GaussDB
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"GaussDB\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"GaussDB\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/GaussDB-net10.0-admin/**" ]
+        },
+
+        // DMDB
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net8.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net8.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net9.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net9.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net10.0\" && UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0-admin": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database == \"DMDB\" && Framework == \"net10.0\" && !UseAdmin)",
+          "rename": {
+            "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0": "src/ABC.Template.Infrastructure/Migrations"
+          }
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net8.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net8.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net8.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net9.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net9.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net9.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net10.0\" || UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\" || Framework != \"net10.0\" || !UseAdmin)",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll/DMDB-net10.0-admin/**" ]
+        },
+        {
+          "condition": "(Database != \"DMDB\")",
+          "exclude": [ "src/ABC.Template.Infrastructure/MyDmDateTimeOffsetTypeMapping.cs" ]
+        },
+
+        // MongoDB
+        {
+          "condition": "(Database == \"MongoDB\")",
+          "exclude": [ "src/ABC.Template.Infrastructure/MigrationsAll" ]
+        }
+      ]
+    }
+  ]
 }

@@ -22,6 +22,7 @@ jobs:
       matrix:
         framework: [ 'net10.0', 'net8.0', 'net9.0' ]
         aspire: [ 'true', 'false' ]
+        use-admin: [ 'true', 'false' ]
         scenario:
           # Test all databases with RabbitMQ
           - { database: 'MySql', messagequeue: 'RabbitMQ' }
@@ -38,7 +39,7 @@ jobs:
           - { database: 'MySql', messagequeue: 'NATS' }
           - { database: 'MySql', messagequeue: 'AzureServiceBus' }
           - { database: 'MySql', messagequeue: 'AmazonSQS' }
-    name: ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
+    name: ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}
 
     steps:
     - uses: actions/checkout@v3
@@ -68,53 +69,53 @@ jobs:
     - name: Install template locally
       run: dotnet new install .
       
-    - name: Generate project from template - ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
+    - name: Generate project from template - ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}
       run: |
-        mkdir -p test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}
+        mkdir -p test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}
         if [ "${{ matrix.aspire }}" == "true" ]; then
-          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.scenario.database }} -M ${{ matrix.scenario.messagequeue }} --UseAspire
+          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.scenario.database }} -M ${{ matrix.scenario.messagequeue }} --UseAspire --UseAdmin ${{ matrix.use-admin }}
         else
-          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.scenario.database }} -M ${{ matrix.scenario.messagequeue }}
+          dotnet new netcorepal-web -n TestProject -F ${{ matrix.framework }} -D ${{ matrix.scenario.database }} -M ${{ matrix.scenario.messagequeue }} --UseAdmin ${{ matrix.use-admin }}
         fi
         
     - name: Restore dependencies for generated project
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         # Restore dependencies, but allow missing preview packages
         if ! dotnet restore --ignore-failed-sources; then
-          echo "❌ RESTORE FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+          echo "❌ RESTORE FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
           exit 1
         fi
         
     - name: Build generated project
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         # Build the project - this must succeed
         if ! dotnet build --no-restore --configuration Release --verbosity minimal; then
-          echo "❌ BUILD FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+          echo "❌ BUILD FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
           echo "Build logs:"
           dotnet build --no-restore --configuration Release --verbosity normal
           exit 1
         fi
-        echo "✅ BUILD SUCCEEDED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+        echo "✅ BUILD SUCCEEDED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
         
     - name: Run tests for generated project
       if: ${{ inputs.include-tests }}
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         # Run tests - this must succeed
         if ! dotnet test --no-build --configuration Release \
           --verbosity normal \
           --logger "console;verbosity=normal"; then
-          echo "❌ TESTS FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+          echo "❌ TESTS FAILED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
           exit 1
         fi  
-        echo "✅ TESTS SUCCEEDED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+        echo "✅ TESTS SUCCEEDED for ${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
         
     - name: Verify project structure and templates
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         echo "Project structure verification:"
         ls -la src/
         echo "Framework verification in csproj:"
@@ -141,10 +142,87 @@ jobs:
             echo "✅ Aspire projects correctly not generated"
           fi
         fi
+        if [ "${{ matrix.use-admin }}" == "true" ]; then
+          echo "Verifying Admin files are present when UseAdmin=true"
+          if [ -d "src/TestProject.Domain/AggregatesModel/UserAggregate" ]; then
+            echo "✅ UserAggregate found"
+          else
+            echo "❌ UserAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/TestProject.Domain/AggregatesModel/RoleAggregate" ]; then
+            echo "✅ RoleAggregate found"
+          else
+            echo "❌ RoleAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/TestProject.Domain/AggregatesModel/DeptAggregate" ]; then
+            echo "✅ DeptAggregate found"
+          else
+            echo "❌ DeptAggregate not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/TestProject.Web/Endpoints/Identity/Admin" ]; then
+            echo "✅ Admin endpoints directory found"
+          else
+            echo "❌ Admin endpoints directory not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/frontend" ]; then
+            echo "✅ Frontend directory found"
+          else
+            echo "❌ Frontend directory not found when UseAdmin=true"
+            exit 1
+          fi
+          if [ -d "src/TestProject.Web/AppPermissions" ]; then
+            echo "✅ AppPermissions directory found"
+          else
+            echo "❌ AppPermissions directory not found when UseAdmin=true"
+            exit 1
+          fi
+        else
+          echo "Verifying Admin files are absent when UseAdmin=false"
+          if [ -d "src/TestProject.Domain/AggregatesModel/UserAggregate" ]; then
+            echo "❌ UserAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ UserAggregate correctly excluded"
+          fi
+          if [ -d "src/TestProject.Domain/AggregatesModel/RoleAggregate" ]; then
+            echo "❌ RoleAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ RoleAggregate correctly excluded"
+          fi
+          if [ -d "src/TestProject.Domain/AggregatesModel/DeptAggregate" ]; then
+            echo "❌ DeptAggregate found when it should be excluded"
+            exit 1
+          else
+            echo "✅ DeptAggregate correctly excluded"
+          fi
+          if [ -d "src/TestProject.Web/Endpoints/Identity/Admin" ]; then
+            echo "❌ Admin endpoints directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ Admin endpoints directory correctly excluded"
+          fi
+          if [ -d "src/frontend" ]; then
+            echo "❌ Frontend directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ Frontend directory correctly excluded"
+          fi
+          if [ -d "src/TestProject.Web/AppPermissions" ]; then
+            echo "❌ AppPermissions directory found when it should be excluded"
+            exit 1
+          else
+            echo "✅ AppPermissions directory correctly excluded"
+          fi
+        fi
         
     - name: Verify solution file format
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         echo "Solution file format verification for framework: ${{ matrix.framework }}"
         if [ "${{ matrix.framework }}" == "net8.0" ]; then
           # For net8.0, expect .sln file and no .slnx file
@@ -182,16 +260,16 @@ jobs:
       
     - name: Verify Dockerfile template substitution
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         echo "Dockerfile framework verification:"
         grep -E "(aspnet|sdk):" src/TestProject.Web/Dockerfile
         
     - name: Build Docker image for generated project
       if: ${{ inputs.include-docker-build }}
       run: |
-        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}/TestProject
+        cd test-projects/${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}/TestProject
         # Build Docker image - this must succeed for Docker tests
-        CONFIG_NAME="${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}"
+        CONFIG_NAME="${{ matrix.scenario.database }}-${{ matrix.scenario.messagequeue }}-${{ matrix.framework }}-aspire-${{ matrix.aspire }}-admin-${{ matrix.use-admin }}"
         IMAGE_TAG="testproject-$(echo "$CONFIG_NAME" | tr '[:upper:]' '[:lower:]'):latest"
         echo "Building Docker image with tag: $IMAGE_TAG"
         if ! docker build -f src/TestProject.Web/Dockerfile -t "$IMAGE_TAG" .; then

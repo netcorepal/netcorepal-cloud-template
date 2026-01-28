@@ -1,11 +1,14 @@
-﻿using ABC.Template.Domain.AggregatesModel.OrderAggregate;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 //#if (UseDMDB)
 using Microsoft.EntityFrameworkCore.Storage;
 //#endif
 using NetCorePal.Extensions.DistributedTransactions.CAP.Persistence;
-using ABC.Template.Domain.AggregatesModel.DeliverAggregate;
+//#if (UseAdmin)
+using ABC.Template.Domain.AggregatesModel.UserAggregate;
+using ABC.Template.Domain.AggregatesModel.RoleAggregate;
+using ABC.Template.Domain.AggregatesModel.DeptAggregate;
+//#endif
 
 namespace ABC.Template.Infrastructure;
 
@@ -25,7 +28,7 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     , IDMDBCapDataStorage
     //#elif (UseMongoDB)
     , IMongoDBCapDataStorage
-    //#endif
+//#endif
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,13 +42,13 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
     }
 
 
-//#if (UseDMDB)
+    //#if (UseDMDB)
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.ReplaceService<IRelationalTypeMappingSource, MyDmTypeMappingSource>();
         base.OnConfiguring(optionsBuilder);
     }
-//#endif
+    //#endif
 
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
@@ -53,6 +56,12 @@ public partial class ApplicationDbContext(DbContextOptions<ApplicationDbContext>
         base.ConfigureConventions(configurationBuilder);
     }
 
-    public DbSet<Order> Orders => Set<Order>();
-    public DbSet<DeliverRecord> DeliverRecords => Set<DeliverRecord>();
+    //#if (UseAdmin)
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Role> Roles => Set<Role>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<Dept> Depts => Set<Dept>();
+    public DbSet<UserDept> UserDepts => Set<UserDept>();
+    //#endif
 }

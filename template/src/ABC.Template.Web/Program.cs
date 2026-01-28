@@ -6,9 +6,9 @@ using System.Text.Json;
 using Microsoft.AspNetCore.DataProtection;
 using StackExchange.Redis;
 using FluentValidation.AspNetCore;
-using ABC.Template.Web.Application.IntegrationEventHandlers;
 using ABC.Template.Web.Clients;
 using ABC.Template.Web.Extensions;
+using ABC.Template.Web.Utils;
 using FastEndpoints;
 using Serilog;
 using Serilog.Formatting.Json;
@@ -79,17 +79,41 @@ try
     builder.Services.AddDataProtection()
         .PersistKeysToStackExchangeRedis("DataProtection-Keys");
 
-    builder.Services.AddAuthentication().AddJwtBearer(options =>
-    {
-        options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters.ValidAudience = "netcorepal";
-        options.TokenValidationParameters.ValidateAudience = true;
-        options.TokenValidationParameters.ValidIssuer = "netcorepal";
-        options.TokenValidationParameters.ValidateIssuer = true;
-    });
+      // 配置JWT认证
+   builder.Services.Configure<AppConfiguration>(builder.Configuration.GetSection("AppConfiguration"));
+   var appConfig = builder.Configuration.GetSection("AppConfiguration").Get<AppConfiguration>() ?? new AppConfiguration { JwtIssuer = "netcorepal", JwtAudience = "netcorepal" };
+   
+   builder.Services.AddAuthentication().AddJwtBearer(options =>
+   {
+       options.RequireHttpsMetadata = false;
+       options.TokenValidationParameters.ValidAudience = appConfig.JwtAudience;
+       options.TokenValidationParameters.ValidateAudience = true;
+       options.TokenValidationParameters.ValidIssuer = appConfig.JwtIssuer;
+       options.TokenValidationParameters.ValidateIssuer = true;
+   });
     builder.Services.AddNetCorePalJwt().AddRedisStore();
 
     #endregion
+
+//#if (UseAdmin)
+    #region CORS
+
+    var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() 
+        ?? new[] { "http://localhost:5666", "http://localhost:5173", "http://localhost:3000" };
+    
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(policy =>
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials();
+        });
+    });
+
+    #endregion
+//#endif
 
     #region Controller
 
@@ -115,6 +139,13 @@ try
     builder.Services.AddKnownExceptionErrorModelInterceptor();
 
     #endregion
+
+//#if (UseAdmin)
+    #region Query
+    // 自动注册所有实现 IQuery 接口的查询类
+    builder.Services.AddQueries(Assembly.GetExecutingAssembly());
+    #endregion
+//#endif
 
     #region 基础设施
 
@@ -377,7 +408,8 @@ try
 
     var app = builder.Build();
 
-    if (app.Environment.IsDevelopment())
+    // 在非生产环境中执行数据库迁移（包括开发、测试、Staging等环境）
+    if (!app.Environment.IsProduction())
     {
         using var scope = app.Services.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -388,6 +420,22 @@ try
 <!--#endif-->
     }
 
+//#if (UseAdmin)
+    // SeedDatabase 必须在数据库迁移之后执行，确保表已创建
+    // 在非生产环境中，如果 SeedDatabase 失败，应该抛出异常以便发现问题
+    if (!app.Environment.IsProduction())
+    {
+        try
+        {
+            app.SeedDatabase();
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Failed to seed database in {Environment} environment", app.Environment.EnvironmentName);
+            throw; // 重新抛出异常，确保测试能够发现数据库种子数据问题
+        }
+    }
+//#endif
 
     app.UseKnownExceptionHandler();
     // Configure the HTTP request pipeline.
@@ -399,7 +447,11 @@ try
 
     app.UseStaticFiles();
     //app.UseHttpsRedirection();
+//#if (UseAdmin)
+    app.UseCors(); // CORS 必须在 UseRouting 之前
+//#endif
     app.UseRouting();
+    app.UseAuthentication(); // Authentication 必须在 Authorization 之前
     app.UseAuthorization();
 
     app.MapControllers();
@@ -423,10 +475,12 @@ try
     // Code analysis endpoint
     app.MapGet("/code-analysis", () =>
     {
+        var assemblies = new List<Assembly> { typeof(Program).Assembly, typeof(ApplicationDbContext).Assembly };
+//#if (UseAdmin)
+        assemblies.Add(typeof(ABC.Template.Domain.AggregatesModel.UserAggregate.User).Assembly);
+//#endif
         var html = VisualizationHtmlBuilder.GenerateVisualizationHtml(
-            CodeFlowAnalysisHelper.GetResultFromAssemblies(typeof(Program).Assembly,
-                typeof(ApplicationDbContext).Assembly,
-                typeof(ABC.Template.Domain.AggregatesModel.OrderAggregate.Order).Assembly)
+            CodeFlowAnalysisHelper.GetResultFromAssemblies(assemblies.ToArray())
         );
         return Results.Content(html, "text/html; charset=utf-8");
     });

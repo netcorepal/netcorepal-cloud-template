@@ -1,7 +1,9 @@
-﻿global using NetCorePal.Extensions.AspNetCore;
+global using NetCorePal.Extensions.AspNetCore;
 global using NetCorePal.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection;
+//#if (UseAdmin)
 global using ABC.Template.Domain;
+//#endif
 global using ABC.Template.Infrastructure;
 global using FluentValidation;
 global using NetCorePal.Extensions.Primitives;

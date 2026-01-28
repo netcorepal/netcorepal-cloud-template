@@ -5,7 +5,9 @@ namespace ABC.Template.AppHost.Tests;
 
 public class AppHostTests
 {
-    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(120);
+    // Increased timeout to 240 seconds to accommodate MongoDB replica set initialization
+    // which can take 60-120 seconds to become ready
+    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(240);
 
     [Fact]
     public async Task AppHost_Should_Start_Successfully()

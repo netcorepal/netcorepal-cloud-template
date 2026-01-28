@@ -1,0 +1,48 @@
+{
+  "title": "System Management",
+  "dept": {
+    "name": "Department",
+    "title": "Department Management",
+    "deptName": "Department Name",
+    "status": "Status",
+    "createTime": "Create Time",
+    "remark": "Remark",
+    "operation": "Operation",
+    "parentDept": "Parent Department"
+  },
+  "role": {
+    "title": "Role Management",
+    "list": "Role List",
+    "name": "Role",
+    "roleName": "Role Name",
+    "id": "Role ID",
+    "status": "Status",
+    "remark": "Remark",
+    "createTime": "Creation Time",
+    "operation": "Operation",
+    "permissions": "Permissions",
+    "setPermissions": "Permissions"
+  },
+  "user": {
+    "title": "User Management",
+    "list": "User List",
+    "name": "User",
+    "userName": "Username",
+    "realName": "Real Name",
+    "email": "Email",
+    "phone": "Phone",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "age": "Age",
+    "birthDate": "Birth Date",
+    "dept": "Department",
+    "roles": "Roles",
+    "status": "Status",
+    "password": "Password",
+    "createTime": "Create Time",
+    "operation": "Operation",
+    "keyword": "Keyword"
+  }
+}
