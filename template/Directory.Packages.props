@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.2.1</NetCorePalVersion>
+    <NetCorePalVersion>3.3.0</NetCorePalVersion>
     <FastEndpointsVersion>7.1.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
     <AspireVersion>13.1.0</AspireVersion>

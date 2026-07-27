@@ -63,7 +63,7 @@ dotnet new install NetCorePal.Template
 dotnet new install NetCorePal.Template::<package-version>"
 
 # 例如
-dotnet new install NetCorePal.Template::3.1.0
+dotnet new install NetCorePal.Template::3.3.0
 ```
 
 安装Nightly版本
