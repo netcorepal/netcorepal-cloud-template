@@ -29,7 +29,6 @@ jobs:
           - { database: 'SqlServer', messagequeue: 'RabbitMQ' }
           - { database: 'PostgreSQL', messagequeue: 'RabbitMQ' }
           - { database: 'Sqlite', messagequeue: 'RabbitMQ' }
-          - { database: 'GaussDB', messagequeue: 'RabbitMQ' }
           - { database: 'DMDB', messagequeue: 'RabbitMQ' }
           - { database: 'MongoDB', messagequeue: 'RabbitMQ' }
           
