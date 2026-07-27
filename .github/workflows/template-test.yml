@@ -54,7 +54,7 @@ jobs:
 
     - name: Install SSL Certificates
       run: |
-        dotnet dev-certs https --trust
+        dotnet dev-certs https --trust || dotnet dev-certs https
 
     - name: Install Aspire CLI
       run: |
@@ -279,7 +279,7 @@ jobs:
         echo "✅ DOCKER BUILD SUCCEEDED for $CONFIG_NAME"
         
     - name: Uninstall template
-      run: dotnet new uninstall .
+      run: dotnet new uninstall . || echo "Template package not installed, skipping uninstall."
       if: always()
 
   template-test-special-names:
@@ -309,7 +309,7 @@ jobs:
 
     - name: Install SSL Certificates
       run: |
-        dotnet dev-certs https --trust
+        dotnet dev-certs https --trust || dotnet dev-certs https
 
     - name: Install Aspire CLI
       run: |
@@ -416,7 +416,7 @@ jobs:
         echo "✅ DOCKER BUILD SUCCEEDED for My.TestProject with $CONFIG_NAME"
         
     - name: Uninstall template
-      run: dotnet new uninstall .
+      run: dotnet new uninstall . || echo "Template package not installed, skipping uninstall."
       if: always()
   template-test-copilot-instructions:
     runs-on: ubuntu-latest
@@ -515,5 +515,5 @@ jobs:
         echo "✅ BUILD SUCCEEDED for CopilotTestProject with IncludeCopilotInstructions=${{ matrix.include-copilot }}"
         
     - name: Uninstall template
-      run: dotnet new uninstall .
+      run: dotnet new uninstall . || echo "Template package not installed, skipping uninstall."
       if: always()
