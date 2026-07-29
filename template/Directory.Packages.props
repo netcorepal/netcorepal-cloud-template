@@ -5,7 +5,7 @@
 
   <PropertyGroup>
     <!-- Third-party package versions -->
-    <NetCorePalVersion>3.3.0</NetCorePalVersion>
+    <NetCorePalVersion>3.4.0</NetCorePalVersion>
     <FastEndpointsVersion>7.1.1</FastEndpointsVersion>
     <TestcontainersVersion>4.9.0</TestcontainersVersion>
     <AspireVersion>13.1.0</AspireVersion>
@@ -65,19 +65,19 @@
     <PackageVersion Include="AspNet.Security.OAuth.Weixin" Version="9.0.0" />
 
     <!-- Database providers - framework specific versions -->
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.10" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.10" />
     <PackageVersion Include="DM.Microsoft.EntityFrameworkCore" Version="9.0.0.37033" />
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0" />
-    <PackageVersion Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft" Version="9.0.0" />
-    <PackageVersion Include="MySql.EntityFrameworkCore" Version="9.0.0" />
-    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.0" />
-    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="9.0.0" />
-    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="9.0.0" />
-    <PackageVersion Include="MongoDB.EntityFrameworkCore" Version="9.0.3" />
+    <PackageVersion Include="Microting.EntityFrameworkCore.MySql" Version="10.0.10" />
+    <PackageVersion Include="Microting.EntityFrameworkCore.MySql.Json.Microsoft" Version="10.0.10" />
+    <PackageVersion Include="MySql.EntityFrameworkCore" Version="10.0.7" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.GaussDB" Version="10.0.0" />
+    <PackageVersion Include="DotNetCore.EntityFrameworkCore.KingbaseES" Version="10.0.0" />
+    <PackageVersion Include="MongoDB.EntityFrameworkCore" Version="10.0.2" />
 <!--#endif-->
     <!-- ASP.NET Core and Microsoft packages - framework specific versions -->
     <PackageVersion Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
