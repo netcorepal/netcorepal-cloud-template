@@ -9,8 +9,13 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
         <!--#if (UseMySql)-->
+        <!--#if (Framework == "net10.0")-->
+        <PackageReference Include="Microting.EntityFrameworkCore.MySql"/>
+        <PackageReference Include="Microting.EntityFrameworkCore.MySql.Json.Microsoft"/>
+        <!--#else-->
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql"/>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Json.Microsoft"/>
+        <!--#endif-->
         <PackageReference Include="NetCorePal.Extensions.DistributedTransactions.CAP.MySql"/>
         <!--#elif (UseSqlServer)-->
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer"/>
